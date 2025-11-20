@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/FormBuilder.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        /* Example Section */
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #1a73e8;
+        }
+
+        .example-section p {
+            color: #5f6368;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            background: #f8f9fa;
+        }
+
+        .example-code {
+            background: #202124;
+            color: #e8eaed;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .example-code .keyword { color: #c792ea; }
+        .example-code .string { color: #c3e88d; }
+        .example-code .comment { color: #546e7a; }
+        .example-code .function { color: #82aaff; }
+        .example-code .number { color: #f78c6c; }
+
+        /* Config Table */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #ea4335;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .example-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav">
+            <a href="index.html">← Zurück zur Übersicht</a>
+            <a href="list-builder.html">ListBuilder</a>
+            <a href="form-builder.html" style="opacity: 0.5;">FormBuilder</a>
+            <a href="modal-builder.html">ModalBuilder</a>
+            <a href="../../README.md" target="_blank">📖 Docs</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>📝 FormBuilder</h1>
+            <p>Dynamic forms with validation, multi-step, and auto-save</p>
+        </div>
+
+        <!-- Example 1: Basic Form -->
+        <div class="example-section">
+            <h2>1. Basic Form <span class="badge">Einfach</span></h2>
+            <p>Ein einfaches Formular mit Validierung und verschiedenen Feldtypen.</p>
+
+            <div class="example-demo">
+                <div id="basicForm"></div>
+            </div>
+
+            <div class="example-code"><span class="keyword">import</span> { FormBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'basicForm'</span>,
+    <span class="keyword">fields:</span> [
+        {
+            <span class="keyword">key:</span> <span class="string">'name'</span>,
+            <span class="keyword">label:</span> <span class="string">'Name'</span>,
+            <span class="keyword">type:</span> <span class="string">'text'</span>,
+            <span class="keyword">required:</span> <span class="number">true</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'Ihr Name'</span>
+        },
+        {
+            <span class="keyword">key:</span> <span class="string">'email'</span>,
+            <span class="keyword">label:</span> <span class="string">'E-Mail'</span>,
+            <span class="keyword">type:</span> <span class="string">'email'</span>,
+            <span class="keyword">required:</span> <span class="number">true</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'ihre@email.com'</span>
+        },
+        {
+            <span class="keyword">key:</span> <span class="string">'message'</span>,
+            <span class="keyword">label:</span> <span class="string">'Nachricht'</span>,
+            <span class="keyword">type:</span> <span class="string">'textarea'</span>,
+            <span class="keyword">rows:</span> <span class="number">4</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'Ihre Nachricht...'</span>
+        }
+    ],
+    <span class="keyword">submitLabel:</span> <span class="string">'Absenden'</span>,
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        console.<span class="function">log</span>(<span class="string">'Form Data:'</span>, data);
+        <span class="keyword">await</span> <span class="keyword">new</span> <span class="function">Promise</span>(resolve => <span class="function">setTimeout</span>(resolve, <span class="number">1000</span>));
+        <span class="function">alert</span>(<span class="string">'Formular erfolgreich gesendet!'</span>);
+    }
+});</div>
+        </div>
+
+        <!-- Example 2: Multi-Step Form -->
+        <div class="example-section">
+            <h2>2. Multi-Step Form <span class="badge new">NEU</span></h2>
+            <p>Formular mit mehreren Schritten und Fortschrittsanzeige.</p>
+
+            <div class="example-demo">
+                <div id="multiStepForm"></div>
+            </div>
+
+            <div class="example-code"><span class="keyword">const</span> multiStepForm = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'multiStepForm'</span>,
+    <span class="keyword">multiStep:</span> <span class="number">true</span>,
+    <span class="keyword">steps:</span> [
+        {
+            <span class="keyword">title:</span> <span class="string">'Persönliche Daten'</span>,
+            <span class="keyword">fields:</span> [
+                { <span class="keyword">key:</span> <span class="string">'firstName'</span>, <span class="keyword">label:</span> <span class="string">'Vorname'</span>, <span class="keyword">type:</span> <span class="string">'text'</span>, <span class="keyword">required:</span> <span class="number">true</span> },
+                { <span class="keyword">key:</span> <span class="string">'lastName'</span>, <span class="keyword">label:</span> <span class="string">'Nachname'</span>, <span class="keyword">type:</span> <span class="string">'text'</span>, <span class="keyword">required:</span> <span class="number">true</span> }
+            ]
+        },
+        {
+            <span class="keyword">title:</span> <span class="string">'Kontaktdaten'</span>,
+            <span class="keyword">fields:</span> [
+                { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'E-Mail'</span>, <span class="keyword">type:</span> <span class="string">'email'</span>, <span class="keyword">required:</span> <span class="number">true</span> },
+                { <span class="keyword">key:</span> <span class="string">'phone'</span>, <span class="keyword">label:</span> <span class="string">'Telefon'</span>, <span class="keyword">type:</span> <span class="string">'text'</span> }
+            ]
+        },
+        {
+            <span class="keyword">title:</span> <span class="string">'Bestätigung'</span>,
+            <span class="keyword">fields:</span> [
+                {
+                    <span class="keyword">key:</span> <span class="string">'terms'</span>,
+                    <span class="keyword">label:</span> <span class="string">'Ich akzeptiere die AGB'</span>,
+                    <span class="keyword">type:</span> <span class="string">'checkbox'</span>,
+                    <span class="keyword">required:</span> <span class="number">true</span>
+                }
+            ]
+        }
+    ],
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        console.<span class="function">log</span>(<span class="string">'Multi-Step Data:'</span>, data);
+        <span class="function">alert</span>(<span class="string">'Registrierung abgeschlossen!'</span>);
+    }
+});</div>
+        </div>
+
+        <!-- Example 3: All Field Types -->
+        <div class="example-section">
+            <h2>3. All Field Types <span class="badge">Referenz</span></h2>
+            <p>Übersicht über alle verfügbaren Feldtypen und deren Konfiguration.</p>
+
+            <div class="example-demo">
+                <div id="allFieldsForm"></div>
+            </div>
+
+            <div class="example-code"><span class="keyword">const</span> allFieldsForm = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'allFieldsForm'</span>,
+    <span class="keyword">fields:</span> [
+        { <span class="keyword">key:</span> <span class="string">'text'</span>, <span class="keyword">label:</span> <span class="string">'Text Input'</span>, <span class="keyword">type:</span> <span class="string">'text'</span> },
+        { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'Email'</span>, <span class="keyword">type:</span> <span class="string">'email'</span> },
+        { <span class="keyword">key:</span> <span class="string">'password'</span>, <span class="keyword">label:</span> <span class="string">'Password'</span>, <span class="keyword">type:</span> <span class="string">'password'</span> },
+        { <span class="keyword">key:</span> <span class="string">'number'</span>, <span class="keyword">label:</span> <span class="string">'Number'</span>, <span class="keyword">type:</span> <span class="string">'number'</span>, <span class="keyword">min:</span> <span class="number">0</span>, <span class="keyword">max:</span> <span class="number">100</span> },
+        { <span class="keyword">key:</span> <span class="string">'date'</span>, <span class="keyword">label:</span> <span class="string">'Date'</span>, <span class="keyword">type:</span> <span class="string">'date'</span> },
+        {
+            <span class="keyword">key:</span> <span class="string">'select'</span>,
+            <span class="keyword">label:</span> <span class="string">'Select'</span>,
+            <span class="keyword">type:</span> <span class="string">'select'</span>,
+            <span class="keyword">options:</span> [
+                { <span class="keyword">value:</span> <span class="string">'1'</span>, <span class="keyword">label:</span> <span class="string">'Option 1'</span> },
+                { <span class="keyword">value:</span> <span class="string">'2'</span>, <span class="keyword">label:</span> <span class="string">'Option 2'</span> }
+            ]
+        },
+        {
+            <span class="keyword">key:</span> <span class="string">'radio'</span>,
+            <span class="keyword">label:</span> <span class="string">'Radio Buttons'</span>,
+            <span class="keyword">type:</span> <span class="string">'radio'</span>,
+            <span class="keyword">layout:</span> <span class="string">'horizontal'</span>,
+            <span class="keyword">options:</span> [
+                { <span class="keyword">value:</span> <span class="string">'a'</span>, <span class="keyword">label:</span> <span class="string">'Option A'</span> },
+                { <span class="keyword">value:</span> <span class="string">'b'</span>, <span class="keyword">label:</span> <span class="string">'Option B'</span> }
+            ]
+        },
+        { <span class="keyword">key:</span> <span class="string">'checkbox'</span>, <span class="keyword">label:</span> <span class="string">'Checkbox'</span>, <span class="keyword">type:</span> <span class="string">'checkbox'</span> },
+        { <span class="keyword">key:</span> <span class="string">'textarea'</span>, <span class="keyword">label:</span> <span class="string">'Textarea'</span>, <span class="keyword">type:</span> <span class="string">'textarea'</span>, <span class="keyword">rows:</span> <span class="number">3</span> }
+    ],
+    <span class="keyword">submitLabel:</span> <span class="string">'Testen'</span>,
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => console.<span class="function">log</span>(data)
+});</div>
+        </div>
+
+        <!-- Field Types Reference -->
+        <div class="example-section">
+            <h2>Field Types Reference</h2>
+            <p>Alle verfügbaren Feldtypen im FormBuilder.</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Special Options</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>text</code></td>
+                        <td>Standard text input</td>
+                        <td><code>placeholder</code>, <code>minLength</code>, <code>maxLength</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>email</code></td>
+                        <td>Email input with validation</td>
+                        <td><code>placeholder</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>password</code></td>
+                        <td>Password input (masked)</td>
+                        <td><code>minLength</code>, <code>pattern</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>number</code></td>
+                        <td>Number input</td>
+                        <td><code>min</code>, <code>max</code>, <code>step</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>date</code></td>
+                        <td>Date picker</td>
+                        <td><code>min</code>, <code>max</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>select</code></td>
+                        <td>Dropdown select</td>
+                        <td><code>options: [{ value, label }]</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>radio</code></td>
+                        <td>Radio buttons</td>
+                        <td><code>options</code>, <code>layout: 'vertical' | 'horizontal' | 'grid-2' | 'grid-3'</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>checkbox</code></td>
+                        <td>Single checkbox</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td><code>textarea</code></td>
+                        <td>Multi-line text input</td>
+                        <td><code>rows</code>, <code>maxLength</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Validation Reference -->
+        <div class="example-section">
+            <h2>Validation Options</h2>
+            <p>Built-in Validierung für alle Feldtypen.</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>required</code></td>
+                        <td>boolean</td>
+                        <td>Field must be filled out</td>
+                    </tr>
+                    <tr>
+                        <td><code>minLength</code></td>
+                        <td>number</td>
+                        <td>Minimum text length</td>
+                    </tr>
+                    <tr>
+                        <td><code>maxLength</code></td>
+                        <td>number</td>
+                        <td>Maximum text length</td>
+                    </tr>
+                    <tr>
+                        <td><code>min</code></td>
+                        <td>number</td>
+                        <td>Minimum number value</td>
+                    </tr>
+                    <tr>
+                        <td><code>max</code></td>
+                        <td>number</td>
+                        <td>Maximum number value</td>
+                    </tr>
+                    <tr>
+                        <td><code>pattern</code></td>
+                        <td>RegExp</td>
+                        <td>Custom regex pattern</td>
+                    </tr>
+                    <tr>
+                        <td><code>validate</code></td>
+                        <td>function</td>
+                        <td>Custom validation function: <code>(value) => true | 'Error message'</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-code" style="margin-top: 20px;"><span class="comment">// Beispiel mit Custom Validation</span>
+{
+    <span class="keyword">key:</span> <span class="string">'username'</span>,
+    <span class="keyword">label:</span> <span class="string">'Benutzername'</span>,
+    <span class="keyword">type:</span> <span class="string">'text'</span>,
+    <span class="keyword">required:</span> <span class="number">true</span>,
+    <span class="keyword">minLength:</span> <span class="number">3</span>,
+    <span class="keyword">validate:</span> (value) => {
+        <span class="keyword">if</span> (!/^[a-zA-Z0-9_]+$/.<span class="function">test</span>(value)) {
+            <span class="keyword">return</span> <span class="string">'Nur Buchstaben, Zahlen und Unterstriche erlaubt'</span>;
+        }
+        <span class="keyword">return</span> <span class="number">true</span>;
+    }
+}</div>
+        </div>
+
+        <!-- Advanced Features -->
+        <div class="example-section">
+            <h2>Advanced Features</h2>
+            <p>Weitere fortgeschrittene FormBuilder Features.</p>
+
+            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Auto-Save</h3>
+            <div class="example-code"><span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'myForm'</span>,
+    <span class="keyword">autoSave:</span> <span class="number">true</span>,                    <span class="comment">// Enable auto-save to localStorage</span>
+    <span class="keyword">autoSaveKey:</span> <span class="string">'myForm_draft'</span>,      <span class="comment">// localStorage key</span>
+    <span class="keyword">autoSaveInterval:</span> <span class="number">2000</span>,           <span class="comment">// Save every 2 seconds</span>
+    <span class="keyword">fields:</span> [...]
+});</div>
+
+            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Conditional Fields</h3>
+            <div class="example-code"><span class="keyword">fields:</span> [
+    {
+        <span class="keyword">key:</span> <span class="string">'hasCompany'</span>,
+        <span class="keyword">label:</span> <span class="string">'Firmenkunde?'</span>,
+        <span class="keyword">type:</span> <span class="string">'checkbox'</span>
+    },
+    {
+        <span class="keyword">key:</span> <span class="string">'companyName'</span>,
+        <span class="keyword">label:</span> <span class="string">'Firmenname'</span>,
+        <span class="keyword">type:</span> <span class="string">'text'</span>,
+        <span class="keyword">showIf:</span> (formData) => formData.hasCompany === <span class="number">true</span>  <span class="comment">// Only show if checkbox is checked</span>
+    }
+]</div>
+
+            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Custom Button Actions</h3>
+            <div class="example-code"><span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'myForm'</span>,
+    <span class="keyword">fields:</span> [...],
+    <span class="keyword">submitLabel:</span> <span class="string">'Speichern'</span>,
+    <span class="keyword">showCancelButton:</span> <span class="number">true</span>,
+    <span class="keyword">cancelLabel:</span> <span class="string">'Abbrechen'</span>,
+    <span class="keyword">showResetButton:</span> <span class="number">true</span>,
+    <span class="keyword">onCancel:</span> () => {
+        console.<span class="function">log</span>(<span class="string">'Cancel clicked'</span>);
+    },
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        <span class="comment">// Submit logic</span>
+    }
+});</div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { FormBuilder } from '../../src/FormBuilder.js';
+
+        // Example 1: Basic Form
+        const basicForm = new FormBuilder({
+            containerId: 'basicForm',
+            fields: [
+                {
+                    key: 'name',
+                    label: 'Name',
+                    type: 'text',
+                    required: true,
+                    placeholder: 'Ihr Name'
+                },
+                {
+                    key: 'email',
+                    label: 'E-Mail',
+                    type: 'email',
+                    required: true,
+                    placeholder: 'ihre@email.com'
+                },
+                {
+                    key: 'message',
+                    label: 'Nachricht',
+                    type: 'textarea',
+                    rows: 4,
+                    placeholder: 'Ihre Nachricht...'
+                }
+            ],
+            submitLabel: 'Absenden',
+            onSubmit: async (data) => {
+                console.log('Form Data:', data);
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                alert('Formular erfolgreich gesendet!');
+            }
+        });
+
+        // Example 2: Multi-Step Form
+        const multiStepForm = new FormBuilder({
+            containerId: 'multiStepForm',
+            multiStep: true,
+            steps: [
+                {
+                    title: 'Persönliche Daten',
+                    fields: [
+                        { key: 'firstName', label: 'Vorname', type: 'text', required: true, placeholder: 'Max' },
+                        { key: 'lastName', label: 'Nachname', type: 'text', required: true, placeholder: 'Mustermann' }
+                    ]
+                },
+                {
+                    title: 'Kontaktdaten',
+                    fields: [
+                        { key: 'email', label: 'E-Mail', type: 'email', required: true, placeholder: 'max@example.com' },
+                        { key: 'phone', label: 'Telefon', type: 'text', placeholder: '+43 123 456 789' }
+                    ]
+                },
+                {
+                    title: 'Bestätigung',
+                    fields: [
+                        {
+                            key: 'terms',
+                            label: 'Ich akzeptiere die AGB',
+                            type: 'checkbox',
+                            required: true
+                        }
+                    ]
+                }
+            ],
+            onSubmit: async (data) => {
+                console.log('Multi-Step Data:', data);
+                alert('Registrierung abgeschlossen!');
+            }
+        });
+
+        // Example 3: All Field Types
+        const allFieldsForm = new FormBuilder({
+            containerId: 'allFieldsForm',
+            fields: [
+                { key: 'text', label: 'Text Input', type: 'text', placeholder: 'Enter text...' },
+                { key: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
+                { key: 'password', label: 'Password', type: 'password', placeholder: '••••••••' },
+                { key: 'number', label: 'Number', type: 'number', min: 0, max: 100, placeholder: '0-100' },
+                { key: 'date', label: 'Date', type: 'date' },
+                {
+                    key: 'select',
+                    label: 'Select',
+                    type: 'select',
+                    options: [
+                        { value: '', label: '-- Bitte wählen --' },
+                        { value: '1', label: 'Option 1' },
+                        { value: '2', label: 'Option 2' },
+                        { value: '3', label: 'Option 3' }
+                    ]
+                },
+                {
+                    key: 'radio',
+                    label: 'Radio Buttons',
+                    type: 'radio',
+                    layout: 'horizontal',
+                    options: [
+                        { value: 'a', label: 'Option A' },
+                        { value: 'b', label: 'Option B' },
+                        { value: 'c', label: 'Option C' }
+                    ]
+                },
+                { key: 'checkbox', label: 'Newsletter abonnieren', type: 'checkbox' },
+                { key: 'textarea', label: 'Textarea', type: 'textarea', rows: 3, placeholder: 'Mehrzeiliger Text...' }
+            ],
+            submitLabel: 'Testen',
+            showResetButton: true,
+            onSubmit: async (data) => {
+                console.log('All Fields Data:', data);
+                alert('Daten in Console ausgegeben (F12)');
+            }
+        });
+    </script>
+</body>
+</html>

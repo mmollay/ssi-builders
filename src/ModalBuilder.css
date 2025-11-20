@@ -11,10 +11,32 @@
     bottom: 0;
     z-index: 10000;
     display: flex;
-    align-items: center;
-    justify-content: center;
     opacity: 0;
     transition: opacity 0.3s ease;
+}
+
+/* Default: Centered modals */
+.modal-overlay:not(.modal-overlay-side-left):not(.modal-overlay-side-right):not(.modal-overlay-bottom) {
+    align-items: center;
+    justify-content: center;
+}
+
+/* Side Left: Align to left */
+.modal-overlay-side-left {
+    align-items: stretch;
+    justify-content: flex-start;
+}
+
+/* Side Right: Align to right */
+.modal-overlay-side-right {
+    align-items: stretch;
+    justify-content: flex-end;
+}
+
+/* Bottom Sheet: Align to bottom */
+.modal-overlay-bottom {
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .modal-overlay.modal-show {
@@ -45,7 +67,8 @@
     transition: transform 0.3s ease;
 }
 
-.modal-show .modal-container {
+/* Only scale centered modals, not side/bottom */
+.modal-show .modal-container:not(.modal-side-left):not(.modal-side-right):not(.modal-bottom) {
     transform: scale(1);
 }
 
@@ -95,11 +118,19 @@
 }
 
 .modal-side-left {
-    margin-right: auto;
+    transform: translateX(-100%);
+}
+
+.modal-overlay-side-left.modal-show .modal-side-left {
+    transform: translateX(0);
 }
 
 .modal-side-right {
-    margin-left: auto;
+    transform: translateX(100%);
+}
+
+.modal-overlay-side-right.modal-show .modal-side-right {
+    transform: translateX(0);
 }
 
 /* === Bottom Sheet === */
@@ -109,8 +140,12 @@
     height: auto;
     max-height: 80vh;
     border-radius: 16px 16px 0 0;
-    margin-top: auto;
-    margin-bottom: 0;
+    margin: 0;
+    transform: translateY(100%);
+}
+
+.modal-overlay-bottom.modal-show .modal-bottom {
+    transform: translateY(0);
 }
 
 /* === Centered === */

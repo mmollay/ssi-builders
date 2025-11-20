@@ -1,0 +1,311 @@
+/**
+ * SiteBuilder CSS - Komplettes Layout-System
+ * Material Design 3 | Responsive
+ * Version 1.2.0
+ */
+
+/* ============================================
+   ROOT VARIABLES
+   ============================================ */
+:root {
+    --site-header-height: 64px;
+    --site-sidebar-width: 280px;
+    --site-sidebar-collapsed-width: 72px;
+    --site-footer-height: 60px;
+
+    /* Z-Index Stack */
+    --site-z-header: 1000;
+    --site-z-sidebar: 999;
+    --site-z-content: 1;
+}
+
+/* ============================================
+   SITE BUILDER CONTAINER
+   ============================================ */
+.site-builder {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: var(--ssi-surface, #f8f9fa);
+}
+
+.site-builder.has-fixed-header {
+    padding-top: var(--site-header-height);
+}
+
+/* ============================================
+   HEADER
+   ============================================ */
+.site-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--site-header-height);
+    padding: 0 24px;
+    background: var(--ssi-background, #ffffff);
+    border-bottom: 1px solid var(--ssi-border, #e8eaed);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    z-index: var(--site-z-header);
+}
+
+.site-header.fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+/* Header Left */
+.site-header-left {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.site-sidebar-toggle {
+    flex-shrink: 0;
+}
+
+.site-logo {
+    height: 40px;
+    width: auto;
+}
+
+.site-header-title h1 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--ssi-text, #202124);
+    margin: 0;
+}
+
+.site-header-subtitle {
+    display: block;
+    font-size: 12px;
+    color: var(--ssi-text-secondary, #5f6368);
+    margin-top: 2px;
+}
+
+/* Header Menu */
+.site-header-menu {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex: 1;
+    justify-content: center;
+}
+
+.site-menu-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    color: var(--ssi-text-secondary, #5f6368);
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 8px;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    cursor: pointer;
+}
+
+.site-menu-item:hover {
+    background: var(--ssi-surface, #f8f9fa);
+    color: var(--ssi-primary, #1a73e8);
+}
+
+.site-menu-item.active {
+    background: rgba(26, 115, 232, 0.1);
+    color: var(--ssi-primary, #1a73e8);
+}
+
+.site-menu-item svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+}
+
+/* Header Actions */
+.site-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* ============================================
+   MAIN LAYOUT (Sidebar + Content)
+   ============================================ */
+.site-main {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+.site-main.with-sidebar {
+    padding-left: var(--site-sidebar-width);
+}
+
+.site-main.with-sidebar.collapsed {
+    padding-left: var(--site-sidebar-collapsed-width);
+}
+
+/* ============================================
+   SIDEBAR CONTAINER
+   ============================================ */
+.site-sidebar-container {
+    position: fixed;
+    top: var(--site-header-height);
+    left: 0;
+    bottom: 0;
+    width: var(--site-sidebar-width);
+    background: var(--ssi-background, #ffffff);
+    border-right: 1px solid var(--ssi-border, #e8eaed);
+    z-index: var(--site-z-sidebar);
+    transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+}
+
+.site-builder:not(.has-fixed-header) .site-sidebar-container {
+    top: 0;
+}
+
+.site-sidebar-container.collapsed {
+    width: var(--site-sidebar-collapsed-width);
+}
+
+/* ============================================
+   CONTENT AREA
+   ============================================ */
+.site-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Important for flexbox */
+}
+
+.site-content-inner {
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+.site-footer {
+    background: var(--ssi-background, #ffffff);
+    border-top: 1px solid var(--ssi-border, #e8eaed);
+    padding: 20px 40px;
+    margin-top: auto;
+}
+
+.site-footer-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.site-footer-copyright {
+    font-size: 14px;
+    color: var(--ssi-text-secondary, #5f6368);
+}
+
+.site-footer-links {
+    display: flex;
+    gap: 24px;
+}
+
+.site-footer-link {
+    font-size: 14px;
+    color: var(--ssi-text-secondary, #5f6368);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.site-footer-link:hover {
+    color: var(--ssi-primary, #1a73e8);
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 1024px) {
+    .site-header-menu {
+        display: none; /* Hide on tablet/mobile */
+    }
+
+    .site-main.with-sidebar {
+        padding-left: 0;
+    }
+
+    .site-sidebar-container {
+        transform: translateX(-100%);
+    }
+
+    .site-sidebar-container.open {
+        transform: translateX(0);
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@media (max-width: 768px) {
+    :root {
+        --site-header-height: 56px;
+    }
+
+    .site-header {
+        padding: 0 16px;
+    }
+
+    .site-header-title h1 {
+        font-size: 18px;
+    }
+
+    .site-header-subtitle {
+        display: none;
+    }
+
+    .site-content-inner {
+        padding: 20px !important;
+    }
+
+    .site-footer {
+        padding: 16px 20px;
+    }
+
+    .site-footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .site-logo {
+        height: 32px;
+    }
+
+    .site-header-actions button span {
+        display: none; /* Icon only on mobile */
+    }
+}
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+.site-builder * {
+    box-sizing: border-box;
+}
+
+/* Smooth scrolling */
+.site-content {
+    scroll-behavior: smooth;
+}
+
+/* Focus states */
+.site-header button:focus-visible,
+.site-menu-item:focus-visible,
+.site-footer-link:focus-visible {
+    outline: 2px solid var(--ssi-primary, #1a73e8);
+    outline-offset: 2px;
+}

@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModalBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/ModalBuilder.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Navigation */
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        /* Example Section */
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #1a73e8;
+        }
+
+        .example-section p {
+            color: #5f6368;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .example-code {
+            background: #202124;
+            color: #e8eaed;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .example-code .keyword { color: #c792ea; }
+        .example-code .string { color: #c3e88d; }
+        .example-code .comment { color: #546e7a; }
+        .example-code .function { color: #82aaff; }
+        .example-code .number { color: #f78c6c; }
+
+        /* Config Table */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #ea4335;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.fixed {
+            background: #fce8e6;
+            color: #ea4335;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .example-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav">
+            <a href="index.html">← Zurück zur Übersicht</a>
+            <a href="list-builder.html">ListBuilder</a>
+            <a href="form-builder.html">FormBuilder</a>
+            <a href="modal-builder.html" style="opacity: 0.5;">ModalBuilder</a>
+            <a href="../../README.md" target="_blank">📖 Docs</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🪟 ModalBuilder</h1>
+            <p>Flexible modals with 9 sizes and layouts</p>
+        </div>
+
+        <!-- Example 1: Modal Sizes -->
+        <div class="example-section">
+            <h2>1. Modal Sizes <span class="badge">9 Optionen</span></h2>
+            <p>ModalBuilder unterstützt 9 verschiedene Größen und Layouts.</p>
+
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('xs')">Extra Small (xs)</button>
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('small')">Small</button>
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('medium')">Medium (Default)</button>
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('large')">Large</button>
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('xl')">Extra Large (xl)</button>
+                <button class="ssi-btn ssi-btn-primary" onclick="openModal('fullscreen')">Fullscreen</button>
+            </div>
+
+            <div class="example-code"><span class="keyword">import</span> { ModalBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'medium'</span>,  <span class="comment">// xs | small | medium | large | xl | fullscreen</span>
+    <span class="keyword">title:</span> <span class="string">'Modal Title'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Your content here...</p>'</span>,
+    <span class="keyword">actions:</span> [
+        {
+            <span class="keyword">label:</span> <span class="string">'Close'</span>,
+            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
+            <span class="keyword">onClick:</span> (modal) => modal.<span class="function">close</span>()
+        }
+    ]
+});
+
+modal.<span class="function">open</span>();</div>
+        </div>
+
+        <!-- Example 2: Side Drawers -->
+        <div class="example-section">
+            <h2>2. Side Drawers <span class="badge fixed">FIXED v1.2</span></h2>
+            <p>Side-Drawer Layouts für komplexe UI-Flows (z.B. Settings, Filters).</p>
+
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-outlined" onclick="openModal('side-left')">Side Left Drawer</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="openModal('side-right')">Side Right Drawer</button>
+            </div>
+
+            <div class="example-code"><span class="keyword">const</span> drawer = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'side-right'</span>,  <span class="comment">// side-left | side-right</span>
+    <span class="keyword">title:</span> <span class="string">'Filter Options'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Filter UI here...</p>'</span>
+});
+
+drawer.<span class="function">open</span>();</div>
+        </div>
+
+        <!-- Example 3: Bottom Sheet -->
+        <div class="example-section">
+            <h2>3. Bottom Sheet <span class="badge fixed">FIXED v1.2</span></h2>
+            <p>Mobile-freundliches Bottom Sheet (slide-up von unten).</p>
+
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-outlined" onclick="openModal('bottom')">Bottom Sheet</button>
+            </div>
+
+            <div class="example-code"><span class="keyword">const</span> sheet = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'bottom'</span>,
+    <span class="keyword">title:</span> <span class="string">'Share Options'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Share via Email, Link, etc.</p>'</span>
+});
+
+sheet.<span class="function">open</span>();</div>
+        </div>
+
+        <!-- Example 4: Static Methods -->
+        <div class="example-section">
+            <h2>4. Static Methods <span class="badge">Alert, Confirm, Prompt</span></h2>
+            <p>Schnelle Dialoge ohne Konfiguration für häufige Use-Cases.</p>
+
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-success" onclick="testAlert()">Alert</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="testConfirm()">Confirm</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="testPrompt()">Prompt</button>
+            </div>
+
+            <div class="example-code"><span class="comment">// Alert</span>
+<span class="keyword">await</span> ModalBuilder.<span class="function">alert</span>({
+    <span class="keyword">title:</span> <span class="string">'Success!'</span>,
+    <span class="keyword">message:</span> <span class="string">'Your data has been saved.'</span>,
+    <span class="keyword">type:</span> <span class="string">'success'</span>
+});
+
+<span class="comment">// Confirm</span>
+<span class="keyword">const</span> confirmed = <span class="keyword">await</span> ModalBuilder.<span class="function">confirm</span>({
+    <span class="keyword">title:</span> <span class="string">'Delete Item?'</span>,
+    <span class="keyword">message:</span> <span class="string">'This action cannot be undone.'</span>,
+    <span class="keyword">confirmLabel:</span> <span class="string">'Delete'</span>,
+    <span class="keyword">confirmType:</span> <span class="string">'danger'</span>
+});
+
+<span class="keyword">if</span> (confirmed) {
+    <span class="comment">// Delete logic</span>
+}
+
+<span class="comment">// Prompt</span>
+<span class="keyword">const</span> name = <span class="keyword">await</span> ModalBuilder.<span class="function">prompt</span>({
+    <span class="keyword">title:</span> <span class="string">'Enter Your Name'</span>,
+    <span class="keyword">message:</span> <span class="string">'Please provide your full name:'</span>,
+    <span class="keyword">placeholder:</span> <span class="string">'John Doe'</span>
+});
+
+<span class="keyword">if</span> (name) {
+    console.<span class="function">log</span>(<span class="string">'Name:'</span>, name);
+}</div>
+        </div>
+
+        <!-- Example 5: Custom Actions -->
+        <div class="example-section">
+            <h2>5. Custom Actions</h2>
+            <p>Vollständig anpassbare Action-Buttons mit M3 Design.</p>
+
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-primary" onclick="openCustomModal()">Open Custom Modal</button>
+            </div>
+
+            <div class="example-code"><span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">title:</span> <span class="string">'Confirm Action'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Are you sure you want to proceed?</p>'</span>,
+    <span class="keyword">actions:</span> [
+        {
+            <span class="keyword">label:</span> <span class="string">'Cancel'</span>,
+            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
+            <span class="keyword">onClick:</span> (modal) => {
+                modal.<span class="function">close</span>();
+            }
+        },
+        {
+            <span class="keyword">label:</span> <span class="string">'Save Draft'</span>,
+            <span class="keyword">type:</span> <span class="string">'outlined'</span>,
+            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
+                <span class="keyword">await</span> <span class="function">saveDraft</span>();
+                modal.<span class="function">close</span>();
+            }
+        },
+        {
+            <span class="keyword">label:</span> <span class="string">'Publish'</span>,
+            <span class="keyword">type:</span> <span class="string">'primary'</span>,
+            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
+                <span class="keyword">await</span> <span class="function">publish</span>();
+                modal.<span class="function">close</span>();
+            }
+        }
+    ]
+});
+
+modal.<span class="function">open</span>();</div>
+        </div>
+
+        <!-- Size Reference -->
+        <div class="example-section">
+            <h2>Size Reference</h2>
+            <p>Alle verfügbaren Modal-Größen und -Layouts.</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Size</th>
+                        <th>Width/Height</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>xs</code></td>
+                        <td>320px</td>
+                        <td>Simple alerts, confirmations</td>
+                    </tr>
+                    <tr>
+                        <td><code>small</code></td>
+                        <td>400px</td>
+                        <td>Login forms, quick actions</td>
+                    </tr>
+                    <tr>
+                        <td><code>medium</code></td>
+                        <td>600px (Default)</td>
+                        <td>Standard forms, content</td>
+                    </tr>
+                    <tr>
+                        <td><code>large</code></td>
+                        <td>900px</td>
+                        <td>Complex forms, detailed content</td>
+                    </tr>
+                    <tr>
+                        <td><code>xl</code></td>
+                        <td>1200px</td>
+                        <td>Data tables, dashboards</td>
+                    </tr>
+                    <tr>
+                        <td><code>fullscreen</code></td>
+                        <td>100vw × 100vh</td>
+                        <td>Full-page experiences</td>
+                    </tr>
+                    <tr>
+                        <td><code>side-left</code></td>
+                        <td>400px (left edge)</td>
+                        <td>Navigation, filters</td>
+                    </tr>
+                    <tr>
+                        <td><code>side-right</code></td>
+                        <td>400px (right edge)</td>
+                        <td>Settings, properties panel</td>
+                    </tr>
+                    <tr>
+                        <td><code>bottom</code></td>
+                        <td>Full width (bottom edge)</td>
+                        <td>Mobile actions, share sheets</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Action Types Reference -->
+        <div class="example-section">
+            <h2>Action Button Types</h2>
+            <p>Alle verfügbaren Button-Typen für Modal-Actions (SSI Button System).</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Style</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>primary</code></td>
+                        <td>Filled blue button</td>
+                        <td>Primary action (Save, Submit, Confirm)</td>
+                    </tr>
+                    <tr>
+                        <td><code>secondary</code></td>
+                        <td>Outlined button</td>
+                        <td>Secondary action (Cancel, Back)</td>
+                    </tr>
+                    <tr>
+                        <td><code>outlined</code></td>
+                        <td>Outlined button</td>
+                        <td>Alternative action</td>
+                    </tr>
+                    <tr>
+                        <td><code>text</code></td>
+                        <td>Text-only button</td>
+                        <td>Tertiary action (Skip, Learn More)</td>
+                    </tr>
+                    <tr>
+                        <td><code>danger</code></td>
+                        <td>Red filled button</td>
+                        <td>Destructive action (Delete, Remove)</td>
+                    </tr>
+                    <tr>
+                        <td><code>success</code></td>
+                        <td>Green filled button</td>
+                        <td>Success action (Approve, Accept)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Advanced Options -->
+        <div class="example-section">
+            <h2>Advanced Options</h2>
+            <p>Weitere Konfigurationsmöglichkeiten für ModalBuilder.</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>backdrop</code></td>
+                        <td>boolean</td>
+                        <td>Show backdrop overlay (default: true)</td>
+                    </tr>
+                    <tr>
+                        <td><code>closeOnBackdrop</code></td>
+                        <td>boolean</td>
+                        <td>Close modal when clicking backdrop (default: true)</td>
+                    </tr>
+                    <tr>
+                        <td><code>closeOnEsc</code></td>
+                        <td>boolean</td>
+                        <td>Close modal on ESC key (default: true)</td>
+                    </tr>
+                    <tr>
+                        <td><code>animation</code></td>
+                        <td>string</td>
+                        <td>Animation type: 'fade' | 'slide' | 'zoom' (default: 'fade')</td>
+                    </tr>
+                    <tr>
+                        <td><code>onClose</code></td>
+                        <td>function</td>
+                        <td>Callback when modal closes</td>
+                    </tr>
+                    <tr>
+                        <td><code>showCloseButton</code></td>
+                        <td>boolean</td>
+                        <td>Show X button in header (default: true)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="example-code" style="margin-top: 20px;"><span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">title:</span> <span class="string">'Custom Modal'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Content...</p>'</span>,
+    <span class="keyword">backdrop:</span> <span class="number">true</span>,
+    <span class="keyword">closeOnBackdrop:</span> <span class="number">false</span>,     <span class="comment">// Prevent accidental close</span>
+    <span class="keyword">closeOnEsc:</span> <span class="number">true</span>,
+    <span class="keyword">animation:</span> <span class="string">'slide'</span>,
+    <span class="keyword">showCloseButton:</span> <span class="number">false</span>,    <span class="comment">// No X button</span>
+    <span class="keyword">onClose:</span> () => {
+        console.<span class="function">log</span>(<span class="string">'Modal closed'</span>);
+    }
+});</div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        import { ModalBuilder } from '../../src/ModalBuilder.js';
+
+        // Make functions globally available for inline onclick
+        window.openModal = function(size) {
+            const modal = new ModalBuilder({
+                size: size,
+                title: `Modal Size: ${size}`,
+                content: `<p>This is a <strong>${size}</strong> modal.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
+                actions: [
+                    {
+                        label: 'Close',
+                        type: 'secondary',
+                        onClick: (modal) => modal.close()
+                    }
+                ]
+            });
+            modal.open();
+        };
+
+        window.openCustomModal = function() {
+            const modal = new ModalBuilder({
+                title: 'Confirm Action',
+                content: '<p>Are you sure you want to proceed with this action?</p>',
+                actions: [
+                    {
+                        label: 'Cancel',
+                        type: 'secondary',
+                        onClick: (modal) => {
+                            console.log('Cancelled');
+                            modal.close();
+                        }
+                    },
+                    {
+                        label: 'Save Draft',
+                        type: 'outlined',
+                        onClick: async (modal) => {
+                            console.log('Saving draft...');
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            alert('Draft saved!');
+                            modal.close();
+                        }
+                    },
+                    {
+                        label: 'Publish',
+                        type: 'primary',
+                        onClick: async (modal) => {
+                            console.log('Publishing...');
+                            await new Promise(resolve => setTimeout(resolve, 500));
+                            alert('Published!');
+                            modal.close();
+                        }
+                    }
+                ]
+            });
+            modal.open();
+        };
+
+        window.testAlert = async function() {
+            await ModalBuilder.alert({
+                title: 'Success!',
+                message: 'Your data has been saved successfully.',
+                type: 'success'
+            });
+        };
+
+        window.testConfirm = async function() {
+            const confirmed = await ModalBuilder.confirm({
+                title: 'Delete Item?',
+                message: 'This action cannot be undone. Are you sure you want to delete this item?',
+                confirmLabel: 'Delete',
+                confirmType: 'danger'
+            });
+
+            if (confirmed) {
+                alert('Item deleted!');
+            } else {
+                alert('Cancelled');
+            }
+        };
+
+        window.testPrompt = async function() {
+            const name = await ModalBuilder.prompt({
+                title: 'Enter Your Name',
+                message: 'Please provide your full name:',
+                placeholder: 'John Doe',
+                defaultValue: ''
+            });
+
+            if (name) {
+                alert(`Hello, ${name}!`);
+            } else {
+                alert('No name provided');
+            }
+        };
+    </script>
+</body>
+</html>

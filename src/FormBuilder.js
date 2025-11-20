@@ -394,16 +394,16 @@ export class FormBuilder {
             return `
                 <div class="form-actions">
                     ${this.currentStep > 0 ? `
-                        <button type="button" class="form-btn form-btn-secondary" id="${this.containerId}_prevStep">
+                        <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_prevStep">
                             ← Zurück
                         </button>
                     ` : ''}
                     ${this.currentStep < this.options.steps.length - 1 ? `
-                        <button type="button" class="form-btn form-btn-primary" id="${this.containerId}_nextStep">
+                        <button type="button" class="ssi-btn ssi-btn-primary" id="${this.containerId}_nextStep">
                             Weiter →
                         </button>
                     ` : `
-                        <button type="submit" class="form-btn form-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
+                        <button type="submit" class="ssi-btn ssi-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
                             ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
                         </button>
                     `}
@@ -414,16 +414,16 @@ export class FormBuilder {
         return `
             <div class="form-actions">
                 ${this.options.showResetButton ? `
-                    <button type="button" class="form-btn form-btn-secondary" id="${this.containerId}_reset">
+                    <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_reset">
                         Zurücksetzen
                     </button>
                 ` : ''}
                 ${this.options.onCancel ? `
-                    <button type="button" class="form-btn form-btn-secondary" id="${this.containerId}_cancel">
+                    <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_cancel">
                         ${this.options.cancelLabel}
                     </button>
                 ` : ''}
-                <button type="submit" class="form-btn form-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
+                <button type="submit" class="ssi-btn ssi-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
                     ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
                 </button>
             </div>

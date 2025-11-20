@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteBuilder + GlobalConfig - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SiteBuilder.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #1a73e8;
+        }
+
+        .example-section h3 {
+            font-size: 20px;
+            margin: 24px 0 12px 0;
+            color: #202124;
+        }
+
+        .example-section p {
+            color: #5f6368;
+            line-height: 1.6;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .example-code {
+            background: #202124;
+            color: #e8eaed;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .example-code .keyword { color: #c792ea; }
+        .example-code .string { color: #c3e88d; }
+        .example-code .comment { color: #546e7a; }
+        .example-code .function { color: #82aaff; }
+        .example-code .number { color: #f78c6c; }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: #ea4335;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e6f4ea;
+            color: #1e8e3e;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .preview-frame {
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 24px;
+            height: 500px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .example-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav">
+            <a href="index.html">← Zurück zur Übersicht</a>
+            <a href="site-builder.html" style="opacity: 0.5;">SiteBuilder + GlobalConfig</a>
+            <a href="../../README.md" target="_blank">📖 Docs</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🏗️ SiteBuilder + GlobalConfig</h1>
+            <p>Komplettes Layout-Gerippe mit zentraler Konfiguration</p>
+        </div>
+
+        <!-- GlobalConfig Section -->
+        <div class="example-section">
+            <h2>1. GlobalConfig <span class="badge">NEU in v1.2</span></h2>
+            <p>Zentrale Konfiguration für alle SSI Builders. Einmal beim App-Start konfigurieren, überall nutzen!</p>
+
+            <h3>Setup</h3>
+            <div class="example-code"><span class="keyword">import</span> { GlobalConfig } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="comment">// App-Start: Einmal konfigurieren</span>
+GlobalConfig.<span class="function">configure</span>({
+    <span class="comment">// Icon System</span>
+    <span class="keyword">iconPreset:</span> <span class="string">'lucide'</span>,  <span class="comment">// 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'</span>
+
+    <span class="comment">// Theme/Colors</span>
+    <span class="keyword">theme:</span> {
+        <span class="keyword">primary:</span> <span class="string">'#1a73e8'</span>,
+        <span class="keyword">secondary:</span> <span class="string">'#5f6368'</span>,
+        <span class="keyword">success:</span> <span class="string">'#34a853'</span>,
+        <span class="keyword">danger:</span> <span class="string">'#ea4335'</span>
+    },
+
+    <span class="comment">// Builder Defaults</span>
+    <span class="keyword">buttons:</span> {
+        <span class="keyword">defaultSize:</span> <span class="string">'medium'</span>,
+        <span class="keyword">defaultType:</span> <span class="string">'outlined'</span>
+    },
+
+    <span class="keyword">lists:</span> {
+        <span class="keyword">itemsPerPage:</span> <span class="number">20</span>,
+        <span class="keyword">actionDisplayType:</span> <span class="string">'icon'</span>
+    },
+
+    <span class="keyword">modals:</span> {
+        <span class="keyword">defaultSize:</span> <span class="string">'medium'</span>,
+        <span class="keyword">closeOnBackdrop:</span> <span class="number">true</span>
+    },
+
+    <span class="keyword">forms:</span> {
+        <span class="keyword">submitLabel:</span> <span class="string">'Speichern'</span>,
+        <span class="keyword">autoSave:</span> <span class="number">false</span>
+    }
+});</div>
+
+            <h3>API Methods</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>configure(config)</code></td>
+                        <td>Set/update configuration (deep merge)</td>
+                        <td><code>GlobalConfig.configure({ iconPreset: 'lucide' })</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>get(path)</code></td>
+                        <td>Get single config value</td>
+                        <td><code>GlobalConfig.get('theme.primary')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>set(path, value)</code></td>
+                        <td>Set single config value</td>
+                        <td><code>GlobalConfig.set('buttons.defaultSize', 'lg')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>getAll()</code></td>
+                        <td>Get complete configuration</td>
+                        <td><code>const config = GlobalConfig.getAll()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>reset()</code></td>
+                        <td>Reset to defaults</td>
+                        <td><code>GlobalConfig.reset()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SiteBuilder Section -->
+        <div class="example-section">
+            <h2>2. SiteBuilder <span class="badge">NEU in v1.2</span></h2>
+            <p>Komplettes Layout-Gerippe: Header, Sidebar, Content, Footer. Perfekt für Admin-Panels, Dashboards, und Webapps.</p>
+
+            <h3>Quick Start</h3>
+            <div class="example-code"><span class="keyword">import</span> { SiteBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="keyword">const</span> site = <span class="keyword">new</span> <span class="function">SiteBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'app'</span>,
+    <span class="keyword">layout:</span> <span class="string">'admin'</span>,  <span class="comment">// 'admin' | 'website' | 'dashboard' | 'landing'</span>
+
+    <span class="keyword">header:</span> {
+        <span class="keyword">logo:</span> <span class="string">'/assets/logo.svg'</span>,
+        <span class="keyword">title:</span> <span class="string">'My App'</span>,
+        <span class="keyword">menu:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">href:</span> <span class="string">'/'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span> }
+        ],
+        <span class="keyword">actions:</span> [
+            { <span class="keyword">icon:</span> <span class="string">'bell'</span>, <span class="keyword">onClick:</span> () => showNotifications() },
+            { <span class="keyword">icon:</span> <span class="string">'user'</span>, <span class="keyword">onClick:</span> () => showProfile() }
+        ]
+    },
+
+    <span class="keyword">sidebar:</span> {
+        <span class="keyword">navigation:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span>, <span class="keyword">href:</span> <span class="string">'/'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Settings'</span>, <span class="keyword">icon:</span> <span class="string">'settings'</span>, <span class="keyword">href:</span> <span class="string">'/settings'</span> }
+        ]
+    }
+});
+
+<span class="comment">// Content rendern</span>
+site.<span class="function">renderContent</span>(<span class="string">'&lt;h1&gt;Welcome!&lt;/h1&gt;'</span>);
+
+<span class="comment">// Oder: Builder direkt hinzufügen</span>
+site.<span class="function">addBuilder</span>(<span class="string">'list'</span>, {
+    <span class="keyword">containerId:</span> <span class="string">'userList'</span>,
+    <span class="keyword">columns:</span> [...]
+});</div>
+
+            <h3>Layout Templates</h3>
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-primary" onclick="alert('Admin Layout:\n- Header: ✓\n- Sidebar: ✓\n- Footer: ✗\n- Max Width: Full')">Admin Layout</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="alert('Website Layout:\n- Header: ✓\n- Sidebar: ✗\n- Footer: ✓\n- Max Width: 1200px')">Website Layout</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="alert('Dashboard Layout:\n- Header: ✓\n- Sidebar: ✓ (with widgets)\n- Footer: ✗\n- Max Width: Full')">Dashboard Layout</button>
+                <button class="ssi-btn ssi-btn-outlined" onclick="alert('Landing Layout:\n- Header: ✓\n- Sidebar: ✗\n- Footer: ✓\n- Max Width: 1400px')">Landing Layout</button>
+            </div>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Template</th>
+                        <th>Header</th>
+                        <th>Sidebar</th>
+                        <th>Footer</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>admin</code></td>
+                        <td>✓</td>
+                        <td>✓</td>
+                        <td>✗</td>
+                        <td>Admin Panels, Back-Office</td>
+                    </tr>
+                    <tr>
+                        <td><code>website</code></td>
+                        <td>✓</td>
+                        <td>✗</td>
+                        <td>✓</td>
+                        <td>Marketing Websites, Blogs</td>
+                    </tr>
+                    <tr>
+                        <td><code>dashboard</code></td>
+                        <td>✓</td>
+                        <td>✓</td>
+                        <td>✗</td>
+                        <td>Analytics, Dashboards</td>
+                    </tr>
+                    <tr>
+                        <td><code>landing</code></td>
+                        <td>✓</td>
+                        <td>✗</td>
+                        <td>✓</td>
+                        <td>Landing Pages, Product Sites</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- API Methods -->
+        <div class="example-section">
+            <h2>3. SiteBuilder API</h2>
+            <p>Alle verfügbaren Methoden für das SiteBuilder Layout.</p>
+
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>renderContent(html)</code></td>
+                        <td>Replace content area</td>
+                        <td><code>site.renderContent('&lt;div&gt;...&lt;/div&gt;')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>appendContent(html)</code></td>
+                        <td>Append to content area</td>
+                        <td><code>site.appendContent('&lt;p&gt;More...&lt;/p&gt;')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>clearContent()</code></td>
+                        <td>Clear content area</td>
+                        <td><code>site.clearContent()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>addBuilder(type, config)</code></td>
+                        <td>Add builder to content</td>
+                        <td><code>site.addBuilder('list', {...})</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>toggleSidebar()</code></td>
+                        <td>Toggle sidebar collapse</td>
+                        <td><code>site.toggleSidebar()</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>updateHeader({...})</code></td>
+                        <td>Update header title/logo</td>
+                        <td><code>site.updateHeader({ title: 'New' })</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>setActiveNavigation(href)</code></td>
+                        <td>Mark nav item as active</td>
+                        <td><code>site.setActiveNavigation('/users')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>changeLayout(template)</code></td>
+                        <td>Switch layout template</td>
+                        <td><code>site.changeLayout('website')</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>destroy()</code></td>
+                        <td>Cleanup and remove</td>
+                        <td><code>site.destroy()</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Real-World Example -->
+        <div class="example-section">
+            <h2>4. Real-World Beispiel</h2>
+            <p>Komplette App mit GlobalConfig + SiteBuilder + ListBuilder Integration.</p>
+
+            <div class="example-code"><span class="comment">// === main.js - App Entry Point ===</span>
+<span class="keyword">import</span> {
+    GlobalConfig,
+    SiteBuilder,
+    ListBuilder
+} <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="comment">// 1. GlobalConfig einmalig konfigurieren</span>
+GlobalConfig.<span class="function">configure</span>({
+    <span class="keyword">iconPreset:</span> <span class="string">'lucide'</span>,
+    <span class="keyword">theme:</span> {
+        <span class="keyword">primary:</span> <span class="string">'#1a73e8'</span>,
+        <span class="keyword">success:</span> <span class="string">'#34a853'</span>,
+        <span class="keyword">danger:</span> <span class="string">'#ea4335'</span>
+    },
+    <span class="keyword">lists:</span> {
+        <span class="keyword">itemsPerPage:</span> <span class="number">50</span>,
+        <span class="keyword">actionDisplayType:</span> <span class="string">'icon'</span>
+    }
+});
+
+<span class="comment">// 2. SiteBuilder Layout erstellen</span>
+<span class="keyword">const</span> site = <span class="keyword">new</span> <span class="function">SiteBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'app'</span>,
+    <span class="keyword">layout:</span> <span class="string">'admin'</span>,
+
+    <span class="keyword">header:</span> {
+        <span class="keyword">title:</span> <span class="string">'HabDaWas Admin'</span>,
+        <span class="keyword">logo:</span> <span class="string">'/logo.svg'</span>,
+        <span class="keyword">menu:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">href:</span> <span class="string">'/'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span> }
+        ],
+        <span class="keyword">actions:</span> [
+            { <span class="keyword">icon:</span> <span class="string">'bell'</span>, <span class="keyword">onClick:</span> () => showNotifications() }
+        ]
+    },
+
+    <span class="keyword">sidebar:</span> {
+        <span class="keyword">navigation:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span>, <span class="keyword">href:</span> <span class="string">'/'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Benutzer'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Spenden'</span>, <span class="keyword">icon:</span> <span class="string">'heart'</span>, <span class="keyword">href:</span> <span class="string">'/donations'</span> }
+        ]
+    },
+
+    <span class="keyword">onNavigate:</span> (href) => {
+        <span class="comment">// Router Logic</span>
+        <span class="function">loadPage</span>(href);
+    }
+});
+
+<span class="comment">// 3. Content mit Buildern füllen</span>
+site.<span class="function">renderContent</span>(<span class="string">'&lt;div id="userList"&gt;&lt;/div&gt;'</span>);
+
+<span class="keyword">const</span> userList = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'userList'</span>,
+    <span class="keyword">columns:</span> [
+        { <span class="keyword">key:</span> <span class="string">'name'</span>, <span class="keyword">label:</span> <span class="string">'Name'</span> },
+        { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'E-Mail'</span> }
+    ],
+    <span class="keyword">dataSource:</span> <span class="keyword">async</span> () => <span class="keyword">await</span> <span class="function">fetchUsers</span>(),
+    <span class="keyword">actions:</span> {
+        <span class="keyword">row:</span> [
+            {
+                <span class="keyword">key:</span> <span class="string">'edit'</span>,
+                <span class="keyword">icon:</span> IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>),  <span class="comment">// Uses GlobalConfig preset</span>
+                <span class="keyword">label:</span> <span class="string">'Bearbeiten'</span>,
+                <span class="keyword">handler:</span> (row) => <span class="function">editUser</span>(row)
+            }
+        ]
+    }
+});</div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="example-section">
+            <h2>5. Vorteile</h2>
+            <p>Warum GlobalConfig + SiteBuilder nutzen?</p>
+
+            <ul style="list-style-position: inside; color: #5f6368; line-height: 2;">
+                <li>✅ <strong>Einmal konfigurieren</strong> - Alle Builder nutzen dieselben Einstellungen</li>
+                <li>✅ <strong>Konsistentes Design</strong> - Icons, Buttons, Farben harmonisieren automatisch</li>
+                <li>✅ <strong>Schnellere Entwicklung</strong> - Layout-Gerippe in 10 Zeilen Code</li>
+                <li>✅ <strong>Weniger Boilerplate</strong> - Kein redundantes Header/Sidebar/Footer HTML</li>
+                <li>✅ <strong>Production-Ready</strong> - Material Design 3, Responsive, Accessible</li>
+                <li>✅ <strong>Flexibel</strong> - 4 Templates + Custom-Layout möglich</li>
+                <li>✅ <strong>Builder-Integration</strong> - <code>addBuilder()</code> für nahtloses Hinzufügen</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script type="module">
+        // This page documents the SiteBuilder, but doesn't run a live demo
+        // to avoid nested SiteBuilder instances (meta!)
+        console.log('[SiteBuilder Demo] Documentation loaded');
+    </script>
+</body>
+</html>

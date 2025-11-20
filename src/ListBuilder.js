@@ -131,7 +131,7 @@ export class ListBuilder {
 
                 <div class="list-toolbar-right">
                     ${this.options.enableColumnToggle ? `
-                        <button class="list-btn list-btn-secondary" id="${this.containerId}_columnToggle">
+                        <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_columnToggle">
                             <span>👁️</span> Spalten
                         </button>
                     ` : ''}
@@ -139,7 +139,7 @@ export class ListBuilder {
                     ${this.renderActions()}
 
                     ${this.options.selectable && this.selectedRows.size > 0 ? `
-                        <button class="list-btn list-btn-danger" id="${this.containerId}_bulkDelete">
+                        <button class="ssi-btn ssi-btn-danger ssi-btn-sm" id="${this.containerId}_bulkDelete">
                             🗑️ Löschen (${this.selectedRows.size})
                         </button>
                     ` : ''}
@@ -177,11 +177,11 @@ export class ListBuilder {
 
         return this.actions.toolbar.map(action => `
             <button
-                class="list-btn list-btn-${action.type || 'secondary'}"
+                class="ssi-btn ssi-btn-${action.type === 'primary' ? 'primary' : 'outlined'} ssi-btn-sm"
                 id="${this.containerId}_action_${action.key}"
                 data-action-key="${action.key}"
             >
-                ${action.icon ? `<span>${action.icon}</span>` : ''} ${action.label}
+                ${action.icon ? action.icon : ''} ${action.label}
             </button>
         `).join('');
     }
@@ -205,7 +205,7 @@ export class ListBuilder {
                     <div class="list-empty-icon">📭</div>
                     <p>${this.options.emptyMessage}</p>
                     ${this.searchTerm || Object.keys(this.activeFilters).length > 0 ? `
-                        <button class="list-btn list-btn-secondary" id="${this.containerId}_clearFilters">
+                        <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_clearFilters">
                             Filter zurücksetzen
                         </button>
                     ` : ''}
@@ -341,16 +341,67 @@ export class ListBuilder {
     renderRowActions(row) {
         if (!this.actions.row) return '';
 
-        return this.actions.row.map(action => `
-            <button
-                class="list-action-btn list-action-btn-${action.type || 'default'}"
-                data-action-key="${action.key}"
-                data-row-id="${this.getRowId(row)}"
-                title="${action.label}"
-            >
-                ${action.icon || action.label}
-            </button>
-        `).join('');
+        return this.actions.row.map(action => {
+            const displayType = action.displayType || 'icon'; // Default: icon
+            const buttonClass = action.buttonType || 'secondary';
+
+            // Determine what to render based on displayType
+            let content = '';
+            let cssClass = '';
+
+            // Helper: Render icon (supports SVG and emoji)
+            const renderIcon = (iconContent) => {
+                if (!iconContent) return '⚙️'; // Default fallback
+
+                // If it's an SVG string or HTML, render as-is
+                if (iconContent.includes('<svg') || iconContent.includes('<i ')) {
+                    return iconContent;
+                }
+
+                // Otherwise treat as emoji/text
+                return iconContent;
+            };
+
+            switch(displayType) {
+                case 'emoji':
+                    // Emoji only, compact
+                    content = action.emoji || action.icon || '⚙️';
+                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm`;
+                    break;
+
+                case 'button':
+                    // Full button with label only (no icon)
+                    content = action.label;
+                    cssClass = `ssi-btn ssi-btn-${buttonClass}`;
+                    break;
+
+                case 'button-icon':
+                    // Full button with icon + label
+                    const iconHtml = action.icon ? renderIcon(action.icon) : '';
+                    content = `${iconHtml}${action.label}`;
+                    cssClass = `ssi-btn ssi-btn-${buttonClass}`;
+                    break;
+
+                case 'icon':
+                default:
+                    // Icon only, compact (default) - supports both SVG and emoji
+                    content = renderIcon(action.icon);
+                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm`;
+                    break;
+            }
+
+            return `
+                <button
+                    class="${cssClass}"
+                    data-action-key="${action.key}"
+                    data-row-id="${this.getRowId(row)}"
+                    title="${action.label}"
+                    aria-label="${action.label}"
+                >
+                    ${content}
+                </button>
+            `;
+        }).join('');
     }
 
     /**
@@ -757,8 +808,8 @@ export class ListBuilder {
                         `).join('')}
                     </div>
                     <div class="list-modal-footer">
-                        <button class="list-btn list-btn-secondary" id="${this.containerId}_cancelColumns">Abbrechen</button>
-                        <button class="list-btn list-btn-primary" id="${this.containerId}_applyColumns">Anwenden</button>
+                        <button class="ssi-btn ssi-btn-outlined" id="${this.containerId}_cancelColumns">Abbrechen</button>
+                        <button class="ssi-btn ssi-btn-primary" id="${this.containerId}_applyColumns">Anwenden</button>
                     </div>
                 </div>
             </div>

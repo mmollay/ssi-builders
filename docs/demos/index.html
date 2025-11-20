@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSI Builders - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+            margin-bottom: 24px;
+        }
+
+        .header .version {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* Builder Grid */
+        .builders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .builder-card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .builder-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 32px rgba(0, 0, 0, 0.15);
+        }
+
+        .builder-card .icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .builder-card h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1a73e8;
+        }
+
+        .builder-card p {
+            color: #5f6368;
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+
+        .builder-card .features {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+
+        .builder-card .features li {
+            padding: 6px 0;
+            color: #202124;
+            font-size: 14px;
+        }
+
+        .builder-card .features li:before {
+            content: "✓ ";
+            color: #34a853;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .builder-card .cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #1a73e8;
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .builder-card:hover .cta {
+            gap: 12px;
+        }
+
+        /* Info Section */
+        .info-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .info-section h2 {
+            font-size: 28px;
+            margin-bottom: 20px;
+            color: #1a73e8;
+        }
+
+        .info-section h3 {
+            font-size: 20px;
+            margin: 24px 0 12px 0;
+            color: #202124;
+        }
+
+        .info-section p {
+            color: #5f6368;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .info-section ul {
+            list-style-position: inside;
+            color: #5f6368;
+            line-height: 2;
+        }
+
+        .info-section code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #ea4335;
+        }
+
+        /* Quick Links */
+        .quick-links {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .quick-link {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .quick-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            color: white;
+            opacity: 0.8;
+            margin-top: 60px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .builders-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-section {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🎨 SSI Builders</h1>
+            <p>Interactive Documentation & Live Examples</p>
+            <span class="version">v1.2.0 - Material Design 3</span>
+
+            <div class="quick-links">
+                <a href="../../README.md" class="quick-link" target="_blank">📖 Documentation</a>
+                <a href="../../CHANGELOG.md" class="quick-link" target="_blank">📝 Changelog</a>
+                <a href="../ICON-SYSTEM.md" class="quick-link" target="_blank">🎨 Icon System</a>
+                <a href="https://github.com/mmollay/ssi-builders" class="quick-link" target="_blank">⭐ GitHub</a>
+            </div>
+        </div>
+
+        <!-- Builder Cards -->
+        <div class="builders-grid">
+            <!-- SiteBuilder + GlobalConfig -->
+            <a href="site-builder.html" class="builder-card">
+                <div class="icon">🏗️</div>
+                <h2>SiteBuilder + GlobalConfig</h2>
+                <p>Complete layout system with central configuration</p>
+                <ul class="features">
+                    <li>Header, Sidebar, Footer system</li>
+                    <li>4 layout templates (admin, website, dashboard, landing)</li>
+                    <li>Central config for all builders</li>
+                    <li>Icon system integration</li>
+                    <li>Theme/color management</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- ListBuilder -->
+            <a href="list-builder.html" class="builder-card">
+                <div class="icon">📋</div>
+                <h2>ListBuilder</h2>
+                <p>Powerful data tables with search, sort, filter, and pagination</p>
+                <ul class="features">
+                    <li>Advanced search & filtering</li>
+                    <li>Multi-column sorting</li>
+                    <li>Pagination & bulk actions</li>
+                    <li>Configurable button types</li>
+                    <li>Mobile-responsive cards</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- FormBuilder -->
+            <a href="form-builder.html" class="builder-card">
+                <div class="icon">📝</div>
+                <h2>FormBuilder</h2>
+                <p>Dynamic forms with validation, multi-step, and auto-save</p>
+                <ul class="features">
+                    <li>15+ field types</li>
+                    <li>Built-in validation</li>
+                    <li>Multi-step forms</li>
+                    <li>Auto-save to localStorage</li>
+                    <li>Conditional fields</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- ModalBuilder -->
+            <a href="modal-builder.html" class="builder-card">
+                <div class="icon">🪟</div>
+                <h2>ModalBuilder</h2>
+                <p>Flexible modals with 9 sizes and layouts</p>
+                <ul class="features">
+                    <li>9 sizes (xs to fullscreen)</li>
+                    <li>Side drawers (left/right)</li>
+                    <li>Bottom sheet (mobile)</li>
+                    <li>Alert, Confirm, Prompt</li>
+                    <li>Custom animations</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- ChartBuilder -->
+            <a href="chart-builder.html" class="builder-card">
+                <div class="icon">📊</div>
+                <h2>ChartBuilder</h2>
+                <p>Beautiful charts without external dependencies</p>
+                <ul class="features">
+                    <li>Bar, Line, Pie, Donut</li>
+                    <li>No external libraries</li>
+                    <li>Interactive tooltips</li>
+                    <li>Responsive sizing</li>
+                    <li>Custom colors</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- TabBuilder -->
+            <a href="tab-builder.html" class="builder-card">
+                <div class="icon">📑</div>
+                <h2>TabBuilder</h2>
+                <p>Accessible tabs with keyboard navigation</p>
+                <ul class="features">
+                    <li>3 styles (underline, pill, contained)</li>
+                    <li>Keyboard navigation</li>
+                    <li>URL hash support</li>
+                    <li>Icons & badges</li>
+                    <li>Lazy loading</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- MenuBuilder -->
+            <a href="menu-builder.html" class="builder-card">
+                <div class="icon">📜</div>
+                <h2>MenuBuilder</h2>
+                <p>Dropdown and context menus</p>
+                <ul class="features">
+                    <li>Dropdown menus</li>
+                    <li>Context menus (right-click)</li>
+                    <li>Nested submenus</li>
+                    <li>Keyboard shortcuts</li>
+                    <li>Smart positioning</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
+            <!-- SidebarBuilder -->
+            <a href="sidebar-builder.html" class="builder-card">
+                <div class="icon">🗂️</div>
+                <h2>SidebarBuilder</h2>
+                <p>Collapsible navigation sidebar</p>
+                <ul class="features">
+                    <li>Nested navigation</li>
+                    <li>Search functionality</li>
+                    <li>Collapsible sections</li>
+                    <li>Mobile drawer mode</li>
+                    <li>Persistent state</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+        </div>
+
+        <!-- Info Sections -->
+        <div class="info-section">
+            <h2>🚀 Getting Started</h2>
+            <p>SSI Builders ist eine professionelle UI-Komponenten-Bibliothek basierend auf Material Design 3. Jede Seite in dieser Dokumentation zeigt dir:</p>
+            <ul>
+                <li>✅ <strong>Live-Beispiele</strong> zum Ausprobieren</li>
+                <li>✅ <strong>Code-Snippets</strong> zum Kopieren</li>
+                <li>✅ <strong>Alle Konfigurations-Optionen</strong> dokumentiert</li>
+                <li>✅ <strong>Best Practices</strong> und Tipps</li>
+                <li>✅ <strong>Icon-System Integration</strong></li>
+            </ul>
+
+            <h3>Schnell-Installation</h3>
+            <p>Als Git Submodule in dein Projekt einbinden:</p>
+            <pre style="background: #f1f3f4; padding: 16px; border-radius: 8px; overflow-x: auto;"><code>git submodule add https://github.com/mmollay/ssi-builders.git vendor/ssi-builders</code></pre>
+
+            <h3>Erstes Beispiel</h3>
+            <pre style="background: #f1f3f4; padding: 16px; border-radius: 8px; overflow-x: auto; margin-top: 12px;"><code>&lt;!-- HTML --&gt;
+&lt;div id="myList"&gt;&lt;/div&gt;
+
+&lt;!-- JavaScript --&gt;
+&lt;script type="module"&gt;
+import { ListBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Icon-System konfigurieren
+IconManager.setPreset('lucide');
+
+// ListBuilder erstellen
+const list = new ListBuilder({
+    containerId: 'myList',
+    columns: [
+        { key: 'name', label: 'Name' }
+    ],
+    dataSource: async () => [
+        { id: 1, name: 'Item 1' }
+    ]
+});
+&lt;/script&gt;</code></pre>
+        </div>
+
+        <div class="info-section">
+            <h2>🎨 Icon-System</h2>
+            <p>SSI Builders verfügt über ein zentrales Icon-Management-System. Einmal konfigurieren, überall nutzen!</p>
+            <ul>
+                <li><code>emoji</code> - Native Emojis (keine Dependencies)</li>
+                <li><code>lucide</code> - Lucide Icons (empfohlen für M3)</li>
+                <li><code>heroicons</code> - Heroicons (Tailwind CSS)</li>
+                <li><code>material</code> - Material Icons (Google)</li>
+                <li><code>fontawesome</code> - FontAwesome Icons</li>
+            </ul>
+            <p><a href="../ICON-SYSTEM.md" target="_blank" style="color: #1a73e8; font-weight: 500;">→ Komplette Icon-System Dokumentation</a></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Made with ❤️ by SSI Solutions</p>
+            <p>© 2025 SSI Builders - Version 1.2.0</p>
+        </div>
+    </div>
+</body>
+</html>

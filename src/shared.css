@@ -537,57 +537,322 @@ body {
 }
 
 /* ===================================
-   Buttons (Wiederverwendbar)
+   SSI Button System - Material Design 3
+   Unified button system for all SSI Builders
    =================================== */
-.btn {
-    padding: 12px 24px;
-    border: none;
-    border-radius: var(--border-radius-sm);
-    font-weight: 500;
-    font-size: 15px;
-    cursor: pointer;
-    transition: all 0.2s ease;
+
+/* Base button - DO NOT use directly, always combine with variant class */
+.ssi-btn {
+    /* Layout */
     display: inline-flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    justify-content: center;
+    gap: 8px;
+
+    /* Typography - M3 Label Large */
+    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    white-space: nowrap;
+
+    /* Spacing - M3 specifications */
+    padding: 10px 24px;
+    min-height: 40px;
+
+    /* Borders & Corners */
+    border: none;
+    border-radius: 20px; /* M3 Full Rounded */
+
+    /* Interaction */
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+
+    /* Transitions - M3 Motion */
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+
+    /* Prevent text selection */
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* === Button Variants (M3 Styles) === */
+
+/* Filled Button - Primary (M3 Filled) */
+.ssi-btn-filled,
+.ssi-btn-primary {
+    background: #1a73e8; /* M3 Primary */
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-filled:hover,
+.ssi-btn-primary:hover {
+    background: #1557b0; /* Darker on hover */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-filled:active,
+.ssi-btn-primary:active {
+    background: #103f75;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+/* Outlined Button - Secondary (M3 Outlined) */
+.ssi-btn-outlined,
+.ssi-btn-secondary {
+    background: transparent;
+    color: #1a73e8;
+    border: 1px solid #dadce0;
+    box-shadow: none;
+}
+
+.ssi-btn-outlined:hover,
+.ssi-btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #1a73e8;
+}
+
+.ssi-btn-outlined:active,
+.ssi-btn-secondary:active {
+    background: #e8f0fe;
+}
+
+/* Text Button (M3 Text) */
+.ssi-btn-text {
+    background: transparent;
+    color: #1a73e8;
+    box-shadow: none;
+    padding: 10px 12px;
+}
+
+.ssi-btn-text:hover {
+    background: #e8f0fe;
+}
+
+.ssi-btn-text:active {
+    background: #d2e3fc;
+}
+
+/* Danger/Destructive (M3 Error) */
+.ssi-btn-danger {
+    background: #ea4335;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-danger:hover {
+    background: #d33b2c;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-danger:active {
+    background: #b31412;
+}
+
+/* Success (M3 Success) */
+.ssi-btn-success {
+    background: #34a853;
+    color: #ffffff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-success:hover {
+    background: #2d8e47;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+.ssi-btn-success:active {
+    background: #1e7b34;
+}
+
+/* === Button Sizes === */
+
+/* Small Button */
+.ssi-btn-sm {
+    padding: 6px 16px;
+    min-height: 32px;
+    font-size: 13px;
+    gap: 6px;
+}
+
+/* Large Button */
+.ssi-btn-lg {
+    padding: 14px 32px;
+    min-height: 48px;
+    font-size: 15px;
+    gap: 10px;
+}
+
+/* === Icon Buttons === */
+
+/* Icon-only button - Compact */
+.ssi-btn-icon {
+    padding: 8px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%; /* Circular for icon-only */
+    gap: 0;
+}
+
+.ssi-btn-icon.ssi-btn-sm {
+    padding: 6px;
+    min-width: 32px;
+    min-height: 32px;
+}
+
+.ssi-btn-icon.ssi-btn-lg {
+    padding: 12px;
+    min-width: 48px;
+    min-height: 48px;
+}
+
+/* Button with icon + text */
+.ssi-btn-with-icon .ssi-btn-icon-left {
+    margin-right: -4px;
+}
+
+.ssi-btn-with-icon .ssi-btn-icon-right {
+    margin-left: -4px;
+}
+
+/* SVG icons inside buttons */
+.ssi-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    flex-shrink: 0;
+}
+
+.ssi-btn-sm svg {
+    width: 16px;
+    height: 16px;
+}
+
+.ssi-btn-lg svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ssi-btn-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.ssi-btn-icon.ssi-btn-sm svg {
+    width: 18px;
+    height: 18px;
+}
+
+.ssi-btn-icon.ssi-btn-lg svg {
+    width: 24px;
+    height: 24px;
+}
+
+/* === Button States === */
+
+/* Disabled */
+.ssi-btn:disabled {
+    opacity: 0.38; /* M3 disabled opacity */
+    cursor: not-allowed;
+    pointer-events: none;
+    box-shadow: none;
+}
+
+/* Focus - Keyboard navigation */
+.ssi-btn:focus-visible {
+    outline: 2px solid #1a73e8;
+    outline-offset: 2px;
+}
+
+/* === Legacy Compatibility === */
+/* Keep old classes working, map to new system */
+.btn {
+    /* Copy from .ssi-btn + .ssi-btn-outlined */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    white-space: nowrap;
+    padding: 10px 24px;
+    min-height: 40px;
+    border: 1px solid #dadce0;
+    border-radius: 20px;
+    cursor: pointer;
+    user-select: none;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
+    -webkit-tap-highlight-color: transparent;
+    background: transparent;
+    color: #1a73e8;
+    box-shadow: none;
+}
+
+.btn:hover {
+    background: #f8f9fa;
+    border-color: #1a73e8;
+}
+
+.btn:active {
+    background: #e8f0fe;
 }
 
 .btn-primary {
-    background: var(--primary-gradient);
-    color: white;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+    /* Override to filled */
+    background: #1a73e8;
+    color: #ffffff;
+    border: none;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
 }
 
 .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+    background: #1557b0;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+}
+
+.btn-primary:active {
+    background: #103f75;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary {
-    background: white;
-    color: var(--text-primary);
-    border: 2px solid var(--border-color);
+    /* Same as .btn (outlined) */
+    background: transparent;
+    color: #1a73e8;
+    border: 1px solid #dadce0;
 }
 
 .btn-secondary:hover {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+    background: #f8f9fa;
+    border-color: #1a73e8;
 }
 
 .btn-github {
-    background: var(--secondary-color);
+    background: #24292e;
     color: white;
+    border: none;
 }
 
 .btn-github:hover {
-    background: #1f2428;
-    transform: translateY(-2px);
+    background: #1b1f23;
 }
 
-.btn:disabled {
-    opacity: 0.6;
+.btn:disabled,
+.btn-primary:disabled,
+.btn-secondary:disabled {
+    opacity: 0.38;
     cursor: not-allowed;
-    transform: none !important;
+    pointer-events: none;
+    box-shadow: none;
 }
 
 /* ===================================

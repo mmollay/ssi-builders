@@ -257,26 +257,134 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 4px;
 }
 
 .list-action-btn:hover {
     background: #f1f3f4;
+    transform: scale(1.05);
+}
+
+/* Icon-only buttons (default, compact) */
+.list-action-btn-icon {
+    min-width: 32px;
+    height: 32px;
+    padding: 4px;
+}
+
+.list-action-btn-icon:hover {
     transform: scale(1.1);
 }
 
-.list-action-btn-danger {
+/* SVG icons inside buttons */
+.list-action-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    vertical-align: middle;
+}
+
+.list-action-btn-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.list-action-btn-full svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Emoji-only buttons (compact) */
+.list-action-btn-emoji {
+    min-width: 32px;
+    height: 32px;
+    padding: 4px;
+    font-size: 18px;
+}
+
+.list-action-btn-emoji:hover {
+    transform: scale(1.15);
+}
+
+/* Full buttons (with label) */
+.list-action-btn-full {
+    padding: 6px 16px;
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid #dadce0;
+    background: white;
+    white-space: nowrap;
+}
+
+.list-action-btn-full:hover {
+    transform: scale(1.02);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Full button with icon */
+.list-action-btn-with-icon .list-action-icon {
+    font-size: 16px;
+}
+
+/* Button color variants for full buttons */
+.list-action-btn-full.list-btn-primary {
+    background: #1a73e8;
+    color: white;
+    border-color: #1a73e8;
+}
+
+.list-action-btn-full.list-btn-primary:hover {
+    background: #1557b0;
+    border-color: #1557b0;
+}
+
+.list-action-btn-full.list-btn-secondary {
+    background: white;
+    color: #5f6368;
+    border-color: #dadce0;
+}
+
+.list-action-btn-full.list-btn-secondary:hover {
+    background: #f8f9fa;
+    border-color: #1a73e8;
+}
+
+.list-action-btn-full.list-btn-danger {
+    background: #ea4335;
+    color: white;
+    border-color: #ea4335;
+}
+
+.list-action-btn-full.list-btn-danger:hover {
+    background: #d33b2c;
+    border-color: #d33b2c;
+}
+
+.list-action-btn-full.list-btn-success {
+    background: #34a853;
+    color: white;
+    border-color: #34a853;
+}
+
+.list-action-btn-full.list-btn-success:hover {
+    background: #2d8e47;
+    border-color: #2d8e47;
+}
+
+/* Legacy support for old API (backwards compatible) */
+.list-action-btn-danger:not(.list-action-btn-full) {
     color: #ea4335;
 }
 
-.list-action-btn-danger:hover {
+.list-action-btn-danger:not(.list-action-btn-full):hover {
     background: #fce8e6;
 }
 
-.list-action-btn-primary {
+.list-action-btn-primary:not(.list-action-btn-full) {
     color: #1a73e8;
 }
 
-.list-action-btn-primary:hover {
+.list-action-btn-primary:not(.list-action-btn-full):hover {
     background: #e8f0fe;
 }
 

@@ -14,6 +14,9 @@ export { TabBuilder } from './TabBuilder.js';
 export { MenuBuilder } from './MenuBuilder.js';
 export { SidebarBuilder } from './SidebarBuilder.js';
 export { getVersion, createVersionBadge } from './version.js';
+export { IconManager } from './IconManager.js';
+export { GlobalConfig } from './GlobalConfig.js';
+export { SiteBuilder } from './SiteBuilder.js';
 
 // Default export for convenience
 export default {
@@ -27,5 +30,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '1.1.0';
+export const VERSION = '1.2.0';
 export const LIBRARY_NAME = 'SSI Builders';

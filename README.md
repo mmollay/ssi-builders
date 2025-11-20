@@ -80,22 +80,89 @@ import '/vendor/ssi-builders/src/ModalBuilder.css';
 ### 📋 ListBuilder
 Datentabellen mit Search, Sort, Filter, Pagination
 
+**Basic Example:**
 ```javascript
 const list = new ListBuilder({
     containerId: 'myTable',
-    data: users,
     columns: [
         { key: 'name', label: 'Name', sortable: true },
         { key: 'email', label: 'E-Mail', sortable: true }
     ],
+    dataSource: async () => await fetchUsers(),
     options: {
         searchable: true,
-        pagination: true,
-        itemsPerPage: 10
+        paginated: true,
+        pageSize: 10
     }
 });
 list.render();
 ```
+
+**Row Actions - Button Display Types:**
+```javascript
+const list = new ListBuilder({
+    containerId: 'myTable',
+    columns: [/* ... */],
+    dataSource: async () => users,
+    actions: {
+        row: [
+            // SVG Icon only (Default - compact)
+            {
+                key: 'view',
+                label: 'Ansehen',
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>',
+                displayType: 'icon',  // Default, can be omitted
+                handler: (row) => viewItem(row)
+            },
+
+            // Emoji only (compact)
+            {
+                key: 'edit',
+                label: 'Bearbeiten',
+                emoji: '✏️',
+                displayType: 'emoji',
+                handler: (row) => editItem(row)
+            },
+
+            // Full button with label only
+            {
+                key: 'approve',
+                label: 'Genehmigen',
+                displayType: 'button',
+                buttonType: 'primary',  // 'primary', 'secondary', 'danger', 'success'
+                handler: (row) => approveItem(row)
+            },
+
+            // Full button with SVG icon + label
+            {
+                key: 'delete',
+                label: 'Löschen',
+                icon: '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"></path><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path></svg>',
+                displayType: 'button-icon',
+                buttonType: 'danger',
+                handler: (row) => deleteItem(row)
+            }
+        ]
+    }
+});
+```
+
+**Display Types:**
+- `icon` (Default): Icon only, compact (32x32px) - **Supports SVG icons, Emojis, or text**
+- `emoji`: Emoji only, compact (32x32px)
+- `button`: Full button with label only
+- `button-icon`: Full button with icon + label - **Icon can be SVG or Emoji**
+
+**Icon Support:**
+- ✅ SVG Icons (Lucide, FontAwesome, etc.) - Full support with auto-sizing
+- ✅ Emojis - Native emoji characters
+- ✅ Icon Fonts - `<i class="fa fa-trash"></i>` style icons
+
+**Button Types** (for `button` and `button-icon`):
+- `primary`: Blue background, white text
+- `secondary`: White background, gray text (Default)
+- `danger`: Red background, white text
+- `success`: Green background, white text
 
 ### 📝 FormBuilder
 Formulare mit Validation, Multi-Step, Auto-Save

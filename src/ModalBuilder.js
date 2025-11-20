@@ -114,8 +114,18 @@ export class ModalBuilder {
      * Render modal
      */
     render() {
+        // Determine overlay positioning class based on size
+        let overlayPositionClass = '';
+        if (this.options.size === 'side-left') {
+            overlayPositionClass = 'modal-overlay-side-left';
+        } else if (this.options.size === 'side-right') {
+            overlayPositionClass = 'modal-overlay-side-right';
+        } else if (this.options.size === 'bottom') {
+            overlayPositionClass = 'modal-overlay-bottom';
+        }
+
         const modalHtml = `
-            <div class="modal-overlay modal-animation-${this.options.animation}" id="${this.id}">
+            <div class="modal-overlay ${overlayPositionClass} modal-animation-${this.options.animation}" id="${this.id}">
                 <div class="modal-backdrop" data-modal-backdrop="${this.id}"></div>
                 <div class="modal-container modal-${this.options.size} ${this.options.centered ? 'modal-centered' : ''} ${this.options.scrollable ? 'modal-scrollable' : ''}">
                     ${this.renderHeader()}
@@ -183,13 +193,14 @@ export class ModalBuilder {
      * Render action button
      */
     renderAction(action) {
+        const btnType = action.type === 'primary' ? 'primary' : action.type === 'danger' ? 'danger' : 'outlined';
         return `
             <button
-                class="modal-btn modal-btn-${action.type || 'secondary'}"
+                class="ssi-btn ssi-btn-${btnType}"
                 data-action-key="${action.key}"
                 ${action.disabled ? 'disabled' : ''}
             >
-                ${action.icon ? `<span>${action.icon}</span>` : ''} ${action.label}
+                ${action.icon || ''} ${action.label}
             </button>
         `;
     }

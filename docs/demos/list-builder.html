@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ListBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/ListBuilder.css">
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation */
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-link {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1a73e8;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 24px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Example Section */
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #202124;
+        }
+
+        .example-section .subtitle {
+            color: #5f6368;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .code-block .comment { color: #6a9955; }
+        .code-block .keyword { color: #569cd6; }
+        .code-block .string { color: #ce9178; }
+        .code-block .function { color: #dcdcaa; }
+
+        /* Config Options */
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #ea4335;
+        }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin: 4px;
+        }
+
+        .tag-new { background: #e6f4ea; color: #137333; }
+        .tag-important { background: #fce8e6; color: #c5221f; }
+        .tag-optional { background: #e8f0fe; color: #1967d2; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 32px; }
+            .container { padding: 20px 16px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-title">📋 ListBuilder Documentation</div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Overview</a>
+                <a href="../../README.md" class="nav-link" target="_blank">Docs</a>
+                <a href="https://github.com/mmollay/ssi-builders" class="nav-link" target="_blank">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <div class="hero">
+        <h1>📋 ListBuilder</h1>
+        <p>Powerful data tables with search, sort, filter, and pagination. Material Design 3 compliant.</p>
+    </div>
+
+    <div class="container">
+        <!-- Example 1: Basic List -->
+        <div class="example-section">
+            <h2>1. Basic List</h2>
+            <p class="subtitle">Einfache Datentabelle mit Standard-Konfiguration</p>
+
+            <div class="example-demo" id="demo1"></div>
+
+            <div class="code-block"><span class="keyword">const</span> list = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
+    containerId: <span class="string">'demo1'</span>,
+    columns: [
+        { key: <span class="string">'name'</span>, label: <span class="string">'Name'</span> },
+        { key: <span class="string">'email'</span>, label: <span class="string">'E-Mail'</span> },
+        { key: <span class="string">'status'</span>, label: <span class="string">'Status'</span> }
+    ],
+    dataSource: <span class="keyword">async</span> () => [
+        { id: <span class="string">1</span>, name: <span class="string">'Max Mustermann'</span>, email: <span class="string">'max@example.com'</span>, status: <span class="string">'Aktiv'</span> },
+        { id: <span class="string">2</span>, name: <span class="string">'Anna Schmidt'</span>, email: <span class="string">'anna@example.com'</span>, status: <span class="string">'Aktiv'</span> }
+    ]
+});</div>
+        </div>
+
+        <!-- Example 2: With Actions -->
+        <div class="example-section">
+            <h2>2. With Icon Actions <span class="tag tag-new">NEW</span></h2>
+            <p class="subtitle">Aktions-Buttons mit verschiedenen Display-Typen</p>
+
+            <div class="example-demo" id="demo2"></div>
+
+            <div class="code-block"><span class="keyword">import</span> { IconManager } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="comment">// Icon-System konfigurieren</span>
+IconManager.<span class="function">setPreset</span>(<span class="string">'lucide'</span>);
+
+<span class="keyword">const</span> list = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
+    containerId: <span class="string">'demo2'</span>,
+    columns: [<span class="comment">/* ... */</span>],
+    dataSource: <span class="keyword">async</span> () => users,
+    actions: {
+        row: [
+            {
+                key: <span class="string">'view'</span>,
+                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'view'</span>),
+                label: <span class="string">'Ansehen'</span>,
+                displayType: <span class="string">'icon'</span>, <span class="comment">// Icon only (default)</span>
+                handler: (row) => <span class="function">alert</span>(`View: ${row.name}`)
+            },
+            {
+                key: <span class="string">'edit'</span>,
+                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>),
+                label: <span class="string">'Bearbeiten'</span>,
+                displayType: <span class="string">'emoji'</span>, <span class="comment">// Emoji only</span>
+                handler: (row) => <span class="function">alert</span>(`Edit: ${row.name}`)
+            },
+            {
+                key: <span class="string">'delete'</span>,
+                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'delete'</span>),
+                label: <span class="string">'Löschen'</span>,
+                displayType: <span class="string">'button-icon'</span>, <span class="comment">// Full button with icon</span>
+                buttonType: <span class="string">'danger'</span>,
+                handler: (row) => <span class="function">confirm</span>(`Delete ${row.name}?`)
+            }
+        ]
+    }
+});</div>
+        </div>
+
+        <!-- Configuration Reference -->
+        <div class="example-section">
+            <h2>Configuration Reference</h2>
+
+            <h3 style="margin-top: 24px; color: #1a73e8;">Row Actions - Display Types <span class="tag tag-new">NEW</span></h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>displayType</th>
+                        <th>Description</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>icon</code></td>
+                        <td>Icon only, compact (32x32px) - Default</td>
+                        <td>Space-efficient tables with many actions</td>
+                    </tr>
+                    <tr>
+                        <td><code>emoji</code></td>
+                        <td>Emoji only, compact (32x32px)</td>
+                        <td>Fun, colorful UIs without dependencies</td>
+                    </tr>
+                    <tr>
+                        <td><code>button</code></td>
+                        <td>Full button with label only</td>
+                        <td>Clear primary actions (Submit, Save, etc.)</td>
+                    </tr>
+                    <tr>
+                        <td><code>button-icon</code></td>
+                        <td>Full button with icon + label</td>
+                        <td>Important actions that need emphasis</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 32px; color: #1a73e8;">Button Types <span class="tag tag-new">NEW</span></h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>buttonType</th>
+                        <th>Style</th>
+                        <th>Use Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>primary</code></td>
+                        <td>Blue background, white text</td>
+                        <td>Primary actions (Save, Submit, Create)</td>
+                    </tr>
+                    <tr>
+                        <td><code>secondary</code></td>
+                        <td>White background, gray text (Default)</td>
+                        <td>Secondary actions (Cancel, Back)</td>
+                    </tr>
+                    <tr>
+                        <td><code>danger</code></td>
+                        <td>Red background, white text</td>
+                        <td>Destructive actions (Delete, Remove)</td>
+                    </tr>
+                    <tr>
+                        <td><code>success</code></td>
+                        <td>Green background, white text</td>
+                        <td>Positive actions (Approve, Confirm)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 32px; color: #1a73e8;">Icon System <span class="tag tag-new">NEW</span></h3>
+            <p style="margin: 16px 0; color: #5f6368;">Zentrales Icon-Management für konsistente UIs:</p>
+            <div class="code-block"><span class="keyword">import</span> { IconManager } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="comment">// Einmal konfigurieren (App-Start)</span>
+IconManager.<span class="function">setPreset</span>(<span class="string">'lucide'</span>); <span class="comment">// oder 'emoji', 'heroicons', 'material', 'fontawesome'</span>
+
+<span class="comment">// Icons nutzen</span>
+icon: IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>) <span class="comment">// Nutzt globales Preset</span>
+icon: IconManager.<span class="function">getIcon</span>(<span class="string">'delete'</span>, <span class="string">'emoji'</span>) <span class="comment">// Override für einzelnes Icon</span></div>
+
+            <p style="margin-top: 16px;">
+                <a href="../ICON-SYSTEM.md" target="_blank" style="color: #1a73e8; font-weight: 500;">
+                    → Komplette Icon-System Dokumentation
+                </a>
+            </p>
+        </div>
+
+        <!-- More Examples Link -->
+        <div class="example-section" style="text-align: center;">
+            <h2>More Examples Coming Soon</h2>
+            <p class="subtitle">Weitere interaktive Beispiele werden in zukünftigen Updates hinzugefügt:</p>
+            <ul style="list-style: none; padding: 0; margin: 24px 0;">
+                <li style="padding: 8px;">✓ Advanced Filtering</li>
+                <li style="padding: 8px;">✓ Custom Cell Rendering</li>
+                <li style="padding: 8px;">✓ Bulk Actions</li>
+                <li style="padding: 8px;">✓ Column Visibility Toggle</li>
+                <li style="padding: 8px;">✓ Mobile Card View</li>
+            </ul>
+            <p>
+                <a href="../../examples/demo.html" target="_blank" class="ssi-btn ssi-btn-primary">
+                    View Complete Demo Page →
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script type="module">
+        import ListBuilder from '../../src/ListBuilder.js';
+        import { IconManager } from '../../src/IconManager.js';
+
+        // Configure icon system
+        IconManager.setPreset('lucide');
+
+        // Sample data
+        const users = [
+            { id: 1, name: 'Max Mustermann', email: 'max@example.com', status: 'Aktiv' },
+            { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', status: 'Aktiv' },
+            { id: 3, name: 'Tom Weber', email: 'tom@example.com', status: 'Inaktiv' },
+            { id: 4, name: 'Lisa Müller', email: 'lisa@example.com', status: 'Aktiv' }
+        ];
+
+        // Demo 1: Basic List
+        new ListBuilder({
+            containerId: 'demo1',
+            columns: [
+                { key: 'name', label: 'Name' },
+                { key: 'email', label: 'E-Mail' },
+                { key: 'status', label: 'Status' }
+            ],
+            dataSource: async () => users.slice(0, 2),
+            options: {
+                searchable: false,
+                paginated: false
+            }
+        });
+
+        // Demo 2: With Actions
+        new ListBuilder({
+            containerId: 'demo2',
+            columns: [
+                { key: 'name', label: 'Name' },
+                { key: 'email', label: 'E-Mail' },
+                { key: 'status', label: 'Status' }
+            ],
+            dataSource: async () => users,
+            actions: {
+                row: [
+                    {
+                        key: 'view',
+                        icon: IconManager.getIcon('view'),
+                        label: 'Ansehen',
+                        displayType: 'icon',
+                        handler: (row) => alert(`Ansehen: ${row.name}`)
+                    },
+                    {
+                        key: 'edit',
+                        icon: IconManager.getIcon('edit', 'emoji'),
+                        label: 'Bearbeiten',
+                        displayType: 'emoji',
+                        handler: (row) => alert(`Bearbeiten: ${row.name}`)
+                    },
+                    {
+                        key: 'delete',
+                        icon: IconManager.getIcon('delete'),
+                        label: 'Löschen',
+                        displayType: 'button-icon',
+                        buttonType: 'danger',
+                        handler: (row) => {
+                            if (confirm(`Wirklich löschen: ${row.name}?`)) {
+                                alert('Gelöscht!');
+                            }
+                        }
+                    }
+                ]
+            },
+            options: {
+                pageSize: 5
+            }
+        });
+    </script>
+</body>
+</html>
