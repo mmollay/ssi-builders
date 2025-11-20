@@ -14,6 +14,10 @@ export class IconManager {
     // Current active preset
     static currentPreset = 'lucide'; // default
 
+    // Icon weight: stroke-width for SVG icons
+    // thin = 1.5 (ultra-minimalistisch), regular = 2 (default), bold = 2.5 (kräftig)
+    static iconWeight = 'regular';
+
     /**
      * Icon definitions - All common actions mapped to different icon systems
      */
@@ -154,6 +158,40 @@ export class IconManager {
     }
 
     /**
+     * Set the global icon weight (stroke-width für SVG icons)
+     * @param {string} weight - 'thin' (1.5, ultra-minimalistisch) | 'regular' (2, default) | 'bold' (2.5, kräftig)
+     */
+    static setIconWeight(weight) {
+        if (!['thin', 'regular', 'bold'].includes(weight)) {
+            console.warn(`Invalid icon weight: ${weight}. Using 'regular' as fallback.`);
+            this.iconWeight = 'regular';
+            return;
+        }
+        this.iconWeight = weight;
+    }
+
+    /**
+     * Get the current icon weight
+     * @returns {string}
+     */
+    static getIconWeight() {
+        return this.iconWeight;
+    }
+
+    /**
+     * Get stroke-width value for current weight
+     * @returns {number}
+     */
+    static getStrokeWidth() {
+        const weights = {
+            thin: 1.5,
+            regular: 2,
+            bold: 2.5
+        };
+        return weights[this.iconWeight] || 2;
+    }
+
+    /**
      * Get the current preset
      * @returns {string}
      */
@@ -175,7 +213,16 @@ export class IconManager {
             return iconPreset === 'emoji' ? '⚙️' : this.icons.settings[iconPreset];
         }
 
-        return this.icons[name][iconPreset];
+        let iconHtml = this.icons[name][iconPreset];
+
+        // Apply stroke-width for SVG icons (Lucide, Heroicons)
+        if ((iconPreset === 'lucide' || iconPreset === 'heroicons') && iconHtml.includes('<svg')) {
+            const strokeWidth = this.getStrokeWidth();
+            // Replace stroke-width attribute
+            iconHtml = iconHtml.replace(/stroke-width="[\d.]+"/g, `stroke-width="${strokeWidth}"`);
+        }
+
+        return iconHtml;
     }
 
     /**

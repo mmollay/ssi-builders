@@ -26,6 +26,7 @@ export class GlobalConfig {
     static config = {
         // Icon System
         iconPreset: 'lucide',
+        iconWeight: 'regular',  // 'thin' (1.5, ultra-minimalistisch) | 'regular' (2, default) | 'bold' (2.5, kräftig)
 
         // Theme Colors (Material Design 3)
         theme: {
@@ -110,6 +111,11 @@ export class GlobalConfig {
         // Icon Preset an IconManager weitergeben
         if (userConfig.iconPreset) {
             IconManager.setPreset(userConfig.iconPreset);
+        }
+
+        // Icon Weight an IconManager weitergeben
+        if (userConfig.iconWeight) {
+            IconManager.setIconWeight(userConfig.iconWeight);
         }
 
         // CSS Custom Properties updaten

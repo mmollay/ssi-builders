@@ -7,8 +7,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">        hljs.highlightAll();
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js">        hljs.highlightAll();
+    </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SiteBuilder.css">
     <style>
@@ -570,6 +572,7 @@ const userList = new ListBuilder({
         // This page documents the SiteBuilder, but doesn't run a live demo
         // to avoid nested SiteBuilder instances (meta!)
         console.log('[SiteBuilder Demo] Documentation loaded');
+            hljs.highlightAll();
     </script>
 
     <script>
@@ -578,6 +581,7 @@ const userList = new ListBuilder({
                 hljs.highlightElement(block);
             });
         });
+            hljs.highlightAll();
     </script>
 </body>
 </html>

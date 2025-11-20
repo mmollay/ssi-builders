@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Weight Demo - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/ListBuilder.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        .weight-selector {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .weight-selector label {
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .demo-section h2 {
+            font-size: 28px;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .icon-item {
+            text-align: center;
+            padding: 20px;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .icon-item:hover {
+            border-color: #1a73e8;
+            box-shadow: 0 2px 8px rgba(26, 115, 232, 0.2);
+        }
+
+        .icon-item svg {
+            width: 32px;
+            height: 32px;
+            color: #5f6368;
+            margin-bottom: 8px;
+        }
+
+        .icon-item .icon-name {
+            font-size: 12px;
+            color: #5f6368;
+            font-weight: 500;
+        }
+
+        .comparison {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 24px;
+        }
+
+        .comparison-item {
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .comparison-item h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #202124;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        pre.code-example {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            margin-top: 24px;
+            overflow-x: auto;
+            white-space: pre !important;
+        }
+
+        pre.code-example code {
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #34a853;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.default {
+            background: #1a73e8;
+        }
+
+        @media (max-width: 768px) {
+            .comparison {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎨 Icon Weight Demo</h1>
+            <p>Thin vs. Regular vs. Bold - Modernes Stroke-Width Design</p>
+        </div>
+
+        <div class="weight-selector">
+            <label>Icon Weight wählen:</label>
+            <button class="ssi-btn ssi-btn-outlined" id="weightThin">
+                Thin (1.5) - Ultra-Minimalistisch
+            </button>
+            <button class="ssi-btn ssi-btn-outlined" id="weightRegular">
+                Regular (2.0) <span class="badge default">DEFAULT</span>
+            </button>
+            <button class="ssi-btn ssi-btn-outlined" id="weightBold">
+                Bold (2.5) - Kräftig
+            </button>
+        </div>
+
+        <div class="demo-section">
+            <h2>📋 Aktuell geladen: <span id="currentWeight">regular</span> (Stroke-Width: <span id="strokeWidth">2</span>)</h2>
+
+            <div class="icon-grid" id="iconGrid">
+                <!-- Icons werden dynamisch geladen -->
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>🔄 Vergleich: Thin vs. Regular vs. Bold</h2>
+
+            <div class="comparison">
+                <div class="comparison-item">
+                    <h3>Thin (1.5)</h3>
+                    <p><strong>Eigenschaften:</strong></p>
+                    <ul style="padding-left: 20px; color: #5f6368; margin-top: 8px;">
+                        <li>Ultra-minimalistisch</li>
+                        <li>Sehr feiner Strich</li>
+                        <li>Dezent und elegant</li>
+                        <li>Für große UI-Elemente</li>
+                    </ul>
+                    <div class="action-buttons" id="thinButtons">
+                        <!-- Buttons werden dynamisch geladen -->
+                    </div>
+                </div>
+
+                <div class="comparison-item">
+                    <h3>Regular (2.0) <span class="badge default">DEFAULT</span></h3>
+                    <p><strong>Eigenschaften:</strong></p>
+                    <ul style="padding-left: 20px; color: #5f6368; margin-top: 8px;">
+                        <li>Ausgewogen & modern</li>
+                        <li>Perfekte Lesbarkeit</li>
+                        <li>Vielseitig einsetzbar</li>
+                        <li>Material Design 3</li>
+                    </ul>
+                    <div class="action-buttons" id="regularButtons">
+                        <!-- Buttons werden dynamisch geladen -->
+                    </div>
+                </div>
+
+                <div class="comparison-item">
+                    <h3>Bold (2.5)</h3>
+                    <p><strong>Eigenschaften:</strong></p>
+                    <ul style="padding-left: 20px; color: #5f6368; margin-top: 8px;">
+                        <li>Kräftig & prominent</li>
+                        <li>Starke Betonung</li>
+                        <li>Gut sichtbar</li>
+                        <li>Für Akzente</li>
+                    </ul>
+                    <div class="action-buttons" id="boldButtons">
+                        <!-- Buttons werden dynamisch geladen -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-section">
+            <h2>💻 Code-Beispiele</h2>
+
+            <h3 style="margin-top: 24px; margin-bottom: 8px;">Global über GlobalConfig einstellen:</h3>
+            <pre class="code-example"><code class="language-javascript">import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+// Regular (DEFAULT) - Ausgewogen & modern
+GlobalConfig.configure({
+    iconPreset: 'lucide',
+    iconWeight: 'regular'  // stroke-width: 2.0
+});
+
+// Thin - Ultra-minimalistisch
+GlobalConfig.configure({
+    iconPreset: 'lucide',
+    iconWeight: 'thin'  // stroke-width: 1.5
+});
+
+// Bold - Kräftig & prominent
+GlobalConfig.configure({
+    iconPreset: 'lucide',
+    iconWeight: 'bold'  // stroke-width: 2.5
+});</code></pre>
+
+            <h3 style="margin-top: 24px; margin-bottom: 8px;">Direkt über IconManager einstellen:</h3>
+            <pre class="code-example"><code class="language-javascript">import { IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Weight setzen
+IconManager.setIconWeight('regular'); // 'thin' | 'regular' | 'bold'
+
+// Aktuellen Weight abrufen
+console.log(IconManager.getIconWeight()); // 'regular'
+
+// Stroke-Width abrufen
+console.log(IconManager.getStrokeWidth()); // 2</code></pre>
+
+            <h3 style="margin-top: 24px; margin-bottom: 8px;">In Buildern nutzen:</h3>
+            <pre class="code-example"><code class="language-javascript">import { ListBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Icons nutzen aktuellen Weight automatisch
+const list = new ListBuilder({
+    actions: {
+        row: [
+            {
+                key: 'view',
+                icon: IconManager.getIcon('view'), // Nutzt aktuellen Weight
+                label: 'Ansehen',
+                displayType: 'icon'
+            },
+            {
+                key: 'edit',
+                icon: IconManager.getIcon('edit'),
+                label: 'Bearbeiten',
+                displayType: 'button-icon',
+                buttonType: 'primary'
+            }
+        ]
+    }
+});</code></pre>
+        </div>
+    </div>
+
+    <script type="module">
+        import { IconManager } from '../../src/IconManager.js';
+
+        const iconGrid = document.getElementById('iconGrid');
+        const currentWeightSpan = document.getElementById('currentWeight');
+        const strokeWidthSpan = document.getElementById('strokeWidth');
+        const thinButtons = document.getElementById('thinButtons');
+        const regularButtons = document.getElementById('regularButtons');
+        const boldButtons = document.getElementById('boldButtons');
+        const weightThinBtn = document.getElementById('weightThin');
+        const weightRegularBtn = document.getElementById('weightRegular');
+        const weightBoldBtn = document.getElementById('weightBold');
+
+        // Verfügbare Icons
+        const icons = ['add', 'edit', 'delete', 'view', 'search', 'save', 'close', 'settings', 'refresh', 'download', 'upload', 'filter', 'check', 'warning', 'info'];
+
+        function renderIcons() {
+            const weight = IconManager.getIconWeight();
+            const strokeWidth = IconManager.getStrokeWidth();
+            currentWeightSpan.textContent = weight;
+            strokeWidthSpan.textContent = strokeWidth;
+
+            iconGrid.innerHTML = '';
+            icons.forEach(iconName => {
+                const iconHtml = IconManager.getIcon(iconName);
+                const div = document.createElement('div');
+                div.className = 'icon-item';
+                div.innerHTML = `
+                    ${iconHtml}
+                    <div class="icon-name">${iconName}</div>
+                `;
+                iconGrid.appendChild(div);
+            });
+
+            // Update button states
+            [weightThinBtn, weightRegularBtn, weightBoldBtn].forEach(btn => {
+                btn.classList.remove('ssi-btn-primary');
+                btn.classList.add('ssi-btn-outlined');
+            });
+
+            if (weight === 'thin') {
+                weightThinBtn.classList.add('ssi-btn-primary');
+                weightThinBtn.classList.remove('ssi-btn-outlined');
+            } else if (weight === 'regular') {
+                weightRegularBtn.classList.add('ssi-btn-primary');
+                weightRegularBtn.classList.remove('ssi-btn-outlined');
+            } else if (weight === 'bold') {
+                weightBoldBtn.classList.add('ssi-btn-primary');
+                weightBoldBtn.classList.remove('ssi-btn-outlined');
+            }
+        }
+
+        function renderComparisonButtons() {
+            const testIcons = ['view', 'edit', 'delete'];
+
+            // Thin buttons
+            IconManager.setIconWeight('thin');
+            thinButtons.innerHTML = testIcons.map(iconName =>
+                `<button class="ssi-btn ssi-btn-outlined">
+                    ${IconManager.getIcon(iconName)} ${iconName}
+                </button>`
+            ).join('');
+
+            // Regular buttons
+            IconManager.setIconWeight('regular');
+            regularButtons.innerHTML = testIcons.map(iconName =>
+                `<button class="ssi-btn ssi-btn-outlined">
+                    ${IconManager.getIcon(iconName)} ${iconName}
+                </button>`
+            ).join('');
+
+            // Bold buttons
+            IconManager.setIconWeight('bold');
+            boldButtons.innerHTML = testIcons.map(iconName =>
+                `<button class="ssi-btn ssi-btn-outlined">
+                    ${IconManager.getIcon(iconName)} ${iconName}
+                </button>`
+            ).join('');
+
+            // Reset to regular
+            IconManager.setIconWeight('regular');
+        }
+
+        // Event Listeners
+        weightThinBtn.addEventListener('click', () => {
+            IconManager.setIconWeight('thin');
+            renderIcons();
+        });
+
+        weightRegularBtn.addEventListener('click', () => {
+            IconManager.setIconWeight('regular');
+            renderIcons();
+        });
+
+        weightBoldBtn.addEventListener('click', () => {
+            IconManager.setIconWeight('bold');
+            renderIcons();
+        });
+
+        // Initial render
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+        renderIcons();
+        renderComparisonButtons();
+
+        // Syntax highlighting für Code-Beispiele
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

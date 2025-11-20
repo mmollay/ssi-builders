@@ -109,18 +109,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `material` - Material Icons (Google)
   - `fontawesome` - FontAwesome Icons
 
+- **Icon Weights (Stroke-Width)** - NEW!
+  - `thin` (1.5) - Ultra-minimalistisch, sehr feiner Strich
+  - `regular` (2.0) - **DEFAULT** - Ausgewogen & modern, M3 Standard
+  - `bold` (2.5) - Kräftig & prominent, für Akzente
+  - `setIconWeight(weight)` - Stroke-Width global einstellen
+  - `getIconWeight()` - Aktuellen Weight abrufen
+  - `getStrokeWidth()` - Numerischen stroke-width Wert abrufen
+  - Dynamic stroke-width replacement in SVG icons (Lucide, Heroicons)
+
 - **Usage**
   ```javascript
-  import { IconManager } from '/vendor/ssi-builders/src/index.js';
+  import { IconManager, GlobalConfig } from '/vendor/ssi-builders/src/index.js';
 
   // Global konfigurieren
   IconManager.setPreset('lucide');
+  IconManager.setIconWeight('regular'); // thin | regular | bold
 
-  // In Buildern nutzen
+  // Oder über GlobalConfig
+  GlobalConfig.configure({
+      iconPreset: 'lucide',
+      iconWeight: 'regular'
+  });
+
+  // In Buildern nutzen - Icons nutzen automatisch aktuellen Weight
   actions: {
       row: [{
           key: 'edit',
-          icon: IconManager.getIcon('edit'),
+          icon: IconManager.getIcon('edit'), // Nutzt aktuellen Weight
           label: 'Bearbeiten'
       }]
   }
@@ -128,6 +144,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Documentation**
   - New `/docs/ICON-SYSTEM.md` with complete guide
+  - New `/docs/demos/icon-weight-demo.html` - Interactive demo with live weight switching
   - Examples for all 5 preset systems
   - Best practices and migration guide
 

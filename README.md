@@ -362,6 +362,68 @@ Vollständige Docs: `/docs/`
 
 ---
 
+## 🎨 Icon Management & Weights
+
+SSI Builders bietet ein zentrales Icon-Management-System mit **5 Icon-Presets** und **3 Icon-Weights**.
+
+### Icon Weights (Stroke-Width)
+
+**Thin (1.5)** - Ultra-minimalistisch
+- Sehr feiner Strich
+- Dezent und elegant
+- Perfekt für große UI-Elemente
+
+**Regular (2.0)** - DEFAULT
+- Ausgewogen & modern
+- Perfekte Lesbarkeit
+- Material Design 3 Standard
+
+**Bold (2.5)** - Kräftig
+- Starke Betonung
+- Gut sichtbar
+- Für wichtige Aktionen
+
+### Quick Start
+
+```javascript
+import { GlobalConfig, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Global konfigurieren (einmalig beim App-Start)
+GlobalConfig.configure({
+    iconPreset: 'lucide',    // emoji | lucide | heroicons | material | fontawesome
+    iconWeight: 'regular'    // thin (1.5) | regular (2.0, DEFAULT) | bold (2.5)
+});
+
+// Oder direkt über IconManager
+IconManager.setPreset('lucide');
+IconManager.setIconWeight('regular');
+
+// Icons in Buildern nutzen
+const list = new ListBuilder({
+    actions: {
+        row: [
+            {
+                key: 'view',
+                icon: IconManager.getIcon('view'),  // Nutzt aktuellen Weight
+                label: 'Ansehen'
+            }
+        ]
+    }
+});
+```
+
+### Verfügbare Icons
+
+15+ Standard-Icons: `add`, `edit`, `delete`, `view`, `search`, `save`, `close`, `settings`, `refresh`, `download`, `upload`, `filter`, `check`, `warning`, `info`
+
+### Demo
+
+Interaktive Icon Weight Demo: [/docs/demos/icon-weight-demo.html](docs/demos/icon-weight-demo.html)
+
+Vollständige Icon System Dokumentation: [/docs/ICON-SYSTEM.md](docs/ICON-SYSTEM.md)
+
+---
+
 ## 🎯 Design System
 
 - **Material Design 3** Guidelines
