@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TabBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/TabBuilder.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-link {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1a73e8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 24px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #202124;
+        }
+
+        .example-section .subtitle {
+            color: #5f6368;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        pre.example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table td {
+            color: #5f6368;
+        }
+
+        .config-table code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #ea4335;
+        }
+
+        .tab-content {
+            padding: 24px;
+            background: white;
+            border-radius: 0 0 8px 8px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-title">📑 TabBuilder Documentation</div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Overview</a>
+                <a href="../../README.md" class="nav-link">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>📑 TabBuilder</h1>
+            <p>Accessible tabs with keyboard navigation and deep linking</p>
+        </div>
+
+        <!-- Underline Style -->
+        <div class="example-section">
+            <h2>📑 Underline Style (Default)</h2>
+            <p class="subtitle">Material Design 3 primary tabs with animated underline</p>
+
+            <div class="example-demo">
+                <div id="underlineTabs"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">import { TabBuilder } from '/vendor/ssi-builders/src/TabBuilder.js';
+
+const underlineTabs = new TabBuilder({
+    containerId: 'underlineTabs',
+    style: 'underline', // Default
+    tabs: [
+        {
+            id: 'overview',
+            label: 'Overview',
+            icon: '📊',
+            content: '<h3>Overview</h3><p>Dashboard overview content...</p>'
+        },
+        {
+            id: 'analytics',
+            label: 'Analytics',
+            icon: '📈',
+            content: '<h3>Analytics</h3><p>Analytics data and charts...</p>'
+        },
+        {
+            id: 'settings',
+            label: 'Settings',
+            icon: '⚙️',
+            content: '<h3>Settings</h3><p>Configuration options...</p>'
+        }
+    ],
+    activeTab: 'overview',
+    onChange: (tabId) => {
+        console.log('Active tab:', tabId);
+    }
+});
+
+underlineTabs.render();</code></pre>
+        </div>
+
+        <!-- Pill Style -->
+        <div class="example-section">
+            <h2>💊 Pill Style</h2>
+            <p class="subtitle">Rounded pill-shaped tabs with solid background</p>
+
+            <div class="example-demo">
+                <div id="pillTabs"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">const pillTabs = new TabBuilder({
+    containerId: 'pillTabs',
+    style: 'pill',
+    tabs: [
+        {
+            id: 'profile',
+            label: 'Profile',
+            content: '<h3>Profile</h3><p>User profile information...</p>'
+        },
+        {
+            id: 'account',
+            label: 'Account',
+            badge: '3',
+            content: '<h3>Account</h3><p>Account settings and billing...</p>'
+        },
+        {
+            id: 'security',
+            label: 'Security',
+            content: '<h3>Security</h3><p>Security and privacy settings...</p>'
+        }
+    ]
+});</code></pre>
+        </div>
+
+        <!-- Contained Style -->
+        <div class="example-section">
+            <h2>📦 Contained Style</h2>
+            <p class="subtitle">Segmented control with contained background</p>
+
+            <div class="example-demo">
+                <div id="containedTabs"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">const containedTabs = new TabBuilder({
+    containerId: 'containedTabs',
+    style: 'contained',
+    tabs: [
+        {
+            id: 'day',
+            label: 'Day',
+            content: '<h3>Day View</h3><p>Daily schedule and events...</p>'
+        },
+        {
+            id: 'week',
+            label: 'Week',
+            content: '<h3>Week View</h3><p>Weekly calendar view...</p>'
+        },
+        {
+            id: 'month',
+            label: 'Month',
+            content: '<h3>Month View</h3><p>Monthly calendar overview...</p>'
+        }
+    ]
+});</code></pre>
+        </div>
+
+        <!-- URL Hash Support -->
+        <div class="example-section">
+            <h2>🔗 URL Hash Support</h2>
+            <p class="subtitle">Deep linking with URL fragments (e.g., #tab-profile)</p>
+
+            <div class="example-demo">
+                <div id="hashTabs"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">const hashTabs = new TabBuilder({
+    containerId: 'hashTabs',
+    tabs: [
+        { id: 'home', label: 'Home', content: 'Home content...' },
+        { id: 'about', label: 'About', content: 'About us...' },
+        { id: 'contact', label: 'Contact', content: 'Contact form...' }
+    ],
+    useUrlHash: true  // Enable URL hash sync
+});
+
+// Navigate to: yoursite.com/page.html#tab-about</code></pre>
+        </div>
+
+        <!-- Configuration Reference -->
+        <div class="example-section">
+            <h2>⚙️ Configuration Options</h2>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Constructor Parameters</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>containerId</code></td>
+                        <td>string</td>
+                        <td>-</td>
+                        <td>ID of container element (required)</td>
+                    </tr>
+                    <tr>
+                        <td><code>tabs</code></td>
+                        <td>array</td>
+                        <td>[]</td>
+                        <td>Array of tab objects</td>
+                    </tr>
+                    <tr>
+                        <td><code>style</code></td>
+                        <td>string</td>
+                        <td>'underline'</td>
+                        <td>'underline', 'pill', 'contained'</td>
+                    </tr>
+                    <tr>
+                        <td><code>activeTab</code></td>
+                        <td>string</td>
+                        <td>first tab</td>
+                        <td>Initially active tab ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>orientation</code></td>
+                        <td>string</td>
+                        <td>'horizontal'</td>
+                        <td>'horizontal' or 'vertical'</td>
+                    </tr>
+                    <tr>
+                        <td><code>useUrlHash</code></td>
+                        <td>boolean</td>
+                        <td>false</td>
+                        <td>Sync with URL hash (deep linking)</td>
+                    </tr>
+                    <tr>
+                        <td><code>onChange</code></td>
+                        <td>function</td>
+                        <td>null</td>
+                        <td>Callback when tab changes</td>
+                    </tr>
+                    <tr>
+                        <td><code>lazyLoad</code></td>
+                        <td>boolean</td>
+                        <td>false</td>
+                        <td>Load content only when tab activated</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Tab Object Structure</h3>
+            <pre class="example-code"><code class="language-javascript">{
+    id: 'unique-id',           // Required: unique identifier
+    label: 'Tab Label',        // Required: display text
+    icon: '📊',                // Optional: icon (emoji or HTML)
+    badge: '3',                // Optional: badge text
+    content: '<p>...</p>',     // Required: tab panel content (HTML or function)
+    disabled: false            // Optional: disable tab
+}</code></pre>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Methods</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>render()</code></td>
+                        <td>Render the tabs</td>
+                    </tr>
+                    <tr>
+                        <td><code>setActiveTab(tabId)</code></td>
+                        <td>Switch to specific tab</td>
+                    </tr>
+                    <tr>
+                        <td><code>getActiveTab()</code></td>
+                        <td>Get current active tab ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>addTab(tab)</code></td>
+                        <td>Add new tab dynamically</td>
+                    </tr>
+                    <tr>
+                        <td><code>removeTab(tabId)</code></td>
+                        <td>Remove tab by ID</td>
+                    </tr>
+                    <tr>
+                        <td><code>updateTab(tabId, updates)</code></td>
+                        <td>Update tab properties</td>
+                    </tr>
+                    <tr>
+                        <td><code>destroy()</code></td>
+                        <td>Remove tabs and cleanup</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Keyboard Navigation -->
+        <div class="example-section">
+            <h2>⌨️ Keyboard Navigation</h2>
+            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                <li><strong>Arrow Left/Right</strong> - Navigate between tabs (horizontal)</li>
+                <li><strong>Arrow Up/Down</strong> - Navigate between tabs (vertical)</li>
+                <li><strong>Home</strong> - Jump to first tab</li>
+                <li><strong>End</strong> - Jump to last tab</li>
+                <li><strong>Enter/Space</strong> - Activate focused tab</li>
+                <li><strong>Tab</strong> - Move focus to tab content</li>
+            </ul>
+        </div>
+
+        <!-- Features -->
+        <div class="example-section">
+            <h2>✨ Features</h2>
+            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                <li><strong>3 Styles</strong> - Underline, Pill, Contained</li>
+                <li><strong>Keyboard Navigation</strong> - Full ARIA support</li>
+                <li><strong>URL Hash Sync</strong> - Deep linking support</li>
+                <li><strong>Lazy Loading</strong> - Load content on demand</li>
+                <li><strong>Icons & Badges</strong> - Visual indicators</li>
+                <li><strong>Vertical/Horizontal</strong> - Flexible orientation</li>
+                <li><strong>Dynamic Tabs</strong> - Add/remove tabs at runtime</li>
+                <li><strong>Responsive</strong> - Mobile-friendly</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { TabBuilder } from '../../src/TabBuilder.js';
+
+        // Underline Tabs
+        new TabBuilder({
+            containerId: 'underlineTabs',
+            style: 'underline',
+            tabs: [
+                {
+                    id: 'overview',
+                    label: 'Overview',
+                    icon: '📊',
+                    content: '<div style="padding: 20px;"><h3>Overview</h3><p>Dashboard overview with key metrics and statistics.</p></div>'
+                },
+                {
+                    id: 'analytics',
+                    label: 'Analytics',
+                    icon: '📈',
+                    content: '<div style="padding: 20px;"><h3>Analytics</h3><p>Detailed analytics data and performance charts.</p></div>'
+                },
+                {
+                    id: 'settings',
+                    label: 'Settings',
+                    icon: '⚙️',
+                    content: '<div style="padding: 20px;"><h3>Settings</h3><p>Configuration options and preferences.</p></div>'
+                }
+            ]
+        }).render();
+
+        // Pill Tabs
+        new TabBuilder({
+            containerId: 'pillTabs',
+            style: 'pill',
+            tabs: [
+                {
+                    id: 'profile',
+                    label: 'Profile',
+                    content: '<div style="padding: 20px;"><h3>Profile</h3><p>User profile information and preferences.</p></div>'
+                },
+                {
+                    id: 'account',
+                    label: 'Account',
+                    badge: '3',
+                    content: '<div style="padding: 20px;"><h3>Account</h3><p>Account settings and billing information.</p></div>'
+                },
+                {
+                    id: 'security',
+                    label: 'Security',
+                    content: '<div style="padding: 20px;"><h3>Security</h3><p>Security and privacy settings.</p></div>'
+                }
+            ]
+        }).render();
+
+        // Contained Tabs
+        new TabBuilder({
+            containerId: 'containedTabs',
+            style: 'contained',
+            tabs: [
+                {
+                    id: 'day',
+                    label: 'Day',
+                    content: '<div style="padding: 20px;"><h3>Day View</h3><p>Daily schedule and upcoming events.</p></div>'
+                },
+                {
+                    id: 'week',
+                    label: 'Week',
+                    content: '<div style="padding: 20px;"><h3>Week View</h3><p>Weekly calendar overview.</p></div>'
+                },
+                {
+                    id: 'month',
+                    label: 'Month',
+                    content: '<div style="padding: 20px;"><h3>Month View</h3><p>Monthly calendar with all events.</p></div>'
+                }
+            ]
+        }).render();
+
+        // Hash Tabs
+        new TabBuilder({
+            containerId: 'hashTabs',
+            tabs: [
+                { id: 'home', label: 'Home', content: '<div style="padding: 20px;"><h3>Home</h3><p>Welcome to our website!</p></div>' },
+                { id: 'about', label: 'About', content: '<div style="padding: 20px;"><h3>About</h3><p>Learn more about us.</p></div>' },
+                { id: 'contact', label: 'Contact', content: '<div style="padding: 20px;"><h3>Contact</h3><p>Get in touch with us.</p></div>' }
+            ],
+            useUrlHash: true
+        }).render();
+
+        // Syntax highlighting
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

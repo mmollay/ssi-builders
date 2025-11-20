@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChartBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="../../src/shared.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+        }
+
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 16px;
+        }
+
+        .nav-link {
+            color: #5f6368;
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: #1a73e8;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 24px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+
+        .hero p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .example-section h2 {
+            font-size: 28px;
+            margin-bottom: 12px;
+            color: #202124;
+        }
+
+        .example-section .subtitle {
+            color: #5f6368;
+            font-size: 16px;
+            margin-bottom: 24px;
+        }
+
+        .example-demo {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+
+        .chart-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        pre.example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .config-table td {
+            color: #5f6368;
+        }
+
+        .config-table code {
+            background: #f8f9fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            color: #ea4335;
+        }
+
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 768px) {
+            .chart-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-title">📊 ChartBuilder Documentation</div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Overview</a>
+                <a href="../../README.md" class="nav-link">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>📊 ChartBuilder</h1>
+            <p>Beautiful charts with zero dependencies - Native Canvas API</p>
+        </div>
+
+        <!-- Bar Chart Example -->
+        <div class="example-section">
+            <h2>📊 Bar Chart</h2>
+            <p class="subtitle">Vertical bars with gradient colors and hover tooltips</p>
+
+            <div class="example-demo">
+                <div id="barChart" class="chart-container"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
+
+const barChart = new ChartBuilder({
+    containerId: 'barChart',
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Sales 2024',
+            data: [12, 19, 8, 15, 22, 13],
+            backgroundColor: '#1a73e8'
+        }]
+    },
+    options: {
+        title: 'Monthly Sales',
+        showLegend: true,
+        showTooltip: true,
+        responsive: true
+    }
+});
+
+barChart.render();</code></pre>
+        </div>
+
+        <!-- Line Chart Example -->
+        <div class="example-section">
+            <h2>📈 Line Chart</h2>
+            <p class="subtitle">Smooth lines with data points and multiple datasets</p>
+
+            <div class="example-demo">
+                <div id="lineChart" class="chart-container"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
+
+const lineChart = new ChartBuilder({
+    containerId: 'lineChart',
+    type: 'line',
+    data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [
+            {
+                label: 'Product A',
+                data: [65, 78, 90, 81],
+                borderColor: '#1a73e8',
+                backgroundColor: 'rgba(26, 115, 232, 0.1)'
+            },
+            {
+                label: 'Product B',
+                data: [45, 55, 70, 65],
+                borderColor: '#34a853',
+                backgroundColor: 'rgba(52, 168, 83, 0.1)'
+            }
+        ]
+    },
+    options: {
+        title: 'Weekly Performance',
+        showLegend: true,
+        smooth: true
+    }
+});
+
+lineChart.render();</code></pre>
+        </div>
+
+        <!-- Pie & Donut Charts -->
+        <div class="example-section">
+            <h2>🥧 Pie & Donut Charts</h2>
+            <p class="subtitle">Circular charts for showing proportions</p>
+
+            <div class="chart-grid">
+                <div class="example-demo">
+                    <h3 style="margin-bottom: 16px;">Pie Chart</h3>
+                    <div id="pieChart" class="chart-container"></div>
+                </div>
+
+                <div class="example-demo">
+                    <h3 style="margin-bottom: 16px;">Donut Chart</h3>
+                    <div id="donutChart" class="chart-container"></div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <pre class="example-code"><code class="language-javascript">// Pie Chart
+const pieChart = new ChartBuilder({
+    containerId: 'pieChart',
+    type: 'pie',
+    data: {
+        labels: ['Direct', 'Organic', 'Referral', 'Social'],
+        datasets: [{
+            data: [30, 45, 15, 10],
+            backgroundColor: ['#1a73e8', '#34a853', '#fbbc04', '#ea4335']
+        }]
+    },
+    options: {
+        title: 'Traffic Sources',
+        showLegend: true
+    }
+});
+
+// Donut Chart
+const donutChart = new ChartBuilder({
+    containerId: 'donutChart',
+    type: 'donut',
+    data: {
+        labels: ['Desktop', 'Mobile', 'Tablet'],
+        datasets: [{
+            data: [55, 35, 10],
+            backgroundColor: ['#667eea', '#764ba2', '#f093fb']
+        }]
+    },
+    options: {
+        title: 'Device Usage',
+        showLegend: true
+    }
+});</code></pre>
+        </div>
+
+        <!-- Configuration Reference -->
+        <div class="example-section">
+            <h2>⚙️ Configuration Options</h2>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Constructor Parameters</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>containerId</code></td>
+                        <td>string</td>
+                        <td>ID of the container element (required)</td>
+                    </tr>
+                    <tr>
+                        <td><code>type</code></td>
+                        <td>string</td>
+                        <td>Chart type: 'bar', 'line', 'pie', 'donut'</td>
+                    </tr>
+                    <tr>
+                        <td><code>data</code></td>
+                        <td>object</td>
+                        <td>Chart data with labels and datasets</td>
+                    </tr>
+                    <tr>
+                        <td><code>options</code></td>
+                        <td>object</td>
+                        <td>Chart configuration options</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Data Structure</h3>
+            <pre class="example-code"><code class="language-javascript">data: {
+    labels: ['Label 1', 'Label 2', 'Label 3'],
+    datasets: [
+        {
+            label: 'Dataset Name',
+            data: [10, 20, 30],
+            backgroundColor: '#1a73e8',      // Single color or array
+            borderColor: '#1a73e8',          // Line charts
+            borderWidth: 2                   // Line width
+        }
+    ]
+}</code></pre>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Options</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Default</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>title</code></td>
+                        <td>string</td>
+                        <td>-</td>
+                        <td>Chart title</td>
+                    </tr>
+                    <tr>
+                        <td><code>showLegend</code></td>
+                        <td>boolean</td>
+                        <td>true</td>
+                        <td>Show legend</td>
+                    </tr>
+                    <tr>
+                        <td><code>showTooltip</code></td>
+                        <td>boolean</td>
+                        <td>true</td>
+                        <td>Show hover tooltips</td>
+                    </tr>
+                    <tr>
+                        <td><code>responsive</code></td>
+                        <td>boolean</td>
+                        <td>true</td>
+                        <td>Auto-resize on window resize</td>
+                    </tr>
+                    <tr>
+                        <td><code>smooth</code></td>
+                        <td>boolean</td>
+                        <td>false</td>
+                        <td>Smooth curves (line charts)</td>
+                    </tr>
+                    <tr>
+                        <td><code>animation</code></td>
+                        <td>boolean</td>
+                        <td>true</td>
+                        <td>Animate chart rendering</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3 style="margin-top: 24px; margin-bottom: 12px;">Methods</h3>
+            <table class="config-table">
+                <thead>
+                    <tr>
+                        <th>Method</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>render()</code></td>
+                        <td>Render the chart</td>
+                    </tr>
+                    <tr>
+                        <td><code>update(data)</code></td>
+                        <td>Update chart with new data</td>
+                    </tr>
+                    <tr>
+                        <td><code>destroy()</code></td>
+                        <td>Remove chart and cleanup</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Features -->
+        <div class="example-section">
+            <h2>✨ Features</h2>
+            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                <li><strong>Zero Dependencies</strong> - Pure Canvas API, no external libraries</li>
+                <li><strong>4 Chart Types</strong> - Bar, Line, Pie, Donut</li>
+                <li><strong>Responsive</strong> - Auto-resizes on window resize</li>
+                <li><strong>Interactive Tooltips</strong> - Hover to see values</li>
+                <li><strong>Smooth Animations</strong> - Beautiful rendering transitions</li>
+                <li><strong>Multiple Datasets</strong> - Line charts support multiple series</li>
+                <li><strong>Custom Colors</strong> - Full control over colors and gradients</li>
+                <li><strong>Legend Support</strong> - Optional legend display</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { ChartBuilder } from '../../src/ChartBuilder.js';
+
+        // Bar Chart
+        new ChartBuilder({
+            containerId: 'barChart',
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Sales 2024',
+                    data: [12, 19, 8, 15, 22, 13],
+                    backgroundColor: '#1a73e8'
+                }]
+            },
+            options: {
+                title: 'Monthly Sales',
+                showLegend: true,
+                showTooltip: true,
+                responsive: true
+            }
+        }).render();
+
+        // Line Chart
+        new ChartBuilder({
+            containerId: 'lineChart',
+            type: 'line',
+            data: {
+                labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+                datasets: [
+                    {
+                        label: 'Product A',
+                        data: [65, 78, 90, 81],
+                        borderColor: '#1a73e8',
+                        backgroundColor: 'rgba(26, 115, 232, 0.1)'
+                    },
+                    {
+                        label: 'Product B',
+                        data: [45, 55, 70, 65],
+                        borderColor: '#34a853',
+                        backgroundColor: 'rgba(52, 168, 83, 0.1)'
+                    }
+                ]
+            },
+            options: {
+                title: 'Weekly Performance',
+                showLegend: true,
+                smooth: true
+            }
+        }).render();
+
+        // Pie Chart
+        new ChartBuilder({
+            containerId: 'pieChart',
+            type: 'pie',
+            data: {
+                labels: ['Direct', 'Organic', 'Referral', 'Social'],
+                datasets: [{
+                    data: [30, 45, 15, 10],
+                    backgroundColor: ['#1a73e8', '#34a853', '#fbbc04', '#ea4335']
+                }]
+            },
+            options: {
+                title: 'Traffic Sources',
+                showLegend: true
+            }
+        }).render();
+
+        // Donut Chart
+        new ChartBuilder({
+            containerId: 'donutChart',
+            type: 'donut',
+            data: {
+                labels: ['Desktop', 'Mobile', 'Tablet'],
+                datasets: [{
+                    data: [55, 35, 10],
+                    backgroundColor: ['#667eea', '#764ba2', '#f093fb']
+                }]
+            },
+            options: {
+                title: 'Device Usage',
+                showLegend: true
+            }
+        }).render();
+
+        // Syntax highlighting
+        hljs.highlightAll();
+    </script>
+</body>
+</html>

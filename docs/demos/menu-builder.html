@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MenuBuilder - Interactive Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/MenuBuilder.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Roboto', sans-serif; background: #f5f5f5; }
+        
+        .nav {
+            background: white;
+            border-bottom: 1px solid #e8eaed;
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .nav-title { font-size: 20px; font-weight: 600; color: #202124; }
+        .nav-links { display: flex; gap: 16px; }
+        .nav-link { color: #5f6368; text-decoration: none; font-size: 14px; transition: color 0.2s; }
+        .nav-link:hover { color: #1a73e8; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
+        
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 24px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+        
+        .hero h1 { font-size: 48px; margin-bottom: 16px; }
+        .hero p { font-size: 20px; opacity: 0.95; }
+        
+        .example-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .example-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
+        .example-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
+        .example-demo { background: #f8f9fa; padding: 24px; border-radius: 8px; margin: 24px 0; text-align: center; }
+        
+        pre.example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        
+        .demo-card {
+            display: inline-block;
+            padding: 24px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin: 16px;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="nav-title">📜 MenuBuilder Documentation</div>
+            <div class="nav-links">
+                <a href="index.html" class="nav-link">← Back to Overview</a>
+                <a href="../../README.md" class="nav-link">GitHub</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>📜 MenuBuilder</h1>
+            <p>Dropdown & Context Menus with nested submenus</p>
+        </div>
+
+        <div class="example-section">
+            <h2>📜 Dropdown Menu</h2>
+            <p class="subtitle">Click the button to open dropdown menu</p>
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-primary" id="dropdownBtn">Open Menu ▼</button>
+            </div>
+            <pre class="example-code"><code class="language-javascript">import { MenuBuilder } from '/vendor/ssi-builders/src/MenuBuilder.js';
+
+const menu = new MenuBuilder({
+    trigger: '#dropdownBtn',
+    items: [
+        { id: 'new', label: 'New File', icon: '📄', shortcut: 'Ctrl+N' },
+        { id: 'open', label: 'Open', icon: '📂', shortcut: 'Ctrl+O' },
+        { type: 'divider' },
+        { id: 'save', label: 'Save', icon: '💾', shortcut: 'Ctrl+S' },
+        { id: 'saveas', label: 'Save As...', icon: '💾' },
+        { type: 'divider' },
+        {
+            id: 'export',
+            label: 'Export',
+            icon: '📤',
+            submenu: [
+                { id: 'pdf', label: 'PDF' },
+                { id: 'csv', label: 'CSV' },
+                { id: 'json', label: 'JSON' }
+            ]
+        }
+    ],
+    onSelect: (itemId) => console.log('Selected:', itemId)
+});</code></pre>
+        </div>
+
+        <div class="example-section">
+            <h2>🖱️ Context Menu</h2>
+            <p class="subtitle">Right-click on the card below</p>
+            <div class="example-demo">
+                <div class="demo-card" id="contextCard">
+                    <h3>Right-click me!</h3>
+                    <p>Try right-clicking to see context menu</p>
+                </div>
+            </div>
+            <pre class="example-code"><code class="language-javascript">const contextMenu = new MenuBuilder({
+    trigger: '#contextCard',
+    triggerEvent: 'contextmenu', // Right-click
+    items: [
+        { id: 'copy', label: 'Copy', icon: '📋' },
+        { id: 'paste', label: 'Paste', icon: '📄' },
+        { type: 'divider' },
+        { id: 'delete', label: 'Delete', icon: '🗑️' }
+    ]
+});</code></pre>
+        </div>
+
+        <div class="example-section">
+            <h2>✨ Features</h2>
+            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                <li><strong>Dropdown & Context Menus</strong> - Click or right-click trigger</li>
+                <li><strong>Nested Submenus</strong> - Unlimited depth</li>
+                <li><strong>Smart Positioning</strong> - Auto-adjusts to viewport</li>
+                <li><strong>Icons & Shortcuts</strong> - Visual indicators</li>
+                <li><strong>Dividers</strong> - Group menu items</li>
+                <li><strong>Checkable Items</strong> - Toggle states</li>
+                <li><strong>Disabled Items</strong> - Conditional enable/disable</li>
+            </ul>
+        </div>
+    </div>
+
+    <script type="module">
+        import { MenuBuilder } from '../../src/MenuBuilder.js';
+
+        new MenuBuilder({
+            trigger: '#dropdownBtn',
+            items: [
+                { id: 'new', label: 'New File', icon: '📄', shortcut: 'Ctrl+N' },
+                { id: 'open', label: 'Open', icon: '📂', shortcut: 'Ctrl+O' },
+                { type: 'divider' },
+                { id: 'save', label: 'Save', icon: '💾', shortcut: 'Ctrl+S' },
+                { id: 'saveas', label: 'Save As...', icon: '💾' },
+                { type: 'divider' },
+                {
+                    id: 'export',
+                    label: 'Export',
+                    icon: '📤',
+                    submenu: [
+                        { id: 'pdf', label: 'PDF' },
+                        { id: 'csv', label: 'CSV' },
+                        { id: 'json', label: 'JSON' }
+                    ]
+                }
+            ],
+            onSelect: (itemId) => alert(`Selected: ${itemId}`)
+        });
+
+        new MenuBuilder({
+            trigger: '#contextCard',
+            triggerEvent: 'contextmenu',
+            items: [
+                { id: 'copy', label: 'Copy', icon: '📋' },
+                { id: 'paste', label: 'Paste', icon: '📄' },
+                { type: 'divider' },
+                { id: 'delete', label: 'Delete', icon: '🗑️' }
+            ],
+            onSelect: (itemId) => alert(`Context action: ${itemId}`)
+        });
+
+        hljs.highlightAll();
+    </script>
+</body>
+</html>
