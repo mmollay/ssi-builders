@@ -6,7 +6,7 @@
     <title>SiteBuilder + GlobalConfig - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
@@ -111,8 +111,6 @@
             font-family: 'Roboto Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
         .example-code .keyword { color: #c792ea; }
@@ -200,42 +198,42 @@
             <p>Zentrale Konfiguration für alle SSI Builders. Einmal beim App-Start konfigurieren, überall nutzen!</p>
 
             <h3>Setup</h3>
-            <pre class="example-code"><code>import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+            <div class="example-code"><span class="keyword">import</span> { GlobalConfig } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
 
-// App-Start: Einmal konfigurieren
-GlobalConfig.configure({
-    // Icon System
-    iconPreset: 'lucide',  // 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'
+<span class="comment">// App-Start: Einmal konfigurieren</span>
+GlobalConfig.<span class="function">configure</span>({
+    <span class="comment">// Icon System</span>
+    <span class="keyword">iconPreset:</span> <span class="string">'lucide'</span>,  <span class="comment">// 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'</span>
 
-    // Theme/Colors
-    theme: {
-        primary: '#1a73e8',
-        secondary: '#5f6368',
-        success: '#34a853',
-        danger: '#ea4335'
+    <span class="comment">// Theme/Colors</span>
+    <span class="keyword">theme:</span> {
+        <span class="keyword">primary:</span> <span class="string">'#1a73e8'</span>,
+        <span class="keyword">secondary:</span> <span class="string">'#5f6368'</span>,
+        <span class="keyword">success:</span> <span class="string">'#34a853'</span>,
+        <span class="keyword">danger:</span> <span class="string">'#ea4335'</span>
     },
 
-    // Builder Defaults
-    buttons: {
-        defaultSize: 'medium',
-        defaultType: 'outlined'
+    <span class="comment">// Builder Defaults</span>
+    <span class="keyword">buttons:</span> {
+        <span class="keyword">defaultSize:</span> <span class="string">'medium'</span>,
+        <span class="keyword">defaultType:</span> <span class="string">'outlined'</span>
     },
 
-    lists: {
-        itemsPerPage: 20,
-        actionDisplayType: 'icon'
+    <span class="keyword">lists:</span> {
+        <span class="keyword">itemsPerPage:</span> <span class="number">20</span>,
+        <span class="keyword">actionDisplayType:</span> <span class="string">'icon'</span>
     },
 
-    modals: {
-        defaultSize: 'medium',
-        closeOnBackdrop: true
+    <span class="keyword">modals:</span> {
+        <span class="keyword">defaultSize:</span> <span class="string">'medium'</span>,
+        <span class="keyword">closeOnBackdrop:</span> <span class="number">true</span>
     },
 
-    forms: {
-        submitLabel: 'Speichern',
-        autoSave: false
+    <span class="keyword">forms:</span> {
+        <span class="keyword">submitLabel:</span> <span class="string">'Speichern'</span>,
+        <span class="keyword">autoSave:</span> <span class="number">false</span>
     }
-});</code></pre>
+});</div>
 
             <h3>API Methods</h3>
             <table class="config-table">
@@ -282,42 +280,42 @@ GlobalConfig.configure({
             <p>Komplettes Layout-Gerippe: Header, Sidebar, Content, Footer. Perfekt für Admin-Panels, Dashboards, und Webapps.</p>
 
             <h3>Quick Start</h3>
-            <pre class="example-code"><code>import { SiteBuilder } from '/vendor/ssi-builders/src/index.js';
+            <div class="example-code"><span class="keyword">import</span> { SiteBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
 
-const site = new SiteBuilder({
-    containerId: 'app',
-    layout: 'admin',  // 'admin' | 'website' | 'dashboard' | 'landing'
+<span class="keyword">const</span> site = <span class="keyword">new</span> <span class="function">SiteBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'app'</span>,
+    <span class="keyword">layout:</span> <span class="string">'admin'</span>,  <span class="comment">// 'admin' | 'website' | 'dashboard' | 'landing'</span>
 
-    header: {
-        logo: '/assets/logo.svg',
-        title: 'My App',
-        menu: [
-            { label: 'Dashboard', href: '/', icon: 'home' },
-            { label: 'Users', href: '/users', icon: 'users' }
+    <span class="keyword">header:</span> {
+        <span class="keyword">logo:</span> <span class="string">'/assets/logo.svg'</span>,
+        <span class="keyword">title:</span> <span class="string">'My App'</span>,
+        <span class="keyword">menu:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">href:</span> <span class="string">'/'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span> }
         ],
-        actions: [
-            { icon: 'bell', onClick: () => showNotifications() },
-            { icon: 'user', onClick: () => showProfile() }
+        <span class="keyword">actions:</span> [
+            { <span class="keyword">icon:</span> <span class="string">'bell'</span>, <span class="keyword">onClick:</span> () => showNotifications() },
+            { <span class="keyword">icon:</span> <span class="string">'user'</span>, <span class="keyword">onClick:</span> () => showProfile() }
         ]
     },
 
-    sidebar: {
-        navigation: [
-            { label: 'Dashboard', icon: 'home', href: '/' },
-            { label: 'Users', icon: 'users', href: '/users' },
-            { label: 'Settings', icon: 'settings', href: '/settings' }
+    <span class="keyword">sidebar:</span> {
+        <span class="keyword">navigation:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span>, <span class="keyword">href:</span> <span class="string">'/'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Settings'</span>, <span class="keyword">icon:</span> <span class="string">'settings'</span>, <span class="keyword">href:</span> <span class="string">'/settings'</span> }
         ]
     }
 });
 
-// Content rendern
-site.renderContent('<h1>Welcome!</h1>');
+<span class="comment">// Content rendern</span>
+site.<span class="function">renderContent</span>(<span class="string">'&lt;h1&gt;Welcome!&lt;/h1&gt;'</span>);
 
-// Oder: Builder direkt hinzufügen
-site.addBuilder('list', {
-    containerId: 'userList',
-    columns: [...]
-});</code></pre>
+<span class="comment">// Oder: Builder direkt hinzufügen</span>
+site.<span class="function">addBuilder</span>(<span class="string">'list'</span>, {
+    <span class="keyword">containerId:</span> <span class="string">'userList'</span>,
+    <span class="keyword">columns:</span> [...]
+});</div>
 
             <h3>Layout Templates</h3>
             <div class="example-demo">
@@ -438,79 +436,79 @@ site.addBuilder('list', {
             <h2>4. Real-World Beispiel</h2>
             <p>Komplette App mit GlobalConfig + SiteBuilder + ListBuilder Integration.</p>
 
-            <pre class="example-code"><code>// === main.js - App Entry Point ===
-import {
+            <div class="example-code"><span class="comment">// === main.js - App Entry Point ===</span>
+<span class="keyword">import</span> {
     GlobalConfig,
     SiteBuilder,
     ListBuilder
-} from '/vendor/ssi-builders/src/index.js';
+} <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
 
-// 1. GlobalConfig einmalig konfigurieren
-GlobalConfig.configure({
-    iconPreset: 'lucide',
-    theme: {
-        primary: '#1a73e8',
-        success: '#34a853',
-        danger: '#ea4335'
+<span class="comment">// 1. GlobalConfig einmalig konfigurieren</span>
+GlobalConfig.<span class="function">configure</span>({
+    <span class="keyword">iconPreset:</span> <span class="string">'lucide'</span>,
+    <span class="keyword">theme:</span> {
+        <span class="keyword">primary:</span> <span class="string">'#1a73e8'</span>,
+        <span class="keyword">success:</span> <span class="string">'#34a853'</span>,
+        <span class="keyword">danger:</span> <span class="string">'#ea4335'</span>
     },
-    lists: {
-        itemsPerPage: 50,
-        actionDisplayType: 'icon'
+    <span class="keyword">lists:</span> {
+        <span class="keyword">itemsPerPage:</span> <span class="number">50</span>,
+        <span class="keyword">actionDisplayType:</span> <span class="string">'icon'</span>
     }
 });
 
-// 2. SiteBuilder Layout erstellen
-const site = new SiteBuilder({
-    containerId: 'app',
-    layout: 'admin',
+<span class="comment">// 2. SiteBuilder Layout erstellen</span>
+<span class="keyword">const</span> site = <span class="keyword">new</span> <span class="function">SiteBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'app'</span>,
+    <span class="keyword">layout:</span> <span class="string">'admin'</span>,
 
-    header: {
-        title: 'HabDaWas Admin',
-        logo: '/logo.svg',
-        menu: [
-            { label: 'Dashboard', href: '/', icon: 'home' },
-            { label: 'Users', href: '/users', icon: 'users' }
+    <span class="keyword">header:</span> {
+        <span class="keyword">title:</span> <span class="string">'HabDaWas Admin'</span>,
+        <span class="keyword">logo:</span> <span class="string">'/logo.svg'</span>,
+        <span class="keyword">menu:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">href:</span> <span class="string">'/'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span> }
         ],
-        actions: [
-            { icon: 'bell', onClick: () => showNotifications() }
+        <span class="keyword">actions:</span> [
+            { <span class="keyword">icon:</span> <span class="string">'bell'</span>, <span class="keyword">onClick:</span> () => showNotifications() }
         ]
     },
 
-    sidebar: {
-        navigation: [
-            { label: 'Dashboard', icon: 'home', href: '/' },
-            { label: 'Benutzer', icon: 'users', href: '/users' },
-            { label: 'Spenden', icon: 'heart', href: '/donations' }
+    <span class="keyword">sidebar:</span> {
+        <span class="keyword">navigation:</span> [
+            { <span class="keyword">label:</span> <span class="string">'Dashboard'</span>, <span class="keyword">icon:</span> <span class="string">'home'</span>, <span class="keyword">href:</span> <span class="string">'/'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Benutzer'</span>, <span class="keyword">icon:</span> <span class="string">'users'</span>, <span class="keyword">href:</span> <span class="string">'/users'</span> },
+            { <span class="keyword">label:</span> <span class="string">'Spenden'</span>, <span class="keyword">icon:</span> <span class="string">'heart'</span>, <span class="keyword">href:</span> <span class="string">'/donations'</span> }
         ]
     },
 
-    onNavigate: (href) => {
-        // Router Logic
-        loadPage(href);
+    <span class="keyword">onNavigate:</span> (href) => {
+        <span class="comment">// Router Logic</span>
+        <span class="function">loadPage</span>(href);
     }
 });
 
-// 3. Content mit Buildern füllen
-site.renderContent('<div id="userList"></div>');
+<span class="comment">// 3. Content mit Buildern füllen</span>
+site.<span class="function">renderContent</span>(<span class="string">'&lt;div id="userList"&gt;&lt;/div&gt;'</span>);
 
-const userList = new ListBuilder({
-    containerId: 'userList',
-    columns: [
-        { key: 'name', label: 'Name' },
-        { key: 'email', label: 'E-Mail' }
+<span class="keyword">const</span> userList = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'userList'</span>,
+    <span class="keyword">columns:</span> [
+        { <span class="keyword">key:</span> <span class="string">'name'</span>, <span class="keyword">label:</span> <span class="string">'Name'</span> },
+        { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'E-Mail'</span> }
     ],
-    dataSource: async () => await fetchUsers(),
-    actions: {
-        row: [
+    <span class="keyword">dataSource:</span> <span class="keyword">async</span> () => <span class="keyword">await</span> <span class="function">fetchUsers</span>(),
+    <span class="keyword">actions:</span> {
+        <span class="keyword">row:</span> [
             {
-                key: 'edit',
-                icon: IconManager.getIcon('edit'),  // Uses GlobalConfig preset
-                label: 'Bearbeiten',
-                handler: (row) => editUser(row)
+                <span class="keyword">key:</span> <span class="string">'edit'</span>,
+                <span class="keyword">icon:</span> IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>),  <span class="comment">// Uses GlobalConfig preset</span>
+                <span class="keyword">label:</span> <span class="string">'Bearbeiten'</span>,
+                <span class="keyword">handler:</span> (row) => <span class="function">editUser</span>(row)
             }
         ]
     }
-});</code></pre>
+});</div>
         </div>
 
         <!-- Benefits Section -->
@@ -539,7 +537,7 @@ const userList = new ListBuilder({
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code").forEach((block) => {
+            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
                 hljs.highlightElement(block);
             });
         });

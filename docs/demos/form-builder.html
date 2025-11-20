@@ -6,7 +6,7 @@
     <title>FormBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
@@ -109,8 +109,6 @@
             font-family: 'Roboto Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
         .example-code .keyword { color: #c792ea; }
@@ -202,40 +200,40 @@
                 <div id="basicForm"></div>
             </div>
 
-            <pre class="example-code"><code>import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
+            <div class="example-code"><span class="keyword">import</span> { FormBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
 
-const form = new FormBuilder({
-    containerId: 'basicForm',
-    fields: [
+<span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'basicForm'</span>,
+    <span class="keyword">fields:</span> [
         {
-            key: 'name',
-            label: 'Name',
-            type: 'text',
-            required: true,
-            placeholder: 'Ihr Name'
+            <span class="keyword">key:</span> <span class="string">'name'</span>,
+            <span class="keyword">label:</span> <span class="string">'Name'</span>,
+            <span class="keyword">type:</span> <span class="string">'text'</span>,
+            <span class="keyword">required:</span> <span class="number">true</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'Ihr Name'</span>
         },
         {
-            key: 'email',
-            label: 'E-Mail',
-            type: 'email',
-            required: true,
-            placeholder: 'ihre@email.com'
+            <span class="keyword">key:</span> <span class="string">'email'</span>,
+            <span class="keyword">label:</span> <span class="string">'E-Mail'</span>,
+            <span class="keyword">type:</span> <span class="string">'email'</span>,
+            <span class="keyword">required:</span> <span class="number">true</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'ihre@email.com'</span>
         },
         {
-            key: 'message',
-            label: 'Nachricht',
-            type: 'textarea',
-            rows: 4,
-            placeholder: 'Ihre Nachricht...'
+            <span class="keyword">key:</span> <span class="string">'message'</span>,
+            <span class="keyword">label:</span> <span class="string">'Nachricht'</span>,
+            <span class="keyword">type:</span> <span class="string">'textarea'</span>,
+            <span class="keyword">rows:</span> <span class="number">4</span>,
+            <span class="keyword">placeholder:</span> <span class="string">'Ihre Nachricht...'</span>
         }
     ],
-    submitLabel: 'Absenden',
-    onSubmit: async (data) => {
-        console.log('Form Data:', data);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('Formular erfolgreich gesendet!');
+    <span class="keyword">submitLabel:</span> <span class="string">'Absenden'</span>,
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        console.<span class="function">log</span>(<span class="string">'Form Data:'</span>, data);
+        <span class="keyword">await</span> <span class="keyword">new</span> <span class="function">Promise</span>(resolve => <span class="function">setTimeout</span>(resolve, <span class="number">1000</span>));
+        <span class="function">alert</span>(<span class="string">'Formular erfolgreich gesendet!'</span>);
     }
-});</code></pre>
+});</div>
         </div>
 
         <!-- Example 2: Multi-Step Form -->
@@ -247,41 +245,41 @@ const form = new FormBuilder({
                 <div id="multiStepForm"></div>
             </div>
 
-            <pre class="example-code"><code>const multiStepForm = new FormBuilder({
-    containerId: 'multiStepForm',
-    multiStep: true,
-    steps: [
+            <div class="example-code"><span class="keyword">const</span> multiStepForm = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'multiStepForm'</span>,
+    <span class="keyword">multiStep:</span> <span class="number">true</span>,
+    <span class="keyword">steps:</span> [
         {
-            title: 'Persönliche Daten',
-            fields: [
-                { key: 'firstName', label: 'Vorname', type: 'text', required: true },
-                { key: 'lastName', label: 'Nachname', type: 'text', required: true }
+            <span class="keyword">title:</span> <span class="string">'Persönliche Daten'</span>,
+            <span class="keyword">fields:</span> [
+                { <span class="keyword">key:</span> <span class="string">'firstName'</span>, <span class="keyword">label:</span> <span class="string">'Vorname'</span>, <span class="keyword">type:</span> <span class="string">'text'</span>, <span class="keyword">required:</span> <span class="number">true</span> },
+                { <span class="keyword">key:</span> <span class="string">'lastName'</span>, <span class="keyword">label:</span> <span class="string">'Nachname'</span>, <span class="keyword">type:</span> <span class="string">'text'</span>, <span class="keyword">required:</span> <span class="number">true</span> }
             ]
         },
         {
-            title: 'Kontaktdaten',
-            fields: [
-                { key: 'email', label: 'E-Mail', type: 'email', required: true },
-                { key: 'phone', label: 'Telefon', type: 'text' }
+            <span class="keyword">title:</span> <span class="string">'Kontaktdaten'</span>,
+            <span class="keyword">fields:</span> [
+                { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'E-Mail'</span>, <span class="keyword">type:</span> <span class="string">'email'</span>, <span class="keyword">required:</span> <span class="number">true</span> },
+                { <span class="keyword">key:</span> <span class="string">'phone'</span>, <span class="keyword">label:</span> <span class="string">'Telefon'</span>, <span class="keyword">type:</span> <span class="string">'text'</span> }
             ]
         },
         {
-            title: 'Bestätigung',
-            fields: [
+            <span class="keyword">title:</span> <span class="string">'Bestätigung'</span>,
+            <span class="keyword">fields:</span> [
                 {
-                    key: 'terms',
-                    label: 'Ich akzeptiere die AGB',
-                    type: 'checkbox',
-                    required: true
+                    <span class="keyword">key:</span> <span class="string">'terms'</span>,
+                    <span class="keyword">label:</span> <span class="string">'Ich akzeptiere die AGB'</span>,
+                    <span class="keyword">type:</span> <span class="string">'checkbox'</span>,
+                    <span class="keyword">required:</span> <span class="number">true</span>
                 }
             ]
         }
     ],
-    onSubmit: async (data) => {
-        console.log('Multi-Step Data:', data);
-        alert('Registrierung abgeschlossen!');
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        console.<span class="function">log</span>(<span class="string">'Multi-Step Data:'</span>, data);
+        <span class="function">alert</span>(<span class="string">'Registrierung abgeschlossen!'</span>);
     }
-});</code></pre>
+});</div>
         </div>
 
         <!-- Example 3: All Field Types -->
@@ -293,39 +291,39 @@ const form = new FormBuilder({
                 <div id="allFieldsForm"></div>
             </div>
 
-            <pre class="example-code"><code>const allFieldsForm = new FormBuilder({
-    containerId: 'allFieldsForm',
-    fields: [
-        { key: 'text', label: 'Text Input', type: 'text' },
-        { key: 'email', label: 'Email', type: 'email' },
-        { key: 'password', label: 'Password', type: 'password' },
-        { key: 'number', label: 'Number', type: 'number', min: 0, max: 100 },
-        { key: 'date', label: 'Date', type: 'date' },
+            <div class="example-code"><span class="keyword">const</span> allFieldsForm = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'allFieldsForm'</span>,
+    <span class="keyword">fields:</span> [
+        { <span class="keyword">key:</span> <span class="string">'text'</span>, <span class="keyword">label:</span> <span class="string">'Text Input'</span>, <span class="keyword">type:</span> <span class="string">'text'</span> },
+        { <span class="keyword">key:</span> <span class="string">'email'</span>, <span class="keyword">label:</span> <span class="string">'Email'</span>, <span class="keyword">type:</span> <span class="string">'email'</span> },
+        { <span class="keyword">key:</span> <span class="string">'password'</span>, <span class="keyword">label:</span> <span class="string">'Password'</span>, <span class="keyword">type:</span> <span class="string">'password'</span> },
+        { <span class="keyword">key:</span> <span class="string">'number'</span>, <span class="keyword">label:</span> <span class="string">'Number'</span>, <span class="keyword">type:</span> <span class="string">'number'</span>, <span class="keyword">min:</span> <span class="number">0</span>, <span class="keyword">max:</span> <span class="number">100</span> },
+        { <span class="keyword">key:</span> <span class="string">'date'</span>, <span class="keyword">label:</span> <span class="string">'Date'</span>, <span class="keyword">type:</span> <span class="string">'date'</span> },
         {
-            key: 'select',
-            label: 'Select',
-            type: 'select',
-            options: [
-                { value: '1', label: 'Option 1' },
-                { value: '2', label: 'Option 2' }
+            <span class="keyword">key:</span> <span class="string">'select'</span>,
+            <span class="keyword">label:</span> <span class="string">'Select'</span>,
+            <span class="keyword">type:</span> <span class="string">'select'</span>,
+            <span class="keyword">options:</span> [
+                { <span class="keyword">value:</span> <span class="string">'1'</span>, <span class="keyword">label:</span> <span class="string">'Option 1'</span> },
+                { <span class="keyword">value:</span> <span class="string">'2'</span>, <span class="keyword">label:</span> <span class="string">'Option 2'</span> }
             ]
         },
         {
-            key: 'radio',
-            label: 'Radio Buttons',
-            type: 'radio',
-            layout: 'horizontal',
-            options: [
-                { value: 'a', label: 'Option A' },
-                { value: 'b', label: 'Option B' }
+            <span class="keyword">key:</span> <span class="string">'radio'</span>,
+            <span class="keyword">label:</span> <span class="string">'Radio Buttons'</span>,
+            <span class="keyword">type:</span> <span class="string">'radio'</span>,
+            <span class="keyword">layout:</span> <span class="string">'horizontal'</span>,
+            <span class="keyword">options:</span> [
+                { <span class="keyword">value:</span> <span class="string">'a'</span>, <span class="keyword">label:</span> <span class="string">'Option A'</span> },
+                { <span class="keyword">value:</span> <span class="string">'b'</span>, <span class="keyword">label:</span> <span class="string">'Option B'</span> }
             ]
         },
-        { key: 'checkbox', label: 'Checkbox', type: 'checkbox' },
-        { key: 'textarea', label: 'Textarea', type: 'textarea', rows: 3 }
+        { <span class="keyword">key:</span> <span class="string">'checkbox'</span>, <span class="keyword">label:</span> <span class="string">'Checkbox'</span>, <span class="keyword">type:</span> <span class="string">'checkbox'</span> },
+        { <span class="keyword">key:</span> <span class="string">'textarea'</span>, <span class="keyword">label:</span> <span class="string">'Textarea'</span>, <span class="keyword">type:</span> <span class="string">'textarea'</span>, <span class="keyword">rows:</span> <span class="number">3</span> }
     ],
-    submitLabel: 'Testen',
-    onSubmit: async (data) => console.log(data)
-});</code></pre>
+    <span class="keyword">submitLabel:</span> <span class="string">'Testen'</span>,
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => console.<span class="function">log</span>(data)
+});</div>
         </div>
 
         <!-- Field Types Reference -->
@@ -465,44 +463,44 @@ const form = new FormBuilder({
             <p>Weitere fortgeschrittene FormBuilder Features.</p>
 
             <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Auto-Save</h3>
-            <pre class="example-code"><code>const form = new FormBuilder({
-    containerId: 'myForm',
-    autoSave: true,                    // Enable auto-save to localStorage
-    autoSaveKey: 'myForm_draft',      // localStorage key
-    autoSaveInterval: 2000,           // Save every 2 seconds
-    fields: [...]
-});</code></pre>
+            <div class="example-code"><span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'myForm'</span>,
+    <span class="keyword">autoSave:</span> <span class="number">true</span>,                    <span class="comment">// Enable auto-save to localStorage</span>
+    <span class="keyword">autoSaveKey:</span> <span class="string">'myForm_draft'</span>,      <span class="comment">// localStorage key</span>
+    <span class="keyword">autoSaveInterval:</span> <span class="number">2000</span>,           <span class="comment">// Save every 2 seconds</span>
+    <span class="keyword">fields:</span> [...]
+});</div>
 
             <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Conditional Fields</h3>
-            <pre class="example-code"><code>fields: [
+            <div class="example-code"><span class="keyword">fields:</span> [
     {
-        key: 'hasCompany',
-        label: 'Firmenkunde?',
-        type: 'checkbox'
+        <span class="keyword">key:</span> <span class="string">'hasCompany'</span>,
+        <span class="keyword">label:</span> <span class="string">'Firmenkunde?'</span>,
+        <span class="keyword">type:</span> <span class="string">'checkbox'</span>
     },
     {
-        key: 'companyName',
-        label: 'Firmenname',
-        type: 'text',
-        showIf: (formData) => formData.hasCompany === true  // Only show if checkbox is checked
+        <span class="keyword">key:</span> <span class="string">'companyName'</span>,
+        <span class="keyword">label:</span> <span class="string">'Firmenname'</span>,
+        <span class="keyword">type:</span> <span class="string">'text'</span>,
+        <span class="keyword">showIf:</span> (formData) => formData.hasCompany === <span class="number">true</span>  <span class="comment">// Only show if checkbox is checked</span>
     }
-]</code></pre>
+]</div>
 
             <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Custom Button Actions</h3>
-            <pre class="example-code"><code>const form = new FormBuilder({
-    containerId: 'myForm',
-    fields: [...],
-    submitLabel: 'Speichern',
-    showCancelButton: true,
-    cancelLabel: 'Abbrechen',
-    showResetButton: true,
-    onCancel: () => {
-        console.log('Cancel clicked');
+            <div class="example-code"><span class="keyword">const</span> form = <span class="keyword">new</span> <span class="function">FormBuilder</span>({
+    <span class="keyword">containerId:</span> <span class="string">'myForm'</span>,
+    <span class="keyword">fields:</span> [...],
+    <span class="keyword">submitLabel:</span> <span class="string">'Speichern'</span>,
+    <span class="keyword">showCancelButton:</span> <span class="number">true</span>,
+    <span class="keyword">cancelLabel:</span> <span class="string">'Abbrechen'</span>,
+    <span class="keyword">showResetButton:</span> <span class="number">true</span>,
+    <span class="keyword">onCancel:</span> () => {
+        console.<span class="function">log</span>(<span class="string">'Cancel clicked'</span>);
     },
-    onSubmit: async (data) => {
-        // Submit logic
+    <span class="keyword">onSubmit:</span> <span class="keyword">async</span> (data) => {
+        <span class="comment">// Submit logic</span>
     }
-});</code></pre>
+});</div>
         </div>
 
     </div>
@@ -626,7 +624,7 @@ const form = new FormBuilder({
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code").forEach((block) => {
+            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
                 hljs.highlightElement(block);
             });
         });

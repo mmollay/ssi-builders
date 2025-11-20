@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon System - SSI Builders Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .header p {
+            font-size: 20px;
+            opacity: 0.95;
+        }
+
+        .content {
+            background: white;
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+
+        .content h2 {
+            font-size: 28px;
+            color: #1a73e8;
+            margin: 32px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .content h3 {
+            font-size: 20px;
+            color: #202124;
+            margin: 24px 0 12px 0;
+        }
+
+        .content p {
+            color: #5f6368;
+            margin-bottom: 16px;
+        }
+
+        .content ul {
+            margin: 16px 0;
+            padding-left: 24px;
+        }
+
+        .content li {
+            color: #5f6368;
+            margin: 8px 0;
+        }
+
+        .content code {
+            background: #f1f3f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #ea4335;
+        }
+
+        .content pre {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 16px 0;
+        }
+
+        .content pre code {
+            background: transparent;
+            color: #d4d4d4;
+            padding: 0;
+        }
+
+        .icon-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        .icon-table th,
+        .icon-table td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .icon-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        .icon-table td {
+            color: #5f6368;
+        }
+
+        .icon-table td:first-child {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #ea4335;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e6f4ea;
+            color: #1e8e3e;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 32px;
+            }
+
+            .content {
+                padding: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Navigation -->
+        <div class="nav">
+            <a href="index.html">← Zurück zur Übersicht</a>
+            <a href="../../README.md" target="_blank">📖 Docs</a>
+        </div>
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🎨 Icon Management System</h1>
+            <p>Zentrale Icon-Verwaltung für alle SSI Builders</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <h2>🎯 Problem gelöst</h2>
+            <p>Bisher musste man Icons manuell als Emojis oder SVG-Strings übergeben:</p>
+
+            <pre><code class="language-javascript">// ❌ Umständlich und inkonsistent
+actions: {
+    row: [
+        { key: 'edit', icon: '✏️', label: 'Bearbeiten' },
+        { key: 'delete', icon: '&lt;svg&gt;...&lt;/svg&gt;', label: 'Löschen' }
+    ]
+}</code></pre>
+
+            <p>Mit dem <strong>IconManager</strong> kannst du:</p>
+            <ul>
+                <li><strong>Zentral ein Icon-System wählen</strong> (Emojis, Lucide, Heroicons, Material, FontAwesome)</li>
+                <li><strong>Einmal konfigurieren, überall nutzen</strong></li>
+                <li><strong>Individuell überschreiben</strong> wenn nötig</li>
+            </ul>
+
+            <h2>🚀 Quick Start</h2>
+
+            <h3>1. Global Icon-System festlegen</h3>
+            <pre><code class="language-javascript">import { IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Einmal beim App-Start konfigurieren
+IconManager.setPreset('lucide'); // oder 'emoji', 'heroicons', 'material', 'fontawesome'</code></pre>
+
+            <h3>2. Icons in Buildern nutzen</h3>
+            <pre><code class="language-javascript">import { ListBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+const list = new ListBuilder({
+    containerId: 'myList',
+    columns: [...],
+    dataSource: async () => users,
+    actions: {
+        row: [
+            {
+                key: 'view',
+                icon: IconManager.getIcon('view'), // Nutzt globales Preset
+                label: 'Ansehen',
+                handler: (row) => viewUser(row)
+            },
+            {
+                key: 'edit',
+                icon: IconManager.getIcon('edit'),
+                label: 'Bearbeiten',
+                handler: (row) => editUser(row)
+            },
+            {
+                key: 'delete',
+                icon: IconManager.getIcon('delete'),
+                label: 'Löschen',
+                displayType: 'button-icon',
+                buttonType: 'danger',
+                handler: (row) => deleteUser(row)
+            }
+        ]
+    }
+});</code></pre>
+
+            <h2>📚 Verfügbare Icons</h2>
+            <p>Der IconManager bietet 15+ häufig genutzte Icons:</p>
+
+            <table class="icon-table">
+                <thead>
+                    <tr>
+                        <th>Icon Name</th>
+                        <th>Emoji</th>
+                        <th>Beschreibung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>add</code></td>
+                        <td>➕</td>
+                        <td>Hinzufügen, Neu erstellen</td>
+                    </tr>
+                    <tr>
+                        <td><code>edit</code></td>
+                        <td>✏️</td>
+                        <td>Bearbeiten</td>
+                    </tr>
+                    <tr>
+                        <td><code>delete</code></td>
+                        <td>🗑️</td>
+                        <td>Löschen</td>
+                    </tr>
+                    <tr>
+                        <td><code>view</code></td>
+                        <td>👁️</td>
+                        <td>Ansehen, Details</td>
+                    </tr>
+                    <tr>
+                        <td><code>search</code></td>
+                        <td>🔍</td>
+                        <td>Suchen</td>
+                    </tr>
+                    <tr>
+                        <td><code>save</code></td>
+                        <td>💾</td>
+                        <td>Speichern</td>
+                    </tr>
+                    <tr>
+                        <td><code>close</code></td>
+                        <td>✖️</td>
+                        <td>Schließen, Abbrechen</td>
+                    </tr>
+                    <tr>
+                        <td><code>settings</code></td>
+                        <td>⚙️</td>
+                        <td>Einstellungen</td>
+                    </tr>
+                    <tr>
+                        <td><code>refresh</code></td>
+                        <td>🔄</td>
+                        <td>Aktualisieren, Neu laden</td>
+                    </tr>
+                    <tr>
+                        <td><code>download</code></td>
+                        <td>⬇️</td>
+                        <td>Herunterladen, Export</td>
+                    </tr>
+                    <tr>
+                        <td><code>upload</code></td>
+                        <td>⬆️</td>
+                        <td>Hochladen, Import</td>
+                    </tr>
+                    <tr>
+                        <td><code>filter</code></td>
+                        <td>🔽</td>
+                        <td>Filtern</td>
+                    </tr>
+                    <tr>
+                        <td><code>check</code></td>
+                        <td>✅</td>
+                        <td>Bestätigen, Erfolgreich</td>
+                    </tr>
+                    <tr>
+                        <td><code>warning</code></td>
+                        <td>⚠️</td>
+                        <td>Warnung</td>
+                    </tr>
+                    <tr>
+                        <td><code>info</code></td>
+                        <td>ℹ️</td>
+                        <td>Information</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <pre><code class="language-javascript">// Alle verfügbaren Icons anzeigen
+console.log(IconManager.getAvailableIcons());
+// ['add', 'edit', 'delete', 'view', ...]</code></pre>
+
+            <h2>🎨 Icon-Presets</h2>
+
+            <h3>Emoji (Standard)</h3>
+            <pre><code class="language-javascript">IconManager.setPreset('emoji');
+IconManager.getIcon('edit'); // ✏️</code></pre>
+            <p><strong>Vorteile:</strong> Keine Dependencies, funktioniert überall, farbig</p>
+            <p><strong>Nachteile:</strong> Inkonsistente Darstellung je nach OS/Browser</p>
+
+            <h3>Lucide Icons <span class="badge">Empfohlen</span></h3>
+            <pre><code class="language-javascript">IconManager.setPreset('lucide');
+IconManager.getIcon('edit');
+// &lt;svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"...&gt;</code></pre>
+            <p><strong>Vorteile:</strong> Modern, konsistent, inline SVG, perfekt für M3 Design</p>
+
+            <h3>Heroicons</h3>
+            <p>Tailwind CSS Icon-Set - Perfekt wenn du bereits Tailwind nutzt.</p>
+
+            <h3>Material Icons</h3>
+            <pre><code class="language-javascript">IconManager.setPreset('material');
+IconManager.getIcon('edit');
+// &lt;i class="material-icons"&gt;edit&lt;/i&gt;</code></pre>
+            <p><strong>Voraussetzung:</strong></p>
+            <pre><code class="language-html">&lt;link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"&gt;</code></pre>
+
+            <h3>FontAwesome</h3>
+            <pre><code class="language-javascript">IconManager.setPreset('fontawesome');
+IconManager.getIcon('edit');
+// &lt;i class="fa fa-edit"&gt;&lt;/i&gt;</code></pre>
+            <p><strong>Voraussetzung:</strong></p>
+            <pre><code class="language-html">&lt;link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"&gt;</code></pre>
+
+            <h2>🔧 Erweiterte Nutzung</h2>
+
+            <h3>Icon für einzelne Action überschreiben</h3>
+            <pre><code class="language-javascript">actions: {
+    row: [
+        // Nutzt globales Preset (z.B. Lucide)
+        {
+            key: 'edit',
+            icon: IconManager.getIcon('edit'),
+            label: 'Bearbeiten'
+        },
+
+        // Override: Nutzt Emoji für diese eine Action
+        {
+            key: 'delete',
+            icon: IconManager.getIcon('delete', 'emoji'), // ⚠️ 2. Parameter!
+            label: 'Löschen',
+            buttonType: 'danger'
+        }
+    ]
+}</code></pre>
+
+            <h3>Custom Icons registrieren</h3>
+            <pre><code class="language-javascript">IconManager.registerIcon('star', {
+    emoji: '⭐',
+    lucide: '&lt;svg&gt;...dein Custom SVG...&lt;/svg&gt;',
+    heroicons: '&lt;svg&gt;...&lt;/svg&gt;',
+    material: '&lt;i class="material-icons"&gt;star&lt;/i&gt;',
+    fontawesome: '&lt;i class="fa fa-star"&gt;&lt;/i&gt;'
+});
+
+// Jetzt nutzbar wie jedes andere Icon
+IconManager.getIcon('star');</code></pre>
+
+            <h2>💡 Best Practices</h2>
+
+            <h3>1. Einmal konfigurieren (App-Start)</h3>
+            <pre><code class="language-javascript">// main.js oder app.js
+import { IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Projekt-weite Einstellung
+IconManager.setPreset('lucide'); // Oder dein bevorzugtes System</code></pre>
+
+            <h3>2. Konsistenz wahren</h3>
+            <pre><code class="language-javascript">// ✅ GUT - Überall IconManager nutzen
+{
+    icon: IconManager.getIcon('edit'),
+    label: 'Bearbeiten'
+}
+
+// ❌ SCHLECHT - Manuell hardcoded
+{
+    icon: '✏️', // Inkonsistent wenn Preset=lucide
+    label: 'Bearbeiten'
+}</code></pre>
+
+            <h3>3. Icons mit Button-Typen kombinieren</h3>
+            <pre><code class="language-javascript">actions: {
+    row: [
+        {
+            key: 'view',
+            icon: IconManager.getIcon('view'),
+            label: 'Ansehen',
+            displayType: 'icon', // Kompakt
+            handler: viewItem
+        },
+        {
+            key: 'delete',
+            icon: IconManager.getIcon('delete'),
+            label: 'Löschen',
+            displayType: 'button-icon', // Vollständiger Button
+            buttonType: 'danger',
+            handler: deleteItem
+        }
+    ]
+}</code></pre>
+
+            <h2>📦 Zusammenfassung</h2>
+            <p><strong>IconManager bietet:</strong></p>
+            <ul>
+                <li>✅ <strong>Zentrale Konfiguration</strong> - Ein Preset für die ganze App</li>
+                <li>✅ <strong>5 Icon-Systeme</strong> - Emoji, Lucide, Heroicons, Material, FontAwesome</li>
+                <li>✅ <strong>15+ Standard-Icons</strong> - Die häufigsten Actions abgedeckt</li>
+                <li>✅ <strong>Erweiterbar</strong> - Custom Icons registrieren</li>
+                <li>✅ <strong>Individuell überschreibbar</strong> - Preset pro Icon möglich</li>
+                <li>✅ <strong>Zero Dependencies</strong> (außer bei Material/FontAwesome)</li>
+            </ul>
+
+            <p style="margin-top: 32px; padding: 20px; background: #e8f0fe; border-left: 4px solid #1a73e8; border-radius: 4px;">
+                <strong>💡 Empfehlung:</strong> Nutze <strong>Lucide Icons</strong> für moderne, konsistente M3-konforme UIs!
+            </p>
+
+            <p style="margin-top: 32px; text-align: center;">
+                <a href="index.html" class="ssi-btn ssi-btn-primary" style="display: inline-block; background: #1a73e8; color: white; padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 500;">
+                    ← Zurück zur Übersicht
+                </a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('pre code').forEach((block) => {
+                hljs.highlightElement(block);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -6,7 +6,7 @@
     <title>ModalBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
@@ -108,8 +108,6 @@
             font-family: 'Roboto Mono', monospace;
             font-size: 14px;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
         .example-code .keyword { color: #c792ea; }
@@ -206,22 +204,22 @@
                 <button class="ssi-btn ssi-btn-primary" onclick="openModal('fullscreen')">Fullscreen</button>
             </div>
 
-            <pre class="example-code"><code>import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';
+            <div class="example-code"><span class="keyword">import</span> { ModalBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
 
-const modal = new ModalBuilder({
-    size: 'medium',  // xs | small | medium | large | xl | fullscreen
-    title: 'Modal Title',
-    content: '<p>Your content here...</p>',
-    actions: [
+<span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'medium'</span>,  <span class="comment">// xs | small | medium | large | xl | fullscreen</span>
+    <span class="keyword">title:</span> <span class="string">'Modal Title'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Your content here...</p>'</span>,
+    <span class="keyword">actions:</span> [
         {
-            label: 'Close',
-            type: 'secondary',
-            onClick: (modal) => modal.close()
+            <span class="keyword">label:</span> <span class="string">'Close'</span>,
+            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
+            <span class="keyword">onClick:</span> (modal) => modal.<span class="function">close</span>()
         }
     ]
 });
 
-modal.open();</code></pre>
+modal.<span class="function">open</span>();</div>
         </div>
 
         <!-- Example 2: Side Drawers -->
@@ -234,13 +232,13 @@ modal.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('side-right')">Side Right Drawer</button>
             </div>
 
-            <pre class="example-code"><code>const drawer = new ModalBuilder({
-    size: 'side-right',  // side-left | side-right
-    title: 'Filter Options',
-    content: '<p>Filter UI here...</p>'
+            <div class="example-code"><span class="keyword">const</span> drawer = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'side-right'</span>,  <span class="comment">// side-left | side-right</span>
+    <span class="keyword">title:</span> <span class="string">'Filter Options'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Filter UI here...</p>'</span>
 });
 
-drawer.open();</code></pre>
+drawer.<span class="function">open</span>();</div>
         </div>
 
         <!-- Example 3: Bottom Sheet -->
@@ -252,13 +250,13 @@ drawer.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('bottom')">Bottom Sheet</button>
             </div>
 
-            <pre class="example-code"><code>const sheet = new ModalBuilder({
-    size: 'bottom',
-    title: 'Share Options',
-    content: '<p>Share via Email, Link, etc.</p>'
+            <div class="example-code"><span class="keyword">const</span> sheet = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">size:</span> <span class="string">'bottom'</span>,
+    <span class="keyword">title:</span> <span class="string">'Share Options'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Share via Email, Link, etc.</p>'</span>
 });
 
-sheet.open();</code></pre>
+sheet.<span class="function">open</span>();</div>
         </div>
 
         <!-- Example 4: Static Methods -->
@@ -272,35 +270,35 @@ sheet.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="testPrompt()">Prompt</button>
             </div>
 
-            <pre class="example-code"><code>// Alert
-await ModalBuilder.alert({
-    title: 'Success!',
-    message: 'Your data has been saved.',
-    type: 'success'
+            <div class="example-code"><span class="comment">// Alert</span>
+<span class="keyword">await</span> ModalBuilder.<span class="function">alert</span>({
+    <span class="keyword">title:</span> <span class="string">'Success!'</span>,
+    <span class="keyword">message:</span> <span class="string">'Your data has been saved.'</span>,
+    <span class="keyword">type:</span> <span class="string">'success'</span>
 });
 
-// Confirm
-const confirmed = await ModalBuilder.confirm({
-    title: 'Delete Item?',
-    message: 'This action cannot be undone.',
-    confirmLabel: 'Delete',
-    confirmType: 'danger'
+<span class="comment">// Confirm</span>
+<span class="keyword">const</span> confirmed = <span class="keyword">await</span> ModalBuilder.<span class="function">confirm</span>({
+    <span class="keyword">title:</span> <span class="string">'Delete Item?'</span>,
+    <span class="keyword">message:</span> <span class="string">'This action cannot be undone.'</span>,
+    <span class="keyword">confirmLabel:</span> <span class="string">'Delete'</span>,
+    <span class="keyword">confirmType:</span> <span class="string">'danger'</span>
 });
 
-if (confirmed) {
-    // Delete logic
+<span class="keyword">if</span> (confirmed) {
+    <span class="comment">// Delete logic</span>
 }
 
-// Prompt
-const name = await ModalBuilder.prompt({
-    title: 'Enter Your Name',
-    message: 'Please provide your full name:',
-    placeholder: 'John Doe'
+<span class="comment">// Prompt</span>
+<span class="keyword">const</span> name = <span class="keyword">await</span> ModalBuilder.<span class="function">prompt</span>({
+    <span class="keyword">title:</span> <span class="string">'Enter Your Name'</span>,
+    <span class="keyword">message:</span> <span class="string">'Please provide your full name:'</span>,
+    <span class="keyword">placeholder:</span> <span class="string">'John Doe'</span>
 });
 
-if (name) {
-    console.log('Name:', name);
-}</code></pre>
+<span class="keyword">if</span> (name) {
+    console.<span class="function">log</span>(<span class="string">'Name:'</span>, name);
+}</div>
         </div>
 
         <!-- Example 5: Custom Actions -->
@@ -312,37 +310,37 @@ if (name) {
                 <button class="ssi-btn ssi-btn-primary" onclick="openCustomModal()">Open Custom Modal</button>
             </div>
 
-            <pre class="example-code"><code>const modal = new ModalBuilder({
-    title: 'Confirm Action',
-    content: '<p>Are you sure you want to proceed?</p>',
-    actions: [
+            <div class="example-code"><span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
+    <span class="keyword">title:</span> <span class="string">'Confirm Action'</span>,
+    <span class="keyword">content:</span> <span class="string">'<p>Are you sure you want to proceed?</p>'</span>,
+    <span class="keyword">actions:</span> [
         {
-            label: 'Cancel',
-            type: 'secondary',
-            onClick: (modal) => {
-                modal.close();
+            <span class="keyword">label:</span> <span class="string">'Cancel'</span>,
+            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
+            <span class="keyword">onClick:</span> (modal) => {
+                modal.<span class="function">close</span>();
             }
         },
         {
-            label: 'Save Draft',
-            type: 'outlined',
-            onClick: async (modal) => {
-                await saveDraft();
-                modal.close();
+            <span class="keyword">label:</span> <span class="string">'Save Draft'</span>,
+            <span class="keyword">type:</span> <span class="string">'outlined'</span>,
+            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
+                <span class="keyword">await</span> <span class="function">saveDraft</span>();
+                modal.<span class="function">close</span>();
             }
         },
         {
-            label: 'Publish',
-            type: 'primary',
-            onClick: async (modal) => {
-                await publish();
-                modal.close();
+            <span class="keyword">label:</span> <span class="string">'Publish'</span>,
+            <span class="keyword">type:</span> <span class="string">'primary'</span>,
+            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
+                <span class="keyword">await</span> <span class="function">publish</span>();
+                modal.<span class="function">close</span>();
             }
         }
     ]
 });
 
-modal.open();</code></pre>
+modal.<span class="function">open</span>();</div>
         </div>
 
         <!-- Size Reference -->
@@ -618,7 +616,7 @@ modal.open();</code></pre>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code").forEach((block) => {
+            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
                 hljs.highlightElement(block);
             });
         });

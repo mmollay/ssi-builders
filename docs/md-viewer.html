@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Viewer - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/11.1.1/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #202124;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .nav {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+            margin-right: 24px;
+            transition: opacity 0.2s;
+        }
+
+        .nav a:hover {
+            opacity: 0.7;
+        }
+
+        #content {
+            background: white;
+            border-radius: 12px;
+            padding: 48px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            line-height: 1.8;
+        }
+
+        #content h1 {
+            font-size: 36px;
+            color: #202124;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #1a73e8;
+        }
+
+        #content h2 {
+            font-size: 28px;
+            color: #1a73e8;
+            margin: 40px 0 16px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        #content h3 {
+            font-size: 22px;
+            color: #202124;
+            margin: 32px 0 12px 0;
+        }
+
+        #content h4 {
+            font-size: 18px;
+            color: #5f6368;
+            margin: 24px 0 8px 0;
+        }
+
+        #content p {
+            color: #5f6368;
+            margin-bottom: 16px;
+        }
+
+        #content ul, #content ol {
+            margin: 16px 0;
+            padding-left: 32px;
+        }
+
+        #content li {
+            color: #5f6368;
+            margin: 8px 0;
+        }
+
+        #content code {
+            background: #f1f3f4;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            color: #ea4335;
+        }
+
+        #content pre {
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+
+        #content pre code {
+            background: transparent;
+            color: #d4d4d4;
+            padding: 0;
+            display: block;
+        }
+
+        #content blockquote {
+            border-left: 4px solid #1a73e8;
+            padding-left: 16px;
+            margin: 16px 0;
+            color: #5f6368;
+            font-style: italic;
+        }
+
+        #content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        #content th,
+        #content td {
+            text-align: left;
+            padding: 12px;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        #content th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #202124;
+        }
+
+        #content td {
+            color: #5f6368;
+        }
+
+        #content a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        #content a:hover {
+            text-decoration: underline;
+        }
+
+        #content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 16px 0;
+        }
+
+        #content hr {
+            border: none;
+            border-top: 2px solid #e8eaed;
+            margin: 32px 0;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+            color: white;
+            font-size: 18px;
+        }
+
+        .error {
+            background: #fce8e6;
+            border-left: 4px solid #ea4335;
+            padding: 20px;
+            border-radius: 8px;
+            color: #ea4335;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 20px 12px;
+            }
+
+            #content {
+                padding: 24px;
+            }
+
+            #content h1 {
+                font-size: 28px;
+            }
+
+            #content h2 {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav">
+            <a href="demos/index.html">← Zurück zur Übersicht</a>
+            <a href="../README.md?view=md">README</a>
+            <a href="ICON-SYSTEM.md?view=md">Icon System</a>
+            <a href="../CHANGELOG.md?view=md">Changelog</a>
+        </div>
+
+        <div id="content">
+            <div class="loading">Lade Markdown...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configure marked for better rendering
+        marked.setOptions({
+            highlight: function(code, lang) {
+                if (lang && hljs.getLanguage(lang)) {
+                    return hljs.highlight(code, { language: lang }).value;
+                }
+                return hljs.highlightAuto(code).value;
+            },
+            breaks: true,
+            gfm: true
+        });
+
+        async function loadMarkdown() {
+            const contentDiv = document.getElementById('content');
+
+            // Get file path from URL parameter
+            const urlParams = new URLSearchParams(window.location.search);
+            const filePath = urlParams.get('file') || '../README.md';
+
+            try {
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const markdown = await response.text();
+
+                // Convert markdown to HTML
+                const html = marked.parse(markdown);
+
+                // Set content
+                contentDiv.innerHTML = html;
+
+                // Apply syntax highlighting
+                contentDiv.querySelectorAll('pre code').forEach((block) => {
+                    hljs.highlightElement(block);
+                });
+
+            } catch (error) {
+                contentDiv.innerHTML = `
+                    <div class="error">
+                        <h2>❌ Fehler beim Laden</h2>
+                        <p><strong>Datei:</strong> ${filePath}</p>
+                        <p><strong>Fehler:</strong> ${error.message}</p>
+                        <p>Bitte prüfe ob die Datei existiert und der Pfad korrekt ist.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Load markdown when page loads
+        loadMarkdown();
+    </script>
+</body>
+</html>
