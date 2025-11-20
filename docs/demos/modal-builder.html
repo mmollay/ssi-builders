@@ -203,22 +203,22 @@
                 <button class="ssi-btn ssi-btn-primary" onclick="openModal('fullscreen')">Fullscreen</button>
             </div>
 
-            <div class="example-code"><span class="keyword">import</span> { ModalBuilder } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+            <pre class="example-code"><code>import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';
 
-<span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
-    <span class="keyword">size:</span> <span class="string">'medium'</span>,  <span class="comment">// xs | small | medium | large | xl | fullscreen</span>
-    <span class="keyword">title:</span> <span class="string">'Modal Title'</span>,
-    <span class="keyword">content:</span> <span class="string">'<p>Your content here...</p>'</span>,
-    <span class="keyword">actions:</span> [
+const modal = new ModalBuilder({
+    size: 'medium',  // xs | small | medium | large | xl | fullscreen
+    title: 'Modal Title',
+    content: '<p>Your content here...</p>',
+    actions: [
         {
-            <span class="keyword">label:</span> <span class="string">'Close'</span>,
-            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
-            <span class="keyword">onClick:</span> (modal) => modal.<span class="function">close</span>()
+            label: 'Close',
+            type: 'secondary',
+            onClick: (modal) => modal.close()
         }
     ]
 });
 
-modal.<span class="function">open</span>();</div>
+modal.open();</code></pre>
         </div>
 
         <!-- Example 2: Side Drawers -->
@@ -231,13 +231,13 @@ modal.<span class="function">open</span>();</div>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('side-right')">Side Right Drawer</button>
             </div>
 
-            <div class="example-code"><span class="keyword">const</span> drawer = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
-    <span class="keyword">size:</span> <span class="string">'side-right'</span>,  <span class="comment">// side-left | side-right</span>
-    <span class="keyword">title:</span> <span class="string">'Filter Options'</span>,
-    <span class="keyword">content:</span> <span class="string">'<p>Filter UI here...</p>'</span>
+            <pre class="example-code"><code>const drawer = new ModalBuilder({
+    size: 'side-right',  // side-left | side-right
+    title: 'Filter Options',
+    content: '<p>Filter UI here...</p>'
 });
 
-drawer.<span class="function">open</span>();</div>
+drawer.open();</code></pre>
         </div>
 
         <!-- Example 3: Bottom Sheet -->
@@ -249,13 +249,13 @@ drawer.<span class="function">open</span>();</div>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('bottom')">Bottom Sheet</button>
             </div>
 
-            <div class="example-code"><span class="keyword">const</span> sheet = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
-    <span class="keyword">size:</span> <span class="string">'bottom'</span>,
-    <span class="keyword">title:</span> <span class="string">'Share Options'</span>,
-    <span class="keyword">content:</span> <span class="string">'<p>Share via Email, Link, etc.</p>'</span>
+            <pre class="example-code"><code>const sheet = new ModalBuilder({
+    size: 'bottom',
+    title: 'Share Options',
+    content: '<p>Share via Email, Link, etc.</p>'
 });
 
-sheet.<span class="function">open</span>();</div>
+sheet.open();</code></pre>
         </div>
 
         <!-- Example 4: Static Methods -->
@@ -269,35 +269,35 @@ sheet.<span class="function">open</span>();</div>
                 <button class="ssi-btn ssi-btn-outlined" onclick="testPrompt()">Prompt</button>
             </div>
 
-            <div class="example-code"><span class="comment">// Alert</span>
-<span class="keyword">await</span> ModalBuilder.<span class="function">alert</span>({
-    <span class="keyword">title:</span> <span class="string">'Success!'</span>,
-    <span class="keyword">message:</span> <span class="string">'Your data has been saved.'</span>,
-    <span class="keyword">type:</span> <span class="string">'success'</span>
+            <pre class="example-code"><code>// Alert
+await ModalBuilder.alert({
+    title: 'Success!',
+    message: 'Your data has been saved.',
+    type: 'success'
 });
 
-<span class="comment">// Confirm</span>
-<span class="keyword">const</span> confirmed = <span class="keyword">await</span> ModalBuilder.<span class="function">confirm</span>({
-    <span class="keyword">title:</span> <span class="string">'Delete Item?'</span>,
-    <span class="keyword">message:</span> <span class="string">'This action cannot be undone.'</span>,
-    <span class="keyword">confirmLabel:</span> <span class="string">'Delete'</span>,
-    <span class="keyword">confirmType:</span> <span class="string">'danger'</span>
+// Confirm
+const confirmed = await ModalBuilder.confirm({
+    title: 'Delete Item?',
+    message: 'This action cannot be undone.',
+    confirmLabel: 'Delete',
+    confirmType: 'danger'
 });
 
-<span class="keyword">if</span> (confirmed) {
-    <span class="comment">// Delete logic</span>
+if (confirmed) {
+    // Delete logic
 }
 
-<span class="comment">// Prompt</span>
-<span class="keyword">const</span> name = <span class="keyword">await</span> ModalBuilder.<span class="function">prompt</span>({
-    <span class="keyword">title:</span> <span class="string">'Enter Your Name'</span>,
-    <span class="keyword">message:</span> <span class="string">'Please provide your full name:'</span>,
-    <span class="keyword">placeholder:</span> <span class="string">'John Doe'</span>
+// Prompt
+const name = await ModalBuilder.prompt({
+    title: 'Enter Your Name',
+    message: 'Please provide your full name:',
+    placeholder: 'John Doe'
 });
 
-<span class="keyword">if</span> (name) {
-    console.<span class="function">log</span>(<span class="string">'Name:'</span>, name);
-}</div>
+if (name) {
+    console.log('Name:', name);
+}</code></pre>
         </div>
 
         <!-- Example 5: Custom Actions -->
@@ -309,37 +309,37 @@ sheet.<span class="function">open</span>();</div>
                 <button class="ssi-btn ssi-btn-primary" onclick="openCustomModal()">Open Custom Modal</button>
             </div>
 
-            <div class="example-code"><span class="keyword">const</span> modal = <span class="keyword">new</span> <span class="function">ModalBuilder</span>({
-    <span class="keyword">title:</span> <span class="string">'Confirm Action'</span>,
-    <span class="keyword">content:</span> <span class="string">'<p>Are you sure you want to proceed?</p>'</span>,
-    <span class="keyword">actions:</span> [
+            <pre class="example-code"><code>const modal = new ModalBuilder({
+    title: 'Confirm Action',
+    content: '<p>Are you sure you want to proceed?</p>',
+    actions: [
         {
-            <span class="keyword">label:</span> <span class="string">'Cancel'</span>,
-            <span class="keyword">type:</span> <span class="string">'secondary'</span>,
-            <span class="keyword">onClick:</span> (modal) => {
-                modal.<span class="function">close</span>();
+            label: 'Cancel',
+            type: 'secondary',
+            onClick: (modal) => {
+                modal.close();
             }
         },
         {
-            <span class="keyword">label:</span> <span class="string">'Save Draft'</span>,
-            <span class="keyword">type:</span> <span class="string">'outlined'</span>,
-            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
-                <span class="keyword">await</span> <span class="function">saveDraft</span>();
-                modal.<span class="function">close</span>();
+            label: 'Save Draft',
+            type: 'outlined',
+            onClick: async (modal) => {
+                await saveDraft();
+                modal.close();
             }
         },
         {
-            <span class="keyword">label:</span> <span class="string">'Publish'</span>,
-            <span class="keyword">type:</span> <span class="string">'primary'</span>,
-            <span class="keyword">onClick:</span> <span class="keyword">async</span> (modal) => {
-                <span class="keyword">await</span> <span class="function">publish</span>();
-                modal.<span class="function">close</span>();
+            label: 'Publish',
+            type: 'primary',
+            onClick: async (modal) => {
+                await publish();
+                modal.close();
             }
         }
     ]
 });
 
-modal.<span class="function">open</span>();</div>
+modal.open();</code></pre>
         </div>
 
         <!-- Size Reference -->
