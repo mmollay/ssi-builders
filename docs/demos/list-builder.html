@@ -182,6 +182,43 @@
             .hero h1 { font-size: 32px; }
             .container { padding: 20px 16px; }
         }
+    
+        .example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            overflow-x: auto !important;
+            font-family: 'Roboto Mono', 'Consolas', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            margin: 20px 0 !important;
+        }
+
+        .example-code code {
+            color: #d4d4d4 !important;
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
+        .code-block {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            overflow-x: auto !important;
+            font-family: 'Roboto Mono', 'Consolas', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            margin: 20px 0 !important;
+        }
+
+        .code-block code {
+            color: #d4d4d4 !important;
+            background: transparent !important;
+            padding: 0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -211,18 +248,18 @@
 
             <div class="example-demo" id="demo1"></div>
 
-            <div class="code-block"><span class="keyword">const</span> list = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
-    containerId: <span class="string">'demo1'</span>,
+            <pre class="example-code"><code>const list = new ListBuilder({
+    containerId: 'demo1',
     columns: [
-        { key: <span class="string">'name'</span>, label: <span class="string">'Name'</span> },
-        { key: <span class="string">'email'</span>, label: <span class="string">'E-Mail'</span> },
-        { key: <span class="string">'status'</span>, label: <span class="string">'Status'</span> }
+        { key: 'name', label: 'Name' },
+        { key: 'email', label: 'E-Mail' },
+        { key: 'status', label: 'Status' }
     ],
-    dataSource: <span class="keyword">async</span> () => [
-        { id: <span class="string">1</span>, name: <span class="string">'Max Mustermann'</span>, email: <span class="string">'max@example.com'</span>, status: <span class="string">'Aktiv'</span> },
-        { id: <span class="string">2</span>, name: <span class="string">'Anna Schmidt'</span>, email: <span class="string">'anna@example.com'</span>, status: <span class="string">'Aktiv'</span> }
+    dataSource: async () => [
+        { id: 1, name: 'Max Mustermann', email: 'max@example.com', status: 'Aktiv' },
+        { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', status: 'Aktiv' }
     ]
-});</div>
+});</code></pre>
         </div>
 
         <!-- Example 2: With Actions -->
@@ -232,42 +269,42 @@
 
             <div class="example-demo" id="demo2"></div>
 
-            <div class="code-block"><span class="keyword">import</span> { IconManager } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+            <pre class="example-code"><code>import { IconManager } from '/vendor/ssi-builders/src/index.js';
 
-<span class="comment">// Icon-System konfigurieren</span>
-IconManager.<span class="function">setPreset</span>(<span class="string">'lucide'</span>);
+// Icon-System konfigurieren
+IconManager.setPreset('lucide');
 
-<span class="keyword">const</span> list = <span class="keyword">new</span> <span class="function">ListBuilder</span>({
-    containerId: <span class="string">'demo2'</span>,
-    columns: [<span class="comment">/* ... */</span>],
-    dataSource: <span class="keyword">async</span> () => users,
+const list = new ListBuilder({
+    containerId: 'demo2',
+    columns: [/* ... */],
+    dataSource: async () => users,
     actions: {
         row: [
             {
-                key: <span class="string">'view'</span>,
-                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'view'</span>),
-                label: <span class="string">'Ansehen'</span>,
-                displayType: <span class="string">'icon'</span>, <span class="comment">// Icon only (default)</span>
-                handler: (row) => <span class="function">alert</span>(`View: ${row.name}`)
+                key: 'view',
+                icon: IconManager.getIcon('view'),
+                label: 'Ansehen',
+                displayType: 'icon', // Icon only (default)
+                handler: (row) => alert(`View: ${row.name}`)
             },
             {
-                key: <span class="string">'edit'</span>,
-                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>),
-                label: <span class="string">'Bearbeiten'</span>,
-                displayType: <span class="string">'emoji'</span>, <span class="comment">// Emoji only</span>
-                handler: (row) => <span class="function">alert</span>(`Edit: ${row.name}`)
+                key: 'edit',
+                icon: IconManager.getIcon('edit'),
+                label: 'Bearbeiten',
+                displayType: 'emoji', // Emoji only
+                handler: (row) => alert(`Edit: ${row.name}`)
             },
             {
-                key: <span class="string">'delete'</span>,
-                icon: IconManager.<span class="function">getIcon</span>(<span class="string">'delete'</span>),
-                label: <span class="string">'Löschen'</span>,
-                displayType: <span class="string">'button-icon'</span>, <span class="comment">// Full button with icon</span>
-                buttonType: <span class="string">'danger'</span>,
-                handler: (row) => <span class="function">confirm</span>(`Delete ${row.name}?`)
+                key: 'delete',
+                icon: IconManager.getIcon('delete'),
+                label: 'Löschen',
+                displayType: 'button-icon', // Full button with icon
+                buttonType: 'danger',
+                handler: (row) => confirm(`Delete ${row.name}?`)
             }
         ]
     }
-});</div>
+});</code></pre>
         </div>
 
         <!-- Configuration Reference -->
@@ -342,14 +379,14 @@ IconManager.<span class="function">setPreset</span>(<span class="string">'lucide
 
             <h3 style="margin-top: 32px; color: #1a73e8;">Icon System <span class="tag tag-new">NEW</span></h3>
             <p style="margin: 16px 0; color: #5f6368;">Zentrales Icon-Management für konsistente UIs:</p>
-            <div class="code-block"><span class="keyword">import</span> { IconManager } <span class="keyword">from</span> <span class="string">'/vendor/ssi-builders/src/index.js'</span>;
+            <pre class="example-code"><code>import { IconManager } from '/vendor/ssi-builders/src/index.js';
 
-<span class="comment">// Einmal konfigurieren (App-Start)</span>
-IconManager.<span class="function">setPreset</span>(<span class="string">'lucide'</span>); <span class="comment">// oder 'emoji', 'heroicons', 'material', 'fontawesome'</span>
+// Einmal konfigurieren (App-Start)
+IconManager.setPreset('lucide'); // oder 'emoji', 'heroicons', 'material', 'fontawesome'
 
-<span class="comment">// Icons nutzen</span>
-icon: IconManager.<span class="function">getIcon</span>(<span class="string">'edit'</span>) <span class="comment">// Nutzt globales Preset</span>
-icon: IconManager.<span class="function">getIcon</span>(<span class="string">'delete'</span>, <span class="string">'emoji'</span>) <span class="comment">// Override für einzelnes Icon</span></div>
+// Icons nutzen
+icon: IconManager.getIcon('edit') // Nutzt globales Preset
+icon: IconManager.getIcon('delete', 'emoji') // Override für einzelnes Icon</code></pre>
 
             <p style="margin-top: 16px;">
                 <a href="../ICON-SYSTEM.md" target="_blank" style="color: #1a73e8; font-weight: 500;">
