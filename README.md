@@ -211,6 +211,46 @@ git commit -m "Update ssi-builders to latest version"
 
 ---
 
+## 🏷️ Version Badge
+
+Alle SSI Builders zeigen automatisch ein dezentes Version-Badge in der unten rechten Ecke an.
+
+### Features:
+- ✅ Automatisch in allen 7 Builders integriert
+- ✅ Zeigt aktuelle Version aus `package.json`
+- ✅ Dezentes Design (grau, halbtransparent)
+- ✅ Hover-Effekt für bessere Sichtbarkeit
+- ✅ Fixed Position (bottom-right)
+- ✅ Z-Index 9999 (immer sichtbar)
+
+### CSS Klasse:
+```css
+.ssi-version-badge {
+    position: fixed;
+    bottom: 8px;
+    right: 8px;
+    font-size: 9px;
+    color: #999;
+    opacity: 0.6;
+}
+```
+
+### Customization:
+Badge-Styles können in `src/shared.css` angepasst werden.
+
+### Programmierung:
+```javascript
+import { getVersion, createVersionBadge } from './version.js';
+
+// Version abrufen
+const version = getVersion(); // "1.0.0"
+
+// Badge HTML generieren
+const badgeHtml = createVersionBadge(); // "<div class='ssi-version-badge'>v1.0.0</div>"
+```
+
+---
+
 ## 🛠️ Development
 
 ### Im SSI-Builders Repo:

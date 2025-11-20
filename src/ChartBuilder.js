@@ -14,6 +14,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class ChartBuilder {
     /**
      * @param {Object} config - Configuration object
@@ -73,6 +75,7 @@ export class ChartBuilder {
                     ${this.renderChart()}
                 </div>
                 ${this.options.showLegend ? this.renderLegend() : ''}
+                ${createVersionBadge()}
             </div>
         `;
 

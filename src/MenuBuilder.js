@@ -17,6 +17,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class MenuBuilder {
     static activeMenus = [];
     static menuCounter = 0;
@@ -140,6 +142,7 @@ export class MenuBuilder {
                 <div class="menu-container" style="width: ${this.options.width}; max-height: ${this.options.maxHeight}px">
                     ${this.renderItems(this.items)}
                 </div>
+                ${createVersionBadge()}
             </div>
         `;
 

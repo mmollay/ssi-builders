@@ -16,6 +16,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class FormBuilder {
     /**
      * @param {Object} config - Configuration object
@@ -87,6 +89,7 @@ export class FormBuilder {
                     ${this.renderFields()}
                     ${this.renderActions()}
                 </form>
+                ${createVersionBadge()}
             </div>
         `;
 

@@ -15,6 +15,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class ModalBuilder {
     static activeModals = [];
     static modalCounter = 0;
@@ -120,6 +122,7 @@ export class ModalBuilder {
                     ${this.renderBody()}
                     ${this.renderFooter()}
                 </div>
+                ${createVersionBadge()}
             </div>
         `;
 

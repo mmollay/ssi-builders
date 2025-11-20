@@ -5,6 +5,40 @@ All notable changes to SSI Builders will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-20
+
+### 🏷️ Version Badge Feature
+
+New feature: Automatic version badge display in all Builder components.
+
+### Added
+
+- **Version Badge System**
+  - New `src/version.js` utility module
+  - `getVersion()` function to retrieve current version
+  - `createVersionBadge()` function to generate version badge HTML
+  - Automatic badge integration in all 7 Builders (ListBuilder, FormBuilder, ModalBuilder, ChartBuilder, TabBuilder, MenuBuilder, SidebarBuilder)
+
+- **CSS Styling**
+  - New `.ssi-version-badge` class in `shared.css`
+  - Fixed positioning (bottom-right corner)
+  - Discrete design (9px font, gray color, 60% opacity)
+  - Hover effect for better visibility (opacity: 100%)
+  - Z-index 9999 for always-on-top display
+  - Monospace font (Courier New)
+
+- **Documentation**
+  - New "Version Badge" section in README.md
+  - API documentation for version utilities
+  - Customization instructions
+
+### Changed
+
+- Updated `src/index.js` to export version utilities
+- All 7 Builder components now include version badge in their render methods
+
+---
+
 ## [1.0.0] - 2025-11-20
 
 ### 🎉 Initial Release
@@ -123,4 +157,5 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 
 ---
 
+[1.1.0]: https://github.com/ssi-solutions/ssi-builders/releases/tag/v1.1.0
 [1.0.0]: https://github.com/ssi-solutions/ssi-builders/releases/tag/v1.0.0

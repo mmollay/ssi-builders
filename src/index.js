@@ -13,6 +13,7 @@ export { ChartBuilder } from './ChartBuilder.js';
 export { TabBuilder } from './TabBuilder.js';
 export { MenuBuilder } from './MenuBuilder.js';
 export { SidebarBuilder } from './SidebarBuilder.js';
+export { getVersion, createVersionBadge } from './version.js';
 
 // Default export for convenience
 export default {
@@ -26,5 +27,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '1.0.0';
+export const VERSION = '1.1.0';
 export const LIBRARY_NAME = 'SSI Builders';

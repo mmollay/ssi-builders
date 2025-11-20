@@ -17,6 +17,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class SidebarBuilder {
     static sidebarCounter = 0;
 
@@ -72,6 +74,7 @@ export class SidebarBuilder {
                 ${this.renderNav()}
                 ${this.options.footer ? this.renderFooter() : ''}
                 ${this.options.collapsible ? this.renderToggleButton() : ''}
+                ${createVersionBadge()}
             </aside>
         `;
 

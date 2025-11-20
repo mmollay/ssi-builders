@@ -16,6 +16,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class TabBuilder {
     static tabCounter = 0;
 
@@ -66,6 +68,7 @@ export class TabBuilder {
             <div class="tab-builder tab-style-${this.options.style} tab-position-${this.options.position} ${this.options.fullWidth ? 'tab-full-width' : ''} ${this.options.centered ? 'tab-centered' : ''}" id="${this.id}">
                 ${this.renderTabList()}
                 ${this.renderTabPanels()}
+                ${createVersionBadge()}
             </div>
         `;
 

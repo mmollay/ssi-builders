@@ -16,6 +16,8 @@
  * @version 1.0.0
  */
 
+import { createVersionBadge } from './version.js';
+
 export class ListBuilder {
     /**
      * @param {Object} config - Configuration object
@@ -94,6 +96,7 @@ export class ListBuilder {
                     ${this.renderTable()}
                 </div>
                 ${this.options.paginated ? this.renderPagination() : ''}
+                ${createVersionBadge()}
             </div>
         `;
 
