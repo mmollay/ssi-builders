@@ -1,0 +1,62 @@
+{
+  "name": "@ssi/builders",
+  "version": "1.0.0",
+  "description": "Professional UI Builder Components - Material Design 3 | SSI Central Component Library",
+  "main": "src/index.js",
+  "module": "src/index.js",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.js",
+    "./ListBuilder": "./src/ListBuilder.js",
+    "./FormBuilder": "./src/FormBuilder.js",
+    "./ModalBuilder": "./src/ModalBuilder.js",
+    "./ChartBuilder": "./src/ChartBuilder.js",
+    "./TabBuilder": "./src/TabBuilder.js",
+    "./MenuBuilder": "./src/MenuBuilder.js",
+    "./SidebarBuilder": "./src/SidebarBuilder.js",
+    "./styles": "./dist/ssi-builders.css",
+    "./styles/*": "./src/*.css"
+  },
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "version:patch": "npm version patch && git push && git push --tags",
+    "version:minor": "npm version minor && git push && git push --tags",
+    "version:major": "npm version major && git push && git push --tags"
+  },
+  "keywords": [
+    "ui",
+    "builder",
+    "components",
+    "material-design",
+    "md3",
+    "forms",
+    "modals",
+    "tables",
+    "charts",
+    "ssi"
+  ],
+  "author": "SSI Solutions",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.40.0",
+    "vite": "^5.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ssi-solutions/ssi-builders.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ssi-solutions/ssi-builders/issues"
+  },
+  "homepage": "https://github.com/ssi-solutions/ssi-builders#readme"
+}
