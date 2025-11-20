@@ -372,29 +372,33 @@ const list = new ListBuilder({
         function renderComparisonButtons() {
             const testIcons = ['view', 'edit', 'delete'];
 
+            // WICHTIG: Jedes Weight muss separat gesetzt und SOFORT die Icons geholt werden
+
             // Thin buttons
             IconManager.setIconWeight('thin');
-            thinButtons.innerHTML = testIcons.map(iconName =>
-                `<button class="ssi-btn ssi-btn-outlined">
-                    ${IconManager.getIcon(iconName)} ${iconName}
-                </button>`
-            ).join('');
+            const thinIconsHtml = testIcons.map(iconName => {
+                const icon = IconManager.getIcon(iconName);
+                return `<button class="ssi-btn ssi-btn-outlined">${icon} ${iconName}</button>`;
+            }).join('');
 
             // Regular buttons
             IconManager.setIconWeight('regular');
-            regularButtons.innerHTML = testIcons.map(iconName =>
-                `<button class="ssi-btn ssi-btn-outlined">
-                    ${IconManager.getIcon(iconName)} ${iconName}
-                </button>`
-            ).join('');
+            const regularIconsHtml = testIcons.map(iconName => {
+                const icon = IconManager.getIcon(iconName);
+                return `<button class="ssi-btn ssi-btn-outlined">${icon} ${iconName}</button>`;
+            }).join('');
 
             // Bold buttons
             IconManager.setIconWeight('bold');
-            boldButtons.innerHTML = testIcons.map(iconName =>
-                `<button class="ssi-btn ssi-btn-outlined">
-                    ${IconManager.getIcon(iconName)} ${iconName}
-                </button>`
-            ).join('');
+            const boldIconsHtml = testIcons.map(iconName => {
+                const icon = IconManager.getIcon(iconName);
+                return `<button class="ssi-btn ssi-btn-outlined">${icon} ${iconName}</button>`;
+            }).join('');
+
+            // Jetzt alle auf einmal ins DOM schreiben
+            thinButtons.innerHTML = thinIconsHtml;
+            regularButtons.innerHTML = regularIconsHtml;
+            boldButtons.innerHTML = boldIconsHtml;
 
             // Reset to regular
             IconManager.setIconWeight('regular');
