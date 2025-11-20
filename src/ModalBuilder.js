@@ -31,18 +31,18 @@ export class ModalBuilder {
     constructor(config) {
         this.id = `modal_${++ModalBuilder.modalCounter}`;
         this.title = config.title || '';
-        this.body = config.body || '';
+        this.body = config.body || config.content || ''; // Support both body and content
         this.actions = config.actions || [];
         this.options = {
-            size: config.options?.size || 'medium', // xs, small, medium, large, xl, fullscreen, side-left, side-right, bottom
-            closeOnBackdrop: config.options?.closeOnBackdrop !== false,
-            closeOnEsc: config.options?.closeOnEsc !== false,
-            showCloseButton: config.options?.showCloseButton !== false,
-            animation: config.options?.animation || 'fade', // fade, slide, zoom, none
-            centered: config.options?.centered !== false,
-            scrollable: config.options?.scrollable !== false,
-            onOpen: config.options?.onOpen || null,
-            onClose: config.options?.onClose || null,
+            size: config.size || config.options?.size || 'medium', // Support both config.size and config.options.size
+            closeOnBackdrop: config.closeOnBackdrop ?? config.options?.closeOnBackdrop ?? true,
+            closeOnEsc: config.closeOnEsc ?? config.options?.closeOnEsc ?? true,
+            showCloseButton: config.showCloseButton ?? config.options?.showCloseButton ?? true,
+            animation: config.animation || config.options?.animation || 'fade', // fade, slide, zoom, none
+            centered: config.centered ?? config.options?.centered ?? true,
+            scrollable: config.scrollable ?? config.options?.scrollable ?? true,
+            onOpen: config.onOpen || config.options?.onOpen || null,
+            onClose: config.onClose || config.options?.onClose || null,
             ...config.options
         };
 
