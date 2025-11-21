@@ -13,10 +13,11 @@
  * - Async submit with loading states
  * - Mobile-responsive
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
+import { IconManager } from './IconManager.js';
 
 export class FormBuilder extends BaseBuilder {
     /**
@@ -100,7 +101,7 @@ export class FormBuilder extends BaseBuilder {
             <div class="form-steps">
                 ${this.options.steps.map((step, index) => `
                     <div class="form-step ${index === this.currentStep ? 'active' : ''} ${index < this.currentStep ? 'completed' : ''}">
-                        <div class="form-step-number">${index < this.currentStep ? '✓' : index + 1}</div>
+                        <div class="form-step-number">${index < this.currentStep ? IconManager.getIcon('check') : index + 1}</div>
                         <div class="form-step-label">${step.label}</div>
                     </div>
                 `).join('')}

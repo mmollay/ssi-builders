@@ -13,10 +13,11 @@
  * - Loading/Empty/Error states
  * - Full accessibility
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
+import { IconManager } from './IconManager.js';
 
 export class ListBuilder extends BaseBuilder {
     /**
@@ -127,7 +128,7 @@ export class ListBuilder extends BaseBuilder {
                 <div class="list-toolbar-right">
                     ${this.options.enableColumnToggle ? `
                         <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_columnToggle">
-                            <span>👁️</span> Spalten
+                            ${IconManager.getIcon('columns')} Spalten
                         </button>
                     ` : ''}
 
@@ -135,7 +136,7 @@ export class ListBuilder extends BaseBuilder {
 
                     ${this.options.selectable && this.selectedRows.size > 0 ? `
                         <button class="ssi-btn ssi-btn-danger ssi-btn-sm" id="${this.containerId}_bulkDelete">
-                            🗑️ Löschen (${this.selectedRows.size})
+                            ${IconManager.getIcon('delete')} Löschen (${this.selectedRows.size})
                         </button>
                     ` : ''}
                 </div>
@@ -197,7 +198,7 @@ export class ListBuilder extends BaseBuilder {
         if (this.filteredData.length === 0) {
             return `
                 <div class="list-empty">
-                    <div class="list-empty-icon">📭</div>
+                    <div class="list-empty-icon">${IconManager.getIcon('inbox')}</div>
                     <p>${this.options.emptyMessage}</p>
                     ${this.searchTerm || Object.keys(this.activeFilters).length > 0 ? `
                         <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_clearFilters">

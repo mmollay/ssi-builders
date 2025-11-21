@@ -4,6 +4,36 @@
 
 ---
 
+## 🌐 SSI-Ökosystem Vision (v2.0+)
+
+**SSI Builders ist das Fundament des gesamten SSI-Ökosystems.**
+
+### Kerngedanke
+Wie Google ein einheitliches Design-System über alle Produkte (Gmail, Drive, Calendar, etc.) hat,
+schaffen wir mit SSI Builders ein **konsistentes UI-Framework für ALLE SSI-Anwendungen**.
+
+### Ökosystem-Module
+- **HabDaWas App** - Spenden-Plattform
+- **Habbi Suchalgorithmus** - Intelligente Suche
+- **Bazar Bold** - E-Commerce
+- **Zukünftige Module** - Alle nutzen SSI Builders
+
+### Zentrale Komponenten (überall benötigt)
+1. **ListBuilder** - Datentabellen
+2. **FormBuilder** - Formulare
+3. **ModalBuilder** - Dialoge
+4. **BreadcrumbBuilder** - Navigation
+5. **ToastBuilder** - Notifications
+6. **CardBuilder** - Content Cards
+
+### Entwicklungs-Philosophie
+- **Ein Feature → Überall verfügbar** - Entwicklung in SSI Builders, Nutzung in allen Modulen
+- **Google als Vorbild** - Material Design 3, einheitliche UX
+- **Lucide Icons only** - Keine Emojis, professionelle SVG Icons
+- **Git Submodules** - Andere Projekte binden als Submodule ein
+
+---
+
 ## 🎯 Projekt-Zweck
 
 SSI Builders ist die **einzige Source of Truth** für UI-Komponenten in allen SSI-Projekten:
@@ -70,6 +100,71 @@ SSI Builders ist die **einzige Source of Truth** für UI-Komponenten in allen SS
 ---
 
 ## ✅ Code-Standards
+
+### 🎨 Design Tokens (v2.0+)
+
+**IMMER verwenden! Keine hardcoded Werte!**
+
+```css
+/* Colors - Google M3 Palette */
+--ssi-primary: #1a73e8;         /* Google Blue */
+--ssi-success: #34a853;         /* Google Green */
+--ssi-error: #ea4335;           /* Google Red */
+--ssi-warning: #fbbc04;         /* Google Yellow */
+
+/* Shadows - M3 Elevations */
+--ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+--ssi-shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+--ssi-shadow-lg: 0 8px 24px rgba(0,0,0,0.15);
+
+/* Spacing - 4px Grid */
+--ssi-spacing-xs: 4px;
+--ssi-spacing-sm: 8px;
+--ssi-spacing-md: 12px;
+--ssi-spacing-lg: 16px;
+--ssi-spacing-xl: 24px;
+
+/* Border Radius */
+--ssi-radius-sm: 4px;
+--ssi-radius-md: 8px;
+--ssi-radius-lg: 12px;
+--ssi-radius-full: 9999px;      /* Fully rounded */
+```
+
+### 🎯 Icon System (v2.0+)
+
+**KRITISCH: Niemals Emojis verwenden!**
+
+✅ **RICHTIG:**
+```javascript
+import { IconManager } from './IconManager.js';
+
+// Global setzen (in index.html, main.js)
+IconManager.setPreset('lucide');        // Lucide Icons (default)
+IconManager.setIconWeight('regular');   // thin | regular | bold
+
+// Icon verwenden
+const editIcon = IconManager.getIcon('edit');
+const deleteIcon = IconManager.getIcon('delete');
+```
+
+❌ **FALSCH:**
+```javascript
+const editIcon = '✏️';  // NIEMALS Emojis!
+const deleteIcon = '🗑️'; // Unprofessionell!
+```
+
+**Verfügbare Icons:**
+- `add`, `edit`, `delete`, `view`, `search`, `save`, `close`
+- `settings`, `refresh`, `download`, `upload`, `filter`
+- `check`, `warning`, `info`, `home`, `list`, `menu`
+- `folder`, `sidebar`, `layout`, `modal`, `chart`, `tab`
+- `star`, `grid`, `github`, `book`
+
+**Icon Weight:**
+- `thin` (1.5px) - Ultra-minimalistisch
+- `regular` (2px) - Default, ausgewogen
+- `bold` (2.5px) - Kräftig, auffällig
 
 ### Material Design 3
 - Alle Komponenten folgen MD3 Guidelines
@@ -205,20 +300,62 @@ src/
 
 ## 💡 Claude-Anweisungen
 
+### 🚨 WICHTIG: Icon & Design-Regeln IMMER beachten!
+
+**BEVOR du irgendwas implementierst:**
+1. ✅ IconManager verwenden (NIEMALS Emojis!)
+2. ✅ Design Tokens verwenden (KEINE hardcoded Werte!)
+3. ✅ Google M3 Guidelines folgen
+4. ✅ Mobile-First denken
+
 ### Wenn User fragt: "Ich brauche Feature X in Builder Y"
 
 1. **Check:** Existiert Feature bereits?
    - Lies Builder-Code
    - Check README/Docs
+   - **Check:** Nutzt es schon IconManager? Wenn nein, ZUERST migrieren!
 
 2. **Entwicklung:**
    - Feature in SSI-Builders implementieren
+   - **IconManager für alle Icons verwenden**
+   - **Design Tokens für alle Styles verwenden**
    - Tests schreiben
    - Dokumentation updaten
 
 3. **Integration:**
    - Version erhöhen
    - In consuming Projekt einbinden
+
+### Wenn du neuen Builder erstellst
+
+**Checklist (MANDATORY!):**
+- [ ] IconManager importiert und genutzt
+- [ ] Design Tokens aus shared.css verwendet
+- [ ] Mobile-responsive (Breakpoints: 480px, 768px, 1024px)
+- [ ] ARIA Labels auf allen interaktiven Elementen
+- [ ] Keyboard Navigation (Tab, Enter, ESC, Arrows)
+- [ ] Loading/Empty/Error States
+- [ ] Playwright Tests geschrieben
+- [ ] Demo-Page erstellt
+- [ ] README Beispiele hinzugefügt
+- [ ] CHANGELOG Entry
+
+### Wenn du Icons hinzufügst
+
+1. **IconManager.js erweitern:**
+   ```javascript
+   myNewIcon: {
+       emoji: '🔥',  // Nur für Fallback
+       lucide: '<svg>...</svg>',  // Hauptsächlich!
+       heroicons: '<svg>...</svg>',
+       material: '<i class="material-icons">...</i>',
+       fontawesome: '<i class="fa fa-..."></i>'
+   }
+   ```
+
+2. **In CLAUDE.md dokumentieren:**
+   - Icon Name zur Liste hinzufügen
+   - Use Case beschreiben
 
 ### Wenn User sagt: "Builder nutzen in anderem Projekt"
 

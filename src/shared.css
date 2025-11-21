@@ -13,42 +13,127 @@
 }
 
 :root {
-    /* Colors */
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --primary-color: #667eea;
-    --primary-dark: #764ba2;
+    /* ===================================
+       SSI Design Tokens v2.0
+       Google Material Design 3 inspired
+       =================================== */
+
+    /* === Colors - Google M3 Palette === */
+    --ssi-primary: #1a73e8;         /* Google Blue */
+    --ssi-primary-hover: #1557b0;   /* Darker blue for hover */
+    --ssi-primary-active: #103f75;  /* Even darker for active */
+
+    --ssi-success: #34a853;         /* Google Green */
+    --ssi-error: #ea4335;           /* Google Red */
+    --ssi-warning: #fbbc04;         /* Google Yellow */
+    --ssi-info: #4285f4;            /* Light Blue */
+
+    /* Text Colors */
+    --ssi-text-primary: #202124;    /* Almost black */
+    --ssi-text-secondary: #5f6368;  /* Medium gray */
+    --ssi-text-muted: #9aa0a6;      /* Light gray */
+    --ssi-text-inverse: #ffffff;    /* White text */
+
+    /* Background Colors */
+    --ssi-bg-page: #f8f9fa;         /* Light gray page bg */
+    --ssi-bg-card: #ffffff;         /* White cards */
+    --ssi-bg-hover: #f1f3f4;        /* Hover state */
+    --ssi-bg-selected: #e8f0fe;     /* Selected state (light blue) */
+
+    /* Border & Divider */
+    --ssi-border: #dadce0;          /* Light gray border */
+    --ssi-border-dark: #e8eaed;     /* Slightly darker */
+    --ssi-divider: #e0e0e0;         /* Divider lines */
+
+    /* === Shadows - M3 Elevations === */
+    --ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --ssi-shadow-md: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+    --ssi-shadow-lg: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+    --ssi-shadow-hover: 0 4px 12px rgba(0,0,0,0.1);
+
+    /* === Spacing - 4px Grid System === */
+    --ssi-spacing-xs: 4px;          /* Extra small */
+    --ssi-spacing-sm: 8px;          /* Small */
+    --ssi-spacing-md: 12px;         /* Medium */
+    --ssi-spacing-lg: 16px;         /* Large */
+    --ssi-spacing-xl: 24px;         /* Extra large */
+    --ssi-spacing-2xl: 32px;        /* 2X large */
+    --ssi-spacing-3xl: 48px;        /* 3X large */
+
+    /* === Border Radius === */
+    --ssi-radius-sm: 4px;           /* Small corners */
+    --ssi-radius-md: 8px;           /* Medium corners */
+    --ssi-radius-lg: 12px;          /* Large corners */
+    --ssi-radius-xl: 16px;          /* Extra large */
+    --ssi-radius-full: 9999px;      /* Fully rounded (pills, circles) */
+
+    /* === Typography === */
+    --ssi-font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+    --ssi-font-mono: 'Roboto Mono', 'Courier New', monospace;
+
+    --ssi-font-size-xs: 11px;
+    --ssi-font-size-sm: 13px;
+    --ssi-font-size-base: 14px;
+    --ssi-font-size-md: 16px;
+    --ssi-font-size-lg: 18px;
+    --ssi-font-size-xl: 24px;
+    --ssi-font-size-2xl: 32px;
+
+    --ssi-font-weight-normal: 400;
+    --ssi-font-weight-medium: 500;
+    --ssi-font-weight-semibold: 600;
+    --ssi-font-weight-bold: 700;
+
+    --ssi-line-height-tight: 1.25;
+    --ssi-line-height-base: 1.5;
+    --ssi-line-height-relaxed: 1.75;
+
+    /* === Layout === */
+    --ssi-max-width-content: 1400px;
+    --ssi-max-width-narrow: 800px;
+    --ssi-max-width-wide: 1920px;
+
+    /* === Transitions === */
+    --ssi-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --ssi-transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    --ssi-transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* ===================================
+       Legacy Variables (DEPRECATED v2.0)
+       Keep for backwards compatibility
+       =================================== */
+    --primary-color: var(--ssi-primary);
+    --primary-dark: var(--ssi-primary-hover);
     --secondary-color: #24292e;
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 
-    --text-primary: #333;
-    --text-secondary: #666;
-    --text-muted: #999;
+    --text-primary: var(--ssi-text-primary);
+    --text-secondary: var(--ssi-text-secondary);
+    --text-muted: var(--ssi-text-muted);
 
-    --bg-page: #f5f5f5;
-    --bg-card: #ffffff;
-    --bg-hover: #f8f9fa;
+    --bg-page: var(--ssi-bg-page);
+    --bg-card: var(--ssi-bg-card);
+    --bg-hover: var(--ssi-bg-hover);
 
-    --border-color: #e0e0e0;
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
-    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --border-color: var(--ssi-border);
+    --shadow-sm: var(--ssi-shadow-sm);
+    --shadow-md: var(--ssi-shadow-md);
+    --shadow-lg: var(--ssi-shadow-lg);
 
-    /* Spacing - Sehr kompakt! */
-    --spacing-xs: 4px;
-    --spacing-sm: 6px;
-    --spacing-md: 10px;
-    --spacing-lg: 14px;
-    --spacing-xl: 18px;
-    --spacing-2xl: 24px;
+    --spacing-xs: var(--ssi-spacing-xs);
+    --spacing-sm: var(--ssi-spacing-sm);
+    --spacing-md: var(--ssi-spacing-md);
+    --spacing-lg: var(--ssi-spacing-lg);
+    --spacing-xl: var(--ssi-spacing-xl);
+    --spacing-2xl: var(--ssi-spacing-2xl);
 
-    /* Layout */
-    --max-width-content: 1400px;
-    --max-width-narrow: 800px;
-    --border-radius-sm: 8px;
-    --border-radius-md: 12px;
-    --border-radius-lg: 16px;
+    --max-width-content: var(--ssi-max-width-content);
+    --max-width-narrow: var(--ssi-max-width-narrow);
+    --border-radius-sm: var(--ssi-radius-sm);
+    --border-radius-md: var(--ssi-radius-md);
+    --border-radius-lg: var(--ssi-radius-lg);
 
-    /* Typography */
-    --font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-family: var(--ssi-font-family);
 }
 
 body {

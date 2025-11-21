@@ -9,6 +9,176 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.0] - 2025-01-21
+
+### 🌐 SSI-Ökosystem Vision - MAJOR RELEASE
+
+**Breaking Changes & Modernization**
+
+This major version establishes SSI Builders as the **foundation of the entire SSI ecosystem**, similar to how Google uses Material Design across all products.
+
+### 🎨 Design Token System v2.0
+
+**BREAKING: New CSS Custom Properties**
+
+All old color/spacing variables deprecated in favor of Google M3-inspired tokens:
+
+#### New Variables (use these!):
+```css
+/* Colors */
+--ssi-primary: #1a73e8;       /* Google Blue */
+--ssi-success: #34a853;       /* Google Green */
+--ssi-error: #ea4335;         /* Google Red */
+--ssi-warning: #fbbc04;       /* Google Yellow */
+
+/* Text */
+--ssi-text-primary: #202124;  /* Almost black */
+--ssi-text-secondary: #5f6368; /* Medium gray */
+
+/* Shadows (M3 Elevations) */
+--ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+--ssi-shadow-md: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+--ssi-shadow-lg: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+
+/* Spacing (4px Grid) */
+--ssi-spacing-xs: 4px;
+--ssi-spacing-sm: 8px;
+--ssi-spacing-md: 12px;
+--ssi-spacing-lg: 16px;
+--ssi-spacing-xl: 24px;
+
+/* Border Radius */
+--ssi-radius-sm: 4px;
+--ssi-radius-md: 8px;
+--ssi-radius-lg: 12px;
+--ssi-radius-full: 9999px; /* Pills/circles */
+
+/* Typography */
+--ssi-font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+--ssi-font-size-base: 14px;
+--ssi-font-weight-medium: 500;
+
+/* Transitions */
+--ssi-transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+```
+
+#### Legacy Variables (DEPRECATED):
+Old variables still work for backwards compatibility but will be removed in v3.0:
+- `--primary-color` → `--ssi-primary`
+- `--text-primary` → `--ssi-text-primary`
+- `--spacing-md` → `--ssi-spacing-md`
+- etc.
+
+### 🎨 Lucide Icons - Professional SVG Icons
+
+**BREAKING: All Emojis replaced with Lucide SVG Icons**
+
+#### Changed:
+- **ListBuilder**: 👁️ → columns icon, 🗑️ → delete icon, 📭 → inbox icon
+- **FormBuilder**: ✓ → check icon (multi-step checkmarks)
+- **MenuBuilder**: ✓ → check icon (checkbox items)
+- **SidebarBuilder**: 🔍 → search icon
+
+#### New Icons Added to IconManager:
+- `inbox` - Empty state icon
+- `columns` - Column toggle icon
+
+#### Migration:
+```javascript
+// Old (v1.x)
+<span>👁️</span> Spalten
+
+// New (v2.0)
+import { IconManager } from './IconManager.js';
+${IconManager.getIcon('columns')} Spalten
+```
+
+### 📦 All Builders Updated to v2.0
+
+**Version bumped in all builders:**
+- ListBuilder v2.0.0
+- FormBuilder v2.0.0
+- ModalBuilder v2.0.0
+- ChartBuilder v2.0.0
+- TabBuilder v2.0.0
+- MenuBuilder v2.0.0
+- SidebarBuilder v2.0.0
+
+**All builders now:**
+- Import `IconManager` by default
+- Use Lucide SVG icons instead of emojis
+- Follow new Design Token system
+- Have consistent M3 styling
+
+### 📚 Documentation
+
+#### CLAUDE.md Extended:
+- SSI-Ökosystem Vision section
+- Design Tokens reference
+- Icon System rules (NEVER use emojis!)
+- Claude development guidelines for future work
+
+#### README.md Extended:
+- SSI-Ökosystem Vision overview
+- Module status table (HabDaWas, Habbi, Bazar Bold)
+- v2.0.0 Highlights section
+- Updated version info
+
+### ✨ What's New in v2.0?
+
+**🌐 SSI-Ökosystem Foundation**
+- Central UI library for ALL SSI projects
+- Consistent UX across HabDaWas, Habbi, Bazar Bold
+- One feature → everywhere available
+- Google Material Design 3 as inspiration
+
+**🎨 Design Consistency**
+- Professional Lucide SVG icons
+- Google M3 color palette
+- Unified shadows, spacing, typography
+- CSS Custom Properties for easy theming
+
+**📐 Better Developer Experience**
+- Clear Design Token system
+- IconManager with 3 weights (thin, regular, bold)
+- Extended CLAUDE.md for AI-assisted development
+- Backwards-compatible legacy variables
+
+### Migration Guide (v1.x → v2.0)
+
+#### 1. Update Imports (if using emojis directly)
+```javascript
+// Before
+const icon = '🗑️';
+
+// After
+import { IconManager } from './IconManager.js';
+const icon = IconManager.getIcon('delete');
+```
+
+#### 2. Update CSS Custom Properties (optional, but recommended)
+```css
+/* Before */
+color: var(--primary-color);
+
+/* After */
+color: var(--ssi-primary);
+```
+
+#### 3. Test Icon Display
+- Check all Builder implementations
+- Verify icons render correctly
+- Ensure hover states work
+
+### Notes
+
+- **Backwards Compatible**: Old CSS variables still work via mapping
+- **No API Changes**: All Builder APIs unchanged
+- **Visual Changes Only**: Icons and design tokens updated
+- **Performance**: Slightly better (SVG icons are cacheable)
+
+---
+
 ## [1.2.1] - 2025-11-21
 
 ### 🎨 Improved: SidebarBuilder UX

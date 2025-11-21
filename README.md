@@ -2,7 +2,40 @@
 
 **Professional UI Component Library** - Material Design 3 | Production-Ready
 
-Zentrale UI-Komponenten-Bibliothek für alle SSI-Projekte. Entwickelt für Konsistenz, Wiederverwendbarkeit und schnelle Entwicklung.
+> **Das Fundament des SSI-Ökosystems** - Wie Google ein einheitliches Design-System über alle Produkte hat, schafft SSI Builders ein konsistentes UI-Framework für ALLE SSI-Anwendungen.
+
+---
+
+## 🌐 SSI-Ökosystem Vision
+
+SSI Builders ist **die zentrale UI-Bibliothek** für das gesamte SSI-Ökosystem:
+
+### Warum ein zentrales System?
+
+✅ **Konsistente UX** - User erkennen SSI-Apps sofort wieder
+✅ **Entwicklungsgeschwindigkeit** - Ein Feature entwickeln, überall nutzen
+✅ **Wartbarkeit** - Ein Fix profitiert alle Projekte
+✅ **Professionelles Design** - Google Material Design 3 als Vorbild
+
+### Ökosystem-Module
+
+| Modul | Status | Nutzt SSI Builders |
+|-------|--------|-------------------|
+| **HabDaWas App** | ✅ Production | v2.0.0 |
+| **Habbi Suchalgorithmus** | ✅ Production | v2.0.0 |
+| **Bazar Bold** | 🚧 In Development | v2.0.0 |
+| **[Neue Module]** | 📋 Planned | v2.0.0 |
+
+### Zentrale Komponenten
+
+Alle Module nutzen dieselben Builder:
+- 📋 **ListBuilder** - Datentabellen
+- 📝 **FormBuilder** - Formulare
+- 🪟 **ModalBuilder** - Dialoge
+- 📊 **ChartBuilder** - Visualisierungen
+- 📑 **TabBuilder** - Tabs
+- 📜 **MenuBuilder** - Menüs
+- 🗂️ **SidebarBuilder** - Navigation
 
 ---
 
@@ -448,4 +481,28 @@ MIT © SSI Solutions
 
 ---
 
-**Version:** 1.0.0 | **Last Updated:** 2025-11-20
+**Version:** 2.0.0 | **Last Updated:** 2025-01-21
+
+---
+
+## 🎯 v2.0.0 Highlights
+
+### ✨ Was ist neu?
+
+**🔄 Design Token System** - Google M3 inspired
+- Einheitliche Colors, Shadows, Spacing, Typography
+- CSS Custom Properties für einfaches Theming
+
+**🎨 Lucide Icons** - Professionelle SVG Icons
+- Alle Emojis durch Lucide Icons ersetzt
+- 3 Icon Weights: thin, regular, bold
+- Konsistent über alle Builder
+
+**📐 Verbesserte UX**
+- Bessere Hover-States & Transitions
+- Optimierte Mobile-Experience
+- Accessibility-Verbesserungen
+
+**📦 8 Builder** (neu: +1)
+- Alle bestehenden Builder auf v2.0 aktualisiert
+- Vorbereitet für BreadcrumbBuilder, ToastBuilder, CardBuilder

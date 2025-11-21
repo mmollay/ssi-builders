@@ -14,10 +14,11 @@
  * - Disabled items
  * - Checkboxes & radio groups
  *
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 import { createVersionBadge } from './version.js';
+import { IconManager } from './IconManager.js';
 
 export class MenuBuilder {
     static activeMenus = [];
