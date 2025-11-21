@@ -137,6 +137,21 @@ export class SidebarBuilder {
     }
 
     /**
+     * Render badge
+     */
+    renderBadge(badge) {
+        // Handle both string and object badge formats
+        if (typeof badge === 'string') {
+            return `<span class="sidebar-badge">${badge}</span>`;
+        }
+        if (typeof badge === 'object' && badge.text) {
+            const style = badge.color ? `style="background-color: ${badge.color};"` : '';
+            return `<span class="sidebar-badge" ${style}>${badge.text}</span>`;
+        }
+        return '';
+    }
+
+    /**
      * Render single navigation item
      */
     renderItem(item, level) {
@@ -152,12 +167,35 @@ export class SidebarBuilder {
             `;
         }
 
+        // Handle 'section' type - render as collapsible group with heading
+        if (item.type === 'section') {
+            const sectionKey = item.key || `section_${item.label}`;
+            const isExpanded = this.expandedGroups.has(sectionKey);
+
+            return `
+                <li class="sidebar-item sidebar-section" data-item-key="${sectionKey}">
+                    <a
+                        href="#"
+                        class="sidebar-link sidebar-link-has-children sidebar-section-header"
+                        title="${item.label}"
+                    >
+                        <span class="sidebar-label">${item.label}</span>
+                        <span class="sidebar-arrow ${isExpanded ? 'sidebar-arrow-expanded' : ''}">›</span>
+                    </a>
+                    <div class="sidebar-submenu ${isExpanded ? 'sidebar-submenu-expanded' : ''}">
+                        ${this.renderItems(item.items, level + 1)}
+                    </div>
+                </li>
+            `;
+        }
+
         const hasChildren = item.items && item.items.length > 0;
-        const isExpanded = this.expandedGroups.has(item.key);
-        const isActive = this.activeItem === item.key;
+        const itemKey = item.key || item.page || item.label;
+        const isExpanded = this.expandedGroups.has(itemKey);
+        const isActive = this.activeItem === itemKey;
 
         return `
-            <li class="sidebar-item ${isActive ? 'sidebar-item-active' : ''}" data-item-key="${item.key}">
+            <li class="sidebar-item ${isActive ? 'sidebar-item-active' : ''}" data-item-key="${itemKey}">
                 <a
                     href="${item.href || '#'}"
                     class="sidebar-link ${hasChildren ? 'sidebar-link-has-children' : ''}"
@@ -166,7 +204,7 @@ export class SidebarBuilder {
                 >
                     ${item.icon ? `<span class="sidebar-icon">${item.icon}</span>` : ''}
                     <span class="sidebar-label">${item.label}</span>
-                    ${item.badge ? `<span class="sidebar-badge">${item.badge}</span>` : ''}
+                    ${item.badge ? this.renderBadge(item.badge) : ''}
                     ${hasChildren ? `<span class="sidebar-arrow ${isExpanded ? 'sidebar-arrow-expanded' : ''}">›</span>` : ''}
                 </a>
                 ${hasChildren ? `
@@ -397,10 +435,11 @@ export class SidebarBuilder {
         const badgeEl = link?.querySelector('.sidebar-badge');
 
         if (badge) {
+            const badgeHtml = this.renderBadge(badge);
             if (badgeEl) {
-                badgeEl.textContent = badge;
+                badgeEl.outerHTML = badgeHtml;
             } else {
-                link?.insertAdjacentHTML('beforeend', `<span class="sidebar-badge">${badge}</span>`);
+                link?.insertAdjacentHTML('beforeend', badgeHtml);
             }
         } else {
             badgeEl?.remove();

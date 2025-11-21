@@ -124,10 +124,14 @@ export class ModalBuilder {
             overlayPositionClass = 'modal-overlay-bottom';
         }
 
+        // Don't apply centered class to side/bottom modals
+        const isSideOrBottom = ['side-left', 'side-right', 'bottom'].includes(this.options.size);
+        const centeredClass = (this.options.centered && !isSideOrBottom) ? 'modal-centered' : '';
+
         const modalHtml = `
             <div class="modal-overlay ${overlayPositionClass} modal-animation-${this.options.animation}" id="${this.id}">
                 <div class="modal-backdrop" data-modal-backdrop="${this.id}"></div>
-                <div class="modal-container modal-${this.options.size} ${this.options.centered ? 'modal-centered' : ''} ${this.options.scrollable ? 'modal-scrollable' : ''}">
+                <div class="modal-container modal-${this.options.size} ${centeredClass} ${this.options.scrollable ? 'modal-scrollable' : ''}">
                     ${this.renderHeader()}
                     ${this.renderBody()}
                     ${this.renderFooter()}
@@ -409,3 +413,4 @@ export class ModalBuilder {
 }
 
 export default ModalBuilder;
+// Fixed side-left, side-right, bottom alignment

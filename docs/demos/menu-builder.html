@@ -10,58 +10,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/MenuBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Roboto', sans-serif; background: #f5f5f5; }
-        
-        .nav {
-            background: white;
-            border-bottom: 1px solid #e8eaed;
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
+        .demo-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
+        .example-demo {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0 80px 0;
+            text-align: center;
+            min-height: 350px;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: center;
         }
-        
-        .nav-title { font-size: 20px; font-weight: 600; color: #202124; }
-        .nav-links { display: flex; gap: 16px; }
-        .nav-link { color: #5f6368; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-        .nav-link:hover { color: #1a73e8; }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
-        
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 24px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        
-        .hero h1 { font-size: 48px; margin-bottom: 16px; }
-        .hero p { font-size: 20px; opacity: 0.95; }
-        
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .example-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
-        .example-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
-        .example-demo { background: #f8f9fa; padding: 24px; border-radius: 8px; margin: 24px 0; text-align: center; }
         
         pre.example-code {
             background: #1e1e1e !important;
@@ -86,23 +50,20 @@
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-title">📜 MenuBuilder Documentation</div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">← Back to Overview</a>
-                <a href="../../README.md" class="nav-link">GitHub</a>
-            </div>
-        </div>
-    </nav>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-    <div class="container">
-        <div class="hero">
-            <h1>📜 MenuBuilder</h1>
-            <p>Dropdown & Context Menus with nested submenus</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>📜 MenuBuilder</h1>
+                    <p>Dropdown & Context Menus with nested submenus</p>
+                </div>
 
-        <div class="example-section">
+                <div class="demo-section">
             <h2>📜 Dropdown Menu</h2>
             <p class="subtitle">Click the button to open dropdown menu</p>
             <div class="example-demo">
@@ -134,7 +95,7 @@ const menu = new MenuBuilder({
 });</code></pre>
         </div>
 
-        <div class="example-section">
+        <div class="demo-section">
             <h2>🖱️ Context Menu</h2>
             <p class="subtitle">Right-click on the card below</p>
             <div class="example-demo">
@@ -155,7 +116,7 @@ const menu = new MenuBuilder({
 });</code></pre>
         </div>
 
-        <div class="example-section">
+        <div class="demo-section">
             <h2>✨ Features</h2>
             <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
                 <li><strong>Dropdown & Context Menus</strong> - Click or right-click trigger</li>
@@ -166,11 +127,19 @@ const menu = new MenuBuilder({
                 <li><strong>Checkable Items</strong> - Toggle states</li>
                 <li><strong>Disabled Items</strong> - Conditional enable/disable</li>
             </ul>
-        </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { MenuBuilder } from '../../src/MenuBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('menu-builder');
+        addMobileMenuToggle();
 
         new MenuBuilder({
             trigger: '#dropdownBtn',

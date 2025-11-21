@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GlobalConfig Playground - Live Demo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- SSI Builders Styles -->
+    <link rel="stylesheet" href="/src/shared.css">
+    <link rel="stylesheet" href="/src/ListBuilder.css">
+    <link rel="stylesheet" href="/src/FormBuilder.css">
+    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <style>
+        body.dark-mode {
+            background: #1e1e1e;
+            color: #e0e0e0;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: white;
+            padding: 32px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            margin-bottom: 32px;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .control-panel {
+            background: #2d2d2d;
+        }
+
+        .control-section {
+            margin-bottom: 32px;
+        }
+
+        .control-section h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        body.dark-mode .control-section h3 {
+            color: #64b5f6;
+        }
+
+        .control-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+
+        .control-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .control-item label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: #5f6368;
+        }
+
+        body.dark-mode .control-item label {
+            color: #b0b0b0;
+        }
+
+        .control-item select,
+        .control-item input[type="color"] {
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body.dark-mode .control-item select,
+        body.dark-mode .control-item input[type="color"] {
+            background: #3d3d3d;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+
+        .control-item input[type="color"] {
+            height: 44px;
+            cursor: pointer;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 34px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #1a73e8;
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        /* Preview Sections */
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .preview-card {
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .preview-card {
+            background: #2d2d2d;
+        }
+
+        .preview-card h4 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: #1a73e8;
+        }
+
+        body.dark-mode .preview-card h4 {
+            color: #64b5f6;
+        }
+
+        /* Icon Grid */
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .icon-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            transition: background-color 0.3s;
+        }
+
+        body.dark-mode .icon-item {
+            background: #3d3d3d;
+        }
+
+        .icon-item svg,
+        .icon-item .emoji {
+            width: 32px;
+            height: 32px;
+            margin-bottom: 8px;
+        }
+
+        .icon-item .emoji {
+            font-size: 32px;
+            line-height: 32px;
+        }
+
+        .icon-item span {
+            font-size: 11px;
+            color: #5f6368;
+            text-align: center;
+        }
+
+        body.dark-mode .icon-item span {
+            color: #b0b0b0;
+        }
+
+        /* Code Display */
+        .code-display {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        .code-keyword { color: #569cd6; }
+        .code-string { color: #ce9178; }
+        .code-function { color: #dcdcaa; }
+        .code-property { color: #9cdcfe; }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>⚙️ GlobalConfig Playground</h1>
+                    <p>Live-Demo: Konfiguration in Echtzeit sehen</p>
+                </div>
+
+                <!-- Control Panel -->
+        <div class="control-panel">
+            <div class="control-section">
+                <h3>🎨 Theme & Appearance</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Dark Mode</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="darkModeToggle">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Icon Preset</label>
+                        <select id="iconPreset">
+                            <option value="emoji">Emoji (Colored)</option>
+                            <option value="lucide" selected>Lucide (Monochrome)</option>
+                            <option value="heroicons">Heroicons</option>
+                            <option value="material">Material Icons</option>
+                            <option value="fontawesome">Font Awesome</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Icon Weight</label>
+                        <select id="iconWeight">
+                            <option value="thin">Thin (1.5)</option>
+                            <option value="regular" selected>Regular (2.0)</option>
+                            <option value="bold">Bold (2.5)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🎨 Theme Colors</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Primary Color</label>
+                        <input type="color" id="primaryColor" value="#1a73e8">
+                    </div>
+                    <div class="control-item">
+                        <label>Success Color</label>
+                        <input type="color" id="successColor" value="#34a853">
+                    </div>
+                    <div class="control-item">
+                        <label>Danger Color</label>
+                        <input type="color" id="dangerColor" value="#ea4335">
+                    </div>
+                    <div class="control-item">
+                        <label>Secondary Color</label>
+                        <input type="color" id="secondaryColor" value="#5f6368">
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📋 List Settings</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Action Display Type</label>
+                        <select id="listActionDisplay">
+                            <option value="icon" selected>Icon Only</option>
+                            <option value="emoji">Emoji Only</option>
+                            <option value="button">Button</option>
+                            <option value="button-icon">Button + Icon</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Items Per Page</label>
+                        <select id="itemsPerPage">
+                            <option value="10">10</option>
+                            <option value="20" selected>20</option>
+                            <option value="50">50</option>
+                            <option value="100">100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Preview Grid -->
+        <div class="preview-grid">
+            <!-- Icon Preview -->
+            <div class="preview-card">
+                <h4>Icon Preview</h4>
+                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
+                    Current: <strong id="currentIconPreset">Lucide</strong> (<span id="currentIconWeight">Regular</span>)
+                </p>
+                <div class="icon-grid" id="iconPreview">
+                    <!-- Icons will be rendered here -->
+                </div>
+            </div>
+
+            <!-- Button Styles Preview -->
+            <div class="preview-card">
+                <h4>Button Styles</h4>
+                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
+                    Mit aktuellen Theme-Farben
+                </p>
+                <div id="buttonPreview" style="display: flex; flex-direction: column; gap: 12px;">
+                    <!-- Buttons will be rendered here -->
+                </div>
+            </div>
+
+            <!-- List Preview -->
+            <div class="preview-card" style="grid-column: 1 / -1;">
+                <h4>ListBuilder Preview</h4>
+                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
+                    Action Display: <strong id="currentActionDisplay">Icon</strong>
+                </p>
+                <div id="listPreview"></div>
+            </div>
+
+            <!-- Generated Code -->
+            <div class="preview-card" style="grid-column: 1 / -1;">
+                <h4>📝 Generated Code</h4>
+                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
+                    Kopiere diesen Code in deine App:
+                </p>
+                <div class="code-display" id="generatedCode">
+                    <!-- Code will be generated here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { SidebarBuilder } from '/src/SidebarBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+        import { GlobalConfig } from '/src/GlobalConfig.js';
+        import { IconManager } from '/src/IconManager.js';
+        import { ListBuilder } from '/src/ListBuilder.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('global-config');
+
+        // Initialize with defaults
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular',
+            theme: {
+                primary: '#1a73e8',
+                success: '#34a853',
+                danger: '#ea4335',
+                secondary: '#5f6368'
+            },
+            lists: {
+                itemsPerPage: 20,
+                actionDisplayType: 'icon'
+            }
+        });
+
+        const iconNames = ['home', 'user', 'settings', 'heart', 'star', 'search', 'edit', 'delete', 'check', 'close', 'menu', 'bell'];
+
+        // Update Icon Preview
+        function updateIconPreview() {
+            const container = document.getElementById('iconPreview');
+            const preset = document.getElementById('iconPreset').value;
+            const weight = document.getElementById('iconWeight').value;
+
+            document.getElementById('currentIconPreset').textContent =
+                preset.charAt(0).toUpperCase() + preset.slice(1);
+            document.getElementById('currentIconWeight').textContent =
+                weight.charAt(0).toUpperCase() + weight.slice(1);
+
+            container.innerHTML = '';
+
+            iconNames.forEach(iconName => {
+                const item = document.createElement('div');
+                item.className = 'icon-item';
+
+                const icon = IconManager.getIcon(iconName);
+
+                if (preset === 'emoji') {
+                    item.innerHTML = `
+                        <div class="emoji">${icon}</div>
+                        <span>${iconName}</span>
+                    `;
+                } else {
+                    item.innerHTML = `
+                        ${icon}
+                        <span>${iconName}</span>
+                    `;
+                }
+
+                container.appendChild(item);
+            });
+        }
+
+        // Update Button Preview
+        function updateButtonPreview() {
+            const container = document.getElementById('buttonPreview');
+            const primary = document.getElementById('primaryColor').value;
+            const success = document.getElementById('successColor').value;
+            const danger = document.getElementById('dangerColor').value;
+
+            container.innerHTML = `
+                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${primary}; color: white;">
+                    Primary Button
+                </button>
+                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${success}; color: white;">
+                    Success Button
+                </button>
+                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${danger}; color: white;">
+                    Danger Button
+                </button>
+                <button style="padding: 12px 24px; border: 1px solid #e0e0e0; background: white; border-radius: 8px; font-size: 14px; cursor: pointer;">
+                    Secondary Button
+                </button>
+            `;
+        }
+
+        // Update List Preview
+        function updateListPreview() {
+            const container = document.getElementById('listPreview');
+            const actionDisplay = document.getElementById('listActionDisplay').value;
+
+            document.getElementById('currentActionDisplay').textContent =
+                actionDisplay.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' + ');
+
+            container.innerHTML = '';
+
+            new ListBuilder({
+                containerId: 'listPreview',
+                columns: [
+                    { key: 'name', label: 'Name' },
+                    { key: 'email', label: 'E-Mail' },
+                    { key: 'status', label: 'Status' }
+                ],
+                dataSource: async () => [
+                    { id: 1, name: 'Max Mustermann', email: 'max@example.com', status: 'Aktiv' },
+                    { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', status: 'Aktiv' },
+                    { id: 3, name: 'Tom Weber', email: 'tom@example.com', status: 'Inaktiv' }
+                ],
+                actions: {
+                    row: [
+                        {
+                            key: 'view',
+                            icon: IconManager.getIcon('eye'),
+                            label: 'Ansehen',
+                            displayType: actionDisplay,
+                            handler: (row) => alert(`View: ${row.name}`)
+                        },
+                        {
+                            key: 'edit',
+                            icon: IconManager.getIcon('edit'),
+                            label: 'Bearbeiten',
+                            displayType: actionDisplay,
+                            buttonType: 'primary',
+                            handler: (row) => alert(`Edit: ${row.name}`)
+                        },
+                        {
+                            key: 'delete',
+                            icon: IconManager.getIcon('delete'),
+                            label: 'Löschen',
+                            displayType: actionDisplay,
+                            buttonType: 'danger',
+                            handler: (row) => confirm(`Delete ${row.name}?`)
+                        }
+                    ]
+                }
+            }).render();
+        }
+
+        // Update Generated Code
+        function updateGeneratedCode() {
+            const preset = document.getElementById('iconPreset').value;
+            const weight = document.getElementById('iconWeight').value;
+            const primary = document.getElementById('primaryColor').value;
+            const success = document.getElementById('successColor').value;
+            const danger = document.getElementById('dangerColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            const actionDisplay = document.getElementById('listActionDisplay').value;
+            const itemsPerPage = document.getElementById('itemsPerPage').value;
+
+            const code = `<span class="code-keyword">import</span> { <span class="code-property">GlobalConfig</span> } <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="code-comment">// App-Start: Einmalig konfigurieren</span>
+<span class="code-property">GlobalConfig</span>.<span class="code-function">configure</span>({
+    <span class="code-property">iconPreset</span>: <span class="code-string">'${preset}'</span>,
+    <span class="code-property">iconWeight</span>: <span class="code-string">'${weight}'</span>,
+    <span class="code-property">theme</span>: {
+        <span class="code-property">primary</span>: <span class="code-string">'${primary}'</span>,
+        <span class="code-property">success</span>: <span class="code-string">'${success}'</span>,
+        <span class="code-property">danger</span>: <span class="code-string">'${danger}'</span>,
+        <span class="code-property">secondary</span>: <span class="code-string">'${secondary}'</span>
+    },
+    <span class="code-property">lists</span>: {
+        <span class="code-property">itemsPerPage</span>: ${itemsPerPage},
+        <span class="code-property">actionDisplayType</span>: <span class="code-string">'${actionDisplay}'</span>
+    }
+});
+
+<span class="code-comment">// Jetzt nutzen alle Builder automatisch diese Einstellungen!</span>`;
+
+            document.getElementById('generatedCode').innerHTML = code;
+        }
+
+        // Apply all updates
+        function applyConfig() {
+            const config = {
+                iconPreset: document.getElementById('iconPreset').value,
+                iconWeight: document.getElementById('iconWeight').value,
+                theme: {
+                    primary: document.getElementById('primaryColor').value,
+                    success: document.getElementById('successColor').value,
+                    danger: document.getElementById('dangerColor').value,
+                    secondary: document.getElementById('secondaryColor').value
+                },
+                lists: {
+                    itemsPerPage: parseInt(document.getElementById('itemsPerPage').value),
+                    actionDisplayType: document.getElementById('listActionDisplay').value
+                }
+            };
+
+            GlobalConfig.configure(config);
+
+            updateIconPreview();
+            updateButtonPreview();
+            updateListPreview();
+            updateGeneratedCode();
+        }
+
+        // Event Listeners
+        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
+            document.body.classList.toggle('dark-mode', e.target.checked);
+        });
+
+        document.getElementById('iconPreset').addEventListener('change', applyConfig);
+        document.getElementById('iconWeight').addEventListener('change', applyConfig);
+        document.getElementById('primaryColor').addEventListener('input', applyConfig);
+        document.getElementById('successColor').addEventListener('input', applyConfig);
+        document.getElementById('dangerColor').addEventListener('input', applyConfig);
+        document.getElementById('secondaryColor').addEventListener('input', applyConfig);
+        document.getElementById('listActionDisplay').addEventListener('change', applyConfig);
+        document.getElementById('itemsPerPage').addEventListener('change', applyConfig);
+
+        // Initial render
+        applyConfig();
+    </script>
+</body>
+</html>

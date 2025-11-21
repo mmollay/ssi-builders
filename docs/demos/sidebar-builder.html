@@ -10,57 +10,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Roboto', sans-serif; background: #f5f5f5; margin: 0; }
-        
-        .nav {
-            background: white;
-            border-bottom: 1px solid #e8eaed;
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        
-        .nav-title { font-size: 20px; font-weight: 600; color: #202124; }
-        .nav-links { display: flex; gap: 16px; }
-        .nav-link { color: #5f6368; text-decoration: none; font-size: 14px; transition: color 0.2s; }
-        .nav-link:hover { color: #1a73e8; }
-        
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 24px; }
-        
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 24px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-        
-        .hero h1 { font-size: 48px; margin-bottom: 16px; }
-        .hero p { font-size: 20px; opacity: 0.95; }
-        
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-        
-        .example-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
-        .example-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
+        .demo-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
         
         .example-demo {
             background: #f8f9fa;
@@ -69,6 +22,13 @@
             margin: 24px 0;
             height: 500px;
             position: relative;
+        }
+
+        /* Position demo sidebar on the right */
+        #sidebarDemo .sidebar {
+            position: absolute;
+            right: 0;
+            left: auto;
         }
         
         pre.example-code {
@@ -85,23 +45,20 @@
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-title">🗂️ SidebarBuilder Documentation</div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">← Back to Overview</a>
-                <a href="../../README.md" class="nav-link">GitHub</a>
-            </div>
-        </div>
-    </nav>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-    <div class="container">
-        <div class="hero">
-            <h1>🗂️ SidebarBuilder</h1>
-            <p>Collapsible navigation sidebar with search & nested items</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🗂️ SidebarBuilder</h1>
+                    <p>Collapsible navigation sidebar with search & nested items</p>
+                </div>
 
-        <div class="example-section">
+                <div class="demo-section">
             <h2>🗂️ Navigation Sidebar</h2>
             <p class="subtitle">Try clicking menu items, search, and toggle collapse</p>
             
@@ -167,7 +124,7 @@ const sidebar = new SidebarBuilder({
 sidebar.render();</code></pre>
         </div>
 
-        <div class="example-section">
+        <div class="demo-section">
             <h2>✨ Features</h2>
             <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
                 <li><strong>Collapsible</strong> - Save space with collapse/expand</li>
@@ -181,7 +138,7 @@ sidebar.render();</code></pre>
             </ul>
         </div>
 
-        <div class="example-section">
+        <div class="demo-section">
             <h2>⚙️ Configuration Options</h2>
             <pre class="example-code"><code class="language-javascript">{
     containerId: 'sidebar',           // Container element ID
@@ -197,11 +154,19 @@ sidebar.render();</code></pre>
     onNavigate: (itemId) => {...},   // Navigation callback
     onToggle: (collapsed) => {...}   // Collapse state callback
 }</code></pre>
-        </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { SidebarBuilder } from '../../src/SidebarBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('sidebar-builder');
+        addMobileMenuToggle();
 
         const sidebar = new SidebarBuilder({
             containerId: 'sidebarDemo',

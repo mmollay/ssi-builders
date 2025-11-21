@@ -9,6 +9,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.2.1] - 2025-11-21
+
+### 🎨 Improved: SidebarBuilder UX
+
+#### Toggle Button Redesign
+- **Kompakteres Design**: 28x28px (statt 36x36px rund)
+- **Bessere Position**: top: 20px, right: -14px (sichtbarer)
+- **Subtilere Farben**: Weiß mit grauem Border, Hover → Blau
+- **Verbesserte Accessibility**: Klarer Focus-State
+
+#### Flat Navigation Structure
+- **BREAKING**: Removed collapsible sections (type: 'section')
+- **Alle Items immer sichtbar** - keine Klappmenüs mehr
+- Verwendet jetzt `type: 'heading'` für visuelle Gruppierung
+- Content-Bereich passt sich dynamisch an (280px ↔ 72px)
+- Mobile-optimiert mit erhöhtem z-index und Shadow
+
+#### Bugfixes
+- Entfernt doppelten Mobile-Menu-Toggle Button
+- Layout.js: updateContentMargin() für smooth Transitions
+- Sidebar CSS: Vereinfachte Media Queries für Mobile (<1024px)
+
+---
+
 ## [1.2.0] - 2025-11-20
 
 ### 🏗️ New: SiteBuilder + GlobalConfig System

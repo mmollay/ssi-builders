@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSI Builders - Professional UI Component Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- SSI Builders Styles -->
+    <link rel="stylesheet" href="/src/shared.css">
+    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* === LAYOUT: Fixed Sidebar + Content === */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar: Fixed Left */
+        .app-sidebar {
+            width: 280px;
+            background: white;
+            box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            overflow-y: auto;
+            z-index: 1000;
+        }
+
+        /* Content Area: Dynamic, fills rest of screen */
+        .app-content {
+            flex: 1;
+            margin-left: 280px;
+            padding: 0;
+            background: #f5f5f5;
+            min-height: 100vh;
+        }
+
+        /* Content gets injected here */
+        #contentArea {
+            width: 100%;
+            min-height: 100vh;
+        }
+
+        /* Loading State */
+        .loading {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            font-size: 24px;
+            color: #5f6368;
+        }
+
+        .loading::after {
+            content: '';
+            width: 40px;
+            height: 40px;
+            margin-left: 16px;
+            border: 4px solid #e8eaed;
+            border-top-color: #1a73e8;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Sidebar Header */
+        .sidebar-header-custom {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid #e8eaed;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .sidebar-header-custom h1 {
+            margin: 0;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .sidebar-header-custom p {
+            margin: 8px 0 0 0;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 13px;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .app-sidebar {
+                transform: translateX(-100%);
+                transition: transform 0.3s;
+            }
+
+            .app-sidebar.mobile-open {
+                transform: translateX(0);
+            }
+
+            .app-content {
+                margin-left: 0;
+            }
+        }
+
+        /* Active state for sidebar links */
+        .sidebar-link.active {
+            background: #e8f0fe !important;
+            color: #1a73e8 !important;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Fixed Sidebar -->
+        <aside class="app-sidebar" id="appSidebar">
+            <div class="sidebar-header-custom">
+                <h1>🎨 SSI Builders</h1>
+                <p>v1.2.0 - Material Design 3</p>
+            </div>
+            <!-- Sidebar content will be rendered here by SidebarBuilder -->
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main class="app-content">
+            <div id="contentArea">
+                <div class="loading">Loading content...</div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { SidebarBuilder } from '/src/SidebarBuilder.js';
+        import { IconManager } from '/src/IconManager.js';
+
+        // Configure Icon System
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // === CONTENT LOADER CLASS (Like Fomantic-UI) ===
+        class ContentLoader {
+            constructor() {
+                this.contentArea = document.getElementById('contentArea');
+                this.currentPage = null;
+            }
+
+            /**
+             * Load content dynamically
+             * @param {string} pageId - ID of the page to load
+             */
+            async loadPage(pageId) {
+                if (this.currentPage === pageId) {
+                    console.log(`Page "${pageId}" already loaded`);
+                    return;
+                }
+
+                console.log(`Loading page: ${pageId}`);
+                this.showLoading();
+
+                try {
+                    const content = await this.fetchPageContent(pageId);
+                    this.renderContent(content, pageId);
+                    this.currentPage = pageId;
+
+                    // Update URL hash
+                    window.location.hash = pageId === 'home' ? '' : `#/${pageId}`;
+
+                    // Scroll to top
+                    window.scrollTo(0, 0);
+
+                    console.log(`✅ Page "${pageId}" loaded successfully`);
+                } catch (error) {
+                    console.error(`Error loading page "${pageId}":`, error);
+                    this.showError(pageId, error);
+                }
+            }
+
+            /**
+             * Fetch page content (either from pages/ folder or generate dynamically)
+             */
+            async fetchPageContent(pageId) {
+                const pageMap = {
+                    'home': this.getHomePage,
+                    'getting-started': this.getGettingStartedPage,
+                    'list-builder': () => this.loadDemoPage('docs/demos/list-builder.html'),
+                    'form-builder': () => this.loadDemoPage('docs/demos/form-builder.html'),
+                    'modal-builder': () => this.loadDemoPage('docs/demos/modal-builder.html'),
+                    'chart-builder': () => this.loadDemoPage('docs/demos/chart-builder.html'),
+                    'tab-builder': () => this.loadDemoPage('docs/demos/tab-builder.html'),
+                    'menu-builder': () => this.loadDemoPage('docs/demos/menu-builder.html'),
+                    'sidebar-builder': () => this.loadDemoPage('docs/demos/sidebar-builder.html'),
+                    'site-builder': () => this.loadDemoPage('docs/demos/site-builder.html'),
+                    'icon-docs': () => this.loadDemoPage('docs/demos/icon-system.html'),
+                    'icon-weight': () => this.loadDemoPage('docs/demos/icon-weight-demo.html')
+                };
+
+                const pageFunction = pageMap[pageId];
+                if (!pageFunction) {
+                    throw new Error(`Page "${pageId}" not found`);
+                }
+
+                return await pageFunction.call(this);
+            }
+
+            /**
+             * Load external demo page and extract content
+             */
+            async loadDemoPage(url) {
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const html = await response.text();
+
+                // Extract body content (remove <html>, <head>, etc.)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+
+                // Get body content
+                const body = doc.body;
+
+                // Extract scripts to re-execute them
+                const scripts = Array.from(body.querySelectorAll('script'));
+                const scriptContents = scripts.map(s => s.textContent);
+                scripts.forEach(s => s.remove());
+
+                return {
+                    html: body.innerHTML,
+                    scripts: scriptContents,
+                    title: doc.title
+                };
+            }
+
+            /**
+             * Generate Home/Overview page content
+             */
+            getHomePage() {
+                return {
+                    html: `
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 80px 40px; text-align: center; color: white;">
+                            <h1 style="font-size: 56px; margin-bottom: 16px; text-shadow: 0 2px 8px rgba(0,0,0,0.2);">🎨 SSI Builders</h1>
+                            <p style="font-size: 24px; opacity: 0.95; margin-bottom: 32px;">Professional UI Component Library for Modern Web Apps</p>
+                            <div style="display: inline-block; background: rgba(255,255,255,0.2); padding: 12px 24px; border-radius: 24px; font-size: 16px; backdrop-filter: blur(10px);">
+                                v1.2.0 - Material Design 3
+                            </div>
+                        </div>
+
+                        <div style="max-width: 1200px; margin: 0 auto; padding: 60px 40px;">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; margin-bottom: 60px;">
+                                <div style="background: white; padding: 32px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 48px; font-weight: 700; color: #1a73e8; margin-bottom: 12px;">8</div>
+                                    <div style="color: #5f6368; font-size: 16px;">Builders</div>
+                                </div>
+                                <div style="background: white; padding: 32px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 48px; font-weight: 700; color: #1a73e8; margin-bottom: 12px;">15+</div>
+                                    <div style="color: #5f6368; font-size: 16px;">Icons</div>
+                                </div>
+                                <div style="background: white; padding: 32px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 48px; font-weight: 700; color: #1a73e8; margin-bottom: 12px;">5</div>
+                                    <div style="color: #5f6368; font-size: 16px;">Icon Systems</div>
+                                </div>
+                                <div style="background: white; padding: 32px; border-radius: 12px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+                                    <div style="font-size: 48px; font-weight: 700; color: #1a73e8; margin-bottom: 12px;">100%</div>
+                                    <div style="color: #5f6368; font-size: 16px;">MD3 Compliant</div>
+                                </div>
+                            </div>
+
+                            <div style="background: white; padding: 48px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); margin-bottom: 40px;">
+                                <h2 style="font-size: 36px; color: #1a73e8; margin-bottom: 24px;">🎯 Was ist SSI Builders?</h2>
+                                <p style="color: #5f6368; font-size: 18px; line-height: 1.8; margin-bottom: 24px;">
+                                    SSI Builders ist die <strong>zentrale UI-Komponenten-Bibliothek</strong> für alle SSI-Projekte.
+                                    Entwickelt mit <strong>Material Design 3</strong> Prinzipien und optimiert für moderne Webapplikationen.
+                                </p>
+
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin-top: 32px;">
+                                    <div style="padding: 24px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #1a73e8;">
+                                        <h3 style="font-size: 20px; margin-bottom: 12px; color: #202124;">🚀 Production-Ready</h3>
+                                        <p style="color: #5f6368; font-size: 15px; line-height: 1.6;">Sofort einsetzbar in allen SSI-Projekten</p>
+                                    </div>
+                                    <div style="padding: 24px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #34a853;">
+                                        <h3 style="font-size: 20px; margin-bottom: 12px; color: #202124;">📱 Mobile-First</h3>
+                                        <p style="color: #5f6368; font-size: 15px; line-height: 1.6;">Responsive für alle Bildschirmgrößen</p>
+                                    </div>
+                                    <div style="padding: 24px; background: #f8f9fa; border-radius: 8px; border-left: 4px solid #ea4335;">
+                                        <h3 style="font-size: 20px; margin-bottom: 12px; color: #202124;">♿ Accessibility</h3>
+                                        <p style="color: #5f6368; font-size: 15px; line-height: 1.6;">ARIA, Keyboard Nav, Screen Reader Support</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div style="text-align: center; padding: 40px 0;">
+                                <p style="color: #5f6368; font-size: 16px;">Made with ❤️ by SSI Solutions</p>
+                                <p style="color: #9aa0a6; font-size: 14px; margin-top: 8px;">© 2025 SSI Builders</p>
+                            </div>
+                        </div>
+                    `,
+                    scripts: [],
+                    title: 'SSI Builders - Overview'
+                };
+            }
+
+            /**
+             * Generate Getting Started page content
+             */
+            getGettingStartedPage() {
+                return {
+                    html: `
+                        <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 60px 40px; text-align: center; color: white;">
+                            <h1 style="font-size: 48px; margin-bottom: 16px;">🚀 Getting Started</h1>
+                            <p style="font-size: 20px; opacity: 0.95;">Quick start guide for SSI Builders</p>
+                        </div>
+
+                        <div style="max-width: 900px; margin: 0 auto; padding: 60px 40px;">
+                            <div style="background: white; padding: 48px; border-radius: 16px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); margin-bottom: 32px;">
+                                <h2 style="font-size: 32px; color: #1a73e8; margin-bottom: 24px;">Installation</h2>
+
+                                <h3 style="font-size: 24px; color: #202124; margin: 32px 0 16px 0;">1. Als Git Submodule einbinden</h3>
+                                <pre style="background: #1e1e1e; padding: 20px; border-radius: 8px; overflow-x: auto; color: #d4d4d4; font-family: 'Roboto Mono', monospace; font-size: 14px; line-height: 1.6;">git submodule add https://github.com/mmollay/ssi-builders.git vendor/ssi-builders</pre>
+
+                                <h3 style="font-size: 24px; color: #202124; margin: 32px 0 16px 0;">2. Icon-System konfigurieren</h3>
+                                <pre style="background: #1e1e1e; padding: 20px; border-radius: 8px; overflow-x: auto; color: #d4d4d4; font-family: 'Roboto Mono', monospace; font-size: 14px; line-height: 1.6;">import { IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Einmal beim App-Start
+IconManager.setPreset('lucide');
+IconManager.setIconWeight('regular');</pre>
+
+                                <h3 style="font-size: 24px; color: #202124; margin: 32px 0 16px 0;">3. Ersten Builder nutzen</h3>
+                                <pre style="background: #1e1e1e; padding: 20px; border-radius: 8px; overflow-x: auto; color: #d4d4d4; font-family: 'Roboto Mono', monospace; font-size: 14px; line-height: 1.6;">import { ListBuilder } from '/vendor/ssi-builders/src/index.js';
+
+const list = new ListBuilder({
+    containerId: 'myList',
+    columns: [
+        { key: 'name', label: 'Name' },
+        { key: 'email', label: 'E-Mail' }
+    ],
+    dataSource: async () => [
+        { id: 1, name: 'Max', email: 'max@example.com' }
+    ]
+}).render();</pre>
+
+                                <h3 style="font-size: 24px; color: #202124; margin: 32px 0 16px 0;">4. Styles einbinden</h3>
+                                <pre style="background: #1e1e1e; padding: 20px; border-radius: 8px; overflow-x: auto; color: #d4d4d4; font-family: 'Roboto Mono', monospace; font-size: 14px; line-height: 1.6;">&lt;link rel="stylesheet" href="/vendor/ssi-builders/src/shared.css"&gt;
+&lt;link rel="stylesheet" href="/vendor/ssi-builders/src/ListBuilder.css"&gt;</pre>
+                            </div>
+
+                            <div style="background: #e8f0fe; padding: 32px; border-radius: 12px; border-left: 4px solid #1a73e8;">
+                                <h3 style="font-size: 20px; color: #1a73e8; margin-bottom: 16px;">💡 Next Steps</h3>
+                                <p style="color: #5f6368; font-size: 16px; line-height: 1.6;">
+                                    Nutze die Sidebar-Navigation links, um alle verfügbaren Builder zu erkunden!
+                                    Jede Builder-Seite zeigt dir Live-Demos und Code-Beispiele.
+                                </p>
+                            </div>
+                        </div>
+                    `,
+                    scripts: [],
+                    title: 'SSI Builders - Getting Started'
+                };
+            }
+
+            /**
+             * Render content into the content area
+             */
+            renderContent(content, pageId) {
+                // Set page title
+                if (content.title) {
+                    document.title = content.title;
+                }
+
+                // Inject HTML
+                this.contentArea.innerHTML = content.html;
+
+                // Execute scripts
+                if (content.scripts && content.scripts.length > 0) {
+                    content.scripts.forEach(scriptContent => {
+                        try {
+                            const script = document.createElement('script');
+                            script.type = 'module';
+                            script.textContent = scriptContent;
+                            document.body.appendChild(script);
+                        } catch (error) {
+                            console.error('Error executing script:', error);
+                        }
+                    });
+                }
+
+                // Update active state in sidebar
+                this.updateSidebarActive(pageId);
+            }
+
+            /**
+             * Update active state in sidebar
+             */
+            updateSidebarActive(pageId) {
+                // Remove all active classes
+                document.querySelectorAll('.sidebar-link').forEach(link => {
+                    link.classList.remove('active');
+                });
+
+                // Add active class to current page link
+                const activeLink = document.querySelector(`[data-page-id="${pageId}"]`);
+                if (activeLink) {
+                    activeLink.classList.add('active');
+                }
+            }
+
+            /**
+             * Show loading state
+             */
+            showLoading() {
+                this.contentArea.innerHTML = '<div class="loading">Loading content...</div>';
+            }
+
+            /**
+             * Show error message
+             */
+            showError(pageId, error) {
+                this.contentArea.innerHTML = `
+                    <div style="padding: 60px; text-align: center;">
+                        <div style="font-size: 64px; margin-bottom: 24px;">⚠️</div>
+                        <h2 style="font-size: 32px; color: #ea4335; margin-bottom: 16px;">Error Loading Page</h2>
+                        <p style="color: #5f6368; font-size: 18px; margin-bottom: 8px;">Page: <code style="background: #f1f3f4; padding: 4px 8px; border-radius: 4px;">${pageId}</code></p>
+                        <p style="color: #5f6368; font-size: 16px;">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // === INITIALIZE APP ===
+        const contentLoader = new ContentLoader();
+
+        // Build Sidebar
+        const sidebar = new SidebarBuilder({
+            containerId: 'appSidebar',
+            items: [
+                {
+                    key: 'home',
+                    label: 'Overview',
+                    icon: '🏠',
+                    href: '#'
+                },
+                {
+                    key: 'getting-started',
+                    label: 'Getting Started',
+                    icon: '🚀',
+                    href: '#'
+                },
+                {
+                    key: 'builders',
+                    label: 'Builders',
+                    icon: '📦',
+                    items: [
+                        { key: 'list-builder', label: 'ListBuilder', icon: '📋', href: '#' },
+                        { key: 'form-builder', label: 'FormBuilder', icon: '📝', href: '#' },
+                        { key: 'modal-builder', label: 'ModalBuilder', icon: '🪟', href: '#' },
+                        { key: 'chart-builder', label: 'ChartBuilder', icon: '📊', href: '#' },
+                        { key: 'tab-builder', label: 'TabBuilder', icon: '📑', href: '#' },
+                        { key: 'menu-builder', label: 'MenuBuilder', icon: '📜', href: '#' },
+                        { key: 'sidebar-builder', label: 'SidebarBuilder', icon: '🗂️', href: '#' },
+                        { key: 'site-builder', label: 'SiteBuilder', icon: '🏗️', href: '#' }
+                    ]
+                },
+                {
+                    key: 'icon-system',
+                    label: 'Icon System',
+                    icon: '🎨',
+                    items: [
+                        { key: 'icon-docs', label: 'Documentation', icon: '📖', href: '#' },
+                        { key: 'icon-weight', label: 'Weight Demo', icon: '⚙️', href: '#' }
+                    ]
+                },
+                {
+                    key: 'resources',
+                    label: 'Resources',
+                    icon: '📚',
+                    items: [
+                        { key: 'readme', label: 'README.md', icon: '📖', href: 'docs/md-viewer.html?file=../README.md', target: '_blank' },
+                        { key: 'changelog', label: 'CHANGELOG.md', icon: '📝', href: 'docs/md-viewer.html?file=../CHANGELOG.md', target: '_blank' },
+                        { key: 'github', label: 'GitHub', icon: '⭐', href: 'https://github.com/mmollay/ssi-builders', target: '_blank' }
+                    ]
+                }
+            ],
+            options: {
+                collapsible: false,
+                width: 280
+            }
+        }).render();
+
+        // === NAVIGATION HANDLER ===
+        document.addEventListener('click', (e) => {
+            const link = e.target.closest('.sidebar-link');
+            if (!link) return;
+
+            // Check if link has target="_blank" (external links)
+            const target = link.getAttribute('target');
+            if (target === '_blank') {
+                return; // Let browser handle it
+            }
+
+            // Get page ID from parent sidebar-item
+            const sidebarItem = link.closest('.sidebar-item');
+            if (!sidebarItem) return;
+
+            const pageId = sidebarItem.getAttribute('data-item-key');
+            if (!pageId) return;
+
+            // Prevent default navigation
+            e.preventDefault();
+
+            // Load page content
+            contentLoader.loadPage(pageId);
+        });
+
+        // === HASH ROUTING ===
+        window.addEventListener('hashchange', () => {
+            const hash = window.location.hash.replace('#/', '').replace('#', '');
+            const pageId = hash || 'home';
+            contentLoader.loadPage(pageId);
+        });
+
+        // === INITIAL PAGE LOAD ===
+        const initialHash = window.location.hash.replace('#/', '').replace('#', '');
+        const initialPage = initialHash || 'home';
+        contentLoader.loadPage(initialPage);
+
+        console.log('✅ SSI Builders SPA initialized successfully!');
+    </script>
+</body>
+</html>

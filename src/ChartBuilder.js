@@ -122,16 +122,39 @@ export class ChartBuilder {
      * Render bar chart
      */
     renderBarChart() {
-        if (!this.data.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        // Handle both old format (array) and new format (labels + datasets)
+        let chartData = [];
+        if (Array.isArray(this.data)) {
+            // Old format: [{label, value}, ...]
+            chartData = this.data;
+        } else if (this.data.labels && this.data.datasets) {
+            // New format: {labels: [...], datasets: [{data: [...]}]}
+            const dataset = this.data.datasets[0];
+            chartData = this.data.labels.map((label, index) => ({
+                label: label,
+                value: dataset.data[index]
+            }));
+        }
 
-        const maxValue = Math.max(...this.data.map(d => d.value));
-        const barWidth = 100 / this.data.length;
+        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+
+        const maxValue = Math.max(...chartData.map(d => d.value));
+        const barWidth = 100 / chartData.length;
+
+        // Get color from dataset or use default colors
+        const getColor = (index) => {
+            if (this.data.datasets && this.data.datasets[0].backgroundColor) {
+                const bg = this.data.datasets[0].backgroundColor;
+                return Array.isArray(bg) ? bg[index] : bg;
+            }
+            return this.options.colors[index % this.options.colors.length];
+        };
 
         return `
             <div class="chart-bars" style="height: ${this.options.height}px">
-                ${this.data.map((item, index) => {
+                ${chartData.map((item, index) => {
                     const height = (item.value / maxValue) * 100;
-                    const color = this.options.colors[index % this.options.colors.length];
+                    const color = getColor(index);
 
                     return `
                         <div class="chart-bar-wrapper" style="width: ${barWidth}%">
@@ -158,10 +181,30 @@ export class ChartBuilder {
      * Render line chart
      */
     renderLineChart() {
-        if (!this.data.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        // Handle both old format (array) and new format (labels + datasets)
+        let chartData = [];
+        let datasets = [];
 
-        const maxValue = Math.max(...this.data.map(d => d.value));
-        const minValue = Math.min(...this.data.map(d => d.value));
+        if (Array.isArray(this.data)) {
+            // Old format: [{label, value}, ...]
+            chartData = this.data;
+            datasets = [{
+                data: this.data.map(d => d.value),
+                borderColor: this.options.colors[0],
+                backgroundColor: this.options.colors[0]
+            }];
+        } else if (this.data.labels && this.data.datasets) {
+            // New format: {labels: [...], datasets: [{data: [...]}]}
+            chartData = this.data.labels.map(label => ({ label }));
+            datasets = this.data.datasets;
+        }
+
+        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+
+        // Get all values from all datasets
+        const allValues = datasets.flatMap(ds => ds.data);
+        const maxValue = Math.max(...allValues);
+        const minValue = Math.min(...allValues);
         const range = maxValue - minValue || 1;
 
         const width = 800;
@@ -170,14 +213,30 @@ export class ChartBuilder {
         const chartWidth = width - padding * 2;
         const chartHeight = height - padding * 2;
 
-        // Calculate points
-        const points = this.data.map((item, index) => {
-            const x = padding + (index / (this.data.length - 1)) * chartWidth;
-            const y = padding + chartHeight - ((item.value - minValue) / range) * chartHeight;
-            return { x, y, label: item.label, value: item.value };
-        });
+        // Render each dataset
+        const renderDataset = (dataset, datasetIndex) => {
+            const points = chartData.map((item, index) => {
+                const value = dataset.data[index];
+                const x = padding + (index / (chartData.length - 1)) * chartWidth;
+                const y = padding + chartHeight - ((value - minValue) / range) * chartHeight;
+                return { x, y, label: item.label, value };
+            });
 
-        const pathData = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+            const pathData = points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x} ${p.y}`).join(' ');
+            const color = dataset.borderColor || this.options.colors[datasetIndex % this.options.colors.length];
+
+            return `
+                <!-- Line path -->
+                <path d="${pathData}" fill="none" stroke="${color}"
+                      stroke-width="3" class="${this.options.animated ? 'chart-line-animated' : ''}" />
+
+                <!-- Data points -->
+                ${points.map(p => `
+                    <circle cx="${p.x}" cy="${p.y}" r="5" fill="${color}"
+                            class="chart-point" data-label="${p.label}" data-value="${p.value}" />
+                `).join('')}
+            `;
+        };
 
         return `
             <svg class="chart-svg" viewBox="0 0 ${width} ${height}" preserveAspectRatio="xMidYMid meet">
@@ -193,21 +252,17 @@ export class ChartBuilder {
                     `;
                 }).join('')}
 
-                <!-- Line path -->
-                <path d="${pathData}" fill="none" stroke="${this.options.colors[0]}"
-                      stroke-width="3" class="${this.options.animated ? 'chart-line-animated' : ''}" />
-
-                <!-- Data points -->
-                ${points.map(p => `
-                    <circle cx="${p.x}" cy="${p.y}" r="5" fill="${this.options.colors[0]}"
-                            class="chart-point" data-label="${p.label}" data-value="${p.value}" />
-                `).join('')}
+                <!-- Datasets -->
+                ${datasets.map((dataset, index) => renderDataset(dataset, index)).join('')}
 
                 <!-- X-axis labels -->
-                ${points.map(p => `
-                    <text x="${p.x}" y="${height - padding + 20}" text-anchor="middle"
-                          fill="#5f6368" font-size="12">${p.label}</text>
-                `).join('')}
+                ${chartData.map((item, index) => {
+                    const x = padding + (index / (chartData.length - 1)) * chartWidth;
+                    return `
+                        <text x="${x}" y="${height - padding + 20}" text-anchor="middle"
+                              fill="#5f6368" font-size="12">${item.label}</text>
+                    `;
+                }).join('')}
             </svg>
         `;
     }
@@ -230,9 +285,23 @@ export class ChartBuilder {
      * Render pie/donut chart
      */
     renderPieDonutChart(isDonut) {
-        if (!this.data.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        // Handle both old format (array) and new format (labels + datasets)
+        let chartData = [];
+        if (Array.isArray(this.data)) {
+            // Old format: [{label, value}, ...]
+            chartData = this.data;
+        } else if (this.data.labels && this.data.datasets) {
+            // New format: {labels: [...], datasets: [{data: [...]}]}
+            const dataset = this.data.datasets[0];
+            chartData = this.data.labels.map((label, index) => ({
+                label: label,
+                value: dataset.data[index]
+            }));
+        }
 
-        const total = this.data.reduce((sum, item) => sum + item.value, 0);
+        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+
+        const total = chartData.reduce((sum, item) => sum + item.value, 0);
         const size = 300;
         const center = size / 2;
         const radius = size / 2 - 20;
@@ -240,9 +309,18 @@ export class ChartBuilder {
 
         let currentAngle = -90;
 
+        // Get color from dataset or use default colors
+        const getColor = (index) => {
+            if (this.data.datasets && this.data.datasets[0].backgroundColor) {
+                const bg = this.data.datasets[0].backgroundColor;
+                return Array.isArray(bg) ? bg[index] : bg;
+            }
+            return this.options.colors[index % this.options.colors.length];
+        };
+
         return `
             <svg class="chart-svg chart-pie" viewBox="0 0 ${size} ${size}" style="max-width: ${size}px">
-                ${this.data.map((item, index) => {
+                ${chartData.map((item, index) => {
                     const percentage = (item.value / total) * 100;
                     const angle = (percentage / 100) * 360;
                     const startAngle = currentAngle;
@@ -250,7 +328,7 @@ export class ChartBuilder {
                     currentAngle = endAngle;
 
                     const path = this.createArcPath(center, center, radius, innerRadius, startAngle, endAngle);
-                    const color = this.options.colors[index % this.options.colors.length];
+                    const color = getColor(index);
 
                     return `
                         <path
@@ -314,18 +392,34 @@ export class ChartBuilder {
      * Render legend
      */
     renderLegend() {
+        // Handle both old format (array) and new format (labels + datasets)
+        let legendItems = [];
+
+        if (Array.isArray(this.data)) {
+            // Old format: array of {label, value}
+            legendItems = this.data.map((item, index) => ({
+                label: item.label,
+                value: item.value,
+                color: this.options.colors[index % this.options.colors.length]
+            }));
+        } else if (this.data.datasets) {
+            // New format: {labels, datasets}
+            legendItems = this.data.datasets.map((dataset, index) => ({
+                label: dataset.label,
+                value: '', // No single value in datasets
+                color: dataset.backgroundColor || this.options.colors[index % this.options.colors.length]
+            }));
+        }
+
         return `
             <div class="chart-legend">
-                ${this.data.map((item, index) => {
-                    const color = this.options.colors[index % this.options.colors.length];
-                    return `
-                        <div class="chart-legend-item">
-                            <span class="chart-legend-color" style="background: ${color}"></span>
-                            <span class="chart-legend-label">${item.label}</span>
-                            <span class="chart-legend-value">${this.formatValue(item.value)}</span>
-                        </div>
-                    `;
-                }).join('')}
+                ${legendItems.map(item => `
+                    <div class="chart-legend-item">
+                        <span class="chart-legend-color" style="background: ${item.color}"></span>
+                        <span class="chart-legend-label">${item.label}</span>
+                        ${item.value ? `<span class="chart-legend-value">${this.formatValue(item.value)}</span>` : ''}
+                    </div>
+                `).join('')}
             </div>
         `;
     }

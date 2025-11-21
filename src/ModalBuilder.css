@@ -114,7 +114,7 @@
     height: 100vh;
     max-height: 100vh;
     border-radius: 0;
-    margin: 0;
+    margin: 0 !important; /* Override modal-centered */
 }
 
 .modal-side-left {
@@ -140,7 +140,7 @@
     height: auto;
     max-height: 80vh;
     border-radius: 16px 16px 0 0;
-    margin: 0;
+    margin: 0 !important; /* Override modal-centered */
     transform: translateY(100%);
 }
 

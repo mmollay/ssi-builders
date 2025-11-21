@@ -10,93 +10,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/ChartBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f5f5f5;
-        }
-
-        .nav {
-            background: white;
-            border-bottom: 1px solid #e8eaed;
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #202124;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-link {
-            color: #5f6368;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #1a73e8;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 24px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
-
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .example-section h2 {
+        .demo-section h2 {
             font-size: 28px;
             margin-bottom: 12px;
             color: #202124;
         }
 
-        .example-section .subtitle {
+        .demo-section .subtitle {
             color: #5f6368;
             font-size: 16px;
             margin-bottom: 24px;
@@ -172,24 +96,21 @@
     </style>
 </head>
 <body>
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-title">📊 ChartBuilder Documentation</div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">← Back to Overview</a>
-                <a href="../../README.md" class="nav-link">GitHub</a>
-            </div>
-        </div>
-    </nav>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-    <div class="container">
-        <div class="hero">
-            <h1>📊 ChartBuilder</h1>
-            <p>Beautiful charts with zero dependencies - Native Canvas API</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>📊 ChartBuilder</h1>
+                    <p>Beautiful charts with zero dependencies - Native Canvas API</p>
+                </div>
 
-        <!-- Bar Chart Example -->
-        <div class="example-section">
+                <!-- Bar Chart Example -->
+                <div class="demo-section">
             <h2>📊 Bar Chart</h2>
             <p class="subtitle">Vertical bars with gradient colors and hover tooltips</p>
 
@@ -223,7 +144,7 @@ barChart.render();</code></pre>
         </div>
 
         <!-- Line Chart Example -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>📈 Line Chart</h2>
             <p class="subtitle">Smooth lines with data points and multiple datasets</p>
 
@@ -265,7 +186,7 @@ lineChart.render();</code></pre>
         </div>
 
         <!-- Pie & Donut Charts -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>🥧 Pie & Donut Charts</h2>
             <p class="subtitle">Circular charts for showing proportions</p>
 
@@ -318,7 +239,7 @@ const donutChart = new ChartBuilder({
         </div>
 
         <!-- Configuration Reference -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>⚙️ Configuration Options</h2>
 
             <h3 style="margin-top: 24px; margin-bottom: 12px;">Constructor Parameters</h3>
@@ -444,7 +365,7 @@ const donutChart = new ChartBuilder({
         </div>
 
         <!-- Features -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>✨ Features</h2>
             <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
                 <li><strong>Zero Dependencies</strong> - Pure Canvas API, no external libraries</li>
@@ -456,11 +377,19 @@ const donutChart = new ChartBuilder({
                 <li><strong>Custom Colors</strong> - Full control over colors and gradients</li>
                 <li><strong>Legend Support</strong> - Optional legend display</li>
             </ul>
-        </div>
+                </div>
+
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { ChartBuilder } from '../../src/ChartBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('chart-builder');
+        addMobileMenuToggle();
 
         // Bar Chart
         new ChartBuilder({

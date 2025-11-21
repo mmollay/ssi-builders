@@ -3,116 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ListBuilder - Interactive Documentation</title>
+    <title>ListBuilder - SSI Builders</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">        hljs.highlightAll();
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js">        hljs.highlightAll();
-    </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/ListBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: #f5f5f5;
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Navigation */
-        .nav {
-            background: white;
-            border-bottom: 1px solid #e8eaed;
-            padding: 16px 24px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-
-        .nav-content {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-title {
-            font-size: 20px;
-            font-weight: 600;
-            color: #202124;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 16px;
-        }
-
-        .nav-link {
-            color: #5f6368;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.2s;
-        }
-
-        .nav-link:hover {
-            color: #1a73e8;
-        }
-
-        /* Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 24px;
-        }
-
-        /* Hero */
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 60px 24px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: 48px;
-            margin-bottom: 16px;
-        }
-
-        .hero p {
-            font-size: 20px;
-            opacity: 0.95;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        /* Example Section */
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            margin-bottom: 32px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .example-section h2 {
-            font-size: 28px;
-            margin-bottom: 12px;
-            color: #202124;
-        }
-
-        .example-section .subtitle {
-            color: #5f6368;
-            font-size: 16px;
-            margin-bottom: 24px;
-        }
-
         .example-demo {
             background: #f8f9fa;
             padding: 24px;
@@ -120,25 +19,18 @@
             margin: 24px 0;
         }
 
-        /* Code Block */
-        .code-block {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            margin: 16px 0;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
+        .example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            overflow-x: auto !important;
+            font-family: 'Roboto Mono', 'Consolas', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            margin: 20px 0 !important;
         }
 
-        .code-block .comment { color: #6a9955; }
-        .code-block .keyword { color: #569cd6; }
-        .code-block .string { color: #ce9178; }
-        .code-block .function { color: #dcdcaa; }
-
-        /* Config Options */
         .config-table {
             width: 100%;
             border-collapse: collapse;
@@ -166,7 +58,6 @@
             color: #ea4335;
         }
 
-        /* Tags */
         .tag {
             display: inline-block;
             padding: 4px 12px;
@@ -178,79 +69,30 @@
 
         .tag-new { background: #e6f4ea; color: #137333; }
         .tag-important { background: #fce8e6; color: #c5221f; }
-        .tag-optional { background: #e8f0fe; color: #1967d2; }
-
-        @media (max-width: 768px) {
-            .hero h1 { font-size: 32px; }
-            .container { padding: 20px 16px; }
-        }
-    
-        .example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            overflow-x: auto !important;
-            font-family: 'Roboto Mono', 'Consolas', monospace !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 20px 0 !important;
-        }
-
-        .example-code code {
-            color: #d4d4d4 !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
-        .code-block {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            overflow-x: auto !important;
-            font-family: 'Roboto Mono', 'Consolas', monospace !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 20px 0 !important;
-        }
-
-        .code-block code {
-            color: #d4d4d4 !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
     </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="nav">
-        <div class="nav-content">
-            <div class="nav-title">📋 ListBuilder Documentation</div>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link">← Back to Overview</a>
-                <a href="../../README.md" class="nav-link" target="_blank">Docs</a>
-                <a href="https://github.com/mmollay/ssi-builders" class="nav-link" target="_blank">GitHub</a>
-            </div>
-        </div>
-    </nav>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-    <!-- Hero -->
-    <div class="hero">
-        <h1>📋 ListBuilder</h1>
-        <p>Powerful data tables with search, sort, filter, and pagination. Material Design 3 compliant.</p>
-    </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>📋 ListBuilder</h1>
+                    <p>Powerful data tables with search, sort, filter, and pagination. Material Design 3 compliant.</p>
+                </div>
 
-    <div class="container">
-        <!-- Example 1: Basic List -->
-        <div class="example-section">
-            <h2>1. Basic List</h2>
-            <p class="subtitle">Einfache Datentabelle mit Standard-Konfiguration</p>
+                <!-- Example 1: Basic List -->
+                <div class="demo-section">
+                    <h2>1. Basic List</h2>
+                    <p class="subtitle">Einfache Datentabelle mit Standard-Konfiguration</p>
 
-            <div class="example-demo" id="demo1"></div>
+                    <div class="example-demo" id="demo1"></div>
 
-            <pre class="example-code"><code>const list = new ListBuilder({
+                    <pre class="example-code"><code class="language-javascript">const list = new ListBuilder({
     containerId: 'demo1',
     columns: [
         { key: 'name', label: 'Name' },
@@ -262,16 +104,16 @@
         { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', status: 'Aktiv' }
     ]
 });</code></pre>
-        </div>
+                </div>
 
-        <!-- Example 2: With Actions -->
-        <div class="example-section">
-            <h2>2. With Icon Actions <span class="tag tag-new">NEW</span></h2>
-            <p class="subtitle">Aktions-Buttons mit verschiedenen Display-Typen</p>
+                <!-- Example 2: With Actions -->
+                <div class="demo-section">
+                    <h2>2. With Icon Actions <span class="tag tag-new">NEW</span></h2>
+                    <p>Aktions-Buttons mit verschiedenen Display-Typen</p>
 
-            <div class="example-demo" id="demo2"></div>
+                    <div class="example-demo" id="demo2"></div>
 
-            <pre class="example-code"><code>import { IconManager } from '/vendor/ssi-builders/src/index.js';
+                    <pre class="example-code"><code class="language-javascript">import { IconManager } from '/vendor/ssi-builders/src/index.js';
 
 // Icon-System konfigurieren
 IconManager.setPreset('lucide');
@@ -307,81 +149,81 @@ const list = new ListBuilder({
         ]
     }
 });</code></pre>
-        </div>
+                </div>
 
-        <!-- Configuration Reference -->
-        <div class="example-section">
-            <h2>Configuration Reference</h2>
+                <!-- Configuration Reference -->
+                <div class="demo-section">
+                    <h2>Configuration Reference</h2>
 
-            <h3 style="margin-top: 24px; color: #1a73e8;">Row Actions - Display Types <span class="tag tag-new">NEW</span></h3>
-            <table class="config-table">
-                <thead>
-                    <tr>
-                        <th>displayType</th>
-                        <th>Description</th>
-                        <th>Use Case</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>icon</code></td>
-                        <td>Icon only, compact (32x32px) - Default</td>
-                        <td>Space-efficient tables with many actions</td>
-                    </tr>
-                    <tr>
-                        <td><code>emoji</code></td>
-                        <td>Emoji only, compact (32x32px)</td>
-                        <td>Fun, colorful UIs without dependencies</td>
-                    </tr>
-                    <tr>
-                        <td><code>button</code></td>
-                        <td>Full button with label only</td>
-                        <td>Clear primary actions (Submit, Save, etc.)</td>
-                    </tr>
-                    <tr>
-                        <td><code>button-icon</code></td>
-                        <td>Full button with icon + label</td>
-                        <td>Important actions that need emphasis</td>
-                    </tr>
-                </tbody>
-            </table>
+                    <h3 style="margin-top: 24px; color: #1a73e8;">Row Actions - Display Types <span class="tag tag-new">NEW</span></h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>displayType</th>
+                                <th>Description</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>icon</code></td>
+                                <td>Icon only, compact (32x32px) - Default</td>
+                                <td>Space-efficient tables with many actions</td>
+                            </tr>
+                            <tr>
+                                <td><code>emoji</code></td>
+                                <td>Emoji only, compact (32x32px)</td>
+                                <td>Fun, colorful UIs without dependencies</td>
+                            </tr>
+                            <tr>
+                                <td><code>button</code></td>
+                                <td>Full button with label only</td>
+                                <td>Clear primary actions (Submit, Save, etc.)</td>
+                            </tr>
+                            <tr>
+                                <td><code>button-icon</code></td>
+                                <td>Full button with icon + label</td>
+                                <td>Important actions that need emphasis</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <h3 style="margin-top: 32px; color: #1a73e8;">Button Types <span class="tag tag-new">NEW</span></h3>
-            <table class="config-table">
-                <thead>
-                    <tr>
-                        <th>buttonType</th>
-                        <th>Style</th>
-                        <th>Use Case</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>primary</code></td>
-                        <td>Blue background, white text</td>
-                        <td>Primary actions (Save, Submit, Create)</td>
-                    </tr>
-                    <tr>
-                        <td><code>secondary</code></td>
-                        <td>White background, gray text (Default)</td>
-                        <td>Secondary actions (Cancel, Back)</td>
-                    </tr>
-                    <tr>
-                        <td><code>danger</code></td>
-                        <td>Red background, white text</td>
-                        <td>Destructive actions (Delete, Remove)</td>
-                    </tr>
-                    <tr>
-                        <td><code>success</code></td>
-                        <td>Green background, white text</td>
-                        <td>Positive actions (Approve, Confirm)</td>
-                    </tr>
-                </tbody>
-            </table>
+                    <h3 style="margin-top: 32px; color: #1a73e8;">Button Types <span class="tag tag-new">NEW</span></h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>buttonType</th>
+                                <th>Style</th>
+                                <th>Use Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>primary</code></td>
+                                <td>Blue background, white text</td>
+                                <td>Primary actions (Save, Submit, Create)</td>
+                            </tr>
+                            <tr>
+                                <td><code>secondary</code></td>
+                                <td>White background, gray text (Default)</td>
+                                <td>Secondary actions (Cancel, Back)</td>
+                            </tr>
+                            <tr>
+                                <td><code>danger</code></td>
+                                <td>Red background, white text</td>
+                                <td>Destructive actions (Delete, Remove)</td>
+                            </tr>
+                            <tr>
+                                <td><code>success</code></td>
+                                <td>Green background, white text</td>
+                                <td>Positive actions (Approve, Confirm)</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-            <h3 style="margin-top: 32px; color: #1a73e8;">Icon System <span class="tag tag-new">NEW</span></h3>
-            <p style="margin: 16px 0; color: #5f6368;">Zentrales Icon-Management für konsistente UIs:</p>
-            <pre class="example-code"><code>import { IconManager } from '/vendor/ssi-builders/src/index.js';
+                    <h3 style="margin-top: 32px; color: #1a73e8;">Icon System <span class="tag tag-new">NEW</span></h3>
+                    <p style="margin: 16px 0; color: #5f6368;">Zentrales Icon-Management für konsistente UIs:</p>
+                    <pre class="example-code"><code class="language-javascript">import { IconManager } from '/vendor/ssi-builders/src/index.js';
 
 // Einmal konfigurieren (App-Start)
 IconManager.setPreset('lucide'); // oder 'emoji', 'heroicons', 'material', 'fontawesome'
@@ -389,36 +231,21 @@ IconManager.setPreset('lucide'); // oder 'emoji', 'heroicons', 'material', 'font
 // Icons nutzen
 icon: IconManager.getIcon('edit') // Nutzt globales Preset
 icon: IconManager.getIcon('delete', 'emoji') // Override für einzelnes Icon</code></pre>
-
-            <p style="margin-top: 16px;">
-                <a href="../ICON-SYSTEM.md" target="_blank" style="color: #1a73e8; font-weight: 500;">
-                    → Komplette Icon-System Dokumentation
-                </a>
-            </p>
-        </div>
-
-        <!-- More Examples Link -->
-        <div class="example-section" style="text-align: center;">
-            <h2>More Examples Coming Soon</h2>
-            <p class="subtitle">Weitere interaktive Beispiele werden in zukünftigen Updates hinzugefügt:</p>
-            <ul style="list-style: none; padding: 0; margin: 24px 0;">
-                <li style="padding: 8px;">✓ Advanced Filtering</li>
-                <li style="padding: 8px;">✓ Custom Cell Rendering</li>
-                <li style="padding: 8px;">✓ Bulk Actions</li>
-                <li style="padding: 8px;">✓ Column Visibility Toggle</li>
-                <li style="padding: 8px;">✓ Mobile Card View</li>
-            </ul>
-            <p>
-                <a href="../../examples/demo.html" target="_blank" class="ssi-btn ssi-btn-primary">
-                    View Complete Demo Page →
-                </a>
-            </p>
-        </div>
+                </div>
+            </div>
+        </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <script type="module">
         import ListBuilder from '../../src/ListBuilder.js';
         import { IconManager } from '../../src/IconManager.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('list-builder');
+        addMobileMenuToggle();
 
         // Configure icon system
         IconManager.setPreset('lucide');
@@ -489,16 +316,11 @@ icon: IconManager.getIcon('delete', 'emoji') // Override für einzelnes Icon</co
                 pageSize: 5
             }
         });
-            hljs.highlightAll();
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
-                hljs.highlightElement(block);
-            });
-        });
+        // Highlight code blocks
+        document.addEventListener('DOMContentLoaded', () => {
             hljs.highlightAll();
+        });
     </script>
 </body>
 </html>

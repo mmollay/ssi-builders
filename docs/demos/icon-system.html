@@ -9,73 +9,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #202124;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .nav {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-            margin-right: 24px;
-            transition: opacity 0.2s;
-        }
-
-        .nav a:hover {
-            opacity: 0.7;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
-
-        .content {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-            line-height: 1.8;
-        }
-
-        .content h2 {
+        .demo-section h2 {
             font-size: 28px;
             color: #1a73e8;
             margin: 32px 0 16px 0;
@@ -83,28 +20,28 @@
             border-bottom: 2px solid #e8eaed;
         }
 
-        .content h3 {
+        .demo-section h3 {
             font-size: 20px;
             color: #202124;
             margin: 24px 0 12px 0;
         }
 
-        .content p {
+        .demo-section p {
             color: #5f6368;
             margin-bottom: 16px;
         }
 
-        .content ul {
+        .demo-section ul {
             margin: 16px 0;
             padding-left: 24px;
         }
 
-        .content li {
+        .demo-section li {
             color: #5f6368;
             margin: 8px 0;
         }
 
-        .content code {
+        .demo-section code {
             background: #f1f3f4;
             padding: 2px 8px;
             border-radius: 4px;
@@ -113,7 +50,7 @@
             color: #ea4335;
         }
 
-        .content pre {
+        .demo-section pre {
             background: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
@@ -121,7 +58,7 @@
             margin: 16px 0;
         }
 
-        .content pre code {
+        .demo-section pre code {
             background: transparent;
             color: #d4d4d4;
             padding: 0;
@@ -167,33 +104,29 @@
             margin-left: 8px;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .content {
-                padding: 24px;
-            }
-        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Navigation -->
-        <div class="nav">
-            <a href="index.html">← Zurück zur Übersicht</a>
-            <a href="../../README.md" target="_blank">📖 Docs</a>
-        </div>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <h1>🎨 Icon Management System</h1>
-            <p>Zentrale Icon-Verwaltung für alle SSI Builders</p>
-        </div>
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
 
-        <!-- Content -->
-        <div class="content">
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🎨 Icon Management System</h1>
+                    <p>Zentrale Icon-Verwaltung für alle SSI Builders</p>
+                </div>
+
+                <!-- Content -->
+                <div class="demo-section">
             <h2>🎯 Problem gelöst</h2>
             <p>Bisher musste man Icons manuell als Emojis oder SVG-Strings übergeben:</p>
 
@@ -470,15 +403,19 @@ IconManager.setPreset('lucide'); // Oder dein bevorzugtes System</code></pre>
                 <strong>💡 Empfehlung:</strong> Nutze <strong>Lucide Icons</strong> für moderne, konsistente M3-konforme UIs!
             </p>
 
-            <p style="margin-top: 32px; text-align: center;">
-                <a href="index.html" class="ssi-btn ssi-btn-primary" style="display: inline-block; background: #1a73e8; color: white; padding: 12px 24px; border-radius: 20px; text-decoration: none; font-weight: 500;">
-                    ← Zurück zur Übersicht
-                </a>
-            </p>
-        </div>
+                </div>
+            </div>
+        </main>
     </div>
 
-    <script>
+    <script type="module">
+        import { SidebarBuilder } from '../../src/SidebarBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('icon-system');
+
+        // Syntax highlighting
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('pre code').forEach((block) => {
                 hljs.highlightElement(block);

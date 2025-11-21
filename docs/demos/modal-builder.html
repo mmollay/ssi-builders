@@ -13,82 +13,16 @@
     </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/ModalBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #202124;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Navigation */
-        .nav {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-            margin-right: 24px;
-            transition: opacity 0.2s;
-        }
-
-        .nav a:hover {
-            opacity: 0.7;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
-
-        /* Example Section */
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .example-section h2 {
+        .demo-section h2 {
             font-size: 28px;
             margin-bottom: 12px;
             color: #1a73e8;
         }
 
-        .example-section p {
+        .demo-section p {
             color: #5f6368;
             line-height: 1.6;
             margin-bottom: 24px;
@@ -164,16 +98,6 @@
             color: #ea4335;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .example-section {
-                padding: 24px;
-            }
-        }
-    
         .example-code {
             background: #1e1e1e !important;
             color: #d4d4d4 !important;
@@ -213,24 +137,21 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Navigation -->
-        <div class="nav">
-            <a href="index.html">← Zurück zur Übersicht</a>
-            <a href="list-builder.html">ListBuilder</a>
-            <a href="form-builder.html">FormBuilder</a>
-            <a href="modal-builder.html" style="opacity: 0.5;">ModalBuilder</a>
-            <a href="../../README.md" target="_blank">📖 Docs</a>
-        </div>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <h1>🪟 ModalBuilder</h1>
-            <p>Flexible modals with 9 sizes and layouts</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🪟 ModalBuilder</h1>
+                    <p>Flexible modals with 9 sizes and layouts</p>
+                </div>
 
-        <!-- Example 1: Modal Sizes -->
-        <div class="example-section">
+                <!-- Example 1: Modal Sizes -->
+                <div class="demo-section">
             <h2>1. Modal Sizes <span class="badge">9 Optionen</span></h2>
             <p>ModalBuilder unterstützt 9 verschiedene Größen und Layouts.</p>
 
@@ -262,7 +183,7 @@ modal.open();</code></pre>
         </div>
 
         <!-- Example 2: Side Drawers -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>2. Side Drawers <span class="badge fixed">FIXED v1.2</span></h2>
             <p>Side-Drawer Layouts für komplexe UI-Flows (z.B. Settings, Filters).</p>
 
@@ -281,7 +202,7 @@ drawer.open();</code></pre>
         </div>
 
         <!-- Example 3: Bottom Sheet -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>3. Bottom Sheet <span class="badge fixed">FIXED v1.2</span></h2>
             <p>Mobile-freundliches Bottom Sheet (slide-up von unten).</p>
 
@@ -299,7 +220,7 @@ sheet.open();</code></pre>
         </div>
 
         <!-- Example 4: Static Methods -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>4. Static Methods <span class="badge">Alert, Confirm, Prompt</span></h2>
             <p>Schnelle Dialoge ohne Konfiguration für häufige Use-Cases.</p>
 
@@ -341,7 +262,7 @@ if (name) {
         </div>
 
         <!-- Example 5: Custom Actions -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>5. Custom Actions</h2>
             <p>Vollständig anpassbare Action-Buttons mit M3 Design.</p>
 
@@ -383,7 +304,7 @@ modal.open();</code></pre>
         </div>
 
         <!-- Size Reference -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>Size Reference</h2>
             <p>Alle verfügbaren Modal-Größen und -Layouts.</p>
 
@@ -446,7 +367,7 @@ modal.open();</code></pre>
         </div>
 
         <!-- Action Types Reference -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>Action Button Types</h2>
             <p>Alle verfügbaren Button-Typen für Modal-Actions (SSI Button System).</p>
 
@@ -494,7 +415,7 @@ modal.open();</code></pre>
         </div>
 
         <!-- Advanced Options -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>Advanced Options</h2>
             <p>Weitere Konfigurationsmöglichkeiten für ModalBuilder.</p>
 
@@ -552,12 +473,19 @@ modal.open();</code></pre>
         console.<span class="function">log</span>(<span class="string">'Modal closed'</span>);
     }
 });</div>
-        </div>
+                </div>
 
+            </div>
+        </main>
     </div>
 
     <script type="module">
         import { ModalBuilder } from '../../src/ModalBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('modal-builder');
+        addMobileMenuToggle();
 
         // Make functions globally available for inline onclick
         window.openModal = function(size) {

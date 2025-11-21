@@ -26,17 +26,21 @@ export class MenuBuilder {
     /**
      * @param {Object} config - Configuration object
      * @param {Array} config.items - Menu items
+     * @param {string|HTMLElement} config.trigger - Trigger element (selector or element)
+     * @param {string} config.triggerEvent - Event type: 'click', 'contextmenu', 'hover'
+     * @param {Function} config.onSelect - Callback when item is selected
      * @param {Object} config.options - Additional options
      */
     constructor(config) {
         this.id = `menu_${++MenuBuilder.menuCounter}`;
         this.items = config.items || [];
+        this.onSelectCallback = config.onSelect || null;
         this.options = {
             position: config.options?.position || 'bottom-left', // bottom-left, bottom-right, top-left, top-right, right, left
             width: config.options?.width || 'auto',
             maxHeight: config.options?.maxHeight || 400,
             closeOnSelect: config.options?.closeOnSelect !== false,
-            trigger: config.options?.trigger || 'click', // click, hover, manual
+            trigger: config.triggerEvent || config.options?.trigger || 'click', // click, hover, contextmenu, manual
             offset: config.options?.offset || { x: 0, y: 4 },
             ...config.options
         };
@@ -44,6 +48,11 @@ export class MenuBuilder {
         this.isOpen = false;
         this.menuElement = null;
         this.triggerElement = null;
+
+        // Auto-attach if trigger is provided
+        if (config.trigger) {
+            this.attachTo(config.trigger);
+        }
     }
 
     /**
@@ -169,11 +178,15 @@ export class MenuBuilder {
             return '<div class="menu-divider"></div>';
         }
 
-        const hasSubmenu = item.items && item.items.length > 0;
+        // Support both 'submenu' and 'items' properties
+        const submenuItems = item.submenu || item.items;
+        const hasSubmenu = submenuItems && submenuItems.length > 0;
         const isDisabled = item.disabled;
+        // Support both 'id' and 'key' properties
+        const itemId = item.id || item.key || '';
 
         return `
-            <div class="menu-item ${isDisabled ? 'menu-item-disabled' : ''} ${hasSubmenu ? 'menu-item-has-submenu' : ''}" data-item-key="${item.key || ''}">
+            <div class="menu-item ${isDisabled ? 'menu-item-disabled' : ''} ${hasSubmenu ? 'menu-item-has-submenu' : ''}" data-item-key="${itemId}">
                 ${item.checkbox !== undefined ? `
                     <span class="menu-checkbox ${item.checkbox ? 'menu-checkbox-checked' : ''}">
                         ${item.checkbox ? '✓' : ''}
@@ -183,7 +196,7 @@ export class MenuBuilder {
                 <span class="menu-label">${item.label}</span>
                 ${item.shortcut ? `<span class="menu-shortcut">${item.shortcut}</span>` : ''}
                 ${hasSubmenu ? '<span class="menu-arrow">›</span>' : ''}
-                ${hasSubmenu ? `<div class="menu-submenu">${this.renderItems(item.items, level + 1)}</div>` : ''}
+                ${hasSubmenu ? `<div class="menu-submenu">${this.renderItems(submenuItems, level + 1)}</div>` : ''}
             </div>
         `;
     }
@@ -270,6 +283,11 @@ export class MenuBuilder {
                 const itemKey = item.dataset.itemKey;
                 const menuItem = this.findItemByKey(itemKey);
 
+                // Call onSelect callback
+                if (this.onSelectCallback && itemKey) {
+                    this.onSelectCallback(itemKey);
+                }
+
                 if (menuItem?.handler) {
                     menuItem.handler(menuItem);
                 }
@@ -322,9 +340,12 @@ export class MenuBuilder {
      */
     findItemByKey(key, items = this.items) {
         for (const item of items) {
-            if (item.key === key) return item;
-            if (item.items) {
-                const found = this.findItemByKey(key, item.items);
+            // Support both 'id' and 'key' properties
+            if (item.id === key || item.key === key) return item;
+            // Support both 'submenu' and 'items' properties
+            const submenuItems = item.submenu || item.items;
+            if (submenuItems) {
+                const found = this.findItemByKey(key, submenuItems);
                 if (found) return found;
             }
         }

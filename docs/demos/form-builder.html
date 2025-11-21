@@ -3,97 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormBuilder - Interactive Documentation</title>
+    <title>FormBuilder - SSI Builders</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">        hljs.highlightAll();
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js">        hljs.highlightAll();
-    </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/FormBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #202124;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* Navigation */
-        .nav {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-            margin-right: 24px;
-            transition: opacity 0.2s;
-        }
-
-        .nav a:hover {
-            opacity: 0.7;
-        }
-
-        /* Header */
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
-
-        /* Example Section */
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .example-section h2 {
-            font-size: 28px;
-            margin-bottom: 12px;
-            color: #1a73e8;
-        }
-
-        .example-section p {
-            color: #5f6368;
-            line-height: 1.6;
-            margin-bottom: 24px;
-        }
-
         .example-demo {
             border: 2px solid #e8eaed;
             border-radius: 8px;
@@ -103,23 +21,17 @@
         }
 
         .example-code {
-            background: #202124;
-            color: #e8eaed;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            line-height: 1.6;
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            overflow-x: auto !important;
+            font-family: 'Roboto Mono', 'Consolas', monospace !important;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+            margin: 20px 0 !important;
         }
 
-        .example-code .keyword { color: #c792ea; }
-        .example-code .string { color: #c3e88d; }
-        .example-code .comment { color: #546e7a; }
-        .example-code .function { color: #82aaff; }
-        .example-code .number { color: #f78c6c; }
-
-        /* Config Table */
         .config-table {
             width: 100%;
             border-collapse: collapse;
@@ -148,7 +60,6 @@
             color: #ea4335;
         }
 
-        /* Badge */
         .badge {
             display: inline-block;
             background: #e8f0fe;
@@ -164,82 +75,32 @@
             background: #e6f4ea;
             color: #1e8e3e;
         }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .example-section {
-                padding: 24px;
-            }
-        }
-    
-        .example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            overflow-x: auto !important;
-            font-family: 'Roboto Mono', 'Consolas', monospace !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 20px 0 !important;
-        }
-
-        .example-code code {
-            color: #d4d4d4 !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
-        .code-block {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            overflow-x: auto !important;
-            font-family: 'Roboto Mono', 'Consolas', monospace !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 20px 0 !important;
-        }
-
-        .code-block code {
-            color: #d4d4d4 !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Navigation -->
-        <div class="nav">
-            <a href="index.html">← Zurück zur Übersicht</a>
-            <a href="list-builder.html">ListBuilder</a>
-            <a href="form-builder.html" style="opacity: 0.5;">FormBuilder</a>
-            <a href="modal-builder.html">ModalBuilder</a>
-            <a href="../../README.md" target="_blank">📖 Docs</a>
-        </div>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <h1>📝 FormBuilder</h1>
-            <p>Dynamic forms with validation, multi-step, and auto-save</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>📝 FormBuilder</h1>
+                    <p>Dynamic forms with validation, multi-step, and auto-save</p>
+                </div>
 
-        <!-- Example 1: Basic Form -->
-        <div class="example-section">
-            <h2>1. Basic Form <span class="badge">Einfach</span></h2>
-            <p>Ein einfaches Formular mit Validierung und verschiedenen Feldtypen.</p>
+                <!-- Example 1: Basic Form -->
+                <div class="demo-section">
+                    <h2>1. Basic Form <span class="badge">Einfach</span></h2>
+                    <p>Ein einfaches Formular mit Validierung und verschiedenen Feldtypen.</p>
 
-            <div class="example-demo">
-                <div id="basicForm"></div>
-            </div>
+                    <div class="example-demo">
+                        <div id="basicForm"></div>
+                    </div>
 
-            <pre class="example-code"><code>import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
+                    <pre class="example-code"><code class="language-javascript">import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
 
 const form = new FormBuilder({
     containerId: 'basicForm',
@@ -273,18 +134,18 @@ const form = new FormBuilder({
         alert('Formular erfolgreich gesendet!');
     }
 });</code></pre>
-        </div>
+                </div>
 
-        <!-- Example 2: Multi-Step Form -->
-        <div class="example-section">
-            <h2>2. Multi-Step Form <span class="badge new">NEU</span></h2>
-            <p>Formular mit mehreren Schritten und Fortschrittsanzeige.</p>
+                <!-- Example 2: Multi-Step Form -->
+                <div class="demo-section">
+                    <h2>2. Multi-Step Form <span class="badge new">NEU</span></h2>
+                    <p>Formular mit mehreren Schritten und Fortschrittsanzeige.</p>
 
-            <div class="example-demo">
-                <div id="multiStepForm"></div>
-            </div>
+                    <div class="example-demo">
+                        <div id="multiStepForm"></div>
+                    </div>
 
-            <pre class="example-code"><code>const multiStepForm = new FormBuilder({
+                    <pre class="example-code"><code class="language-javascript">const multiStepForm = new FormBuilder({
     containerId: 'multiStepForm',
     multiStep: true,
     steps: [
@@ -319,18 +180,18 @@ const form = new FormBuilder({
         alert('Registrierung abgeschlossen!');
     }
 });</code></pre>
-        </div>
+                </div>
 
-        <!-- Example 3: All Field Types -->
-        <div class="example-section">
-            <h2>3. All Field Types <span class="badge">Referenz</span></h2>
-            <p>Übersicht über alle verfügbaren Feldtypen und deren Konfiguration.</p>
+                <!-- Example 3: All Field Types -->
+                <div class="demo-section">
+                    <h2>3. All Field Types <span class="badge">Referenz</span></h2>
+                    <p>Übersicht über alle verfügbaren Feldtypen und deren Konfiguration.</p>
 
-            <div class="example-demo">
-                <div id="allFieldsForm"></div>
-            </div>
+                    <div class="example-demo">
+                        <div id="allFieldsForm"></div>
+                    </div>
 
-            <pre class="example-code"><code>const allFieldsForm = new FormBuilder({
+                    <pre class="example-code"><code class="language-javascript">const allFieldsForm = new FormBuilder({
     containerId: 'allFieldsForm',
     fields: [
         { key: 'text', label: 'Text Input', type: 'text' },
@@ -363,146 +224,131 @@ const form = new FormBuilder({
     submitLabel: 'Testen',
     onSubmit: async (data) => console.log(data)
 });</code></pre>
-        </div>
+                </div>
 
-        <!-- Field Types Reference -->
-        <div class="example-section">
-            <h2>Field Types Reference</h2>
-            <p>Alle verfügbaren Feldtypen im FormBuilder.</p>
+                <!-- Field Types Reference -->
+                <div class="demo-section">
+                    <h2>Field Types Reference</h2>
+                    <p>Alle verfügbaren Feldtypen im FormBuilder.</p>
 
-            <table class="config-table">
-                <thead>
-                    <tr>
-                        <th>Type</th>
-                        <th>Description</th>
-                        <th>Special Options</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>text</code></td>
-                        <td>Standard text input</td>
-                        <td><code>placeholder</code>, <code>minLength</code>, <code>maxLength</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>email</code></td>
-                        <td>Email input with validation</td>
-                        <td><code>placeholder</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>password</code></td>
-                        <td>Password input (masked)</td>
-                        <td><code>minLength</code>, <code>pattern</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>number</code></td>
-                        <td>Number input</td>
-                        <td><code>min</code>, <code>max</code>, <code>step</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>date</code></td>
-                        <td>Date picker</td>
-                        <td><code>min</code>, <code>max</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>select</code></td>
-                        <td>Dropdown select</td>
-                        <td><code>options: [{ value, label }]</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>radio</code></td>
-                        <td>Radio buttons</td>
-                        <td><code>options</code>, <code>layout: 'vertical' | 'horizontal' | 'grid-2' | 'grid-3'</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>checkbox</code></td>
-                        <td>Single checkbox</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><code>textarea</code></td>
-                        <td>Multi-line text input</td>
-                        <td><code>rows</code>, <code>maxLength</code></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Special Options</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>text</code></td>
+                                <td>Standard text input</td>
+                                <td><code>placeholder</code>, <code>minLength</code>, <code>maxLength</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>email</code></td>
+                                <td>Email input with validation</td>
+                                <td><code>placeholder</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>password</code></td>
+                                <td>Password input (masked)</td>
+                                <td><code>minLength</code>, <code>pattern</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>number</code></td>
+                                <td>Number input</td>
+                                <td><code>min</code>, <code>max</code>, <code>step</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>Date picker</td>
+                                <td><code>min</code>, <code>max</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>select</code></td>
+                                <td>Dropdown select</td>
+                                <td><code>options: [{ value, label }]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>radio</code></td>
+                                <td>Radio buttons</td>
+                                <td><code>options</code>, <code>layout: 'vertical' | 'horizontal' | 'grid-2' | 'grid-3'</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>checkbox</code></td>
+                                <td>Single checkbox</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><code>textarea</code></td>
+                                <td>Multi-line text input</td>
+                                <td><code>rows</code>, <code>maxLength</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        <!-- Validation Reference -->
-        <div class="example-section">
-            <h2>Validation Options</h2>
-            <p>Built-in Validierung für alle Feldtypen.</p>
+                <!-- Validation Reference -->
+                <div class="demo-section">
+                    <h2>Validation Options</h2>
+                    <p>Built-in Validierung für alle Feldtypen.</p>
 
-            <table class="config-table">
-                <thead>
-                    <tr>
-                        <th>Option</th>
-                        <th>Type</th>
-                        <th>Description</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>required</code></td>
-                        <td>boolean</td>
-                        <td>Field must be filled out</td>
-                    </tr>
-                    <tr>
-                        <td><code>minLength</code></td>
-                        <td>number</td>
-                        <td>Minimum text length</td>
-                    </tr>
-                    <tr>
-                        <td><code>maxLength</code></td>
-                        <td>number</td>
-                        <td>Maximum text length</td>
-                    </tr>
-                    <tr>
-                        <td><code>min</code></td>
-                        <td>number</td>
-                        <td>Minimum number value</td>
-                    </tr>
-                    <tr>
-                        <td><code>max</code></td>
-                        <td>number</td>
-                        <td>Maximum number value</td>
-                    </tr>
-                    <tr>
-                        <td><code>pattern</code></td>
-                        <td>RegExp</td>
-                        <td>Custom regex pattern</td>
-                    </tr>
-                    <tr>
-                        <td><code>validate</code></td>
-                        <td>function</td>
-                        <td>Custom validation function: <code>(value) => true | 'Error message'</code></td>
-                    </tr>
-                </tbody>
-            </table>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>required</code></td>
+                                <td>boolean</td>
+                                <td>Field must be filled out</td>
+                            </tr>
+                            <tr>
+                                <td><code>minLength</code></td>
+                                <td>number</td>
+                                <td>Minimum text length</td>
+                            </tr>
+                            <tr>
+                                <td><code>maxLength</code></td>
+                                <td>number</td>
+                                <td>Maximum text length</td>
+                            </tr>
+                            <tr>
+                                <td><code>min</code></td>
+                                <td>number</td>
+                                <td>Minimum number value</td>
+                            </tr>
+                            <tr>
+                                <td><code>max</code></td>
+                                <td>number</td>
+                                <td>Maximum number value</td>
+                            </tr>
+                            <tr>
+                                <td><code>pattern</code></td>
+                                <td>RegExp</td>
+                                <td>Custom regex pattern</td>
+                            </tr>
+                            <tr>
+                                <td><code>validate</code></td>
+                                <td>function</td>
+                                <td>Custom validation function: <code>(value) => true | 'Error message'</code></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-            <div class="example-code" style="margin-top: 20px;"><span class="comment">// Beispiel mit Custom Validation</span>
-{
-    <span class="keyword">key:</span> <span class="string">'username'</span>,
-    <span class="keyword">label:</span> <span class="string">'Benutzername'</span>,
-    <span class="keyword">type:</span> <span class="string">'text'</span>,
-    <span class="keyword">required:</span> <span class="number">true</span>,
-    <span class="keyword">minLength:</span> <span class="number">3</span>,
-    <span class="keyword">validate:</span> (value) => {
-        <span class="keyword">if</span> (!/^[a-zA-Z0-9_]+$/.<span class="function">test</span>(value)) {
-            <span class="keyword">return</span> <span class="string">'Nur Buchstaben, Zahlen und Unterstriche erlaubt'</span>;
-        }
-        <span class="keyword">return</span> <span class="number">true</span>;
-    }
-}</div>
-        </div>
+                <!-- Advanced Features -->
+                <div class="demo-section">
+                    <h2>Advanced Features</h2>
+                    <p>Weitere fortgeschrittene FormBuilder Features.</p>
 
-        <!-- Advanced Features -->
-        <div class="example-section">
-            <h2>Advanced Features</h2>
-            <p>Weitere fortgeschrittene FormBuilder Features.</p>
-
-            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Auto-Save</h3>
-            <pre class="example-code"><code>const form = new FormBuilder({
+                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Auto-Save</h3>
+                    <pre class="example-code"><code class="language-javascript">const form = new FormBuilder({
     containerId: 'myForm',
     autoSave: true,                    // Enable auto-save to localStorage
     autoSaveKey: 'myForm_draft',      // localStorage key
@@ -510,8 +356,8 @@ const form = new FormBuilder({
     fields: [...]
 });</code></pre>
 
-            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Conditional Fields</h3>
-            <pre class="example-code"><code>fields: [
+                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Conditional Fields</h3>
+                    <pre class="example-code"><code class="language-javascript">fields: [
     {
         key: 'hasCompany',
         label: 'Firmenkunde?',
@@ -525,8 +371,8 @@ const form = new FormBuilder({
     }
 ]</code></pre>
 
-            <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Custom Button Actions</h3>
-            <pre class="example-code"><code>const form = new FormBuilder({
+                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Custom Button Actions</h3>
+                    <pre class="example-code"><code class="language-javascript">const form = new FormBuilder({
     containerId: 'myForm',
     fields: [...],
     submitLabel: 'Speichern',
@@ -540,12 +386,20 @@ const form = new FormBuilder({
         // Submit logic
     }
 });</code></pre>
-        </div>
-
+                </div>
+            </div>
+        </main>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <script type="module">
         import { FormBuilder } from '../../src/FormBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('form-builder');
+        addMobileMenuToggle();
 
         // Example 1: Basic Form
         const basicForm = new FormBuilder({
@@ -659,16 +513,11 @@ const form = new FormBuilder({
                 alert('Daten in Console ausgegeben (F12)');
             }
         });
-            hljs.highlightAll();
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
-                hljs.highlightElement(block);
-            });
-        });
+        // Highlight code blocks
+        document.addEventListener('DOMContentLoaded', () => {
             hljs.highlightAll();
+        });
     </script>
 </body>
 </html>

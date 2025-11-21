@@ -13,85 +13,22 @@
     </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SiteBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            color: #202124;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .nav {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 40px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav a {
-            color: #1a73e8;
-            text-decoration: none;
-            font-weight: 500;
-            margin-right: 24px;
-            transition: opacity 0.2s;
-        }
-
-        .nav a:hover {
-            opacity: 0.7;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
-
-        .example-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-        }
-
-        .example-section h2 {
+        .demo-section h2 {
             font-size: 28px;
             margin-bottom: 12px;
             color: #1a73e8;
         }
 
-        .example-section h3 {
+        .demo-section h3 {
             font-size: 20px;
             margin: 24px 0 12px 0;
             color: #202124;
         }
 
-        .example-section p {
+        .demo-section p {
             color: #5f6368;
             line-height: 1.6;
             margin-bottom: 24px;
@@ -168,16 +105,6 @@
             height: 500px;
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 32px;
-            }
-
-            .example-section {
-                padding: 24px;
-            }
-        }
-    
         .example-code {
             background: #1e1e1e !important;
             color: #d4d4d4 !important;
@@ -217,22 +144,21 @@
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Navigation -->
-        <div class="nav">
-            <a href="index.html">← Zurück zur Übersicht</a>
-            <a href="site-builder.html" style="opacity: 0.5;">SiteBuilder + GlobalConfig</a>
-            <a href="../../README.md" target="_blank">📖 Docs</a>
-        </div>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-        <!-- Header -->
-        <div class="header">
-            <h1>🏗️ SiteBuilder + GlobalConfig</h1>
-            <p>Komplettes Layout-Gerippe mit zentraler Konfiguration</p>
-        </div>
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🏗️ SiteBuilder + GlobalConfig</h1>
+                    <p>Komplettes Layout-Gerippe mit zentraler Konfiguration</p>
+                </div>
 
-        <!-- GlobalConfig Section -->
-        <div class="example-section">
+                <!-- GlobalConfig Section -->
+                <div class="demo-section">
             <h2>1. GlobalConfig <span class="badge">NEU in v1.2</span></h2>
             <p>Zentrale Konfiguration für alle SSI Builders. Einmal beim App-Start konfigurieren, überall nutzen!</p>
 
@@ -314,7 +240,7 @@ GlobalConfig.configure({
         </div>
 
         <!-- SiteBuilder Section -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>2. SiteBuilder <span class="badge">NEU in v1.2</span></h2>
             <p>Komplettes Layout-Gerippe: Header, Sidebar, Content, Footer. Perfekt für Admin-Panels, Dashboards, und Webapps.</p>
 
@@ -408,7 +334,7 @@ site.addBuilder('list', {
         </div>
 
         <!-- API Methods -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>3. SiteBuilder API</h2>
             <p>Alle verfügbaren Methoden für das SiteBuilder Layout.</p>
 
@@ -471,7 +397,7 @@ site.addBuilder('list', {
         </div>
 
         <!-- Real-World Example -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>4. Real-World Beispiel</h2>
             <p>Komplette App mit GlobalConfig + SiteBuilder + ListBuilder Integration.</p>
 
@@ -551,7 +477,7 @@ const userList = new ListBuilder({
         </div>
 
         <!-- Benefits Section -->
-        <div class="example-section">
+        <div class="demo-section">
             <h2>5. Vorteile</h2>
             <p>Warum GlobalConfig + SiteBuilder nutzen?</p>
 
@@ -564,15 +490,23 @@ const userList = new ListBuilder({
                 <li>✅ <strong>Flexibel</strong> - 4 Templates + Custom-Layout möglich</li>
                 <li>✅ <strong>Builder-Integration</strong> - <code>addBuilder()</code> für nahtloses Hinzufügen</li>
             </ul>
-        </div>
+                </div>
 
+            </div>
+        </main>
     </div>
 
     <script type="module">
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('site-builder');
+        addMobileMenuToggle();
+
         // This page documents the SiteBuilder, but doesn't run a live demo
         // to avoid nested SiteBuilder instances (meta!)
         console.log('[SiteBuilder Demo] Documentation loaded');
-            hljs.highlightAll();
+        hljs.highlightAll();
     </script>
 
     <script>

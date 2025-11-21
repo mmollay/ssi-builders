@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSI Builders - Professional UI Component Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- SSI Builders Styles -->
+    <link rel="stylesheet" href="/src/shared.css">
+    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/docs/demos/layout.css">
+
+    <style>
+        /* Landing Page Specific Styles */
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 80px 40px;
+            text-align: center;
+            color: white;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .hero-section h1 {
+            font-size: 56px;
+            margin-bottom: 16px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .hero-section p {
+            font-size: 24px;
+            opacity: 0.95;
+            margin-bottom: 32px;
+        }
+
+        .version-badge {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 16px;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 32px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .stat-card .number {
+            font-size: 48px;
+            font-weight: 700;
+            color: #1a73e8;
+            margin-bottom: 12px;
+        }
+
+        .stat-card .label {
+            color: #5f6368;
+            font-size: 16px;
+        }
+
+        /* Info Card */
+        .info-card {
+            background: white;
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+        }
+
+        .info-card h2 {
+            font-size: 36px;
+            color: #1a73e8;
+            margin-bottom: 24px;
+        }
+
+        .info-card p {
+            color: #5f6368;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 24px;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-top: 32px;
+        }
+
+        .feature-box {
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+
+        .feature-box.blue {
+            border-left-color: #1a73e8;
+        }
+
+        .feature-box.green {
+            border-left-color: #34a853;
+        }
+
+        .feature-box.red {
+            border-left-color: #ea4335;
+        }
+
+        .feature-box h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #202124;
+        }
+
+        .feature-box p {
+            color: #5f6368;
+            font-size: 15px;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Footer */
+        .page-footer {
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 60px;
+            border-top: 2px solid #e0e0e0;
+        }
+
+        .page-footer p {
+            color: #5f6368;
+            font-size: 16px;
+        }
+
+        .page-footer .copyright {
+            color: #9aa0a6;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-section h1 {
+                font-size: 36px;
+            }
+
+            .hero-section p {
+                font-size: 18px;
+            }
+
+            .info-card {
+                padding: 32px 24px;
+            }
+
+            .info-card h2 {
+                font-size: 28px;
+            }
+
+            .info-card p {
+                font-size: 16px;
+            }
+
+            .stat-card .number {
+                font-size: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <h1>🎨 SSI Builders</h1>
+                    <p>Professional UI Component Library for Modern Web Apps</p>
+                    <div class="version-badge">
+                        v1.2.0 - Material Design 3
+                    </div>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="number">8</div>
+                        <div class="label">Builders</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">15+</div>
+                        <div class="label">Icons</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">5</div>
+                        <div class="label">Icon Systems</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="number">100%</div>
+                        <div class="label">MD3 Compliant</div>
+                    </div>
+                </div>
+
+                <!-- Main Info Card -->
+                <div class="info-card">
+                    <h2>🎯 Was ist SSI Builders?</h2>
+                    <p>
+                        SSI Builders ist die <strong>zentrale UI-Komponenten-Bibliothek</strong> für alle SSI-Projekte.
+                        Entwickelt mit <strong>Material Design 3</strong> Prinzipien und optimiert für moderne Webapplikationen.
+                    </p>
+
+                    <div class="features-grid">
+                        <div class="feature-box blue">
+                            <h3>🚀 Production-Ready</h3>
+                            <p>Sofort einsetzbar in allen SSI-Projekten</p>
+                        </div>
+                        <div class="feature-box green">
+                            <h3>📱 Mobile-First</h3>
+                            <p>Responsive für alle Bildschirmgrößen</p>
+                        </div>
+                        <div class="feature-box red">
+                            <h3>♿ Accessibility</h3>
+                            <p>ARIA, Keyboard Nav, Screen Reader Support</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Getting Started Info -->
+                <div class="info-card">
+                    <h2>🚀 Getting Started</h2>
+                    <p>
+                        Nutze die Sidebar-Navigation links, um alle verfügbaren Builder zu erkunden!
+                        Jede Builder-Seite zeigt dir Live-Demos und Code-Beispiele.
+                    </p>
+                    <div style="background: #e8f0fe; padding: 24px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 24px;">
+                        <h3 style="font-size: 20px; color: #1a73e8; margin-bottom: 12px;">💡 Quick Links</h3>
+                        <ul style="color: #5f6368; font-size: 16px; line-height: 1.8; margin-left: 20px;">
+                            <li><a href="docs/demos/all-builders-overview.html" style="color: #1a73e8; text-decoration: none;">All Builders Overview</a> - Alle Builder auf einen Blick</li>
+                            <li><a href="docs/demos/global-config-playground.html" style="color: #1a73e8; text-decoration: none;">Live Playground</a> - Konfiguration in Echtzeit testen</li>
+                            <li><a href="docs/demos/icon-system.html" style="color: #1a73e8; text-decoration: none;">Icon System</a> - Icon-Verwaltung verstehen</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="page-footer">
+                    <p>Made with ❤️ by SSI Solutions</p>
+                    <p class="copyright">© 2025 SSI Builders</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from '/docs/demos/layout.js';
+        import { IconManager } from '/src/IconManager.js';
+
+        // Configure Icon System
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // Initialize layout with sidebar (activePage: 'index')
+        initializeDemoLayout('index');
+
+        console.log('✅ SSI Builders Landing Page initialized successfully!');
+    </script>
+</body>
+</html>

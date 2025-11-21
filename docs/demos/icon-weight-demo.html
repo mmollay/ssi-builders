@@ -11,67 +11,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/ListBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
     <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 40px 20px;
-        }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 60px;
-        }
-
-        .header h1 {
-            font-size: 48px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .header p {
-            font-size: 20px;
-            opacity: 0.95;
-        }
 
         .weight-selector {
-            background: white;
-            border-radius: 12px;
-            padding: 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             display: flex;
             gap: 16px;
             align-items: center;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 24px;
         }
 
         .weight-selector label {
             font-weight: 500;
             color: #202124;
-        }
-
-        .demo-section {
-            background: white;
-            border-radius: 12px;
-            padding: 40px;
-            margin-bottom: 24px;
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .demo-section h2 {
@@ -176,17 +131,33 @@
             .comparison {
                 grid-template-columns: 1fr;
             }
+
+            .weight-selector {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🎨 Icon Weight Demo</h1>
-            <p>Thin vs. Regular vs. Bold - Modernes Stroke-Width Design</p>
-        </div>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
 
-        <div class="weight-selector">
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🎨 Icon Weight Demo</h1>
+                    <p>Thin vs. Regular vs. Bold - Modernes Stroke-Width Design</p>
+                </div>
+
+                <div class="weight-selector">
             <label>Icon Weight wählen:</label>
             <button class="ssi-btn ssi-btn-outlined" id="weightThin">
                 Thin (1.5) - Ultra-Minimalistisch
@@ -314,11 +285,18 @@ const list = new ListBuilder({
         ]
     }
 });</code></pre>
-        </div>
+                </div>
+            </div>
+        </main>
     </div>
 
     <script type="module">
+        import { SidebarBuilder } from '../../src/SidebarBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
         import { IconManager } from '../../src/IconManager.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('icon-weight-demo');
 
         const iconGrid = document.getElementById('iconGrid');
         const currentWeightSpan = document.getElementById('currentWeight');
