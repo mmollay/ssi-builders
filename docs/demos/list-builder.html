@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -67,10 +68,18 @@
             margin: 4px;
         }
 
-        .tag-new { background: #e6f4ea; color: #137333; }
-        .tag-important { background: #fce8e6; color: #c5221f; }
+        .tag-new {
+            background: #e6f4ea;
+            color: #137333;
+        }
+
+        .tag-important {
+            background: #fce8e6;
+            color: #c5221f;
+        }
     </style>
 </head>
+
 <body>
     <div class="page-layout">
         <!-- Sidebar -->
@@ -155,7 +164,8 @@ const list = new ListBuilder({
                 <div class="demo-section">
                     <h2>Configuration Reference</h2>
 
-                    <h3 style="margin-top: 24px; color: #1a73e8;">Row Actions - Display Types <span class="tag tag-new">NEW</span></h3>
+                    <h3 style="margin-top: 24px; color: #1a73e8;">Row Actions - Display Types <span
+                            class="tag tag-new">NEW</span></h3>
                     <table class="config-table">
                         <thead>
                             <tr>
@@ -293,17 +303,17 @@ icon: IconManager.getIcon('delete', 'emoji') // Override für einzelnes Icon</co
                     },
                     {
                         key: 'edit',
-                        icon: IconManager.getIcon('edit', 'emoji'),
+                        icon: IconManager.getIcon('edit'),
                         label: 'Bearbeiten',
-                        displayType: 'emoji',
+                        displayType: 'icon',
                         handler: (row) => alert(`Bearbeiten: ${row.name}`)
                     },
                     {
                         key: 'delete',
                         icon: IconManager.getIcon('delete'),
                         label: 'Löschen',
-                        displayType: 'button-icon',
-                        buttonType: 'danger',
+                        displayType: 'icon',
+                        buttonType: 'danger', // Will be red on hover
                         handler: (row) => {
                             if (confirm(`Wirklich löschen: ${row.name}?`)) {
                                 alert('Gelöscht!');
@@ -323,4 +333,5 @@ icon: IconManager.getIcon('delete', 'emoji') // Override für einzelnes Icon</co
         });
     </script>
 </body>
+
 </html>

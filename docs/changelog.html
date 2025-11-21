@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Changelog - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- SSI Builders Styles -->
+    <link rel="stylesheet" href="/src/shared.css">
+    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/docs/demos/layout.css">
+
+    <!-- Marked Library for Markdown Rendering -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <style>
+        .changelog-content {
+            background: white;
+            padding: 48px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .changelog-content h1 {
+            font-size: 36px;
+            color: #1a73e8;
+            margin-bottom: 24px;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 16px;
+        }
+
+        .changelog-content h2 {
+            font-size: 24px;
+            color: #202124;
+            margin-top: 40px;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .changelog-content h3 {
+            font-size: 18px;
+            color: #5f6368;
+            margin-top: 24px;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .changelog-content ul {
+            padding-left: 24px;
+            margin-bottom: 16px;
+        }
+
+        .changelog-content li {
+            margin-bottom: 8px;
+            color: #3c4043;
+            line-height: 1.6;
+        }
+
+        .changelog-content code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.9em;
+            color: #d93025;
+        }
+
+        .changelog-content a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+
+        .changelog-content a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <div class="changelog-content" id="changelog-render-area">
+                    <div style="text-align: center; padding: 40px; color: #5f6368;">
+                        Lade Changelog...
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="page-footer">
+                    <p>Made with ❤️ by SSI Solutions</p>
+                    <p class="copyright">© 2025 SSI Builders</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from '/docs/demos/layout.js';
+        import { IconManager } from '/src/IconManager.js';
+
+        // Configure Icon System
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // Initialize layout with sidebar (activePage: 'changelog')
+        initializeDemoLayout('changelog');
+
+        // Fetch and Render Changelog
+        async function loadChangelog() {
+            try {
+                const response = await fetch('/CHANGELOG.md');
+                if (!response.ok) throw new Error('Changelog could not be loaded');
+                
+                const markdown = await response.text();
+                const html = marked.parse(markdown);
+                
+                document.getElementById('changelog-render-area').innerHTML = html;
+            } catch (error) {
+                console.error('Error loading changelog:', error);
+                document.getElementById('changelog-render-area').innerHTML = `
+                    <div style="text-align: center; color: #d93025; padding: 40px;">
+                        <h3>Fehler beim Laden des Changelogs</h3>
+                        <p>${error.message}</p>
+                        <p>Bitte stellen Sie sicher, dass CHANGELOG.md im Root-Verzeichnis existiert.</p>
+                    </div>
+                `;
+            }
+        }
+
+        loadChangelog();
+    </script>
+</body>
+</html>

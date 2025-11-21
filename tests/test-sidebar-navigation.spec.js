@@ -33,8 +33,6 @@ test.describe('Sidebar Navigation System', () => {
       // Check for sidebar container
       const sidebar = await page.locator('#sidebar-container');
       await expect(sidebar).toBeVisible({ timeout: 5000 });
-
-      console.log(`✓ ${pageInfo.title}: Sidebar present`);
     }
   });
 
@@ -49,8 +47,6 @@ test.describe('Sidebar Navigation System', () => {
       // Check for demo-content
       const demoContent = await page.locator('.demo-content');
       await expect(demoContent).toBeVisible();
-
-      console.log(`✓ ${pageInfo.title}: Layout structure correct`);
     }
   });
 
@@ -63,8 +59,6 @@ test.describe('Sidebar Navigation System', () => {
     // Check for SSI Builders title
     const sidebarTitle = await page.locator('.sidebar').getByText('SSI Builders');
     await expect(sidebarTitle).toBeVisible();
-
-    console.log('✓ Sidebar branding present');
   });
 
   test('Sidebar navigation items are clickable', async ({ page }) => {
@@ -83,8 +77,6 @@ test.describe('Sidebar Navigation System', () => {
 
     // Should be on list-builder page
     expect(page.url()).toContain('list-builder.html');
-
-    console.log('✓ Sidebar navigation works');
   });
 
   test('Active page is highlighted in sidebar', async ({ page }) => {
@@ -97,8 +89,6 @@ test.describe('Sidebar Navigation System', () => {
     // This test assumes the active item has a different style
     const formBuilderItem = await page.locator('.sidebar').getByText('FormBuilder');
     await expect(formBuilderItem).toBeVisible();
-
-    console.log('✓ Active page highlighting works');
   });
 
   test('Mobile menu toggle button exists on small screens', async ({ page }) => {
@@ -115,8 +105,6 @@ test.describe('Sidebar Navigation System', () => {
     // Mobile toggle should exist (visible or not, depending on implementation)
     const count = await mobileToggle.count();
     expect(count).toBeGreaterThan(0);
-
-    console.log('✓ Mobile menu toggle present');
   });
 
   test('Sidebar sections are collapsible', async ({ page }) => {
@@ -130,8 +118,6 @@ test.describe('Sidebar Navigation System', () => {
     const sectionCount = await sections.count();
 
     expect(sectionCount).toBeGreaterThan(0);
-
-    console.log(`✓ Found ${sectionCount} collapsible sections`);
   });
 
   test('Page header is present on all pages', async ({ page }) => {
@@ -145,8 +131,6 @@ test.describe('Sidebar Navigation System', () => {
       // Check for h1 inside page-header
       const h1 = await pageHeader.locator('h1');
       await expect(h1).toBeVisible();
-
-      console.log(`✓ ${pageInfo.title}: Page header present`);
     }
   });
 
@@ -166,8 +150,6 @@ test.describe('Sidebar Navigation System', () => {
 
     // Should have left margin (280px or similar)
     expect(parseInt(marginLeft)).toBeGreaterThan(200);
-
-    console.log('✓ Desktop layout correct');
   });
 
   test('Responsive layout: Tablet (768px)', async ({ page }) => {
@@ -179,8 +161,6 @@ test.describe('Sidebar Navigation System', () => {
     // Sidebar container exists
     const sidebar = await page.locator('#sidebar-container');
     expect(await sidebar.count()).toBe(1);
-
-    console.log('✓ Tablet layout correct');
   });
 
   test('Responsive layout: Mobile (375px)', async ({ page }) => {
@@ -196,8 +176,6 @@ test.describe('Sidebar Navigation System', () => {
     // Mobile toggle should exist
     const mobileToggle = await page.locator('.mobile-menu-toggle, #mobile-menu-toggle');
     expect(await mobileToggle.count()).toBeGreaterThan(0);
-
-    console.log('✓ Mobile layout correct');
   });
 
   test('No console errors on page load', async ({ page }) => {
@@ -223,8 +201,6 @@ test.describe('Sidebar Navigation System', () => {
     }
 
     expect(filteredErrors.length).toBe(0);
-
-    console.log('✓ No console errors');
   });
 
   test('Navigation between pages preserves sidebar state', async ({ page }) => {
@@ -247,8 +223,6 @@ test.describe('Sidebar Navigation System', () => {
 
     // Sidebar should still be present
     await expect(sidebar).toBeVisible();
-
-    console.log('✓ Sidebar persists across navigation');
   });
 
 });

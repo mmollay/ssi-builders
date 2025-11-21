@@ -414,4 +414,4 @@ actions: {
 
 ---
 
-**Version:** 1.2.0 | **Last Updated:** 2025-11-20
+**Version:** 1.2.1 | **Last Updated:** 2025-11-21

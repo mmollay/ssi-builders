@@ -23,7 +23,7 @@
  *
  * site.renderContent('<div>Content here</div>');
  *
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 import { GlobalConfig } from './GlobalConfig.js';

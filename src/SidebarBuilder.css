@@ -13,7 +13,7 @@
     flex-direction: column;
     transition: width 0.3s ease;
     z-index: 1000;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .sidebar-left {
@@ -130,12 +130,12 @@
     color: #202124;
 }
 
-.sidebar-item-active > .sidebar-link {
+.sidebar-item-active>.sidebar-link {
     background: #e8f0fe;
     color: #1a73e8;
 }
 
-.sidebar-item-active > .sidebar-link .sidebar-icon {
+.sidebar-item-active>.sidebar-link .sidebar-icon {
     color: #1a73e8;
 }
 

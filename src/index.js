@@ -30,5 +30,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '1.2.0';
+export const VERSION = '1.2.1';
 export const LIBRARY_NAME = 'SSI Builders';

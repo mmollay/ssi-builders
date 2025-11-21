@@ -5,7 +5,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5180';
+const BASE_URL = 'http://localhost:5178';
 
 test.describe('SSI Builders Landing Page', () => {
     test.beforeEach(async ({ page }) => {
@@ -15,12 +15,12 @@ test.describe('SSI Builders Landing Page', () => {
 
     test('Page loads and displays hero section', async ({ page }) => {
         // Check hero title
-        const heroTitle = await page.locator('.hero h1').textContent();
+        const heroTitle = await page.locator('.hero-section h1').textContent();
         expect(heroTitle).toContain('SSI Builders');
 
         // Check version badge
         const versionBadge = await page.locator('.version-badge').textContent();
-        expect(versionBadge).toContain('v1.2.0');
+        expect(versionBadge).toContain('v1.2.1');
         expect(versionBadge).toContain('Material Design 3');
     });
 
@@ -39,7 +39,7 @@ test.describe('SSI Builders Landing Page', () => {
 
     test('Sidebar navigation renders correctly', async ({ page }) => {
         // Check sidebar exists
-        const sidebar = await page.locator('.sidebar-container');
+        const sidebar = await page.locator('#sidebar-container');
         await expect(sidebar).toBeVisible();
 
         // Check sidebar title
@@ -93,37 +93,37 @@ test.describe('SSI Builders Landing Page', () => {
 
     test('Sidebar "All Builders" section has nested items', async ({ page }) => {
         // Click to expand "All Builders" section in sidebar
-        const buildersSection = await page.locator('.sidebar-container').locator('text=All Builders').first();
+        const buildersSection = await page.locator('#sidebar-container').locator('text=All Builders').first();
         await buildersSection.click();
         await page.waitForTimeout(300);
 
         // Check if nested items are visible
-        await expect(page.locator('.sidebar-container').locator('text=ListBuilder')).toBeVisible();
-        await expect(page.locator('.sidebar-container').locator('text=FormBuilder')).toBeVisible();
-        await expect(page.locator('.sidebar-container').locator('text=ModalBuilder')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=ListBuilder')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=FormBuilder')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=ModalBuilder')).toBeVisible();
     });
 
     test('Icon System section in sidebar works', async ({ page }) => {
         // Click to expand "Icon System" section
-        const iconSection = await page.locator('.sidebar-container').locator('text=Icon System').first();
+        const iconSection = await page.locator('#sidebar-container').locator('text=Icon System').first();
         await iconSection.click();
         await page.waitForTimeout(300);
 
         // Check nested items
-        await expect(page.locator('.sidebar-container').locator('text=Documentation')).toBeVisible();
-        await expect(page.locator('.sidebar-container').locator('text=Weight Demo')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=Documentation')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=Weight Demo')).toBeVisible();
     });
 
     test('Resources section in sidebar opens external links', async ({ page }) => {
         // Click to expand "Resources" section
-        const resourcesSection = await page.locator('.sidebar-container').locator('text=Resources').first();
+        const resourcesSection = await page.locator('#sidebar-container').locator('text=Resources').first();
         await resourcesSection.click();
         await page.waitForTimeout(300);
 
         // Check nested items exist
-        await expect(page.locator('.sidebar-container').locator('text=README.md')).toBeVisible();
-        await expect(page.locator('.sidebar-container').locator('text=CHANGELOG.md')).toBeVisible();
-        await expect(page.locator('.sidebar-container').locator('text=GitHub')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=README.md')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=CHANGELOG.md')).toBeVisible();
+        await expect(page.locator('#sidebar-container').locator('text=GitHub')).toBeVisible();
     });
 
     test('No console errors on page load', async ({ page }) => {
@@ -149,13 +149,13 @@ test.describe('SSI Builders Landing Page', () => {
     });
 
     test('Footer is present', async ({ page }) => {
-        const footer = await page.locator('.footer');
+        const footer = await page.locator('.page-footer');
         await expect(footer).toBeVisible();
 
         const footerText = await footer.textContent();
         expect(footerText).toContain('SSI Solutions');
         expect(footerText).toContain('2025');
-        expect(footerText).toContain('Version 1.2.0');
+        expect(footerText).toContain('Version 1.2.1');
     });
 
     test('Responsive layout works on mobile', async ({ page }) => {
@@ -165,11 +165,11 @@ test.describe('SSI Builders Landing Page', () => {
         await page.waitForLoadState('networkidle');
 
         // Sidebar should still be visible (but might be stacked differently)
-        const sidebar = await page.locator('.sidebar-container');
+        const sidebar = await page.locator('#sidebar-container');
         await expect(sidebar).toBeVisible();
 
         // Hero should still be visible
-        const hero = await page.locator('.hero h1');
+        const hero = await page.locator('.hero-section h1');
         await expect(hero).toBeVisible();
 
         // Stats grid should adapt

@@ -17,7 +17,7 @@
  *     }
  * });
  *
- * @version 1.2.0
+ * @version 1.2.1
  */
 
 import { IconManager } from './IconManager.js';
@@ -123,7 +123,10 @@ export class GlobalConfig {
             this._updateCSSVariables(userConfig.theme);
         }
 
-        console.log('[GlobalConfig] Configuration updated:', this.config);
+        // Only log in development mode
+        if (typeof process !== 'undefined' && process.env?.NODE_ENV === 'development') {
+            console.log('[GlobalConfig] Configuration updated:', this.config);
+        }
     }
 
     /**

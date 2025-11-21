@@ -5,7 +5,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5180';
+const BASE_URL = 'http://localhost:5178';
 
 test.describe('SSI Builders - Complete Page Walkthrough', () => {
     test('Complete page walkthrough - all elements and interactions', async ({ page }) => {
@@ -28,8 +28,8 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
 
         // === 2. CHECK HERO SECTION ===
         console.log('Step 2: Checking hero section...');
-        await expect(page.locator('.hero h1')).toContainText('SSI Builders');
-        await expect(page.locator('.version-badge')).toContainText('v1.2.0');
+        await expect(page.locator('.hero-section h1')).toContainText('SSI Builders');
+        await expect(page.locator('.version-badge')).toContainText('v1.2.1');
         await expect(page.locator('.version-badge')).toContainText('Material Design 3');
 
         // === 3. CHECK STATS ===
@@ -39,7 +39,7 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
 
         // === 4. CHECK SIDEBAR ===
         console.log('Step 4: Checking sidebar...');
-        const sidebar = await page.locator('.sidebar-container');
+        const sidebar = await page.locator('#sidebar-container');
         await expect(sidebar).toBeVisible();
 
         // Check sidebar header
@@ -167,11 +167,11 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
 
         // === 12. CHECK FOOTER ===
         console.log('Step 12: Checking footer...');
-        const footer = await page.locator('.footer');
+        const footer = await page.locator('.page-footer');
         await expect(footer).toBeVisible();
         await expect(footer).toContainText('SSI Solutions');
         await expect(footer).toContainText('2025');
-        await expect(footer).toContainText('Version 1.2.0');
+        await expect(footer).toContainText('Version 1.2.1');
 
         // === 13. TEST MOBILE RESPONSIVE ===
         console.log('Step 13: Testing mobile responsive layout...');
@@ -179,7 +179,7 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
         await page.waitForTimeout(1000);
 
         // Hero should still be visible
-        await expect(page.locator('.hero h1')).toBeVisible();
+        await expect(page.locator('.hero-section h1')).toBeVisible();
 
         // Stats should still work
         await expect(page.locator('.stat-card')).toHaveCount(4);
@@ -216,7 +216,7 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
         await page.waitForLoadState('networkidle');
         await page.waitForTimeout(2000);
 
-        const sidebar = await page.locator('.sidebar-container');
+        const sidebar = await page.locator('#sidebar-container');
 
         // Expand "All Builders" section
         await sidebar.locator('text=All Builders').first().click();
@@ -256,7 +256,7 @@ test.describe('SSI Builders - Complete Page Walkthrough', () => {
         await page.waitForLoadState('networkidle');
         await page.waitForTimeout(2000);
 
-        const sidebar = await page.locator('.sidebar-container');
+        const sidebar = await page.locator('#sidebar-container');
 
         // Expand "Icon System" section
         await sidebar.locator('text=Icon System').first().click();

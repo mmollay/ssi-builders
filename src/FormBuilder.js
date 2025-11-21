@@ -16,9 +16,9 @@
  * @version 1.0.0
  */
 
-import { createVersionBadge } from './version.js';
+import { BaseBuilder } from './BaseBuilder.js';
 
-export class FormBuilder {
+export class FormBuilder extends BaseBuilder {
     /**
      * @param {Object} config - Configuration object
      * @param {string} config.containerId - ID of the container element
@@ -27,24 +27,23 @@ export class FormBuilder {
      * @param {Object} config.options - Additional options
      */
     constructor(config) {
-        this.containerId = config.containerId;
+        super(config, {
+            submitLabel: 'Speichern',
+            cancelLabel: 'Abbrechen',
+            autoSave: false,
+            autoSaveDelay: 1000,
+            localStorageKey: null,
+            showResetButton: true,
+            multiStep: false,
+            steps: [],
+            layout: 'vertical',
+            gridColumns: 2,
+            onCancel: null,
+            initialValues: {}
+        });
+
         this.fields = config.fields || [];
         this.onSubmit = config.onSubmit;
-        this.options = {
-            submitLabel: config.options?.submitLabel || 'Speichern',
-            cancelLabel: config.options?.cancelLabel || 'Abbrechen',
-            autoSave: config.options?.autoSave || false,
-            autoSaveDelay: config.options?.autoSaveDelay || 1000,
-            localStorageKey: config.options?.localStorageKey || null,
-            showResetButton: config.options?.showResetButton !== false,
-            multiStep: config.options?.multiStep || false,
-            steps: config.options?.steps || [],
-            layout: config.options?.layout || 'vertical', // vertical, horizontal, grid
-            gridColumns: config.options?.gridColumns || 2,
-            onCancel: config.options?.onCancel || null,
-            initialValues: config.options?.initialValues || {},
-            ...config.options
-        };
 
         // Internal state
         this.values = { ...this.options.initialValues };
@@ -69,12 +68,7 @@ export class FormBuilder {
      * Initialize the FormBuilder
      */
     init() {
-        this.container = document.getElementById(this.containerId);
-        if (!this.container) {
-            console.error(`Container #${this.containerId} not found`);
-            return;
-        }
-
+        if (!super.init()) return;
         this.render();
     }
 
@@ -89,7 +83,7 @@ export class FormBuilder {
                     ${this.renderFields()}
                     ${this.renderActions()}
                 </form>
-                ${createVersionBadge()}
+                ${this.renderVersionBadge()}
             </div>
         `;
 

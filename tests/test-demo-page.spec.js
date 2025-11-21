@@ -20,8 +20,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check documentation section
         await expect(page.locator('text=Documentation')).toBeVisible();
         await expect(page.locator('a:has-text("Quick Guide")')).toBeVisible();
-
-        console.log('✅ Demo page loaded successfully');
     });
 
     test('Navigation links work', async ({ page }) => {
@@ -48,8 +46,6 @@ test.describe('SSI Builders Demo Page', () => {
             // Check if section is visible
             const sectionVisible = await page.locator(builder.href).isVisible();
             expect(sectionVisible).toBe(true);
-
-            console.log(`✅ ${builder.name} navigation works`);
         }
     });
 
@@ -62,8 +58,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check if table has rows
         const rows = await page.locator('#demoList .list-table tbody tr').count();
         expect(rows).toBeGreaterThan(0);
-
-        console.log(`✅ ListBuilder rendered with ${rows} rows`);
     });
 
     test('FormBuilder renders', async ({ page }) => {
@@ -75,8 +69,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check if form has fields
         const fields = await page.locator('#demoForm input, #demoForm select, #demoForm textarea').count();
         expect(fields).toBeGreaterThan(0);
-
-        console.log(`✅ FormBuilder rendered with ${fields} fields`);
     });
 
     test('Charts render', async ({ page }) => {
@@ -88,8 +80,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check if all 4 charts are present
         const charts = await page.locator('canvas').count();
         expect(charts).toBeGreaterThanOrEqual(4);
-
-        console.log(`✅ ${charts} charts rendered`);
     });
 
     test('Modal buttons work', async ({ page }) => {
@@ -108,8 +98,6 @@ test.describe('SSI Builders Demo Page', () => {
         const modalVisible = await page.locator('.modal').isVisible();
         expect(modalVisible).toBe(true);
 
-        console.log('✅ Modal opened successfully');
-
         // Close modal
         await page.keyboard.press('Escape');
         await page.waitForTimeout(500);
@@ -124,8 +112,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check if tabs are present
         const tabs = await page.locator('#demoTabs .tab-button').count();
         expect(tabs).toBeGreaterThan(0);
-
-        console.log(`✅ TabBuilder rendered with ${tabs} tabs`);
     });
 
     test('Sidebar renders', async ({ page }) => {
@@ -137,8 +123,6 @@ test.describe('SSI Builders Demo Page', () => {
         // Check if sidebar is visible
         const sidebarVisible = await page.locator('#demoSidebar .sidebar').isVisible();
         expect(sidebarVisible).toBe(true);
-
-        console.log('✅ SidebarBuilder rendered');
     });
 
     test('No console errors', async ({ page }) => {
@@ -155,13 +139,6 @@ test.describe('SSI Builders Demo Page', () => {
 
         // Wait a bit for any lazy-loaded content
         await page.waitForTimeout(2000);
-
-        if (consoleErrors.length > 0) {
-            console.log('❌ Console errors found:');
-            consoleErrors.forEach(err => console.log(`  - ${err}`));
-        } else {
-            console.log('✅ No console errors');
-        }
 
         expect(consoleErrors.length).toBe(0);
     });

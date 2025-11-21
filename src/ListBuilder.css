@@ -189,8 +189,16 @@
     border-bottom: none;
 }
 
+.list-table tbody tr {
+    transition: all 0.2s ease;
+}
+
 .list-table tbody tr:hover {
     background: #f8f9fa;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    z-index: 1;
+    position: relative;
 }
 
 .list-table tbody tr.list-row-selected {
@@ -237,9 +245,12 @@
 }
 
 /* Actions column */
-.list-table-actions {
+.list-table-actions,
+th.list-table-actions,
+td.list-table-actions {
     width: auto;
     white-space: nowrap;
+    text-align: right;
 }
 
 /* ========================================
@@ -251,18 +262,20 @@
     background: transparent;
     color: #5f6368;
     cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.2s ease;
+    border-radius: 6px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     font-size: 16px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 4px;
+    opacity: 0.7;
 }
 
 .list-action-btn:hover {
     background: #f1f3f4;
-    transform: scale(1.05);
+    transform: scale(1.1);
+    opacity: 1;
 }
 
 /* Icon-only buttons (default, compact) */
@@ -373,18 +386,20 @@
 
 /* Legacy support for old API (backwards compatible) */
 .list-action-btn-danger:not(.list-action-btn-full) {
-    color: #ea4335;
+    color: #5f6368;
 }
 
 .list-action-btn-danger:not(.list-action-btn-full):hover {
+    color: #ea4335;
     background: #fce8e6;
 }
 
 .list-action-btn-primary:not(.list-action-btn-full) {
-    color: #1a73e8;
+    color: #5f6368;
 }
 
 .list-action-btn-primary:not(.list-action-btn-full):hover {
+    color: #1a73e8;
     background: #e8f0fe;
 }
 
@@ -589,8 +604,13 @@
 }
 
 @keyframes list-spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .list-empty-icon {
@@ -617,8 +637,13 @@
 }
 
 @keyframes list-fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 .list-modal-content {
@@ -634,8 +659,15 @@
 }
 
 @keyframes list-slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
+    from {
+        transform: translateY(20px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 .list-modal-header {

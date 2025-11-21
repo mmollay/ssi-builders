@@ -16,9 +16,9 @@
  * @version 1.0.0
  */
 
-import { createVersionBadge } from './version.js';
+import { BaseBuilder } from './BaseBuilder.js';
 
-export class ListBuilder {
+export class ListBuilder extends BaseBuilder {
     /**
      * @param {Object} config - Configuration object
      * @param {string} config.containerId - ID of the container element
@@ -28,23 +28,22 @@ export class ListBuilder {
      * @param {Object} config.options - Additional options
      */
     constructor(config) {
-        this.containerId = config.containerId;
+        super(config, {
+            searchable: true,
+            sortable: true,
+            selectable: true,
+            paginated: true,
+            pageSize: 50,
+            filters: [],
+            emptyMessage: 'Keine Daten vorhanden',
+            loadingMessage: 'Lade Daten...',
+            mobileBreakpoint: 768,
+            enableColumnToggle: true
+        });
+
         this.columns = config.columns || [];
         this.dataSource = config.dataSource;
         this.actions = config.actions || {};
-        this.options = {
-            searchable: config.options?.searchable !== false,
-            sortable: config.options?.sortable !== false,
-            selectable: config.options?.selectable !== false,
-            paginated: config.options?.paginated !== false,
-            pageSize: config.options?.pageSize || 50,
-            filters: config.options?.filters || [],
-            emptyMessage: config.options?.emptyMessage || 'Keine Daten vorhanden',
-            loadingMessage: config.options?.loadingMessage || 'Lade Daten...',
-            mobileBreakpoint: config.options?.mobileBreakpoint || 768,
-            enableColumnToggle: config.options?.enableColumnToggle !== false,
-            ...config.options
-        };
 
         // Internal state
         this.data = [];
@@ -69,11 +68,7 @@ export class ListBuilder {
      * Initialize the ListBuilder
      */
     async init() {
-        this.container = document.getElementById(this.containerId);
-        if (!this.container) {
-            console.error(`Container #${this.containerId} not found`);
-            return;
-        }
+        if (!super.init()) return;
 
         // Load hidden columns from localStorage
         const savedHidden = localStorage.getItem(`listBuilder_${this.containerId}_hiddenColumns`);
@@ -96,7 +91,7 @@ export class ListBuilder {
                     ${this.renderTable()}
                 </div>
                 ${this.options.paginated ? this.renderPagination() : ''}
-                ${createVersionBadge()}
+                ${this.renderVersionBadge()}
             </div>
         `;
 
@@ -251,8 +246,8 @@ export class ListBuilder {
                                         ${this.options.sortable && col.sortable !== false ? `
                                             <span class="list-sort-icon">
                                                 ${this.sortColumn === col.key ?
-                                                    (this.sortDirection === 'asc' ? '▲' : '▼')
-                                                    : '⇅'}
+                    (this.sortDirection === 'asc' ? '▲' : '▼')
+                    : '⇅'}
                                             </span>
                                         ` : ''}
                                     </div>
@@ -362,31 +357,31 @@ export class ListBuilder {
                 return iconContent;
             };
 
-            switch(displayType) {
+            switch (displayType) {
                 case 'emoji':
                     // Emoji only, compact
                     content = action.emoji || action.icon || '⚙️';
-                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm`;
+                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm list-action-btn`;
                     break;
 
                 case 'button':
                     // Full button with label only (no icon)
                     content = action.label;
-                    cssClass = `ssi-btn ssi-btn-${buttonClass}`;
+                    cssClass = `ssi-btn ssi-btn-${buttonClass} list-action-btn list-action-btn-full`;
                     break;
 
                 case 'button-icon':
                     // Full button with icon + label
                     const iconHtml = action.icon ? renderIcon(action.icon) : '';
                     content = `${iconHtml}${action.label}`;
-                    cssClass = `ssi-btn ssi-btn-${buttonClass}`;
+                    cssClass = `ssi-btn ssi-btn-${buttonClass} list-action-btn list-action-btn-full list-action-btn-with-icon`;
                     break;
 
                 case 'icon':
                 default:
                     // Icon only, compact (default) - supports both SVG and emoji
                     content = renderIcon(action.icon);
-                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm`;
+                    cssClass = `ssi-btn ssi-btn-icon ssi-btn-text ssi-btn-sm list-action-btn`;
                     break;
             }
 
@@ -479,16 +474,16 @@ export class ListBuilder {
                     >‹</button>
 
                     ${pages.map(page => {
-                        if (page === '...') {
-                            return '<span class="list-pagination-ellipsis">...</span>';
-                        }
-                        return `
+            if (page === '...') {
+                return '<span class="list-pagination-ellipsis">...</span>';
+            }
+            return `
                             <button
                                 class="list-pagination-btn ${page === this.currentPage ? 'active' : ''}"
                                 data-page="${page}"
                             >${page}</button>
                         `;
-                    }).join('')}
+        }).join('')}
 
                     <button
                         class="list-pagination-btn"
@@ -904,20 +899,7 @@ export class ListBuilder {
         return path.split('.').reduce((acc, part) => acc?.[part], obj);
     }
 
-    /**
-     * Helper: Debounce function
-     */
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
+
 }
 
 export default ListBuilder;
