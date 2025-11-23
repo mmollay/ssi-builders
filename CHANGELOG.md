@@ -9,6 +9,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.1.0] - 2025-01-23
+
+### 🎨 ChartBuilder Enhancements
+
+**New Features:**
+- **Percentage Labels on Pie/Donut Charts**: Displays percentage values directly on chart slices (only shown if > 3% to avoid overlap)
+- **Formatted Total Value**: Donut center now uses `formatValue()` for proper currency/percentage formatting
+- **Improved Legend Rendering**: Enhanced legend logic for `datasets` format in Pie/Donut charts
+
+**Security & Standards:**
+- ✅ **XSS Protection**: Added `sanitizeHTML()` and `sanitizeAttr()` methods to prevent cross-site scripting attacks
+- ✅ **Design Token Integration**: Replaced hardcoded colors with CSS Custom Properties (`--ssi-primary`, `--ssi-success`, etc.)
+- ✅ **Version Alignment**: Updated `@version` to 2.0.0 for consistency with package.json
+
+**Bug Fixes:**
+- Fixed legend value display logic (undefined vs null check)
+- Fixed legend rendering for datasets format in Pie/Donut charts
+
+---
+
 ## [2.0.0] - 2025-01-21
 
 ### 🌐 SSI-Ökosystem Vision - MAJOR RELEASE
