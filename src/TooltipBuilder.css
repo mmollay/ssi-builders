@@ -1,0 +1,263 @@
+/**
+ * TooltipBuilder.css - Material Design 3 Tooltip Styles
+ * @version 2.2.0
+ */
+
+/* === Base Tooltip === */
+.ssi-tooltip {
+    position: absolute;
+    z-index: 10000;
+    padding: 8px 12px;
+    background: #202124;
+    color: #fff;
+    font-family: var(--ssi-font-family, 'Roboto', sans-serif);
+    font-size: 12px;
+    line-height: 1.5;
+    font-weight: 500;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    user-select: none;
+    transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+    max-width: 300px;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* === Visibility States === */
+.ssi-tooltip {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.ssi-tooltip.ssi-tooltip-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* === Arrow/Pointer === */
+.ssi-tooltip-arrow {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-style: solid;
+}
+
+/* Top Position */
+.ssi-tooltip-top .ssi-tooltip-arrow {
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px 6px 0 6px;
+    border-color: #202124 transparent transparent transparent;
+}
+
+/* Bottom Position */
+.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 0 6px 6px 6px;
+    border-color: transparent transparent #202124 transparent;
+}
+
+/* Left Position */
+.ssi-tooltip-left .ssi-tooltip-arrow {
+    right: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 0 6px 6px;
+    border-color: transparent transparent transparent #202124;
+}
+
+/* Right Position */
+.ssi-tooltip-right .ssi-tooltip-arrow {
+    left: -6px;
+    top: 50%;
+    transform: translateY(-50%);
+    border-width: 6px 6px 6px 0;
+    border-color: transparent #202124 transparent transparent;
+}
+
+/* === Animation Variants === */
+.ssi-tooltip-top {
+    transform: translateY(-4px);
+}
+
+.ssi-tooltip-top.ssi-tooltip-visible {
+    transform: translateY(0);
+}
+
+.ssi-tooltip-bottom {
+    transform: translateY(4px);
+}
+
+.ssi-tooltip-bottom.ssi-tooltip-visible {
+    transform: translateY(0);
+}
+
+.ssi-tooltip-left {
+    transform: translateX(-4px);
+}
+
+.ssi-tooltip-left.ssi-tooltip-visible {
+    transform: translateX(0);
+}
+
+.ssi-tooltip-right {
+    transform: translateX(4px);
+}
+
+.ssi-tooltip-right.ssi-tooltip-visible {
+    transform: translateX(0);
+}
+
+/* === Color Variants === */
+.ssi-tooltip-primary {
+    background: var(--ssi-primary-color, #1a73e8);
+    color: #fff;
+}
+
+/* Primary arrows - position specific */
+.ssi-tooltip-primary.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: var(--ssi-primary-color, #1a73e8);
+}
+.ssi-tooltip-primary.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: var(--ssi-primary-color, #1a73e8);
+}
+.ssi-tooltip-primary.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: var(--ssi-primary-color, #1a73e8);
+}
+.ssi-tooltip-primary.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: var(--ssi-primary-color, #1a73e8);
+}
+
+.ssi-tooltip-success {
+    background: #34a853;
+    color: #fff;
+}
+
+/* Success arrows - position specific */
+.ssi-tooltip-success.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #34a853;
+}
+.ssi-tooltip-success.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #34a853;
+}
+.ssi-tooltip-success.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #34a853;
+}
+.ssi-tooltip-success.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #34a853;
+}
+
+.ssi-tooltip-warning {
+    background: #fbbc04;
+    color: #202124;
+}
+
+/* Warning arrows - position specific */
+.ssi-tooltip-warning.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #fbbc04;
+}
+.ssi-tooltip-warning.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #fbbc04;
+}
+.ssi-tooltip-warning.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #fbbc04;
+}
+.ssi-tooltip-warning.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #fbbc04;
+}
+
+.ssi-tooltip-danger {
+    background: #ea4335;
+    color: #fff;
+}
+
+/* Danger arrows - position specific */
+.ssi-tooltip-danger.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #ea4335;
+}
+.ssi-tooltip-danger.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #ea4335;
+}
+.ssi-tooltip-danger.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #ea4335;
+}
+.ssi-tooltip-danger.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #ea4335;
+}
+
+.ssi-tooltip-light {
+    background: #fff;
+    color: #202124;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e8eaed;
+}
+
+/* Light arrows - position specific */
+.ssi-tooltip-light.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #fff;
+}
+.ssi-tooltip-light.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #fff;
+}
+.ssi-tooltip-light.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #fff;
+}
+.ssi-tooltip-light.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #fff;
+}
+
+/* === HTML Content Support === */
+.ssi-tooltip a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.ssi-tooltip strong,
+.ssi-tooltip b {
+    font-weight: 700;
+}
+
+.ssi-tooltip code {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 2px 4px;
+    border-radius: 3px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 11px;
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .ssi-tooltip {
+        max-width: 250px;
+        font-size: 11px;
+        padding: 6px 10px;
+    }
+}
+
+/* === Dark Mode Support === */
+@media (prefers-color-scheme: dark) {
+    .ssi-tooltip-light {
+        background: #2d2d2d;
+        color: #e8eaed;
+        border-color: #5f6368;
+    }
+}
+
+/* === Accessibility === */
+.ssi-tooltip:focus {
+    outline: 2px solid var(--ssi-primary-color, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* === Print === */
+@media print {
+    .ssi-tooltip {
+        display: none !important;
+    }
+}

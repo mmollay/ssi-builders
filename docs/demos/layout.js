@@ -22,7 +22,7 @@ export function initializeDemoLayout(activePage) {
   const sidebar = new SidebarBuilder({
     containerId: 'sidebar-container',
     title: 'SSI Builders',
-    version: '1.2.1',
+    version: '2.2.0',
     logo: {
       text: 'SSI',
       background: '#1a73e8'
@@ -100,6 +100,20 @@ export function initializeDemoLayout(activePage) {
         badge: { text: 'New', color: '#1a73e8' }
       },
       {
+        label: 'ToastBuilder',
+        icon: IconManager.getIcon('bell'),
+        key: 'toast-builder',
+        href: '/docs/demos/toast-builder.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        label: 'TooltipBuilder',
+        icon: IconManager.getIcon('info'),
+        key: 'tooltip-builder',
+        href: '/docs/demos/tooltip-builder.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
         type: 'heading',
         label: 'System'
       },
@@ -108,12 +122,6 @@ export function initializeDemoLayout(activePage) {
         icon: IconManager.getIcon('star'),
         key: 'icon-system',
         href: '/docs/demos/icon-system.html'
-      },
-      {
-        label: 'Icon Weights',
-        icon: IconManager.getIcon('settings'),
-        key: 'icon-weight-demo',
-        href: '/docs/demos/icon-weight-demo.html'
       },
       {
         label: 'Global Config',

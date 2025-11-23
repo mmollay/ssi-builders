@@ -7,6 +7,93 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### 📝 FormBuilder - UX Enhancements & Complete Demo
+
+#### **New Features:**
+
+**Password Toggle with Eye Icon** ✨
+- Interactive show/hide password functionality
+- Eye icon (👁️) / Eye-off icon (🙈) toggle button
+- Positioned inside password field (right-aligned)
+- Smooth icon transitions with hover states
+- ARIA labels for accessibility
+- Uses Lucide SVG icons from IconManager
+
+**Number Stepper Buttons** ✨
+- Increment (+) and Decrement (−) buttons for number inputs
+- Respects min/max constraints automatically
+- Custom step support (field.step)
+- Clean M3-compliant design with hover states
+- Keyboard accessible (button focus states)
+- Integrated seamlessly with form validation
+
+**M3-Enhanced UI Components:**
+- **Checkbox & Radio**: Improved hover states, accent-color support, focus rings
+- **Toggle Switch**: Redesigned with M3 specifications (larger handle on checked state)
+- All components use Design Tokens (`--ssi-primary`, `--ssi-spacing-*`, `--ssi-radius-*`)
+
+#### **IconManager Updates:**
+
+**New Icons Added:**
+- `eye` - Show password icon (Lucide: eye SVG)
+- `eye-off` - Hide password icon (Lucide: eye-off with slash)
+
+#### **Enhanced FormBuilder Demo Page** (`/docs/demos/form-builder.html`)
+
+**7 Comprehensive Sections:**
+1. **Design-Systeme Vergleich**: Side-by-Side Darstellung aller 3 Layouts (Standard, Filled M3, Outlined M3)
+2. **Text Inputs Showcase**: Alle 7 Text-basierten Eingabefelder (Text, Email, URL, Tel, Password mit Toggle, Number mit Stepper, Textarea)
+3. **Selection Controls**: Komplette Demos für Select, Checkbox, Radio Buttons (vertical/horizontal/grid-3), Toggle Switches
+4. **Advanced Inputs**: Date/Time/DateTime Picker, Range Slider mit Live-Anzeige, Color Picker, File Upload (Single & Multiple)
+5. **States & Validation**: Error States, Required Fields, Disabled States, Custom Validation Messages
+6. **Responsive Grid Layouts**: 2-Column, 3-Column, Mixed Grid mit fullWidth Support
+7. **Komplettes Registrierungs-Formular**: Realistischer Use Case mit allen Features
+
+**Demo Improvements:**
+- Nutzt Design Tokens (`--ssi-spacing-*`, `--ssi-radius-*`, `--ssi-shadow-*`) durchgehend
+- Info-Boxen für bessere UX-Hinweise
+- Code-Snippets für jede Section
+- Badges ("Neu", "Erweitert", "Recommended")
+- Comparison Grid für visuellen Vergleich der Design-Systeme
+
+#### **CSS Enhancements:**
+
+**New CSS Classes:**
+- `.form-password-wrapper`, `.form-password-input`, `.form-password-toggle` - Password field with toggle
+- `.form-number-wrapper`, `.form-number-input`, `.form-number-btn` - Number field with steppers
+- `.form-number-decrement`, `.form-number-increment` - Stepper button variants
+
+**M3-Optimized Styles:**
+- Checkbox/Radio: hover backgrounds, `accent-color` support, improved focus states
+- Toggle Switch: M3-spec dimensions (52×32px), animated handle size change, border states
+- All hover states use `rgba(0, 0, 0, 0.04)` for M3 state layer effect
+- Consistent use of Design Tokens for colors, spacing, shadows, transitions
+
+#### **JavaScript Enhancements:**
+
+**Event Handlers Added:**
+- Password toggle click handler (toggles input type, swaps icons)
+- Number stepper click handlers (increment/decrement with constraints)
+- Both handlers properly update form state and trigger validation
+
+---
+
+## [2.2.0] - 2025-11-23
+
+### 🍞 New: ToastBuilder
+
+**New Component: ToastBuilder**
+
+- **Toast Notifications**: Success, Error, Warning, and Info notifications.
+- **Positioning**: Top/Bottom Right/Left/Center support.
+- **Auto-dismiss**: Configurable duration.
+- **Integration**: Fully integrated with GlobalConfig and IconManager.
+
+### 🛠️ Core Improvements
+
+- **Code Deduplication**: Created `src/utils.js` for shared utility functions.
+- **Refactoring**: Updated `GlobalConfig.js` and `SiteBuilder.js` to use shared utilities.
+
 ---
 
 ## [2.1.0] - 2025-01-23
@@ -14,16 +101,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎨 ChartBuilder Enhancements
 
 **New Features:**
+
 - **Percentage Labels on Pie/Donut Charts**: Displays percentage values directly on chart slices (only shown if > 3% to avoid overlap)
 - **Formatted Total Value**: Donut center now uses `formatValue()` for proper currency/percentage formatting
 - **Improved Legend Rendering**: Enhanced legend logic for `datasets` format in Pie/Donut charts
 
 **Security & Standards:**
+
 - ✅ **XSS Protection**: Added `sanitizeHTML()` and `sanitizeAttr()` methods to prevent cross-site scripting attacks
 - ✅ **Design Token Integration**: Replaced hardcoded colors with CSS Custom Properties (`--ssi-primary`, `--ssi-success`, etc.)
 - ✅ **Version Alignment**: Updated `@version` to 2.0.0 for consistency with package.json
 
 **Bug Fixes:**
+
 - Fixed legend value display logic (undefined vs null check)
 - Fixed legend rendering for datasets format in Pie/Donut charts
 
@@ -44,21 +134,22 @@ This major version establishes SSI Builders as the **foundation of the entire SS
 All old color/spacing variables deprecated in favor of Google M3-inspired tokens:
 
 #### New Variables (use these!):
+
 ```css
 /* Colors */
---ssi-primary: #1a73e8;       /* Google Blue */
---ssi-success: #34a853;       /* Google Green */
---ssi-error: #ea4335;         /* Google Red */
---ssi-warning: #fbbc04;       /* Google Yellow */
+--ssi-primary: #1a73e8; /* Google Blue */
+--ssi-success: #34a853; /* Google Green */
+--ssi-error: #ea4335; /* Google Red */
+--ssi-warning: #fbbc04; /* Google Yellow */
 
 /* Text */
---ssi-text-primary: #202124;  /* Almost black */
+--ssi-text-primary: #202124; /* Almost black */
 --ssi-text-secondary: #5f6368; /* Medium gray */
 
 /* Shadows (M3 Elevations) */
---ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
---ssi-shadow-md: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
---ssi-shadow-lg: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
+--ssi-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+--ssi-shadow-md: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+--ssi-shadow-lg: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
 
 /* Spacing (4px Grid) */
 --ssi-spacing-xs: 4px;
@@ -74,7 +165,7 @@ All old color/spacing variables deprecated in favor of Google M3-inspired tokens
 --ssi-radius-full: 9999px; /* Pills/circles */
 
 /* Typography */
---ssi-font-family: 'Roboto', system-ui, -apple-system, sans-serif;
+--ssi-font-family: "Roboto", system-ui, -apple-system, sans-serif;
 --ssi-font-size-base: 14px;
 --ssi-font-weight-medium: 500;
 
@@ -83,7 +174,9 @@ All old color/spacing variables deprecated in favor of Google M3-inspired tokens
 ```
 
 #### Legacy Variables (DEPRECATED):
+
 Old variables still work for backwards compatibility but will be removed in v3.0:
+
 - `--primary-color` → `--ssi-primary`
 - `--text-primary` → `--ssi-text-primary`
 - `--spacing-md` → `--ssi-spacing-md`
@@ -94,16 +187,19 @@ Old variables still work for backwards compatibility but will be removed in v3.0
 **BREAKING: All Emojis replaced with Lucide SVG Icons**
 
 #### Changed:
+
 - **ListBuilder**: 👁️ → columns icon, 🗑️ → delete icon, 📭 → inbox icon
 - **FormBuilder**: ✓ → check icon (multi-step checkmarks)
 - **MenuBuilder**: ✓ → check icon (checkbox items)
 - **SidebarBuilder**: 🔍 → search icon
 
 #### New Icons Added to IconManager:
+
 - `inbox` - Empty state icon
 - `columns` - Column toggle icon
 
 #### Migration:
+
 ```javascript
 // Old (v1.x)
 <span>👁️</span> Spalten
@@ -116,6 +212,7 @@ ${IconManager.getIcon('columns')} Spalten
 ### 📦 All Builders Updated to v2.0
 
 **Version bumped in all builders:**
+
 - ListBuilder v2.0.0
 - FormBuilder v2.0.0
 - ModalBuilder v2.0.0
@@ -125,6 +222,7 @@ ${IconManager.getIcon('columns')} Spalten
 - SidebarBuilder v2.0.0
 
 **All builders now:**
+
 - Import `IconManager` by default
 - Use Lucide SVG icons instead of emojis
 - Follow new Design Token system
@@ -133,12 +231,14 @@ ${IconManager.getIcon('columns')} Spalten
 ### 📚 Documentation
 
 #### CLAUDE.md Extended:
+
 - SSI-Ökosystem Vision section
 - Design Tokens reference
 - Icon System rules (NEVER use emojis!)
 - Claude development guidelines for future work
 
 #### README.md Extended:
+
 - SSI-Ökosystem Vision overview
 - Module status table (HabDaWas, Habbi, Bazar Bold)
 - v2.0.0 Highlights section
@@ -147,18 +247,21 @@ ${IconManager.getIcon('columns')} Spalten
 ### ✨ What's New in v2.0?
 
 **🌐 SSI-Ökosystem Foundation**
+
 - Central UI library for ALL SSI projects
 - Consistent UX across HabDaWas, Habbi, Bazar Bold
 - One feature → everywhere available
 - Google Material Design 3 as inspiration
 
 **🎨 Design Consistency**
+
 - Professional Lucide SVG icons
 - Google M3 color palette
 - Unified shadows, spacing, typography
 - CSS Custom Properties for easy theming
 
 **📐 Better Developer Experience**
+
 - Clear Design Token system
 - IconManager with 3 weights (thin, regular, bold)
 - Extended CLAUDE.md for AI-assisted development
@@ -167,16 +270,18 @@ ${IconManager.getIcon('columns')} Spalten
 ### Migration Guide (v1.x → v2.0)
 
 #### 1. Update Imports (if using emojis directly)
+
 ```javascript
 // Before
-const icon = '🗑️';
+const icon = "🗑️";
 
 // After
-import { IconManager } from './IconManager.js';
-const icon = IconManager.getIcon('delete');
+import { IconManager } from "./IconManager.js";
+const icon = IconManager.getIcon("delete");
 ```
 
 #### 2. Update CSS Custom Properties (optional, but recommended)
+
 ```css
 /* Before */
 color: var(--primary-color);
@@ -186,6 +291,7 @@ color: var(--ssi-primary);
 ```
 
 #### 3. Test Icon Display
+
 - Check all Builder implementations
 - Verify icons render correctly
 - Ensure hover states work
@@ -204,12 +310,14 @@ color: var(--ssi-primary);
 ### 🎨 Improved: SidebarBuilder UX
 
 #### Toggle Button Redesign
+
 - **Kompakteres Design**: 28x28px (statt 36x36px rund)
 - **Bessere Position**: top: 20px, right: -14px (sichtbarer)
 - **Subtilere Farben**: Weiß mit grauem Border, Hover → Blau
 - **Verbesserte Accessibility**: Klarer Focus-State
 
 #### Flat Navigation Structure
+
 - **BREAKING**: Removed collapsible sections (type: 'section')
 - **Alle Items immer sichtbar** - keine Klappmenüs mehr
 - Verwendet jetzt `type: 'heading'` für visuelle Gruppierung
@@ -217,6 +325,7 @@ color: var(--ssi-primary);
 - Mobile-optimiert mit erhöhtem z-index und Shadow
 
 #### Bugfixes
+
 - Entfernt doppelten Mobile-Menu-Toggle Button
 - Layout.js: updateContentMargin() für smooth Transitions
 - Sidebar CSS: Vereinfachte Media Queries für Mobile (<1024px)
@@ -228,7 +337,9 @@ color: var(--ssi-primary);
 ### 🏗️ New: SiteBuilder + GlobalConfig System
 
 #### SiteBuilder - Complete Layout System
+
 - **New `SiteBuilder` class** - Komplettes Layout-Gerippe für Apps
+
   - Header mit Logo, Navigation, Actions
   - Optional: Sidebar mit Navigation (SidebarBuilder integration)
   - Main Content Area mit flexiblem maxWidth
@@ -237,12 +348,14 @@ color: var(--ssi-primary);
   - Responsive Mobile-Layout
 
 - **4 Pre-configured Templates**
+
   - `admin` - Header + Sidebar, Full Width (Admin Panels, Back-Office)
   - `website` - Header + Footer, Max 1200px (Marketing Websites, Blogs)
   - `dashboard` - Header + Sidebar, Full Width (Analytics, Dashboards)
   - `landing` - Header + Footer, Max 1400px (Landing Pages, Product Sites)
 
 - **API Methods**
+
   - `renderContent(html)` - Replace content area
   - `appendContent(html)` - Append to content
   - `clearContent()` - Clear content
@@ -262,12 +375,15 @@ color: var(--ssi-primary);
   - Z-index management
 
 #### GlobalConfig - Central Configuration
+
 - **New `GlobalConfig` class** - Zentrale Konfiguration für alle Builders
+
   - Ein Mal konfigurieren beim App-Start, überall nutzen
   - Deep merge support (partial updates möglich)
   - CSS Custom Properties auto-update
 
 - **Configuration Options**
+
   - `iconPreset` - Central icon system ('emoji', 'lucide', 'heroicons', 'material', 'fontawesome')
   - `theme` - Colors (primary, secondary, success, danger, warning, etc.)
   - `buttons` - Default size/type
@@ -279,6 +395,7 @@ color: var(--ssi-primary);
   - `sidebar` - Width, collapsible
 
 - **API Methods**
+
   - `configure(config)` - Set/update configuration (deep merge)
   - `get(path)` - Get single value via dot-notation ('theme.primary')
   - `set(path, value)` - Set single value
@@ -293,6 +410,7 @@ color: var(--ssi-primary);
 ### 📚 Interactive Documentation
 
 - **New Demo Pages**
+
   - `/docs/demos/index.html` - Main overview with builder cards
   - `/docs/demos/list-builder.html` - ListBuilder examples with all button types
   - `/docs/demos/form-builder.html` - FormBuilder with multi-step, all field types
@@ -309,7 +427,9 @@ color: var(--ssi-primary);
 ### Added
 
 #### 🎨 IconManager - Centralized Icon Management
+
 - **New `IconManager` class** - Zentrale Icon-Verwaltung für alle Builders
+
   - Support für 5 Icon-Systeme: Emoji, Lucide, Heroicons, Material Icons, FontAwesome
   - 15+ vordefinierte Icons (add, edit, delete, view, save, search, etc.)
   - `setPreset(preset)` - Projekt-weit ein Icon-System festlegen
@@ -317,6 +437,7 @@ color: var(--ssi-primary);
   - `registerIcon(name, variants)` - Custom Icons hinzufügen
 
 - **Icon Presets**
+
   - `emoji` - Native Emojis (keine Dependencies)
   - `lucide` - Lucide Icons (empfohlen für M3)
   - `heroicons` - Heroicons (Tailwind CSS Icons)
@@ -324,6 +445,7 @@ color: var(--ssi-primary);
   - `fontawesome` - FontAwesome Icons
 
 - **Icon Weights (Stroke-Width)** - NEW!
+
   - `thin` (1.5) - Ultra-minimalistisch, sehr feiner Strich
   - `regular` (2.0) - **DEFAULT** - Ausgewogen & modern, M3 Standard
   - `bold` (2.5) - Kräftig & prominent, für Akzente
@@ -333,26 +455,29 @@ color: var(--ssi-primary);
   - Dynamic stroke-width replacement in SVG icons (Lucide, Heroicons)
 
 - **Usage**
+
   ```javascript
-  import { IconManager, GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+  import { IconManager, GlobalConfig } from "/vendor/ssi-builders/src/index.js";
 
   // Global konfigurieren
-  IconManager.setPreset('lucide');
-  IconManager.setIconWeight('regular'); // thin | regular | bold
+  IconManager.setPreset("lucide");
+  IconManager.setIconWeight("regular"); // thin | regular | bold
 
   // Oder über GlobalConfig
   GlobalConfig.configure({
-      iconPreset: 'lucide',
-      iconWeight: 'regular'
+    iconPreset: "lucide",
+    iconWeight: "regular",
   });
 
   // In Buildern nutzen - Icons nutzen automatisch aktuellen Weight
   actions: {
-      row: [{
-          key: 'edit',
-          icon: IconManager.getIcon('edit'), // Nutzt aktuellen Weight
-          label: 'Bearbeiten'
-      }]
+    row: [
+      {
+        key: "edit",
+        icon: IconManager.getIcon("edit"), // Nutzt aktuellen Weight
+        label: "Bearbeiten",
+      },
+    ];
   }
   ```
 
@@ -363,7 +488,9 @@ color: var(--ssi-primary);
   - Best practices and migration guide
 
 #### 🎨 Unified SSI Button System (Material Design 3)
+
 - **New `.ssi-btn` base button system** - Professional M3-compliant buttons for ALL builders
+
   - `.ssi-btn-primary` / `.ssi-btn-filled` - Filled button (primary action)
   - `.ssi-btn-outlined` / `.ssi-btn-secondary` - Outlined button (secondary action)
   - `.ssi-btn-text` - Text button (tertiary action)
@@ -371,11 +498,13 @@ color: var(--ssi-primary);
   - `.ssi-btn-success` - Success/confirmation actions
 
 - **Button Sizes**
+
   - `.ssi-btn-sm` - Small (32px height)
   - Default (40px height)
   - `.ssi-btn-lg` - Large (48px height)
 
 - **Icon Button Support**
+
   - `.ssi-btn-icon` - Circular icon-only buttons
   - Automatic SVG sizing (16px-24px based on button size)
   - Perfect icon + text alignment with 8px gap
@@ -391,12 +520,15 @@ color: var(--ssi-primary);
 ### Fixed
 
 #### 🪟 ModalBuilder - Layout Positioning
+
 - **Fixed Side Drawer positioning** (`side-left`, `side-right`)
+
   - Now correctly aligned to left/right edges
   - Proper slide-in animations (translateX)
   - Full height drawers (100vh)
 
 - **Fixed Bottom Sheet positioning** (`bottom`)
+
   - Now correctly aligned to bottom edge
   - Proper slide-up animation (translateY)
   - Rounded top corners (16px)
@@ -409,6 +541,7 @@ color: var(--ssi-primary);
 ### Changed
 
 - **All builders migrated to unified button system**
+
   - ListBuilder: All toolbar, action, and pagination buttons
   - FormBuilder: All action buttons (submit, cancel, reset, next/prev)
   - ModalBuilder: All modal action buttons
@@ -420,19 +553,23 @@ color: var(--ssi-primary);
   - Perfect vertical alignment with flexbox
 
 #### 📋 ListBuilder - Configurable Button Display Types
+
 - **New `displayType` option for row actions** - Choose between 4 button styles:
+
   - `icon` (Default): Icon-only compact buttons (32x32px)
   - `emoji`: Emoji-only compact buttons (32x32px)
   - `button`: Full button with label only
   - `button-icon`: Full button with icon + label
 
 - **SVG Icon Support**
+
   - Full support for inline SVG icons (Lucide, FontAwesome, etc.)
   - Auto-sizing for different button types (20px icon-only, 16px full button)
   - `currentColor` support for proper theming
   - Backwards compatible with emoji icons
 
 - **New `buttonType` option** for full buttons:
+
   - `primary`: Blue background, white text
   - `secondary`: White background, gray text (Default)
   - `danger`: Red background, white text
@@ -447,12 +584,14 @@ color: var(--ssi-primary);
   - Improved hover effects (scale transforms)
 
 ### Changed
+
 - `renderRowActions()` method now supports flexible button rendering
 - Icon rendering helper function for SVG/emoji detection
 - Updated demo.html with examples for all button types
 - Enhanced README with comprehensive button configuration examples
 
 ### Documentation
+
 - Added "Row Actions - Button Display Types" section to README
 - SVG icon examples in demo.html
 - Backwards compatibility notes
@@ -468,12 +607,14 @@ New feature: Automatic version badge display in all Builder components.
 ### Added
 
 - **Version Badge System**
+
   - New `src/version.js` utility module
   - `getVersion()` function to retrieve current version
   - `createVersionBadge()` function to generate version badge HTML
   - Automatic badge integration in all 7 Builders (ListBuilder, FormBuilder, ModalBuilder, ChartBuilder, TabBuilder, MenuBuilder, SidebarBuilder)
 
 - **CSS Styling**
+
   - New `.ssi-version-badge` class in `shared.css`
   - Fixed positioning (bottom-right corner)
   - Discrete design (9px font, gray color, 60% opacity)
@@ -502,6 +643,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 ### Added
 
 #### 📋 ListBuilder
+
 - Data tables with search, sort, and filter functionality
 - Pagination support with customizable items per page
 - Row actions (edit, delete, custom)
@@ -511,6 +653,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - Multi-select with bulk actions
 
 #### 📝 FormBuilder
+
 - Dynamic form generation from JSON config
 - Built-in validation (required, email, min/max length, pattern, custom)
 - Field types: text, email, password, textarea, number, select, radio, checkbox, date
@@ -521,6 +664,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - Custom field rendering
 
 #### 🪟 ModalBuilder
+
 - 9 modal sizes and layouts:
   - xs (320px), small (400px), medium (600px), large (900px), xl (1200px)
   - fullscreen (100vw × 100vh)
@@ -534,6 +678,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - Async actions with loading states
 
 #### 📊 ChartBuilder
+
 - Chart types: Bar, Line, Pie, Donut
 - No external dependencies (native Canvas API)
 - Responsive sizing
@@ -543,6 +688,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - Smooth animations
 
 #### 📑 TabBuilder
+
 - Multiple styles: underline, pill, contained
 - Keyboard navigation (Arrow keys, Home, End)
 - URL hash support for deep linking
@@ -552,6 +698,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - onChange callbacks
 
 #### 📜 MenuBuilder
+
 - Dropdown menus
 - Context menus (right-click)
 - Nested submenus (unlimited depth)
@@ -562,6 +709,7 @@ Production-ready release of SSI Builders - Professional UI Component Library.
 - Disabled state support
 
 #### 🗂️ SidebarBuilder
+
 - Collapsible navigation sidebar
 - Search functionality
 - Nested navigation items

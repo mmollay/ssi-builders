@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design 3 Text Fields - Korrekt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 40px;
+            background: #FFFBFE;
+            color: #1C1B1F;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            margin-bottom: 32px;
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        h2 {
+            margin-top: 48px;
+            margin-bottom: 24px;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        /* ============================================
+           FILLED TEXT FIELD - M3 Exact Spec
+           ============================================ */
+        .m3-text-field-filled {
+            position: relative;
+            width: 100%;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .m3-text-field-filled .input-wrapper {
+            position: relative;
+        }
+
+        .m3-text-field-filled input {
+            width: 100%;
+            height: 56px;
+            padding: 24px 16px 8px 16px;
+            background: #E6E0E9;
+            border: none;
+            border-bottom: 1px solid #49454F;
+            border-radius: 4px 4px 0 0;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1C1B1F;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .m3-text-field-filled input::placeholder {
+            opacity: 0;
+        }
+
+        .m3-text-field-filled label {
+            position: absolute;
+            left: 16px;
+            top: 16px;
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #49454F;
+            pointer-events: none;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            transform-origin: left top;
+            background: transparent;
+        }
+
+        /* Floating Label State */
+        .m3-text-field-filled input:focus ~ label,
+        .m3-text-field-filled input:not(:placeholder-shown) ~ label {
+            top: 4px;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 500;
+            color: #6750A4;
+        }
+
+        /* Adjust input padding when label is floating */
+        .m3-text-field-filled input:focus,
+        .m3-text-field-filled input:not(:placeholder-shown) {
+            padding-top: 32px;
+            padding-bottom: 8px;  /* Base padding */
+        }
+
+        /* Focus State */
+        .m3-text-field-filled input:focus {
+            background: #DFDAE3;
+            border-bottom: 2px solid #6750A4;
+            padding-bottom: 7px;  /* Adjust for thicker border (8px - 1px) */
+        }
+
+        /* Hover State */
+        .m3-text-field-filled:hover input:not(:focus) {
+            background: #DDD8E1;
+            border-bottom-color: #1C1B1F;
+        }
+
+        /* Error State */
+        .m3-text-field-filled.error input {
+            border-bottom-color: #B3261E;
+        }
+
+        .m3-text-field-filled.error input:focus {
+            border-bottom-color: #B3261E;
+        }
+
+        .m3-text-field-filled.error label {
+            color: #B3261E;
+        }
+
+        /* Supporting Text */
+        .m3-text-field-filled .supporting-text {
+            position: static;
+            margin-top: 4px;
+            padding-left: 16px;
+            font-size: 12px;
+            line-height: 16px;
+            color: #49454F;
+        }
+
+        .m3-text-field-filled.error .supporting-text {
+            color: #B3261E;
+        }
+
+        /* ============================================
+           OUTLINED TEXT FIELD - M3 Exact Spec
+           ============================================ */
+        .m3-text-field-outlined {
+            position: relative;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 16px;
+        }
+
+        .m3-text-field-outlined .input-wrapper {
+            position: relative;
+        }
+
+        .m3-text-field-outlined input {
+            width: 100%;
+            height: 56px;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid #79747E;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1C1B1F;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .m3-text-field-outlined input::placeholder {
+            opacity: 0;
+        }
+
+        .m3-text-field-outlined label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            line-height: 24px;
+            font-weight: 400;
+            color: #49454F;
+            background: #FFFBFE;
+            padding: 0 4px;
+            pointer-events: none;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Floating Label State */
+        .m3-text-field-outlined input:focus ~ label,
+        .m3-text-field-outlined input:not(:placeholder-shown) ~ label {
+            top: 0;
+            transform: translateY(-50%);
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 500;
+            color: #6750A4;
+        }
+
+        /* Focus State */
+        .m3-text-field-outlined input:focus {
+            border: 2px solid #6750A4;
+            padding: 15px;
+        }
+
+        /* Hover State */
+        .m3-text-field-outlined:hover input:not(:focus) {
+            border-color: #1C1B1F;
+        }
+
+        /* Error State */
+        .m3-text-field-outlined.error input {
+            border-color: #B3261E;
+        }
+
+        .m3-text-field-outlined.error input:focus {
+            border-color: #B3261E;
+        }
+
+        .m3-text-field-outlined.error label {
+            color: #B3261E;
+        }
+
+        /* Disabled State */
+        .m3-text-field-outlined input:disabled {
+            opacity: 0.38;
+            cursor: not-allowed;
+        }
+
+        /* Supporting Text */
+        .m3-text-field-outlined .supporting-text {
+            margin-top: 4px;
+            padding-left: 16px;
+            font-size: 12px;
+            line-height: 16px;
+            color: #49454F;
+        }
+
+        .m3-text-field-outlined.error .supporting-text {
+            color: #B3261E;
+        }
+
+        /* ============================================
+           STANDARD TEXT FIELD
+           ============================================ */
+        .m3-text-field-standard {
+            position: relative;
+            width: 100%;
+        }
+
+        .m3-text-field-standard label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            line-height: 16px;
+            font-weight: 500;
+            color: #49454F;
+        }
+
+        .m3-text-field-standard input {
+            width: 100%;
+            padding: 12px 16px;
+            background: transparent;
+            border: 1px solid #79747E;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            line-height: 24px;
+            color: #1C1B1F;
+            transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
+        }
+
+        .m3-text-field-standard input:focus {
+            border-color: #6750A4;
+        }
+
+        .m3-text-field-standard input::placeholder {
+            color: #79747E;
+        }
+
+        /* Demo Controls */
+        .demo-controls {
+            margin-top: 32px;
+            padding: 16px;
+            background: #F5F5F5;
+            border-radius: 8px;
+        }
+
+        .demo-controls button {
+            margin-right: 8px;
+            padding: 10px 20px;
+            background: #6750A4;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .demo-controls button:hover {
+            background: #7965AF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Material Design 3 Text Fields</h1>
+        <p>Exakt nach https://m3.material.io/components/text-fields/overview</p>
+
+        <h2>Filled Text Fields</h2>
+        <div class="demo-grid">
+            <div class="m3-text-field-filled">
+                <input type="text" id="filled-firstname" placeholder=" " />
+                <label for="filled-firstname">Vorname</label>
+            </div>
+
+            <div class="m3-text-field-filled">
+                <input type="text" id="filled-lastname" placeholder=" " />
+                <label for="filled-lastname">Nachname</label>
+            </div>
+        </div>
+
+        <div class="m3-text-field-filled">
+            <div class="input-wrapper">
+                <input type="email" id="filled-email" placeholder=" " />
+                <label for="filled-email">E-Mail Adresse</label>
+            </div>
+            <div class="supporting-text">Wir versenden niemals Spam</div>
+        </div>
+
+        <h2>Outlined Text Fields</h2>
+        <div class="demo-grid">
+            <div class="m3-text-field-outlined">
+                <input type="text" id="outlined-firstname" placeholder=" " />
+                <label for="outlined-firstname">Vorname</label>
+            </div>
+
+            <div class="m3-text-field-outlined">
+                <input type="text" id="outlined-lastname" placeholder=" " />
+                <label for="outlined-lastname">Nachname</label>
+            </div>
+        </div>
+
+        <div class="m3-text-field-outlined">
+            <div class="input-wrapper">
+                <input type="email" id="outlined-email" placeholder=" " />
+                <label for="outlined-email">E-Mail Adresse</label>
+            </div>
+            <div class="supporting-text">Ihre geschäftliche E-Mail</div>
+        </div>
+
+        <h2>Standard Text Fields</h2>
+        <div class="demo-grid">
+            <div class="m3-text-field-standard">
+                <label for="standard-name">Name</label>
+                <input type="text" id="standard-name" placeholder="Ihr Name" />
+            </div>
+
+            <div class="m3-text-field-standard">
+                <label for="standard-email">E-Mail</label>
+                <input type="email" id="standard-email" placeholder="ihre@email.com" />
+            </div>
+        </div>
+
+        <h2>States Demo</h2>
+        <div class="demo-grid">
+            <div class="m3-text-field-filled error">
+                <div class="input-wrapper">
+                    <input type="email" id="filled-error" placeholder=" " value="invalid-email" />
+                    <label for="filled-error">E-Mail (Error)</label>
+                </div>
+                <div class="supporting-text">Bitte geben Sie eine gültige E-Mail an</div>
+            </div>
+
+            <div class="m3-text-field-filled">
+                <div class="input-wrapper">
+                    <input type="text" id="filled-disabled" placeholder=" " value="Disabled" disabled />
+                    <label for="filled-disabled">Disabled Field</label>
+                </div>
+            </div>
+
+            <div class="m3-text-field-outlined error">
+                <div class="input-wrapper">
+                    <input type="text" id="outlined-error" placeholder=" " value="Error" />
+                    <label for="outlined-error">Error State</label>
+                </div>
+                <div class="supporting-text">Dieses Feld enthält einen Fehler</div>
+            </div>
+
+            <div class="m3-text-field-outlined">
+                <div class="input-wrapper">
+                    <input type="text" id="outlined-disabled" placeholder=" " value="Disabled" disabled />
+                    <label for="outlined-disabled">Disabled</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="demo-controls">
+            <p><strong>Testen Sie:</strong></p>
+            <p>• Klicken Sie in ein Feld → Label schwebt nach oben</p>
+            <p>• Tippen Sie etwas → Label bleibt oben</p>
+            <p>• Löschen Sie alles → Label schwebt zurück</p>
+            <p>• Hover über Felder → Subtile Farbänderung</p>
+        </div>
+    </div>
+</body>
+</html>

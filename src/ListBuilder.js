@@ -13,7 +13,7 @@
  * - Loading/Empty/Error states
  * - Full accessibility
  *
- * @version 2.0.0
+ * @version 2.2.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
@@ -34,12 +34,21 @@ export class ListBuilder extends BaseBuilder {
             sortable: true,
             selectable: true,
             paginated: true,
+            paginationType: 'standard',  // 'standard' | 'infinite' | 'loadmore'
             pageSize: 50,
+            serverSide: false,           // Server-side pagination/filtering/sorting
             filters: [],
             emptyMessage: 'Keine Daten vorhanden',
             loadingMessage: 'Lade Daten...',
             mobileBreakpoint: 768,
-            enableColumnToggle: true
+            enableColumnToggle: true,
+            tableStyle: {                // Table styling options
+                striped: false,
+                bordered: false,
+                compact: false,
+                hoverable: true,
+                celled: false
+            }
         });
 
         this.columns = config.columns || [];
@@ -57,9 +66,17 @@ export class ListBuilder extends BaseBuilder {
         this.activeFilters = {};
         this.hiddenColumns = new Set();
         this.isLoading = false;
+        
+        // Server-side pagination state
+        this.totalCount = 0;           // Total items on server
+        this.loadedData = [];          // For infinite/loadmore modes
+        this.hasMore = true;           // More data available
 
         // Debounce timers
         this.searchDebounce = null;
+        
+        // Intersection Observer for infinite scroll
+        this.scrollObserver = null;
 
         // Initialize
         this.init();
@@ -221,10 +238,18 @@ export class ListBuilder extends BaseBuilder {
     renderTableView() {
         const visibleColumns = this.columns.filter(col => !this.hiddenColumns.has(col.key));
         const paginatedData = this.getPaginatedData();
+        
+        // Build table CSS classes based on tableStyle options
+        const tableClasses = ['list-table'];
+        if (this.options.tableStyle.striped) tableClasses.push('list-table-striped');
+        if (this.options.tableStyle.bordered) tableClasses.push('list-table-bordered');
+        if (this.options.tableStyle.compact) tableClasses.push('list-table-compact');
+        if (this.options.tableStyle.hoverable) tableClasses.push('list-table-hoverable');
+        if (this.options.tableStyle.celled) tableClasses.push('list-table-celled');
 
         return `
             <div class="list-table-wrapper">
-                <table class="list-table">
+                <table class="${tableClasses.join(' ')}">
                     <thead>
                         <tr>
                             ${this.options.selectable ? `
@@ -607,12 +632,55 @@ export class ListBuilder extends BaseBuilder {
         this.updateTableContent();
 
         try {
-            this.data = await this.dataSource();
-            this.applyFilters();
+            let result;
+            
+            // Check if server-side mode
+            if (this.options.serverSide) {
+                // Pass parameters to dataSource for server-side processing
+                const params = {
+                    page: this.currentPage,
+                    pageSize: this.options.pageSize,
+                    search: this.searchTerm,
+                    filters: this.activeFilters,
+                    sort: this.sortColumn ? {
+                        column: this.sortColumn,
+                        direction: this.sortDirection
+                    } : null
+                };
+                
+                result = await this.dataSource(params);
+                
+                // Handle response format
+                if (result && typeof result === 'object' && 'items' in result) {
+                    // Server-side format: { items: [...], totalCount: 100 }
+                    this.data = result.items || [];
+                    this.totalCount = result.totalCount || result.items.length;
+                    this.filteredData = this.data; // No client-side filtering needed
+                } else {
+                    // Fallback: assume array was returned
+                    this.data = Array.isArray(result) ? result : [];
+                    this.totalCount = this.data.length;
+                    this.filteredData = this.data;
+                }
+            } else {
+                // Client-side mode: load all data
+                result = await this.dataSource();
+                
+                // Handle both formats
+                if (result && typeof result === 'object' && 'items' in result) {
+                    this.data = result.items || [];
+                } else {
+                    this.data = Array.isArray(result) ? result : [];
+                }
+                
+                // Apply client-side filtering
+                this.applyFilters();
+            }
         } catch (error) {
             console.error('Error loading data:', error);
             this.data = [];
             this.filteredData = [];
+            this.totalCount = 0;
         } finally {
             this.isLoading = false;
             this.render();

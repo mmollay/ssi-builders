@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToastBuilder - SSI Builders</title>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Syntax Highlighting -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/ToastBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    
+    <style>
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
+        .demo-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
+        
+        .example-demo {
+            background: #f8f9fa;
+            padding: 24px;
+            border-radius: 8px;
+            margin: 24px 0;
+        }
+        
+        pre.example-code {
+            background: #1e1e1e !important;
+            color: #d4d4d4 !important;
+            padding: 20px !important;
+            border-radius: 8px !important;
+            font-family: 'Roboto Mono', monospace !important;
+            font-size: 13px !important;
+            line-height: 1.6 !important;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>🍞 ToastBuilder</h1>
+                    <p>Material Design 3 toast notifications for SSI Builders</p>
+                </div>
+
+                <div class="demo-section">
+                    <h2>Basic Toasts</h2>
+                    <p class="subtitle">Click buttons to trigger different toast types</p>
+                    
+                    <div class="example-demo" style="height: auto; min-height: 200px; display: flex; flex-direction: column; gap: 24px;">
+                        <div class="btn-group">
+                            <button class="ssi-btn ssi-btn-success" onclick="showSuccess()">Success</button>
+                            <button class="ssi-btn ssi-btn-danger" onclick="showError()">Error</button>
+                            <button class="ssi-btn ssi-btn-warning" onclick="showWarning()">Warning</button>
+                            <button class="ssi-btn ssi-btn-primary" onclick="showInfo()">Info</button>
+                        </div>
+
+                        <div class="grid">
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('top-right')">Top Right</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('top-left')">Top Left</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('bottom-right')">Bottom Right</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('bottom-left')">Bottom Left</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('top-center')">Top Center</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showPosition('bottom-center')">Bottom Center</button>
+                        </div>
+                        
+                        <div>
+                            <button class="ssi-btn ssi-btn-secondary" onclick="showLongToast()">Long Duration (10s)</button>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Code Example:</h3>
+                    <pre class="example-code"><code class="language-javascript">import { ToastBuilder } from '/vendor/ssi-builders/src/index.js';
+
+// Simple usage
+ToastBuilder.success('Data saved successfully!', 'Success');
+ToastBuilder.error('Failed to save data.', 'Error');
+
+// Advanced usage
+ToastBuilder.show({
+    title: 'Custom Toast',
+    message: 'This is a custom toast notification',
+    type: 'info',
+    position: 'bottom-right',
+    duration: 5000
+});</code></pre>
+                </div>
+
+                <div class="demo-section">
+                    <h2>✨ Features</h2>
+                    <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                        <li><strong>4 Types</strong> - Success, Error, Warning, Info</li>
+                        <li><strong>6 Positions</strong> - Top/Bottom Right/Left/Center</li>
+                        <li><strong>Auto-dismiss</strong> - Configurable duration</li>
+                        <li><strong>Animations</strong> - Smooth slide and fade effects</li>
+                        <li><strong>Icons</strong> - Integrated with IconManager</li>
+                        <li><strong>Themeable</strong> - Uses CSS Custom Properties</li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { ToastBuilder } from '../../src/index.js';
+        import { initializeLayout } from './layout.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('toast-builder');
+        
+        // Expose to window for button clicks
+        window.showSuccess = () => {
+            ToastBuilder.success('Data saved successfully!', 'Success');
+        };
+        
+        window.showError = () => {
+            ToastBuilder.error('Failed to save data.', 'Error');
+        };
+        
+        window.showWarning = () => {
+            ToastBuilder.warning('Your session will expire soon.', 'Warning');
+        };
+        
+        window.showInfo = () => {
+            ToastBuilder.info('New update available.', 'Info');
+        };
+        
+        window.showPosition = (position) => {
+            ToastBuilder.show({
+                title: 'Position Test',
+                message: `This toast is at ${position}`,
+                type: 'info',
+                position: position
+            });
+        };
+        
+        window.showLongToast = () => {
+            ToastBuilder.show({
+                title: 'Long Toast',
+                message: 'This toast will stay for 10 seconds.',
+                type: 'info',
+                duration: 10000
+            });
+        };
+    </script>
+</body>
+</html>

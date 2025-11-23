@@ -14,7 +14,7 @@
  * - User profile section
  * - Footer actions
  *
- * @version 2.0.0
+ * @version 2.2.0
  */
 
 import { createVersionBadge } from './version.js';

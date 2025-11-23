@@ -3,121 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Builders - Overview</title>
+    <title>All Builders Overview - SSI Builders</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-    <!-- SSI Builders Styles -->
-    <link rel="stylesheet" href="/src/shared.css">
-    <link rel="stylesheet" href="/src/ListBuilder.css">
-    <link rel="stylesheet" href="/src/FormBuilder.css">
-    <link rel="stylesheet" href="/src/ModalBuilder.css">
-    <link rel="stylesheet" href="/src/ChartBuilder.css">
-    <link rel="stylesheet" href="/src/TabBuilder.css">
-    <link rel="stylesheet" href="/src/MenuBuilder.css">
-    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/ToastBuilder.css">
     <link rel="stylesheet" href="./layout.css">
-
     <style>
+        .builders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 32px;
+            margin-top: 40px;
+        }
 
-        .builder-section {
+        .builder-card {
             background: white;
-            border-radius: 8px;
-            padding: 40px;
-            margin-bottom: 40px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #e8eaed;
         }
 
-        .builder-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 32px;
-            padding-bottom: 24px;
-            border-bottom: 2px solid #e0e0e0;
+        .builder-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
         }
 
-        .builder-title {
+        .builder-card-header {
             display: flex;
             align-items: center;
             gap: 16px;
+            margin-bottom: 16px;
         }
 
-        .builder-title h2 {
-            font-size: 32px;
+        .builder-icon {
+            font-size: 48px;
+            line-height: 1;
+        }
+
+        .builder-card h3 {
+            font-size: 24px;
             color: #202124;
+            margin: 0;
         }
 
-        .builder-title .icon {
-            font-size: 40px;
-        }
-
-        .builder-description {
-            font-size: 16px;
+        .builder-card-description {
             color: #5f6368;
-            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 20px;
         }
 
-        .demo-link {
-            display: inline-flex;
-            align-items: center;
+        .builder-features {
+            display: flex;
+            flex-wrap: wrap;
             gap: 8px;
-            padding: 12px 24px;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .builder-card-footer {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid #e8eaed;
+        }
+
+        .card-btn {
+            flex: 1;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .card-btn-primary {
             background: #1a73e8;
             color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 500;
-            transition: background 0.2s;
         }
 
-        .demo-link:hover {
+        .card-btn-primary:hover {
             background: #1557b0;
         }
 
-        .demo-container {
+        .card-btn-secondary {
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 24px;
-            margin-top: 24px;
+            color: #5f6368;
+            border: 1px solid #e8eaed;
         }
 
-        .features-grid {
+        .card-btn-secondary:hover {
+            background: #e8eaed;
+        }
+
+        .stats-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 48px 32px;
+            margin-bottom: 40px;
+            color: white;
+        }
+
+        .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-top: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 32px;
+            margin-top: 32px;
         }
 
-        .feature-badge {
-            background: #e8f0fe;
-            color: #1a73e8;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 500;
+        .stat-item {
             text-align: center;
         }
 
-        /* Small demo styles */
-        .mini-chart {
-            height: 200px;
-            width: 100%;
+        .stat-number {
+            font-size: 48px;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 8px;
         }
 
-        .mini-table {
-            max-height: 300px;
-            overflow: auto;
+        .stat-label {
+            font-size: 14px;
+            opacity: 0.9;
         }
 
         @media (max-width: 768px) {
-            .builder-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .builder-section {
-                padding: 24px;
+            .builders-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -138,443 +167,286 @@
                 <!-- Page Header -->
                 <div class="page-header">
                     <h1>📦 All Builders Overview</h1>
-                    <p>Alle 8 Builder auf einen Blick mit Live-Demos</p>
+                    <p>Eine vollständige Übersicht aller verfügbaren Builders im SSI Builders System</p>
                 </div>
 
-                <!-- 1. ListBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">📋</span>
-                    <h2>ListBuilder</h2>
+                <!-- Stats Section -->
+                <div class="stats-section">
+                    <h2 style="margin: 0 0 8px 0; font-size: 28px;">SSI Builders im Überblick</h2>
+                    <p style="margin: 0; opacity: 0.9;">Production-ready UI Components mit Material Design 3</p>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-number">10</div>
+                            <div class="stat-label">Builders</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Features</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-label">TypeScript Ready</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">A11y</div>
+                            <div class="stat-label">Accessible</div>
+                        </div>
+                    </div>
                 </div>
-                <a href="#/list-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt interaktive Datentabellen mit Suche, Sortierung, Filterung, Pagination und Row Actions.
-                Perfekt für Admin-Panels, Dashboards und Datenübersichten.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Search & Filter</div>
-                <div class="feature-badge">✓ Sortierung</div>
-                <div class="feature-badge">✓ Pagination</div>
-                <div class="feature-badge">✓ Row Actions</div>
-                <div class="feature-badge">✓ Column Toggle</div>
-                <div class="feature-badge">✓ Responsive</div>
-            </div>
-            <div class="demo-container">
-                <div id="list-demo" class="mini-table"></div>
-            </div>
-        </div>
 
-        <!-- 2. FormBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">📝</span>
-                    <h2>FormBuilder</h2>
-                </div>
-                <a href="#/form-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Generiert komplexe Formulare mit Validierung, verschiedenen Feldtypen und Auto-Save.
-                Unterstützt Text, Email, Number, Select, Checkbox, Radio und mehr.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Validation</div>
-                <div class="feature-badge">✓ Auto-Save</div>
-                <div class="feature-badge">✓ 10+ Feldtypen</div>
-                <div class="feature-badge">✓ File Upload</div>
-                <div class="feature-badge">✓ Conditional Fields</div>
-                <div class="feature-badge">✓ Error Handling</div>
-            </div>
-            <div class="demo-container">
-                <div id="form-demo"></div>
-            </div>
-        </div>
+                <!-- Builders Grid -->
+                <div class="builders-grid">
+                    <!-- ListBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">📋</div>
+                            <h3>ListBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt interaktive Datentabellen mit Suche, Sortierung, Filterung, Pagination und Row Actions. Perfekt für Admin-Panels und Dashboards.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Search & Filter</span>
+                            <span class="feature-tag">Sortierung</span>
+                            <span class="feature-tag">Pagination</span>
+                            <span class="feature-tag">Row Actions</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/list-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('list')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 3. ModalBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">🪟</span>
-                    <h2>ModalBuilder</h2>
-                </div>
-                <a href="#/modal-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt anpassbare Modals/Dialoge mit 9 verschiedenen Größen, Footer-Buttons und Backdrop-Control.
-                Ideal für Benachrichtigungen, Formulare und Confirmations.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ 9 Größen</div>
-                <div class="feature-badge">✓ Backdrop Control</div>
-                <div class="feature-badge">✓ Custom Footer</div>
-                <div class="feature-badge">✓ Keyboard ESC</div>
-                <div class="feature-badge">✓ Animations</div>
-                <div class="feature-badge">✓ Nested Modals</div>
-            </div>
-            <div class="demo-container">
-                <button id="modal-demo-btn" style="padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
-                    Demo Modal öffnen
-                </button>
-            </div>
-        </div>
+                    <!-- FormBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">📝</div>
+                            <h3>FormBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Generiert komplexe Formulare mit Validierung, verschiedenen Feldtypen und Auto-Save. Unterstützt 10+ Feldtypen.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Validation</span>
+                            <span class="feature-tag">Auto-Save</span>
+                            <span class="feature-tag">10+ Feldtypen</span>
+                            <span class="feature-tag">File Upload</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/form-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('form')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 4. ChartBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">📊</span>
-                    <h2>ChartBuilder</h2>
-                </div>
-                <a href="#/chart-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt responsive Charts mit Chart.js: Bar, Line, Pie, Donut, Radar und mehr.
-                Perfekt für Dashboards, Analytics und Reporting.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Bar Charts</div>
-                <div class="feature-badge">✓ Line Charts</div>
-                <div class="feature-badge">✓ Pie Charts</div>
-                <div class="feature-badge">✓ Responsive</div>
-                <div class="feature-badge">✓ Animations</div>
-                <div class="feature-badge">✓ Custom Colors</div>
-            </div>
-            <div class="demo-container">
-                <div id="chart-demo" class="mini-chart"></div>
-            </div>
-        </div>
+                    <!-- ModalBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">🪟</div>
+                            <h3>ModalBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt anpassbare Modals/Dialoge mit 9 verschiedenen Größen, Footer-Buttons und Backdrop-Control.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">9 Größen</span>
+                            <span class="feature-tag">Backdrop</span>
+                            <span class="feature-tag">Keyboard ESC</span>
+                            <span class="feature-tag">Nested Modals</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/modal-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('modal')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 5. TabBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">📑</span>
-                    <h2>TabBuilder</h2>
-                </div>
-                <a href="#/tab-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt Tab-Navigation mit Keyboard-Support (Arrow Keys), Icons und verschiedenen Styles.
-                Perfekt für Settings, Dashboards und Content-Organisation.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Keyboard Nav</div>
-                <div class="feature-badge">✓ Icons</div>
-                <div class="feature-badge">✓ Multiple Styles</div>
-                <div class="feature-badge">✓ Dynamic Content</div>
-                <div class="feature-badge">✓ Animations</div>
-                <div class="feature-badge">✓ Responsive</div>
-            </div>
-            <div class="demo-container">
-                <div id="tab-demo"></div>
-            </div>
-        </div>
+                    <!-- ChartBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">📊</div>
+                            <h3>ChartBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt responsive Charts mit Chart.js: Bar, Line, Pie, Donut, Radar und mehr. Perfekt für Dashboards und Analytics.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Bar Charts</span>
+                            <span class="feature-tag">Line Charts</span>
+                            <span class="feature-tag">Pie Charts</span>
+                            <span class="feature-tag">Responsive</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/chart-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('chart')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 6. MenuBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">📜</span>
-                    <h2>MenuBuilder</h2>
-                </div>
-                <a href="#/menu-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt Dropdown-Menüs und Context-Menüs mit Nested Items, Icons und Dividers.
-                Perfekt für Navigationen, Toolbars und Right-Click Menus.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Nested Menus</div>
-                <div class="feature-badge">✓ Icons</div>
-                <div class="feature-badge">✓ Dividers</div>
-                <div class="feature-badge">✓ Keyboard Nav</div>
-                <div class="feature-badge">✓ Auto-Position</div>
-                <div class="feature-badge">✓ Context Menu</div>
-            </div>
-            <div class="demo-container">
-                <button id="menu-demo-btn" style="padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
-                    Demo Menu öffnen
-                </button>
-                <div id="menu-demo"></div>
-            </div>
-        </div>
+                    <!-- TabBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">📑</div>
+                            <h3>TabBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt Tab-Navigation mit Keyboard-Support (Arrow Keys), Icons und verschiedenen Styles.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Keyboard Nav</span>
+                            <span class="feature-tag">Icons</span>
+                            <span class="feature-tag">Multiple Styles</span>
+                            <span class="feature-tag">Animations</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/tab-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('tab')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 7. SidebarBuilder -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">🗂️</span>
-                    <h2>SidebarBuilder</h2>
-                </div>
-                <a href="#/sidebar-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt Navigation-Sidebars mit Nested Items, Icons, Collapse/Expand und verschiedenen Styles.
-                Perfekt für Admin-Panels, Dashboards und App-Navigationen.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Nested Items</div>
-                <div class="feature-badge">✓ Icons</div>
-                <div class="feature-badge">✓ Collapse/Expand</div>
-                <div class="feature-badge">✓ Active States</div>
-                <div class="feature-badge">✓ Responsive</div>
-                <div class="feature-badge">✓ Custom Styles</div>
-            </div>
-            <div class="demo-container">
-                <div id="sidebar-demo" style="max-width: 400px;"></div>
-            </div>
-        </div>
+                    <!-- MenuBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">📜</div>
+                            <h3>MenuBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt Dropdown-Menüs und Context-Menüs mit Nested Items, Icons und Dividers.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Nested Menus</span>
+                            <span class="feature-tag">Icons</span>
+                            <span class="feature-tag">Dividers</span>
+                            <span class="feature-tag">Context Menu</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/menu-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('menu')">Quick Demo</button>
+                        </div>
+                    </div>
 
-        <!-- 8. SiteBuilder (Bonus) -->
-        <div class="builder-section">
-            <div class="builder-header">
-                <div class="builder-title">
-                    <span class="icon">🏗️</span>
-                    <h2>SiteBuilder</h2>
+                    <!-- SidebarBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">🗂️</div>
+                            <h3>SidebarBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt Navigation-Sidebars mit Nested Items, Icons, Collapse/Expand und verschiedenen Styles.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Nested Items</span>
+                            <span class="feature-tag">Icons</span>
+                            <span class="feature-tag">Collapse</span>
+                            <span class="feature-tag">Responsive</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/sidebar-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('sidebar')">Quick Demo</button>
+                        </div>
+                    </div>
+
+                    <!-- ToastBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">🔔</div>
+                            <h3>ToastBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Zeigt non-intrusive Benachrichtigungen mit verschiedenen Typen, Auto-Dismiss und Stack-Management.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Auto-Dismiss</span>
+                            <span class="feature-tag">Positions</span>
+                            <span class="feature-tag">Types</span>
+                            <span class="feature-tag">Stacking</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/toast-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('toast')">Quick Demo</button>
+                        </div>
+                    </div>
+
+                    <!-- TooltipBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">💬</div>
+                            <h3>TooltipBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Accessible Tooltips mit Smart-Positioning, verschiedenen Trigger-Modi und Material Design 3 Styling.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Smart Position</span>
+                            <span class="feature-tag">Trigger Modi</span>
+                            <span class="feature-tag">Accessible</span>
+                            <span class="feature-tag">HTML Content</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/tooltip-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('tooltip')">Quick Demo</button>
+                        </div>
+                    </div>
+
+                    <!-- SiteBuilder -->
+                    <div class="builder-card">
+                        <div class="builder-card-header">
+                            <div class="builder-icon">🏗️</div>
+                            <h3>SiteBuilder</h3>
+                        </div>
+                        <p class="builder-card-description">
+                            Erstellt komplette App-Layouts mit Sidebar, Header, Content-Area und Footer. Kombiniert alle Builder.
+                        </p>
+                        <div class="builder-features">
+                            <span class="feature-tag">Full Layout</span>
+                            <span class="feature-tag">Sidebar Integration</span>
+                            <span class="feature-tag">Responsive</span>
+                            <span class="feature-tag">Theme Support</span>
+                        </div>
+                        <div class="builder-card-footer">
+                            <a href="/docs/demos/site-builder.html" class="card-btn card-btn-primary">Demo ansehen</a>
+                            <button class="card-btn card-btn-secondary" onclick="showQuickDemo('site')">Quick Demo</button>
+                        </div>
+                    </div>
                 </div>
-                <a href="#/site-builder" class="demo-link">
-                    Zur Detail-Demo →
-                </a>
-            </div>
-            <p class="builder-description">
-                Erstellt komplette App-Layouts mit Sidebar, Header, Content-Area und Footer.
-                Kombiniert alle anderen Builder zu einer vollständigen Anwendung.
-            </p>
-            <div class="features-grid">
-                <div class="feature-badge">✓ Full Layout</div>
-                <div class="feature-badge">✓ Sidebar Integration</div>
-                <div class="feature-badge">✓ Responsive</div>
-                <div class="feature-badge">✓ Theme Support</div>
-                <div class="feature-badge">✓ Header/Footer</div>
-                <div class="feature-badge">✓ Mobile Nav</div>
-            </div>
-        </div>
+
             </div>
         </main>
     </div>
 
     <script type="module">
         import { initializeDemoLayout } from './layout.js';
-        import { ListBuilder } from '/src/ListBuilder.js';
-        import { FormBuilder } from '/src/FormBuilder.js';
-        import { ModalBuilder } from '/src/ModalBuilder.js';
-        import { ChartBuilder } from '/src/ChartBuilder.js';
-        import { TabBuilder } from '/src/TabBuilder.js';
-        import { MenuBuilder } from '/src/MenuBuilder.js';
-        import { SidebarBuilder } from '/src/SidebarBuilder.js';
-        import { IconManager } from '/src/IconManager.js';
+        import { ToastBuilder } from '../../src/ToastBuilder.js';
+        import { ModalBuilder } from '../../src/ModalBuilder.js';
 
-        // Initialize layout with sidebar
+        // Initialize layout
         initializeDemoLayout('all-builders');
 
-        // 1. ListBuilder Demo
-        new ListBuilder({
-            containerId: 'list-demo',
-            columns: [
-                { key: 'name', label: 'Name', sortable: true },
-                { key: 'role', label: 'Rolle', sortable: true },
-                { key: 'status', label: 'Status' }
-            ],
-            dataSource: async () => [
-                { id: 1, name: 'Anna Schmidt', role: 'Admin', status: 'Aktiv' },
-                { id: 2, name: 'Max Müller', role: 'User', status: 'Aktiv' },
-                { id: 3, name: 'Tom Weber', role: 'Editor', status: 'Inaktiv' }
-            ],
-            actions: {
-                row: [
-                    {
-                        key: 'view',
-                        icon: IconManager.getIcon('eye'),
-                        label: 'Ansehen',
-                        displayType: 'icon',
-                        handler: (row) => alert(`View: ${row.name}`)
-                    }
-                ]
-            }
-        }).render();
-
-        // 2. FormBuilder Demo
-        new FormBuilder({
-            containerId: 'form-demo',
-            title: 'Schnellkontakt',
-            fields: [
-                {
-                    name: 'name',
-                    label: 'Name',
-                    type: 'text',
-                    required: true,
-                    placeholder: 'Ihr Name'
+        // Quick Demo function
+        window.showQuickDemo = (builder) => {
+            const demos = {
+                toast: () => {
+                    new ToastBuilder({
+                        message: `${builder.toUpperCase()}Builder Demo!`,
+                        type: 'info',
+                        duration: 3000
+                    }).show();
                 },
-                {
-                    name: 'email',
-                    label: 'E-Mail',
-                    type: 'email',
-                    required: true,
-                    placeholder: 'ihre@email.com'
+                modal: () => {
+                    new ModalBuilder({
+                        title: 'ModalBuilder Demo',
+                        content: '<p>Dies ist eine Quick-Demo des ModalBuilders!</p><p>Klicke außerhalb oder drücke ESC zum Schließen.</p>',
+                        size: 'small'
+                    }).open();
                 },
-                {
-                    name: 'message',
-                    label: 'Nachricht',
-                    type: 'textarea',
-                    rows: 3,
-                    placeholder: 'Ihre Nachricht...'
+                default: () => {
+                    new ToastBuilder({
+                        message: `${builder.toUpperCase()}Builder - Siehe die Detail-Demo für mehr Beispiele!`,
+                        type: 'info',
+                        duration: 3000
+                    }).show();
                 }
-            ],
-            buttons: [
-                {
-                    label: 'Absenden',
-                    type: 'submit',
-                    style: 'primary'
-                }
-            ],
-            onSubmit: async (data) => {
-                alert('Form submitted: ' + JSON.stringify(data));
-            }
-        }).render();
+            };
 
-        // 3. ModalBuilder Demo
-        document.getElementById('modal-demo-btn').addEventListener('click', () => {
-            new ModalBuilder({
-                title: 'Demo Modal',
-                content: '<p>Dies ist ein Modal-Dialog mit dem ModalBuilder erstellt.</p><p>Drücke ESC oder klicke außerhalb um zu schließen.</p>',
-                size: 'medium',
-                footer: [
-                    {
-                        label: 'Abbrechen',
-                        style: 'secondary',
-                        handler: (modal) => modal.close()
-                    },
-                    {
-                        label: 'OK',
-                        style: 'primary',
-                        handler: (modal) => {
-                            alert('OK geklickt!');
-                            modal.close();
-                        }
-                    }
-                ]
-            }).open();
-        });
-
-        // 4. ChartBuilder Demo
-        new ChartBuilder({
-            containerId: 'chart-demo',
-            type: 'bar',
-            data: {
-                labels: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai'],
-                datasets: [{
-                    label: 'Verkäufe 2025',
-                    data: [12, 19, 8, 15, 22],
-                    backgroundColor: '#1a73e8'
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            }
-        }).render();
-
-        // 5. TabBuilder Demo
-        new TabBuilder({
-            containerId: 'tab-demo',
-            tabs: [
-                {
-                    id: 'info',
-                    label: 'Info',
-                    icon: IconManager.getIcon('info'),
-                    content: '<p style="padding: 20px;">Tab 1: Informationen über SSI Builders</p>'
-                },
-                {
-                    id: 'settings',
-                    label: 'Settings',
-                    icon: IconManager.getIcon('settings'),
-                    content: '<p style="padding: 20px;">Tab 2: Einstellungen konfigurieren</p>'
-                },
-                {
-                    id: 'help',
-                    label: 'Help',
-                    icon: IconManager.getIcon('help'),
-                    content: '<p style="padding: 20px;">Tab 3: Hilfe und Dokumentation</p>'
-                }
-            ]
-        }).render();
-
-        // 6. MenuBuilder Demo
-        document.getElementById('menu-demo-btn').addEventListener('click', (e) => {
-            new MenuBuilder({
-                trigger: e.target,
-                items: [
-                    {
-                        label: 'Neu erstellen',
-                        icon: IconManager.getIcon('add'),
-                        handler: () => alert('Neu erstellen')
-                    },
-                    {
-                        label: 'Bearbeiten',
-                        icon: IconManager.getIcon('edit'),
-                        handler: () => alert('Bearbeiten')
-                    },
-                    { type: 'divider' },
-                    {
-                        label: 'Löschen',
-                        icon: IconManager.getIcon('delete'),
-                        style: 'danger',
-                        handler: () => confirm('Wirklich löschen?')
-                    }
-                ]
-            }).render();
-        });
-
-        // 7. SidebarBuilder Demo
-        new SidebarBuilder({
-            containerId: 'sidebar-demo',
-            items: [
-                {
-                    key: 'dashboard',
-                    label: 'Dashboard',
-                    icon: IconManager.getIcon('home'),
-                    href: '#'
-                },
-                {
-                    key: 'users',
-                    label: 'Benutzer',
-                    icon: IconManager.getIcon('user'),
-                    href: '#',
-                    children: [
-                        { key: 'users-list', label: 'Alle Benutzer', href: '#' },
-                        { key: 'users-add', label: 'Neu hinzufügen', href: '#' }
-                    ]
-                },
-                {
-                    key: 'settings',
-                    label: 'Einstellungen',
-                    icon: IconManager.getIcon('settings'),
-                    href: '#'
-                }
-            ]
-        }).render();
+            (demos[builder] || demos.default)();
+        };
     </script>
 </body>
 </html>

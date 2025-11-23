@@ -1370,3 +1370,127 @@ table tr:hover {
 .gap-sm { gap: var(--spacing-sm); }
 .gap-md { gap: var(--spacing-md); }
 .gap-lg { gap: var(--spacing-lg); }
+
+/* ========================================
+   SSI Global Size System
+   ======================================== */
+
+/* === Size Variables === */
+:root {
+    /* Small */
+    --ssi-size-sm-font: 12px;
+    --ssi-size-sm-padding: 6px 12px;
+    --ssi-size-sm-height: 32px;
+    --ssi-size-sm-radius: 4px;
+    
+    /* Medium (Default) */
+    --ssi-size-md-font: 14px;
+    --ssi-size-md-padding: 8px 16px;
+    --ssi-size-md-height: 40px;
+    --ssi-size-md-radius: 6px;
+    
+    /* Large */
+    --ssi-size-lg-font: 16px;
+    --ssi-size-lg-padding: 12px 20px;
+    --ssi-size-lg-height: 48px;
+    --ssi-size-lg-radius: 8px;
+}
+
+/* === Button Size Classes === */
+.ssi-btn-sm {
+    font-size: var(--ssi-size-sm-font);
+    padding: var(--ssi-size-sm-padding);
+    height: var(--ssi-size-sm-height);
+    border-radius: var(--ssi-size-sm-radius);
+    line-height: 1.4;
+}
+
+.ssi-btn-md {
+    font-size: var(--ssi-size-md-font);
+    padding: var(--ssi-size-md-padding);
+    height: var(--ssi-size-md-height);
+    border-radius: var(--ssi-size-md-radius);
+    line-height: 1.5;
+}
+
+.ssi-btn-lg {
+    font-size: var(--ssi-size-lg-font);
+    padding: var(--ssi-size-lg-padding);
+    height: var(--ssi-size-lg-height);
+    border-radius: var(--ssi-size-lg-radius);
+    line-height: 1.5;
+}
+
+/* === Input Size Classes === */
+.ssi-input-sm,
+.form-input.ssi-input-sm,
+input.ssi-input-sm,
+select.ssi-input-sm,
+textarea.ssi-input-sm {
+    font-size: var(--ssi-size-sm-font) !important;
+    padding: 6px 10px !important;
+    height: var(--ssi-size-sm-height) !important;
+    border-radius: var(--ssi-size-sm-radius) !important;
+}
+
+.ssi-input-md,
+.form-input.ssi-input-md,
+input.ssi-input-md,
+select.ssi-input-md,
+textarea.ssi-input-md {
+    font-size: var(--ssi-size-md-font) !important;
+    padding: 8px 14px !important;
+    height: var(--ssi-size-md-height) !important;
+    border-radius: var(--ssi-size-md-radius) !important;
+}
+
+.ssi-input-lg,
+.form-input.ssi-input-lg,
+input.ssi-input-lg,
+select.ssi-input-lg,
+textarea.ssi-input-lg {
+    font-size: var(--ssi-size-lg-font) !important;
+    padding: 12px 18px !important;
+    height: var(--ssi-size-lg-height) !important;
+    border-radius: var(--ssi-size-lg-radius) !important;
+}
+
+/* Textarea adjustments */
+textarea.ssi-input-sm { height: auto !important; min-height: 60px !important; }
+textarea.ssi-input-md { height: auto !important; min-height: 80px !important; }
+textarea.ssi-input-lg { height: auto !important; min-height: 100px !important; }
+
+/* === Generic Component Size Classes === */
+.ssi-size-sm {
+    font-size: var(--ssi-size-sm-font);
+    padding: var(--ssi-size-sm-padding);
+}
+
+.ssi-size-md {
+    font-size: var(--ssi-size-md-font);
+    padding: var(--ssi-size-md-padding);
+}
+
+.ssi-size-lg {
+    font-size: var(--ssi-size-lg-font);
+    padding: var(--ssi-size-lg-padding);
+}
+
+/* === Label Size Classes === */  
+.ssi-label-sm {
+    font-size: 11px;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.ssi-label-md {
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 6px;
+}
+
+.ssi-label-lg {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 8px;
+}

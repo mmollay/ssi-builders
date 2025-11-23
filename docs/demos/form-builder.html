@@ -3,21 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormBuilder - SSI Builders</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+    <title>FormBuilder Demo - SSI Builders</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/FormBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="./layout.css">
+
     <style>
-        .example-demo {
-            border: 2px solid #e8eaed;
-            border-radius: 8px;
-            padding: 24px;
-            margin-bottom: 24px;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
             background: #f8f9fa;
+            color: #202124;
+            line-height: 1.6;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: white;
+            border-right: 1px solid #e8eaed;
+            z-index: 1000;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .demo-content-inner {
+            max-width: 100%;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #5f6368;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+        }
+
+        .demo-section h2 {
+            font-size: 24px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+        }
+
+        .demo-section > p {
+            color: #5f6368;
+            margin-bottom: 24px;
+            font-size: 15px;
+        }
+
+        .example-demo {
+            margin: 24px 0;
+            padding: 24px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e8eaed;
         }
 
         .example-code {
@@ -32,32 +118,43 @@
             margin: 20px 0 !important;
         }
 
-        .config-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 24px 0;
+        .example-code code {
+            color: #d4d4d4 !important;
+            background: transparent !important;
+            padding: 0 !important;
         }
 
-        .config-table th,
-        .config-table td {
-            text-align: left;
-            padding: 12px;
-            border-bottom: 1px solid #e8eaed;
+        .code-block-container {
+            position: relative;
         }
 
-        .config-table th {
-            background: #f8f9fa;
-            font-weight: 600;
-            color: #202124;
-        }
-
-        .config-table code {
-            background: #f1f3f4;
-            padding: 2px 6px;
+        .code-copy-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #d4d4d4;
+            padding: 6px 12px;
             border-radius: 4px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 13px;
-            color: #ea4335;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .code-copy-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .code-copy-btn.copied {
+            background: #34a853;
+            border-color: #34a853;
+            color: white;
         }
 
         .badge {
@@ -73,7 +170,50 @@
 
         .badge.new {
             background: #e6f4ea;
-            color: #1e8e3e;
+            color: #137333;
+        }
+
+        .ssi-btn {
+            padding: 10px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .ssi-btn-primary {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .ssi-btn-primary:hover {
+            background: #1557b0;
+            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
+        }
+
+        .ssi-btn-outlined {
+            background: white;
+            color: #1a73e8;
+            border: 1px solid #1a73e8;
+        }
+
+        .ssi-btn-outlined:hover {
+            background: #e8f0fe;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar-container {
+                width: 0;
+                overflow: hidden;
+            }
+
+            .demo-content {
+                margin-left: 0;
+                padding: 20px;
+            }
         }
     </style>
 </head>
@@ -88,435 +228,820 @@
                 <!-- Page Header -->
                 <div class="page-header">
                     <h1>📝 FormBuilder</h1>
-                    <p>Dynamic forms with validation, multi-step, and auto-save</p>
+                    <p>Flexible forms with validation and all input types</p>
                 </div>
 
                 <!-- Example 1: Basic Form -->
                 <div class="demo-section">
-                    <h2>1. Basic Form <span class="badge">Einfach</span></h2>
-                    <p>Ein einfaches Formular mit Validierung und verschiedenen Feldtypen.</p>
+                    <h2>1. Basic Form <span class="badge">Quick Start</span></h2>
+                    <p>Simple form with text inputs, validation, and submission handling.</p>
 
                     <div class="example-demo">
-                        <div id="basicForm"></div>
+                        <div id="basic-form"></div>
                     </div>
 
-                    <pre class="example-code"><code class="language-javascript">import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
+                    <pre class="example-code"><code>import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
 
 const form = new FormBuilder({
-    containerId: 'basicForm',
     fields: [
         {
             key: 'name',
-            label: 'Name',
+            label: 'Full Name',
             type: 'text',
             required: true,
-            placeholder: 'Ihr Name'
+            placeholder: 'Enter your name'
         },
         {
             key: 'email',
-            label: 'E-Mail',
+            label: 'Email',
             type: 'email',
             required: true,
-            placeholder: 'ihre@email.com'
+            placeholder: 'you@example.com'
+        }
+    ],
+    submitLabel: 'Submit',
+    onSubmit: (data) => {
+        console.log('Form data:', data);
+    }
+});
+
+form.render('#basic-form');</code></pre>
+                </div>
+
+                <!-- Example 2: All Input Types -->
+                <div class="demo-section">
+                    <h2>2. All Input Types <span class="badge">18 Types</span></h2>
+                    <p>FormBuilder supports all HTML5 input types plus custom controls.</p>
+
+                    <div class="example-demo">
+                        <div id="all-types-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const allTypesForm = new FormBuilder({
+    fields: [
+        { key: 'text', label: 'Text', type: 'text', placeholder: 'Text input' },
+        { key: 'email', label: 'Email', type: 'email', placeholder: 'email@example.com' },
+        { key: 'password', label: 'Password', type: 'password', placeholder: 'Enter password' },
+        { key: 'number', label: 'Number', type: 'number', placeholder: '0', min: 0, max: 100 },
+        { key: 'tel', label: 'Phone', type: 'tel', placeholder: '+43 123 4567890' },
+        { key: 'url', label: 'Website', type: 'url', placeholder: 'https://example.com' },
+        { key: 'date', label: 'Date', type: 'date' },
+        { key: 'time', label: 'Time', type: 'time' },
+        { key: 'color', label: 'Color', type: 'color', defaultValue: '#1a73e8' },
+        { key: 'slider', label: 'Slider', type: 'range', min: 0, max: 100, defaultValue: 50 },
+        { key: 'textarea', label: 'Message', type: 'textarea', placeholder: 'Your message...', rows: 3 },
+        { key: 'select', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] },
+        { key: 'checkbox', label: 'I agree to terms', type: 'checkbox' },
+        { key: 'toggle', label: 'Enable notifications', type: 'toggle' },
+        {
+            key: 'radio',
+            label: 'Plan',
+            type: 'radio',
+            options: [
+                { value: 'free', label: 'Free' },
+                { value: 'pro', label: 'Pro' },
+                { value: 'enterprise', label: 'Enterprise' }
+            ]
+        }
+    ],
+    submitLabel: 'Submit All Types'
+});
+
+allTypesForm.render('#all-types-form');</code></pre>
+                </div>
+
+                <!-- Example 3: Validation -->
+                <div class="demo-section">
+                    <h2>3. Validation <span class="badge">Required, Custom Rules</span></h2>
+                    <p>Built-in validation with custom rules and error messages.</p>
+
+                    <div class="example-demo">
+                        <div id="validation-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const validationForm = new FormBuilder({
+    fields: [
+        {
+            key: 'username',
+            label: 'Username',
+            type: 'text',
+            required: true,
+            placeholder: 'Enter username',
+            validate: (value) => {
+                if (value.length &lt; 3) return 'Username must be at least 3 characters';
+                if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
+                return null;
+            }
+        },
+        {
+            key: 'age',
+            label: 'Age',
+            type: 'number',
+            required: true,
+            validate: (value) => {
+                if (value &lt; 18) return 'Must be 18 or older';
+                if (value &gt; 120) return 'Invalid age';
+                return null;
+            }
+        },
+        {
+            key: 'email',
+            label: 'Email',
+            type: 'email',
+            required: true,
+            placeholder: 'your@email.com'
+        }
+    ],
+    submitLabel: 'Validate & Submit',
+    onSubmit: (data) => {
+        alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
+    }
+});
+
+validationForm.render('#validation-form');</code></pre>
+                </div>
+
+                <!-- Example 4: Grid Layout -->
+                <div class="demo-section">
+                    <h2>4. Grid Layout <span class="badge">2/3/4 Columns</span></h2>
+                    <p>Responsive grid layouts for multi-column forms.</p>
+
+                    <div class="example-demo">
+                        <div id="grid-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const gridForm = new FormBuilder({
+    layout: 'grid',
+    gridColumns: 2,  // 2, 3, or 4 columns
+    fields: [
+        { key: 'firstName', label: 'First Name', type: 'text', required: true },
+        { key: 'lastName', label: 'Last Name', type: 'text', required: true },
+        { key: 'email', label: 'Email', type: 'email', required: true },
+        { key: 'phone', label: 'Phone', type: 'tel' },
+        { key: 'address', label: 'Address', type: 'text' },
+        { key: 'city', label: 'City', type: 'text' },
+        { key: 'zip', label: 'ZIP Code', type: 'text' },
+        { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
+    ],
+    submitLabel: 'Save Contact'
+});
+
+gridForm.render('#grid-form');</code></pre>
+                </div>
+
+                <!-- Example 5: Inline & Horizontal Layouts -->
+                <div class="demo-section">
+                    <h2>5. Inline & Horizontal Layouts <span class="badge">Compact Forms</span></h2>
+                    <p>Inline layout for compact forms like search bars, and horizontal label-input arrangements.</p>
+
+                    <div class="example-demo">
+                        <h3 style="font-size: 16px; margin-bottom: 16px; color: #5f6368;">Inline Layout (Search Bar Style)</h3>
+                        <div id="inline-form"></div>
+
+                        <h3 style="font-size: 16px; margin: 32px 0 16px; color: #5f6368;">Horizontal Layout (Label-Input Side-by-Side)</h3>
+                        <div id="horizontal-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>// Inline Layout - All fields in one row
+const inlineForm = new FormBuilder({
+    containerId: 'inline-form',
+    layout: 'inline',
+    fields: [
+        { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
+        { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
+    ],
+    submitLabel: 'Search'
+});
+
+// Horizontal Layout - Labels beside inputs
+const horizontalForm = new FormBuilder({
+    containerId: 'horizontal-form',
+    layout: 'horizontal',
+    fields: [
+        { key: 'username', label: 'Username', type: 'text', required: true },
+        { key: 'email', label: 'Email', type: 'email', required: true }
+    ],
+    submitLabel: 'Save'
+});</code></pre>
+                </div>
+
+                <!-- Example 6: Interactive Elements -->
+                <div class="demo-section">
+                    <h2>6. Interactive Elements <span class="badge new">Password Toggle, Number Stepper</span></h2>
+                    <p>Enhanced controls with password visibility toggle and number increment/decrement buttons.</p>
+
+                    <div class="example-demo">
+                        <div id="interactive-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const interactiveForm = new FormBuilder({
+    fields: [
+        {
+            key: 'password',
+            label: 'Password',
+            type: 'password',
+            placeholder: 'Enter secure password',
+            required: true
+            // Eye icon automatically added for show/hide toggle
+        },
+        {
+            key: 'quantity',
+            label: 'Quantity',
+            type: 'number',
+            defaultValue: 1,
+            min: 1,
+            max: 99
+            // +/- buttons automatically added
+        },
+        {
+            key: 'volume',
+            label: 'Volume',
+            type: 'range',
+            min: 0,
+            max: 100,
+            defaultValue: 50
+            // Slider with live value display
+        }
+    ],
+    submitLabel: 'Continue'
+});
+
+interactiveForm.render('#interactive-form');</code></pre>
+                </div>
+
+                <!-- Example 6: Checkboxes, Radio, Toggle -->
+                <div class="demo-section">
+                    <h2>6. Checkboxes, Radio & Toggle <span class="badge">Material Design 3</span></h2>
+                    <p>M3-styled checkbox, radio button, and toggle switch components.</p>
+
+                    <div class="example-demo">
+                        <div id="choices-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const choicesForm = new FormBuilder({
+    fields: [
+        {
+            key: 'newsletter',
+            label: 'Subscribe to newsletter',
+            type: 'checkbox'
+        },
+        {
+            key: 'notifications',
+            label: 'Enable push notifications',
+            type: 'toggle',
+            defaultValue: true
+        },
+        {
+            key: 'plan',
+            label: 'Select Plan',
+            type: 'radio',
+            options: [
+                { value: 'basic', label: 'Basic - Free' },
+                { value: 'pro', label: 'Pro - €9.99/month' },
+                { value: 'enterprise', label: 'Enterprise - Contact us' }
+            ],
+            defaultValue: 'basic'
+        }
+    ],
+    submitLabel: 'Save Preferences'
+});
+
+choicesForm.render('#choices-form');</code></pre>
+                </div>
+
+                <!-- Example 7: Conditional Fields -->
+                <div class="demo-section">
+                    <h2>7. Conditional Fields <span class="badge">Dynamic Show/Hide</span></h2>
+                    <p>Show/hide fields based on other field values.</p>
+
+                    <div class="example-demo">
+                        <div id="conditional-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const conditionalForm = new FormBuilder({
+    fields: [
+        {
+            key: 'hasCompany',
+            label: 'I have a company',
+            type: 'checkbox'
+        },
+        {
+            key: 'companyName',
+            label: 'Company Name',
+            type: 'text',
+            placeholder: 'Enter company name',
+            showIf: (formData) => formData.hasCompany === true
+        },
+        {
+            key: 'vatNumber',
+            label: 'VAT Number',
+            type: 'text',
+            placeholder: 'ATU12345678',
+            showIf: (formData) => formData.hasCompany === true
+        }
+    ],
+    submitLabel: 'Submit'
+});
+
+conditionalForm.render('#conditional-form');</code></pre>
+                </div>
+
+                <!-- Example 8: Material Design 3 - Filled -->
+                <div class="demo-section">
+                    <h2>8. Material Design 3 - Filled <span class="badge new">M3 Variant</span></h2>
+                    <p>Google M3 filled text fields with floating labels and state layers.</p>
+
+                    <div class="example-demo">
+                        <div id="m3-filled-form"></div>
+                    </div>
+
+                    <pre class="example-code"><code>const m3FilledForm = new FormBuilder({
+    fieldLayout: 'filled',  // M3 Filled Style
+    fields: [
+        {
+            key: 'name',
+            label: 'Full Name',
+            type: 'text',
+            placeholder: ' ',  // Required for floating label
+            required: true
+        },
+        {
+            key: 'email',
+            label: 'Email Address',
+            type: 'email',
+            placeholder: ' ',
+            required: true
         },
         {
             key: 'message',
-            label: 'Nachricht',
+            label: 'Message',
             type: 'textarea',
-            rows: 4,
-            placeholder: 'Ihre Nachricht...'
+            placeholder: ' ',
+            rows: 4
         }
     ],
-    submitLabel: 'Absenden',
-    onSubmit: async (data) => {
-        console.log('Form Data:', data);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        alert('Formular erfolgreich gesendet!');
-    }
-});</code></pre>
+    submitLabel: 'Send Message'
+});
+
+m3FilledForm.render('#m3-filled-form');</code></pre>
                 </div>
 
-                <!-- Example 2: Multi-Step Form -->
+                <!-- Example 9: Material Design 3 - Outlined -->
                 <div class="demo-section">
-                    <h2>2. Multi-Step Form <span class="badge new">NEU</span></h2>
-                    <p>Formular mit mehreren Schritten und Fortschrittsanzeige.</p>
+                    <h2>9. Material Design 3 - Outlined <span class="badge new">M3 Variant</span></h2>
+                    <p>Google M3 outlined text fields with floating labels and focus effects.</p>
 
                     <div class="example-demo">
-                        <div id="multiStepForm"></div>
+                        <div id="m3-outlined-form"></div>
                     </div>
 
-                    <pre class="example-code"><code class="language-javascript">const multiStepForm = new FormBuilder({
-    containerId: 'multiStepForm',
-    multiStep: true,
-    steps: [
-        {
-            title: 'Persönliche Daten',
-            fields: [
-                { key: 'firstName', label: 'Vorname', type: 'text', required: true },
-                { key: 'lastName', label: 'Nachname', type: 'text', required: true }
-            ]
-        },
-        {
-            title: 'Kontaktdaten',
-            fields: [
-                { key: 'email', label: 'E-Mail', type: 'email', required: true },
-                { key: 'phone', label: 'Telefon', type: 'text' }
-            ]
-        },
-        {
-            title: 'Bestätigung',
-            fields: [
-                {
-                    key: 'terms',
-                    label: 'Ich akzeptiere die AGB',
-                    type: 'checkbox',
-                    required: true
-                }
-            ]
-        }
-    ],
-    onSubmit: async (data) => {
-        console.log('Multi-Step Data:', data);
-        alert('Registrierung abgeschlossen!');
-    }
-});</code></pre>
-                </div>
-
-                <!-- Example 3: All Field Types -->
-                <div class="demo-section">
-                    <h2>3. All Field Types <span class="badge">Referenz</span></h2>
-                    <p>Übersicht über alle verfügbaren Feldtypen und deren Konfiguration.</p>
-
-                    <div class="example-demo">
-                        <div id="allFieldsForm"></div>
-                    </div>
-
-                    <pre class="example-code"><code class="language-javascript">const allFieldsForm = new FormBuilder({
-    containerId: 'allFieldsForm',
+                    <pre class="example-code"><code>const m3OutlinedForm = new FormBuilder({
+    fieldLayout: 'outlined',  // M3 Outlined Style
     fields: [
-        { key: 'text', label: 'Text Input', type: 'text' },
-        { key: 'email', label: 'Email', type: 'email' },
-        { key: 'password', label: 'Password', type: 'password' },
-        { key: 'number', label: 'Number', type: 'number', min: 0, max: 100 },
-        { key: 'date', label: 'Date', type: 'date' },
         {
-            key: 'select',
-            label: 'Select',
-            type: 'select',
-            options: [
-                { value: '1', label: 'Option 1' },
-                { value: '2', label: 'Option 2' }
-            ]
+            key: 'username',
+            label: 'Username',
+            type: 'text',
+            placeholder: ' ',  // Required for floating label
+            required: true
         },
         {
-            key: 'radio',
-            label: 'Radio Buttons',
-            type: 'radio',
-            layout: 'horizontal',
-            options: [
-                { value: 'a', label: 'Option A' },
-                { value: 'b', label: 'Option B' }
-            ]
+            key: 'password',
+            label: 'Password',
+            type: 'password',
+            placeholder: ' ',
+            required: true
         },
-        { key: 'checkbox', label: 'Checkbox', type: 'checkbox' },
-        { key: 'textarea', label: 'Textarea', type: 'textarea', rows: 3 }
+        {
+            key: 'rememberMe',
+            label: 'Remember me',
+            type: 'checkbox'
+        }
     ],
-    submitLabel: 'Testen',
-    onSubmit: async (data) => console.log(data)
-});</code></pre>
+    submitLabel: 'Sign In'
+});
+
+m3OutlinedForm.render('#m3-outlined-form');</code></pre>
                 </div>
 
-                <!-- Field Types Reference -->
+                <!-- Example 10: Form State Management -->
                 <div class="demo-section">
-                    <h2>Field Types Reference</h2>
-                    <p>Alle verfügbaren Feldtypen im FormBuilder.</p>
+                    <h2>10. Form State Management <span class="badge">getValue, setValue, reset</span></h2>
+                    <p>Access and manipulate form data programmatically.</p>
 
-                    <table class="config-table">
-                        <thead>
-                            <tr>
-                                <th>Type</th>
-                                <th>Description</th>
-                                <th>Special Options</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>text</code></td>
-                                <td>Standard text input</td>
-                                <td><code>placeholder</code>, <code>minLength</code>, <code>maxLength</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>email</code></td>
-                                <td>Email input with validation</td>
-                                <td><code>placeholder</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>password</code></td>
-                                <td>Password input (masked)</td>
-                                <td><code>minLength</code>, <code>pattern</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>number</code></td>
-                                <td>Number input</td>
-                                <td><code>min</code>, <code>max</code>, <code>step</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>date</code></td>
-                                <td>Date picker</td>
-                                <td><code>min</code>, <code>max</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>select</code></td>
-                                <td>Dropdown select</td>
-                                <td><code>options: [{ value, label }]</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>radio</code></td>
-                                <td>Radio buttons</td>
-                                <td><code>options</code>, <code>layout: 'vertical' | 'horizontal' | 'grid-2' | 'grid-3'</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>checkbox</code></td>
-                                <td>Single checkbox</td>
-                                <td>-</td>
-                            </tr>
-                            <tr>
-                                <td><code>textarea</code></td>
-                                <td>Multi-line text input</td>
-                                <td><code>rows</code>, <code>maxLength</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="example-demo">
+                        <div id="state-form"></div>
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="ssi-btn ssi-btn-outlined" onclick="getFormData()">Get Data</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="prefillForm()">Prefill Form</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="resetForm()">Reset Form</button>
+                        </div>
+                    </div>
+
+                    <pre class="example-code"><code>const stateForm = new FormBuilder({
+    fields: [
+        { key: 'title', label: 'Title', type: 'text' },
+        { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+        { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
+    ],
+    submitLabel: 'Save'
+});
+
+stateForm.render('#state-form');
+
+// Get current form data
+const data = stateForm.getValue();
+console.log(data); // { title: '...', description: '...', priority: '...' }
+
+// Get specific field value
+const title = stateForm.getValue('title');
+
+// Set form data
+stateForm.setValue({
+    title: 'Example Title',
+    description: 'Pre-filled description',
+    priority: 'High'
+});
+
+// Reset form to defaults
+stateForm.reset();</code></pre>
                 </div>
 
-                <!-- Validation Reference -->
-                <div class="demo-section">
-                    <h2>Validation Options</h2>
-                    <p>Built-in Validierung für alle Feldtypen.</p>
-
-                    <table class="config-table">
-                        <thead>
-                            <tr>
-                                <th>Option</th>
-                                <th>Type</th>
-                                <th>Description</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>required</code></td>
-                                <td>boolean</td>
-                                <td>Field must be filled out</td>
-                            </tr>
-                            <tr>
-                                <td><code>minLength</code></td>
-                                <td>number</td>
-                                <td>Minimum text length</td>
-                            </tr>
-                            <tr>
-                                <td><code>maxLength</code></td>
-                                <td>number</td>
-                                <td>Maximum text length</td>
-                            </tr>
-                            <tr>
-                                <td><code>min</code></td>
-                                <td>number</td>
-                                <td>Minimum number value</td>
-                            </tr>
-                            <tr>
-                                <td><code>max</code></td>
-                                <td>number</td>
-                                <td>Maximum number value</td>
-                            </tr>
-                            <tr>
-                                <td><code>pattern</code></td>
-                                <td>RegExp</td>
-                                <td>Custom regex pattern</td>
-                            </tr>
-                            <tr>
-                                <td><code>validate</code></td>
-                                <td>function</td>
-                                <td>Custom validation function: <code>(value) => true | 'Error message'</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- Advanced Features -->
-                <div class="demo-section">
-                    <h2>Advanced Features</h2>
-                    <p>Weitere fortgeschrittene FormBuilder Features.</p>
-
-                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Auto-Save</h3>
-                    <pre class="example-code"><code class="language-javascript">const form = new FormBuilder({
-    containerId: 'myForm',
-    autoSave: true,                    // Enable auto-save to localStorage
-    autoSaveKey: 'myForm_draft',      // localStorage key
-    autoSaveInterval: 2000,           // Save every 2 seconds
-    fields: [...]
-});</code></pre>
-
-                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Conditional Fields</h3>
-                    <pre class="example-code"><code class="language-javascript">fields: [
-    {
-        key: 'hasCompany',
-        label: 'Firmenkunde?',
-        type: 'checkbox'
-    },
-    {
-        key: 'companyName',
-        label: 'Firmenname',
-        type: 'text',
-        showIf: (formData) => formData.hasCompany === true  // Only show if checkbox is checked
-    }
-]</code></pre>
-
-                    <h3 style="font-size: 20px; margin: 24px 0 12px 0; color: #202124;">Custom Button Actions</h3>
-                    <pre class="example-code"><code class="language-javascript">const form = new FormBuilder({
-    containerId: 'myForm',
-    fields: [...],
-    submitLabel: 'Speichern',
-    showCancelButton: true,
-    cancelLabel: 'Abbrechen',
-    showResetButton: true,
-    onCancel: () => {
-        console.log('Cancel clicked');
-    },
-    onSubmit: async (data) => {
-        // Submit logic
-    }
-});</code></pre>
-                </div>
             </div>
         </main>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <!-- Scripts -->
     <script type="module">
-        import { FormBuilder } from '../../src/FormBuilder.js';
-        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { initializeLayout } from './layout.js';
+        import { FormBuilder } from '../../src/index.js';
 
-        // Initialize layout with sidebar
+        // Initialize Sidebar
         initializeLayout('form-builder');
-        addMobileMenuToggle();
 
         // Example 1: Basic Form
         const basicForm = new FormBuilder({
-            containerId: 'basicForm',
+            containerId: 'basic-form',
             fields: [
                 {
                     key: 'name',
-                    label: 'Name',
+                    label: 'Full Name',
                     type: 'text',
                     required: true,
-                    placeholder: 'Ihr Name'
+                    placeholder: 'Enter your name'
                 },
                 {
                     key: 'email',
-                    label: 'E-Mail',
+                    label: 'Email',
                     type: 'email',
                     required: true,
-                    placeholder: 'ihre@email.com'
+                    placeholder: 'you@example.com'
+                }
+            ],
+            submitLabel: 'Submit',
+            onSubmit: (data) => {
+                alert('Form submitted! Data: ' + JSON.stringify(data, null, 2));
+            }
+        });
+
+        // Example 2: All Input Types
+        const allTypesForm = new FormBuilder({
+            containerId: 'all-types-form',
+            fields: [
+                { key: 'text', label: 'Text', type: 'text', placeholder: 'Text input' },
+                { key: 'email', label: 'Email', type: 'email', placeholder: 'email@example.com' },
+                { key: 'password', label: 'Password', type: 'password', placeholder: 'Enter password' },
+                { key: 'number', label: 'Number', type: 'number', placeholder: '0', min: 0, max: 100, defaultValue: 5 },
+                { key: 'tel', label: 'Phone', type: 'tel', placeholder: '+43 123 4567890' },
+                { key: 'url', label: 'Website', type: 'url', placeholder: 'https://example.com' },
+                { key: 'date', label: 'Date', type: 'date' },
+                { key: 'time', label: 'Time', type: 'time' },
+                { key: 'color', label: 'Color', type: 'color', defaultValue: '#1a73e8' },
+                { key: 'slider', label: 'Slider', type: 'range', min: 0, max: 100, defaultValue: 50 },
+                { key: 'textarea', label: 'Message', type: 'textarea', placeholder: 'Your message...', rows: 3 },
+                { key: 'select', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] },
+                { key: 'checkbox', label: 'I agree to terms', type: 'checkbox' },
+                { key: 'toggle', label: 'Enable notifications', type: 'toggle' },
+                {
+                    key: 'radio',
+                    label: 'Plan',
+                    type: 'radio',
+                    options: [
+                        { value: 'free', label: 'Free' },
+                        { value: 'pro', label: 'Pro' },
+                        { value: 'enterprise', label: 'Enterprise' }
+                    ]
+                }
+            ],
+            submitLabel: 'Submit All Types'
+        });
+
+        // Example 3: Validation
+        const validationForm = new FormBuilder({
+            containerId: 'validation-form',
+            fields: [
+                {
+                    key: 'username',
+                    label: 'Username',
+                    type: 'text',
+                    required: true,
+                    placeholder: 'Enter username',
+                    validate: (value) => {
+                        if (value.length < 3) return 'Username must be at least 3 characters';
+                        if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
+                        return null;
+                    }
+                },
+                {
+                    key: 'age',
+                    label: 'Age',
+                    type: 'number',
+                    required: true,
+                    validate: (value) => {
+                        if (value < 18) return 'Must be 18 or older';
+                        if (value > 120) return 'Invalid age';
+                        return null;
+                    }
+                },
+                {
+                    key: 'email',
+                    label: 'Email',
+                    type: 'email',
+                    required: true,
+                    placeholder: 'your@email.com'
+                }
+            ],
+            submitLabel: 'Validate & Submit',
+            onSubmit: (data) => {
+                alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
+            }
+        });
+
+        // Example 4: Grid Layout
+        const gridForm = new FormBuilder({
+            containerId: 'grid-form',
+            layout: 'grid',
+            gridColumns: 2,
+            fields: [
+                { key: 'firstName', label: 'First Name', type: 'text', required: true },
+                { key: 'lastName', label: 'Last Name', type: 'text', required: true },
+                { key: 'email', label: 'Email', type: 'email', required: true },
+                { key: 'phone', label: 'Phone', type: 'tel' },
+                { key: 'address', label: 'Address', type: 'text' },
+                { key: 'city', label: 'City', type: 'text' },
+                { key: 'zip', label: 'ZIP Code', type: 'text' },
+                { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
+            ],
+            submitLabel: 'Save Contact'
+        });
+        gridForm.render();
+
+        // Example 5: Inline & Horizontal Layouts
+        const inlineForm = new FormBuilder({
+            containerId: 'inline-form',
+            layout: 'inline',
+            fields: [
+                { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
+                { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
+            ],
+            submitLabel: 'Search'
+        });
+        inlineForm.render();
+
+        const horizontalForm = new FormBuilder({
+            containerId: 'horizontal-form',
+            layout: 'horizontal',
+            fields: [
+                { key: 'username', label: 'Username', type: 'text', required: true },
+                { key: 'email', label: 'Email', type: 'email', required: true }
+            ],
+            submitLabel: 'Save'
+        });
+        horizontalForm.render();
+
+        // Example 6: Interactive Elements
+        const interactiveForm = new FormBuilder({
+            containerId: 'interactive-form',
+            fields: [
+                {
+                    key: 'password',
+                    label: 'Password',
+                    type: 'password',
+                    placeholder: 'Enter secure password',
+                    required: true
+                },
+                {
+                    key: 'quantity',
+                    label: 'Quantity',
+                    type: 'number',
+                    defaultValue: 1,
+                    min: 1,
+                    max: 99
+                },
+                {
+                    key: 'volume',
+                    label: 'Volume',
+                    type: 'range',
+                    min: 0,
+                    max: 100,
+                    defaultValue: 50
+                }
+            ],
+            submitLabel: 'Continue'
+        });
+
+        // Example 6: Checkboxes, Radio, Toggle
+        const choicesForm = new FormBuilder({
+            containerId: 'choices-form',
+            fields: [
+                {
+                    key: 'newsletter',
+                    label: 'Subscribe to newsletter',
+                    type: 'checkbox'
+                },
+                {
+                    key: 'notifications',
+                    label: 'Enable push notifications',
+                    type: 'toggle',
+                    defaultValue: true
+                },
+                {
+                    key: 'plan',
+                    label: 'Select Plan',
+                    type: 'radio',
+                    options: [
+                        { value: 'basic', label: 'Basic - Free' },
+                        { value: 'pro', label: 'Pro - €9.99/month' },
+                        { value: 'enterprise', label: 'Enterprise - Contact us' }
+                    ],
+                    defaultValue: 'basic'
+                }
+            ],
+            submitLabel: 'Save Preferences'
+        });
+
+        // Example 7: Conditional Fields
+        const conditionalForm = new FormBuilder({
+            containerId: 'conditional-form',
+            fields: [
+                {
+                    key: 'hasCompany',
+                    label: 'I have a company',
+                    type: 'checkbox'
+                },
+                {
+                    key: 'companyName',
+                    label: 'Company Name',
+                    type: 'text',
+                    placeholder: 'Enter company name',
+                    showIf: (formData) => formData.hasCompany === true
+                },
+                {
+                    key: 'vatNumber',
+                    label: 'VAT Number',
+                    type: 'text',
+                    placeholder: 'ATU12345678',
+                    showIf: (formData) => formData.hasCompany === true
+                }
+            ],
+            submitLabel: 'Submit'
+        });
+
+        // Example 8: M3 Filled
+        const m3FilledForm = new FormBuilder({
+            containerId: 'm3-filled-form',
+            fieldLayout: 'filled',
+            fields: [
+                {
+                    key: 'name',
+                    label: 'Full Name',
+                    type: 'text',
+                    placeholder: ' ',
+                    required: true
+                },
+                {
+                    key: 'email',
+                    label: 'Email Address',
+                    type: 'email',
+                    placeholder: ' ',
+                    required: true
                 },
                 {
                     key: 'message',
-                    label: 'Nachricht',
+                    label: 'Message',
                     type: 'textarea',
-                    rows: 4,
-                    placeholder: 'Ihre Nachricht...'
+                    placeholder: ' ',
+                    rows: 4
                 }
             ],
-            submitLabel: 'Absenden',
-            onSubmit: async (data) => {
-                console.log('Form Data:', data);
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                alert('Formular erfolgreich gesendet!');
-            }
+            submitLabel: 'Send Message'
         });
 
-        // Example 2: Multi-Step Form
-        const multiStepForm = new FormBuilder({
-            containerId: 'multiStepForm',
-            multiStep: true,
-            steps: [
-                {
-                    title: 'Persönliche Daten',
-                    fields: [
-                        { key: 'firstName', label: 'Vorname', type: 'text', required: true, placeholder: 'Max' },
-                        { key: 'lastName', label: 'Nachname', type: 'text', required: true, placeholder: 'Mustermann' }
-                    ]
-                },
-                {
-                    title: 'Kontaktdaten',
-                    fields: [
-                        { key: 'email', label: 'E-Mail', type: 'email', required: true, placeholder: 'max@example.com' },
-                        { key: 'phone', label: 'Telefon', type: 'text', placeholder: '+43 123 456 789' }
-                    ]
-                },
-                {
-                    title: 'Bestätigung',
-                    fields: [
-                        {
-                            key: 'terms',
-                            label: 'Ich akzeptiere die AGB',
-                            type: 'checkbox',
-                            required: true
-                        }
-                    ]
-                }
-            ],
-            onSubmit: async (data) => {
-                console.log('Multi-Step Data:', data);
-                alert('Registrierung abgeschlossen!');
-            }
-        });
-
-        // Example 3: All Field Types
-        const allFieldsForm = new FormBuilder({
-            containerId: 'allFieldsForm',
+        // Example 9: M3 Outlined
+        const m3OutlinedForm = new FormBuilder({
+            containerId: 'm3-outlined-form',
+            fieldLayout: 'outlined',
             fields: [
-                { key: 'text', label: 'Text Input', type: 'text', placeholder: 'Enter text...' },
-                { key: 'email', label: 'Email', type: 'email', placeholder: 'your@email.com' },
-                { key: 'password', label: 'Password', type: 'password', placeholder: '••••••••' },
-                { key: 'number', label: 'Number', type: 'number', min: 0, max: 100, placeholder: '0-100' },
-                { key: 'date', label: 'Date', type: 'date' },
                 {
-                    key: 'select',
-                    label: 'Select',
-                    type: 'select',
-                    options: [
-                        { value: '', label: '-- Bitte wählen --' },
-                        { value: '1', label: 'Option 1' },
-                        { value: '2', label: 'Option 2' },
-                        { value: '3', label: 'Option 3' }
-                    ]
+                    key: 'username',
+                    label: 'Username',
+                    type: 'text',
+                    placeholder: ' ',
+                    required: true
                 },
                 {
-                    key: 'radio',
-                    label: 'Radio Buttons',
-                    type: 'radio',
-                    layout: 'horizontal',
-                    options: [
-                        { value: 'a', label: 'Option A' },
-                        { value: 'b', label: 'Option B' },
-                        { value: 'c', label: 'Option C' }
-                    ]
+                    key: 'password',
+                    label: 'Password',
+                    type: 'password',
+                    placeholder: ' ',
+                    required: true
                 },
-                { key: 'checkbox', label: 'Newsletter abonnieren', type: 'checkbox' },
-                { key: 'textarea', label: 'Textarea', type: 'textarea', rows: 3, placeholder: 'Mehrzeiliger Text...' }
+                {
+                    key: 'rememberMe',
+                    label: 'Remember me',
+                    type: 'checkbox'
+                }
             ],
-            submitLabel: 'Testen',
-            showResetButton: true,
-            onSubmit: async (data) => {
-                console.log('All Fields Data:', data);
-                alert('Daten in Console ausgegeben (F12)');
-            }
+            submitLabel: 'Sign In'
         });
 
-        // Highlight code blocks
-        document.addEventListener('DOMContentLoaded', () => {
-            hljs.highlightAll();
+        // Example 10: State Management
+        const stateForm = new FormBuilder({
+            containerId: 'state-form',
+            fields: [
+                { key: 'title', label: 'Title', type: 'text' },
+                { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+                { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
+            ],
+            submitLabel: 'Save'
+        });
+
+        // Make functions available globally for buttons
+        window.getFormData = () => {
+            const data = stateForm.getValue();
+            alert('Current Form Data:\n\n' + JSON.stringify(data, null, 2));
+        };
+
+        window.prefillForm = () => {
+            stateForm.setValue({
+                title: 'Example Task',
+                description: 'This is a pre-filled description for demonstration purposes.',
+                priority: 'High'
+            });
+        };
+
+        window.resetForm = () => {
+            stateForm.reset();
+            alert('Form has been reset!');
+        };
+
+        // Add Copy buttons to all code blocks
+        document.querySelectorAll('.example-code').forEach((codeBlock) => {
+            // Create container
+            const container = document.createElement('div');
+            container.className = 'code-block-container';
+            codeBlock.parentNode.insertBefore(container, codeBlock);
+            container.appendChild(codeBlock);
+
+            // Create copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'code-copy-btn';
+            copyBtn.innerHTML = `
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                <span>Copy</span>
+            `;
+
+            copyBtn.addEventListener('click', async () => {
+                const code = codeBlock.querySelector('code').textContent;
+                try {
+                    await navigator.clipboard.writeText(code);
+                    copyBtn.innerHTML = `
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                        <span>Copied!</span>
+                    `;
+                    copyBtn.classList.add('copied');
+
+                    setTimeout(() => {
+                        copyBtn.innerHTML = `
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <span>Copy</span>
+                        `;
+                        copyBtn.classList.remove('copied');
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+            });
+
+            container.appendChild(copyBtn);
         });
     </script>
 </body>

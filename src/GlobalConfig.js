@@ -17,10 +17,11 @@
  *     }
  * });
  *
- * @version 1.2.1
+ * @version 2.2.0
  */
 
 import { IconManager } from './IconManager.js';
+import { deepMerge } from './utils.js';
 
 export class GlobalConfig {
     static config = {
@@ -97,6 +98,23 @@ export class GlobalConfig {
             width: 280,
             collapsible: true,
             persistent: true            // Save state to localStorage
+        },
+
+        // Toast Defaults
+        toasts: {
+            duration: 3000,
+            position: 'top-right'       // 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left' | 'top-center' | 'bottom-center'
+        },
+
+        // Tooltip Defaults
+        tooltips: {
+            position: 'top',            // 'top' | 'bottom' | 'left' | 'right' | 'auto'
+            trigger: 'hover',           // 'hover' | 'click' | 'manual'
+            delay: 200,                 // Show delay in ms (hover mode)
+            hideDelay: 0,               // Hide delay in ms
+            offset: 8,                  // Distance from target element
+            arrow: true,                // Show arrow/pointer
+            maxWidth: 300               // Maximum width in pixels
         }
     };
 
@@ -106,7 +124,7 @@ export class GlobalConfig {
      */
     static configure(userConfig) {
         // Deep merge
-        this.config = this._deepMerge(this.config, userConfig);
+        this.config = deepMerge(this.config, userConfig);
 
         // Icon Preset an IconManager weitergeben
         if (userConfig.iconPreset) {
@@ -246,6 +264,10 @@ export class GlobalConfig {
                 width: 280,
                 collapsible: true,
                 persistent: true
+            },
+            toasts: {
+                duration: 3000,
+                position: 'top-right'
             }
         };
 
@@ -254,37 +276,7 @@ export class GlobalConfig {
         this._updateCSSVariables(defaultConfig.theme);
     }
 
-    /**
-     * Deep merge von zwei Objekten
-     * @private
-     */
-    static _deepMerge(target, source) {
-        const output = { ...target };
 
-        if (this._isObject(target) && this._isObject(source)) {
-            Object.keys(source).forEach(key => {
-                if (this._isObject(source[key])) {
-                    if (!(key in target)) {
-                        output[key] = source[key];
-                    } else {
-                        output[key] = this._deepMerge(target[key], source[key]);
-                    }
-                } else {
-                    output[key] = source[key];
-                }
-            });
-        }
-
-        return output;
-    }
-
-    /**
-     * Check ob Wert ein Object ist
-     * @private
-     */
-    static _isObject(item) {
-        return item && typeof item === 'object' && !Array.isArray(item);
-    }
 
     /**
      * CSS Custom Properties updaten

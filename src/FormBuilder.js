@@ -13,7 +13,7 @@
  * - Async submit with loading states
  * - Mobile-responsive
  *
- * @version 2.0.0
+ * @version 2.2.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
@@ -28,6 +28,12 @@ export class FormBuilder extends BaseBuilder {
      * @param {Object} config.options - Additional options
      */
     constructor(config) {
+        // Extract fieldLayout and fieldSize from config BEFORE calling super
+        const fieldLayout = config.fieldLayout || config.options?.fieldLayout || 'standard';
+        const fieldSize = config.fieldSize || config.options?.fieldSize || 'md';
+        const layout = config.layout || config.options?.layout || 'vertical';
+        const gridColumns = config.gridColumns || config.options?.gridColumns || 2;
+
         super(config, {
             submitLabel: 'Speichern',
             cancelLabel: 'Abbrechen',
@@ -37,8 +43,10 @@ export class FormBuilder extends BaseBuilder {
             showResetButton: true,
             multiStep: false,
             steps: [],
-            layout: 'vertical',
-            gridColumns: 2,
+            layout: layout,            // 'vertical' | 'horizontal' | 'inline' | 'grid'
+            gridColumns: gridColumns,
+            fieldSize: fieldSize,      // 'sm' | 'md' | 'lg' - default size for all fields
+            fieldLayout: fieldLayout,  // 'standard' | 'floating' | 'filled' | 'outlined'
             onCancel: null,
             initialValues: {}
         });
@@ -147,18 +155,48 @@ export class FormBuilder extends BaseBuilder {
         const value = this.values[field.key] ?? field.defaultValue ?? '';
         const error = this.errors[field.key];
         const touched = this.touched[field.key];
+        const fieldSize = field.size || this.options.fieldSize;
+        const fieldLayout = field.layout || this.options.fieldLayout;
+        
+        // Build field classes
+        const fieldClasses = [
+            'form-field',
+            `form-field-${fieldLayout}`,
+            `form-field-size-${fieldSize}`,
+            error && touched ? 'form-field-error' : '',
+            field.fullWidth ? 'form-field-full' : ''
+        ].filter(Boolean).join(' ');
 
+        // For M3 filled and outlined, input comes BEFORE label (for ~ CSS selector)
+        // AND use wrapper div to isolate label from supporting text
+        if (fieldLayout === 'floating' || fieldLayout === 'filled' || fieldLayout === 'outlined') {
+            return `
+                <div class="${fieldClasses}" data-field-key="${field.key}">
+                    <div class="input-wrapper">
+                        ${this.renderFieldInput(field, value, fieldSize)}
+                        ${field.label ? `
+                            <label class="form-label ssi-label-${fieldSize}" for="${this.containerId}_${field.key}">
+                                ${field.label}${field.required ? '<span class="form-required">*</span>' : ''}
+                            </label>
+                        ` : ''}
+                    </div>
+                    ${field.description ? `<div class="form-description">${field.description}</div>` : ''}
+                    ${field.hint ? `<div class="form-hint">${field.hint}</div>` : ''}
+                    ${error && touched ? `<div class="form-error">${error}</div>` : ''}
+                </div>
+            `;
+        }
+
+        // Standard layout - label before input
         return `
-            <div class="form-field ${error && touched ? 'form-field-error' : ''} ${field.fullWidth ? 'form-field-full' : ''}" data-field-key="${field.key}">
+            <div class="${fieldClasses}" data-field-key="${field.key}">
                 ${field.label ? `
-                    <label class="form-label" for="${this.containerId}_${field.key}">
-                        ${field.label}
-                        ${field.required ? '<span class="form-required">*</span>' : ''}
+                    <label class="form-label ssi-label-${fieldSize}" for="${this.containerId}_${field.key}">
+                        ${field.label}${field.required ? '<span class="form-required">*</span>' : ''}
                     </label>
                 ` : ''}
-
-                ${this.renderFieldInput(field, value)}
-
+                ${this.renderFieldInput(field, value, fieldSize)}
+                ${field.description ? `<div class="form-description">${field.description}</div>` : ''}
                 ${field.hint ? `<div class="form-hint">${field.hint}</div>` : ''}
                 ${error && touched ? `<div class="form-error">${error}</div>` : ''}
             </div>
@@ -168,29 +206,48 @@ export class FormBuilder extends BaseBuilder {
     /**
      * Render field input based on type
      */
-    renderFieldInput(field, value) {
-        const fieldId = `${this.containerId}_${field.key}`;
+    renderFieldInput(field, value, fieldSize = 'md') {
+        const sizeClass = `ssi-input-${fieldSize}`;
+        
+        // For M3 floating labels, we MUST have a placeholder (even if just a space)
+        const fieldLayout = field.layout || this.options.fieldLayout;
+        const placeholder = field.placeholder !== undefined ? field.placeholder : 
+                          (fieldLayout === 'filled' || fieldLayout === 'outlined' || fieldLayout === 'floating' ? ' ' : '');
+        
         const commonAttrs = `
-            id="${fieldId}"
+            id="${this.containerId}_${field.key}"
             name="${field.key}"
             ${field.required ? 'required' : ''}
             ${field.disabled ? 'disabled' : ''}
-            ${field.placeholder ? `placeholder="${field.placeholder}"` : ''}
-        `;
+            ${field.readonly ? 'readonly' : ''}
+            ${placeholder ? `placeholder="${placeholder}"` : ''}
+        `.trim();
+
+        // Helper for input groups with prefix/suffix
+        const wrapInputGroup = (input) => {
+            if (!field.prefix && !field.suffix) return input;
+            return `
+                <div class="form-input-group">
+                    ${field.prefix ? `<span class="form-input-prefix">${field.prefix}</span>` : ''}
+                    ${input}
+                    ${field.suffix ? `<span class="form-input-suffix">${field.suffix}</span>` : ''}
+                </div>
+            `;
+        };
 
         switch (field.type) {
             case 'textarea':
-                return `
+                return wrapInputGroup(`
                     <textarea
-                        class="form-input form-textarea"
+                        class="form-input form-textarea ${sizeClass}"
                         ${commonAttrs}
                         rows="${field.rows || 4}"
                     >${value}</textarea>
-                `;
+                `);
 
             case 'select':
-                return `
-                    <select class="form-input form-select" ${commonAttrs}>
+                return wrapInputGroup(`
+                    <select class="form-input form-select ${sizeClass}" ${commonAttrs}>
                         <option value="">-- Bitte wählen --</option>
                         ${field.options?.map(opt => `
                             <option value="${opt.value}" ${value === opt.value ? 'selected' : ''}>
@@ -198,7 +255,7 @@ export class FormBuilder extends BaseBuilder {
                             </option>
                         `).join('')}
                     </select>
-                `;
+                `);
 
             case 'checkbox':
                 return `
@@ -246,32 +303,46 @@ export class FormBuilder extends BaseBuilder {
 
             case 'number':
                 return `
-                    <input
-                        type="number"
-                        class="form-input"
-                        ${commonAttrs}
-                        value="${value}"
-                        ${field.min !== undefined ? `min="${field.min}"` : ''}
-                        ${field.max !== undefined ? `max="${field.max}"` : ''}
-                        ${field.step !== undefined ? `step="${field.step}"` : ''}
-                    />
+                    <div class="form-number-wrapper">
+                        <button
+                            type="button"
+                            class="form-number-btn form-number-decrement"
+                            aria-label="Wert verringern"
+                            data-field-key="${field.key}"
+                        >−</button>
+                        <input
+                            type="number"
+                            class="form-input form-number-input ${sizeClass}"
+                            ${commonAttrs}
+                            value="${value}"
+                            ${field.min !== undefined ? `min="${field.min}"` : ''}
+                            ${field.max !== undefined ? `max="${field.max}"` : ''}
+                            ${field.step !== undefined ? `step="${field.step}"` : ''}
+                        />
+                        <button
+                            type="button"
+                            class="form-number-btn form-number-increment"
+                            aria-label="Wert erhöhen"
+                            data-field-key="${field.key}"
+                        >+</button>
+                    </div>
                 `;
 
             case 'email':
-                return `
+                return wrapInputGroup(`
                     <input
                         type="email"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
-                `;
+                `);
 
             case 'date':
                 return `
                     <input
                         type="date"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
@@ -279,19 +350,29 @@ export class FormBuilder extends BaseBuilder {
 
             case 'password':
                 return `
-                    <input
-                        type="password"
-                        class="form-input"
-                        ${commonAttrs}
-                        value="${value}"
-                    />
+                    <div class="form-password-wrapper">
+                        <input
+                            type="password"
+                            class="form-input form-password-input ${sizeClass}"
+                            ${commonAttrs}
+                            value="${value}"
+                        />
+                        <button
+                            type="button"
+                            class="form-password-toggle"
+                            aria-label="Passwort anzeigen/verbergen"
+                            data-field-key="${field.key}"
+                        >
+                            ${IconManager.getIcon('eye-off')}
+                        </button>
+                    </div>
                 `;
 
             case 'time':
                 return `
                     <input
                         type="time"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
@@ -301,7 +382,7 @@ export class FormBuilder extends BaseBuilder {
                 return `
                     <input
                         type="datetime-local"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
@@ -311,7 +392,7 @@ export class FormBuilder extends BaseBuilder {
                 return `
                     <input
                         type="color"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value || '#000000'}"
                     />
@@ -321,7 +402,7 @@ export class FormBuilder extends BaseBuilder {
                 return `
                     <input
                         type="url"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
@@ -331,7 +412,7 @@ export class FormBuilder extends BaseBuilder {
                 return `
                     <input
                         type="tel"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                         ${field.pattern ? `pattern="${field.pattern}"` : ''}
@@ -370,14 +451,14 @@ export class FormBuilder extends BaseBuilder {
                 `;
 
             default: // text
-                return `
+                return wrapInputGroup(`
                     <input
                         type="text"
-                        class="form-input"
+                        class="form-input ${sizeClass}"
                         ${commonAttrs}
                         value="${value}"
                     />
-                `;
+                `);
         }
     }
 
@@ -454,6 +535,54 @@ export class FormBuilder extends BaseBuilder {
                     }
                 });
             }
+        });
+
+        // Password toggle buttons
+        const passwordToggles = this.container.querySelectorAll('.form-password-toggle');
+        passwordToggles.forEach(toggleBtn => {
+            toggleBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const fieldKey = toggleBtn.dataset.fieldKey;
+                const passwordInput = document.getElementById(`${this.containerId}_${fieldKey}`);
+
+                if (passwordInput) {
+                    const isPassword = passwordInput.type === 'password';
+                    passwordInput.type = isPassword ? 'text' : 'password';
+                    toggleBtn.innerHTML = IconManager.getIcon(isPassword ? 'eye' : 'eye-off');
+                    toggleBtn.setAttribute('aria-label', isPassword ? 'Passwort verbergen' : 'Passwort anzeigen');
+                }
+            });
+        });
+
+        // Number stepper buttons
+        const numberSteppers = this.container.querySelectorAll('.form-number-btn');
+        numberSteppers.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const fieldKey = btn.dataset.fieldKey;
+                const numberInput = document.getElementById(`${this.containerId}_${fieldKey}`);
+                const field = this.fields.find(f => f.key === fieldKey);
+
+                if (numberInput && field) {
+                    const currentValue = parseFloat(numberInput.value) || (field.min !== undefined ? field.min : 0);
+                    const step = field.step !== undefined ? field.step : 1;
+                    const isIncrement = btn.classList.contains('form-number-increment');
+
+                    let newValue = isIncrement ? currentValue + step : currentValue - step;
+
+                    // Apply min/max constraints
+                    if (field.min !== undefined && newValue < field.min) {
+                        newValue = field.min;
+                    }
+                    if (field.max !== undefined && newValue > field.max) {
+                        newValue = field.max;
+                    }
+
+                    numberInput.value = newValue;
+                    // Trigger input event to update form state
+                    numberInput.dispatchEvent(new Event('input', { bubbles: true }));
+                }
+            });
         });
 
         // Reset button

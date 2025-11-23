@@ -23,12 +23,13 @@
  *
  * site.renderContent('<div>Content here</div>');
  *
- * @version 1.2.1
+ * @version 2.2.0
  */
 
 import { GlobalConfig } from './GlobalConfig.js';
 import { IconManager } from './IconManager.js';
 import { SidebarBuilder } from './SidebarBuilder.js';
+import { deepMerge } from './utils.js';
 
 export class SiteBuilder {
     /**

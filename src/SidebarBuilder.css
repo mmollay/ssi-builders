@@ -356,3 +356,24 @@
 .sidebar-backdrop.show {
     display: block;
 }
+
+/* === Sidebar Version Badge === */
+.sidebar .ssi-version-badge {
+    position: absolute;
+    bottom: 4px;
+    right: auto;
+    left: 50%;
+    transform: translateX(-50%);
+    background: transparent;
+    border: none;
+    color: #dadce0;
+    font-family: var(--ssi-font-family);
+    font-size: 10px;
+    width: auto;
+    opacity: 1;
+    z-index: 1;
+}
+
+.sidebar-collapsed .ssi-version-badge {
+    display: none;
+}

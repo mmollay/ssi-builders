@@ -18,7 +18,7 @@ export default defineConfig({
         sourcemap: true
     },
     server: {
-        port: 5178,
+        port: 5177,
         open: '/'
     }
 });

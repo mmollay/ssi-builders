@@ -778,4 +778,75 @@ td.list-table-actions {
         font-size: 12px;
         padding: 5px 12px;
     }
+}/* ========================================
+   Table Style Variants
+   ======================================== */
+
+/* Striped - Alternate row colors */
+.list-table-striped tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.list-table-striped tbody tr:nth-child(odd) {
+    background: white;
+}
+
+.list-table-striped tbody tr:hover {
+    background: #e8f0fe !important;
+}
+
+/* Bordered - Borders around all cells */
+.list-table-bordered {
+    border: 1px solid #e8eaed!important;
+}
+
+.list-table-bordered th,
+.list-table-bordered td {
+    border: 1px solid #e8eaed !important;
+}
+
+/* Compact - Reduced padding */
+.list-table-compact th {
+    padding: 6px 8px !important;
+}
+
+.list-table-compact td {
+    padding: 8px !important;
+    font-size: 12px !important;
+}
+
+/* Hoverable - Enhanced hover effect */
+.list-table-hoverable tbody tr:hover {
+    background: #f1f3f4;
+    cursor: pointer;
+}
+
+/* Celled - Strong cell borders */
+.list-table-celled th,
+.list-table-celled td {
+    border-left: 1px solid #e8eaed;
+    border-right: 1px solid #e8eaed;
+}
+
+.list-table-celled th:first-child,
+.list-table-celled td:first-child {
+    border-left: none;
+}
+
+.list-table-celled th:last-child,
+.list-table-celled td:last-child {
+    border-right: none;
+}
+
+/* Combined styles - ensure proper layering */
+.list-table-striped.list-table-hoverable tbody tr:hover {
+    background: #e8f0fe !important;
+}
+
+.list-table-compact.list-table-striped tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.list-table-compact.list-table-striped tbody tr:nth-child(odd) {
+    background: white;
 }

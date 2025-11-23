@@ -160,6 +160,7 @@ const deleteIcon = '🗑️'; // Unprofessionell!
 - `check`, `warning`, `info`, `home`, `list`, `menu`
 - `folder`, `sidebar`, `layout`, `modal`, `chart`, `tab`
 - `star`, `grid`, `github`, `book`
+- `eye`, `eye-off` (für Password Toggle)
 
 **Icon Weight:**
 - `thin` (1.5px) - Ultra-minimalistisch

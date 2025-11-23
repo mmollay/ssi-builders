@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TooltipBuilder - SSI Builders Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/TooltipBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    <style>
+        .demo-section {
+            margin-bottom: 64px;
+        }
+
+        .demo-section h2 {
+            font-size: 28px;
+            color: #1a73e8;
+            margin-bottom: 16px;
+        }
+
+        .tooltip-demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 32px;
+            margin: 32px 0;
+        }
+
+        .demo-box {
+            padding: 40px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 150px;
+        }
+
+        .demo-trigger {
+            padding: 12px 24px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: background 0.2s;
+        }
+
+        .demo-trigger:hover {
+            background: #1557b0;
+        }
+
+        .demo-trigger:focus {
+            outline: 2px solid #1a73e8;
+            outline-offset: 2px;
+        }
+
+        .color-variants {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+
+        .variant-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: transform 0.2s;
+        }
+
+        .variant-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .variant-default {
+            background: #202124;
+            color: white;
+        }
+
+        .variant-primary {
+            background: #1a73e8;
+            color: white;
+        }
+
+        .variant-success {
+            background: #34a853;
+            color: white;
+        }
+
+        .variant-warning {
+            background: #fbbc04;
+            color: #202124;
+        }
+
+        .variant-danger {
+            background: #ea4335;
+            color: white;
+        }
+
+        .variant-light {
+            background: white;
+            color: #202124;
+            border: 1px solid #e8eaed;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            ☰
+        </button>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>💬 TooltipBuilder</h1>
+                    <p>Accessible, positioned tooltips with Material Design 3</p>
+                </div>
+
+                <!-- Positions Demo -->
+                <div class="demo-section">
+                    <h2>📍 Positionen</h2>
+                    <p>Tooltips können in 4 Richtungen oder automatisch positioniert werden.</p>
+
+                    <div class="tooltip-demo-grid">
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Top</label>
+                            <button class="demo-trigger" id="tooltip-top">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Bottom</label>
+                            <button class="demo-trigger" id="tooltip-bottom">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Left</label>
+                            <button class="demo-trigger" id="tooltip-left">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Right</label>
+                            <button class="demo-trigger" id="tooltip-right">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Auto (Smart)</label>
+                            <button class="demo-trigger" id="tooltip-auto">Hover me</button>
+                        </div>
+                    </div>
+
+                    <pre><code class="language-javascript">import { TooltipBuilder } from '/vendor/ssi-builders/src/index.js';
+
+new TooltipBuilder({
+    target: document.getElementById('my-button'),
+    content: 'Dieser Tooltip steht oben',
+    position: 'top' // 'top', 'bottom', 'left', 'right', 'auto'
+});</code></pre>
+                </div>
+
+                <!-- Trigger Modes -->
+                <div class="demo-section">
+                    <h2>🖱️ Trigger Modi</h2>
+                    <p>Tooltips können per Hover, Click oder manuell gesteuert werden.</p>
+
+                    <div class="tooltip-demo-grid">
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Hover (Default)</label>
+                            <button class="demo-trigger" id="tooltip-hover">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Click</label>
+                            <button class="demo-trigger" id="tooltip-click">Click me</button>
+                        </div>
+                    </div>
+
+                    <pre><code class="language-javascript">// Hover Mode (Default)
+new TooltipBuilder({
+    target: element,
+    content: 'Hover Tooltip',
+    trigger: 'hover',
+    delay: 200  // Verzögerung in ms
+});
+
+// Click Mode
+new TooltipBuilder({
+    target: element,
+    content: 'Click Tooltip',
+    trigger: 'click'
+});
+
+// Manual Mode (programmatisch)
+const tooltip = new TooltipBuilder({
+    target: element,
+    content: 'Manual Tooltip',
+    trigger: 'manual'
+});
+
+tooltip.show();  // Manuell zeigen
+tooltip.hide();  // Manuell verstecken
+tooltip.toggle(); // Toggle</code></pre>
+                </div>
+
+                <!-- Color Variants -->
+                <div class="demo-section">
+                    <h2>🎨 Farb-Varianten</h2>
+                    <p>Tooltips können verschiedene Farben haben für unterschiedliche Kontexte.</p>
+
+                    <div class="tooltip-demo-grid">
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Default</label>
+                            <button class="demo-trigger" id="tooltip-default" style="background: #202124;">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Primary</label>
+                            <button class="demo-trigger" id="tooltip-primary">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Success</label>
+                            <button class="demo-trigger" id="tooltip-success" style="background: #34a853;">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Warning</label>
+                            <button class="demo-trigger" id="tooltip-warning" style="background: #fbbc04; color: #202124;">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Danger</label>
+                            <button class="demo-trigger" id="tooltip-danger" style="background: #ea4335;">Hover me</button>
+                        </div>
+                        <div class="demo-box">
+                            <label style="margin-bottom: 12px; font-size: 13px; color: #5f6368;">Light</label>
+                            <button class="demo-trigger" id="tooltip-light" style="background: white; color: #202124; border: 1px solid #e8eaed;">Hover me</button>
+                        </div>
+                    </div>
+
+                    <pre><code class="language-javascript">new TooltipBuilder({
+    target: element,
+    content: 'Primary Tooltip',
+    className: 'ssi-tooltip-primary' // oder: success, warning, danger, light
+});</code></pre>
+                </div>
+
+                <!-- HTML Content -->
+                <div class="demo-section">
+                    <h2>📝 HTML Content</h2>
+                    <p>Tooltips können auch HTML-Inhalte anzeigen.</p>
+
+                    <div class="tooltip-demo-grid">
+                        <div class="demo-box">
+                            <button class="demo-trigger" id="tooltip-html">HTML Tooltip</button>
+                        </div>
+                    </div>
+
+                    <pre><code class="language-javascript">const content = document.createElement('div');
+content.innerHTML = `
+    <strong>Benutzer:</strong> Max Mustermann<br>
+    <small>max@example.com</small>
+`;
+
+new TooltipBuilder({
+    target: element,
+    content: content,
+    maxWidth: 250
+});</code></pre>
+                </div>
+
+                <!-- API Reference -->
+                <div class="demo-section">
+                    <h2>📖 API Referenz</h2>
+                    
+                    <h3 style="margin-top: 24px;">Constructor Options</h3>
+                    <table class="ssi-table" style="width: 100%; margin-top: 16px;">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>target</code></td>
+                                <td>HTMLElement</td>
+                                <td><em>required</em></td>
+                                <td>Element, an das der Tooltip angehängt wird</td>
+                            </tr>
+                            <tr>
+                                <td><code>content</code></td>
+                                <td>string | HTMLElement</td>
+                                <td><code>''</code></td>
+                                <td>Tooltip-Inhalt (Text oder HTML)</td>
+                            </tr>
+                            <tr>
+                                <td><code>position</code></td>
+                                <td>string</td>
+                                <td><code>'top'</code></td>
+                                <td>'top', 'bottom', 'left', 'right', 'auto'</td>
+                            </tr>
+                            <tr>
+                                <td><code>trigger</code></td>
+                                <td>string</td>
+                                <td><code>'hover'</code></td>
+                                <td>'hover', 'click', 'manual'</td>
+                            </tr>
+                            <tr>
+                                <td><code>delay</code></td>
+                                <td>number</td>
+                                <td><code>200</code></td>
+                                <td>Verzögerung vor dem Anzeigen (ms)</td>
+                            </tr>
+                            <tr>
+                                <td><code>hideDelay</code></td>
+                                <td>number</td>
+                                <td><code>0</code></td>
+                                <td>Verzögerung vor dem Verstecken (ms)</td>
+                            </tr>
+                            <tr>
+                                <td><code>offset</code></td>
+                                <td>number</td>
+                                <td><code>8</code></td>
+                                <td>Abstand zum Target-Element (px)</td>
+                            </tr>
+                            <tr>
+                                <td><code>arrow</code></td>
+                                <td>boolean</td>
+                                <td><code>true</code></td>
+                                <td>Pfeil/Pointer anzeigen</td>
+                            </tr>
+                            <tr>
+                                <td><code>maxWidth</code></td>
+                                <td>number</td>
+                                <td><code>300</code></td>
+                                <td>Maximale Breite (px)</td>
+                            </tr>
+                            <tr>
+                                <td><code>className</code></td>
+                                <td>string</td>
+                                <td><code>''</code></td>
+                                <td>Zusätzliche CSS-Klasse</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top: 32px;">Methoden</h3>
+                    <table class="ssi-table" style="width: 100%; margin-top: 16px;">
+                        <thead>
+                            <tr>
+                                <th>Methode</th>
+                                <th>Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>show()</code></td>
+                                <td>Tooltip anzeigen</td>
+                            </tr>
+                            <tr>
+                                <td><code>hide()</code></td>
+                                <td>Tooltip verstecken</td>
+                            </tr>
+                            <tr>
+                                <td><code>toggle()</code></td>
+                                <td>Tooltip umschalten (zeigen/verstecken)</td>
+                            </tr>
+                            <tr>
+                                <td><code>setContent(content)</code></td>
+                                <td>Tooltip-Inhalt aktualisieren</td>
+                            </tr>
+                            <tr>
+                                <td><code>destroy()</code></td>
+                                <td>Tooltip komplett entfernen & Cleanup</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top: 32px;">Events</h3>
+                    <table class="ssi-table" style="width: 100%; margin-top: 16px;">
+                        <thead>
+                            <tr>
+                                <th>Event</th>
+                                <th>Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>tooltip:show</code></td>
+                                <td>Wird ausgelöst, wenn der Tooltip angezeigt wird</td>
+                            </tr>
+                            <tr>
+                                <td><code>tooltip:hide</code></td>
+                                <td>Wird ausgelöst, wenn der Tooltip versteckt wird</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <pre style="margin-top: 24px;"><code class="language-javascript">const target = document.getElementById('my-element');
+
+target.addEventListener('tooltip:show', (e) => {
+    console.log('Tooltip shown:', e.detail.tooltip);
+});
+
+target.addEventListener('tooltip:hide', (e) => {
+    console.log('Tooltip hidden:', e.detail.tooltip);
+});</code></pre>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { SidebarBuilder } from '../../src/SidebarBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+        import { TooltipBuilder } from '../../src/TooltipBuilder.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('tooltip-builder');
+
+        // Position Demos
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-top'),
+            content: 'Dies ist ein Top Tooltip',
+            position: 'top'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-bottom'),
+            content: 'Dies ist ein Bottom Tooltip',
+            position: 'bottom'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-left'),
+            content: 'Dies ist ein Left Tooltip',
+            position: 'left'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-right'),
+            content: 'Dies ist ein Right Tooltip',
+            position: 'right'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-auto'),
+            content: 'Auto-Position wählt die beste Position basierend auf verfügbarem Platz',
+            position: 'auto',
+            maxWidth: 250
+        });
+
+        // Trigger Modes
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-hover'),
+            content: 'Hover Tooltip mit 200ms Delay',
+            trigger: 'hover',
+            delay: 200
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-click'),
+            content: 'Click Tooltip - Klicke außerhalb oder drücke ESC zum Schließen',
+            trigger: 'click',
+            maxWidth: 250
+        });
+
+        // Color Variants
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-default'),
+            content: 'Standard Tooltip (Dunkel)',
+            position: 'bottom'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-primary'),
+            content: 'Primary Tooltip',
+            position: 'bottom',
+            className: 'ssi-tooltip-primary'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-success'),
+            content: 'Success Tooltip',
+            position: 'bottom',
+            className: 'ssi-tooltip-success'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-warning'),
+            content: 'Warning Tooltip',
+            position: 'bottom',
+            className: 'ssi-tooltip-warning'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-danger'),
+            content: 'Danger Tooltip',
+            position: 'bottom',
+            className: 'ssi-tooltip-danger'
+        });
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-light'),
+            content: 'Light Tooltip',
+            position: 'bottom',
+            className: 'ssi-tooltip-light'
+        });
+
+        // HTML Content Demo
+        const htmlContent = document.createElement('div');
+        htmlContent.innerHTML = `
+            <strong style="display: block; margin-bottom: 4px;">Max Mustermann</strong>
+            <small style="color: rgba(255,255,255,0.8);">max.mustermann@example.com</small>
+        `;
+
+        new TooltipBuilder({
+            target: document.getElementById('tooltip-html'),
+            content: htmlContent,
+            maxWidth: 250,
+            position: 'top'
+        });
+
+        // Syntax highlighting
+        document.querySelectorAll('pre code').forEach((block) => {
+            hljs.highlightElement(block);
+        });
+    </script>
+</body>
+</html>

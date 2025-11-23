@@ -14,7 +14,7 @@
  * - Disabled items
  * - Checkboxes & radio groups
  *
- * @version 2.0.0
+ * @version 2.2.0
  */
 
 import { createVersionBadge } from './version.js';
@@ -149,7 +149,7 @@ export class MenuBuilder {
     render() {
         const menuHtml = `
             <div class="menu-overlay" id="${this.id}">
-                <div class="menu-container" style="width: ${this.options.width}; max-height: ${this.options.maxHeight}px">
+                <div class="menu-container" style="${this.options.width !== 'auto' ? `width: ${this.options.width};` : ''} max-height: ${this.options.maxHeight}px">
                     ${this.renderItems(this.items)}
                 </div>
                 ${createVersionBadge()}
