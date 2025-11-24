@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design 3 - Perfect Form</title>
+    <link rel="stylesheet" href="m3-form-perfect.css">
+</head>
+<body>
+    <div class="m3-container">
+        <h1 class="m3-headline-large">Material Design 3 Formular</h1>
+        <p class="m3-body-large">Echtes M3-Design nach offiziellen Guidelines</p>
+
+        <form class="m3-form" id="m3Form">
+            <!-- Row 1: Datum + Zeit -->
+            <div class="m3-row">
+                <div class="m3-text-field m3-text-field-filled">
+                    <input type="text" id="datum" placeholder=" " class="m3-input" value="11.mm.jjjj">
+                    <label for="datum" class="m3-label">Datum</label>
+                    <svg class="m3-trailing-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                </div>
+
+                <div class="m3-text-field m3-text-field-filled">
+                    <input type="text" id="zeit" placeholder=" " class="m3-input" value="--:--">
+                    <label for="zeit" class="m3-label">Zeit</label>
+                    <svg class="m3-trailing-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- Row 2: Passwort + Anzahl -->
+            <div class="m3-row">
+                <div class="m3-text-field m3-text-field-filled">
+                    <input type="password" id="passwort" placeholder=" " class="m3-input">
+                    <label for="passwort" class="m3-label">Passwort</label>
+                    <button type="button" class="m3-icon-button m3-trailing-icon" id="togglePassword" aria-label="Passwort anzeigen/verbergen">
+                        <svg class="m3-icon-eye" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        <svg class="m3-icon-eye-off" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: none;">
+                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                            <line x1="1" y1="1" x2="23" y2="23"></line>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="m3-text-field m3-text-field-filled m3-number-field">
+                    <input type="number" id="anzahl" placeholder=" " class="m3-input" value="5" min="0" max="100">
+                    <label for="anzahl" class="m3-label">Anzahl</label>
+                    <div class="m3-number-controls">
+                        <button type="button" class="m3-icon-button m3-icon-button-small" id="decreaseBtn" aria-label="Verringern">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                        <button type="button" class="m3-icon-button m3-icon-button-small" id="increaseBtn" aria-label="Erhöhen">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 3: Farbe + Lautstärke -->
+            <div class="m3-row">
+                <div class="m3-color-field">
+                    <label class="m3-label-outside">Farbe</label>
+                    <div class="m3-color-picker">
+                        <input type="color" id="farbe" value="#1a73e8" class="m3-color-input">
+                        <div class="m3-color-display">
+                            <div class="m3-color-swatch" id="colorSwatch"></div>
+                            <span class="m3-color-value" id="colorValue">#1a73e8</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="m3-slider-field">
+                    <label class="m3-label-outside">Lautstärke</label>
+                    <div class="m3-slider-container">
+                        <div class="m3-slider">
+                            <input type="range" id="lautstaerke" class="m3-slider-input" min="0" max="100" value="50">
+                            <div class="m3-slider-track"></div>
+                            <div class="m3-slider-track-active" id="sliderTrackActive"></div>
+                            <div class="m3-slider-thumb" id="sliderThumb">
+                                <div class="m3-slider-thumb-ripple"></div>
+                            </div>
+                        </div>
+                        <span class="m3-slider-value" id="sliderValue">50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 4: Nachricht (Full Width) -->
+            <div class="m3-row">
+                <div class="m3-text-field m3-text-field-filled m3-full-width">
+                    <textarea id="nachricht" placeholder=" " class="m3-input m3-textarea" rows="3"></textarea>
+                    <label for="nachricht" class="m3-label">Nachricht</label>
+                </div>
+            </div>
+
+            <!-- Row 5: Checkbox -->
+            <div class="m3-row">
+                <div class="m3-checkbox-wrapper">
+                    <label class="m3-checkbox">
+                        <input type="checkbox" id="agb" class="m3-checkbox-input">
+                        <svg class="m3-checkbox-background" viewBox="0 0 18 18">
+                            <rect class="m3-checkbox-outline" x="1" y="1" width="16" height="16" rx="2" />
+                            <rect class="m3-checkbox-fill" x="1" y="1" width="16" height="16" rx="2" />
+                            <path class="m3-checkbox-checkmark" d="M5 9l3 3 6-6" />
+                        </svg>
+                        <span class="m3-checkbox-label">AGB akzeptieren</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Row 6: Toggle Switch -->
+            <div class="m3-row">
+                <div class="m3-switch-wrapper">
+                    <label class="m3-switch">
+                        <input type="checkbox" id="notifications" class="m3-switch-input">
+                        <span class="m3-switch-track">
+                            <span class="m3-switch-thumb"></span>
+                        </span>
+                        <span class="m3-switch-label">Benachrichtigungen</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Row 7: Radio Buttons -->
+            <div class="m3-row">
+                <div class="m3-radio-group">
+                    <label class="m3-label-outside">Tarif wählen</label>
+                    <div class="m3-radio-options">
+                        <label class="m3-radio">
+                            <input type="radio" name="tarif" value="gratis" class="m3-radio-input" checked>
+                            <span class="m3-radio-background">
+                                <span class="m3-radio-outer-circle"></span>
+                                <span class="m3-radio-inner-circle"></span>
+                            </span>
+                            <span class="m3-radio-label">Gratis</span>
+                        </label>
+
+                        <label class="m3-radio">
+                            <input type="radio" name="tarif" value="pro" class="m3-radio-input">
+                            <span class="m3-radio-background">
+                                <span class="m3-radio-outer-circle"></span>
+                                <span class="m3-radio-inner-circle"></span>
+                            </span>
+                            <span class="m3-radio-label">Pro - €9.99/Monat</span>
+                        </label>
+
+                        <label class="m3-radio">
+                            <input type="radio" name="tarif" value="enterprise" class="m3-radio-input">
+                            <span class="m3-radio-background">
+                                <span class="m3-radio-outer-circle"></span>
+                                <span class="m3-radio-inner-circle"></span>
+                            </span>
+                            <span class="m3-radio-label">Enterprise</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="m3-form-actions">
+                <button type="button" class="m3-button m3-button-text">Zurücksetzen</button>
+                <button type="submit" class="m3-button m3-button-filled">Speichern</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="m3-form-perfect.js"></script>
+</body>
+</html>

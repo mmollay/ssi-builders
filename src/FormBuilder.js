@@ -127,8 +127,13 @@ export class FormBuilder extends BaseBuilder {
 
         const visibleFields = fieldsToRender.filter(field => this.isFieldVisible(field));
 
+        // Check if any fields use width property (12-column system)
+        const hasFieldWidths = this.fields.some(f => f.width);
+
         const layoutClass = this.options.layout === 'grid'
-            ? `form-builder-grid form-builder-grid-${this.options.gridColumns}`
+            ? hasFieldWidths
+                ? 'form-builder-grid'  // 12-column grid for flexible widths
+                : `form-builder-grid form-builder-grid-${this.options.gridColumns}`  // Legacy 2/3/4 column grid
             : `form-builder-${this.options.layout}`;
 
         return `
@@ -159,10 +164,15 @@ export class FormBuilder extends BaseBuilder {
         const fieldLayout = field.layout || this.options.fieldLayout;
         
         // Build field classes
+        const widthClass = field.width && field.width >= 1 && field.width <= 12
+            ? `form-field-width-${field.width}`
+            : '';
+
         const fieldClasses = [
             'form-field',
             `form-field-${fieldLayout}`,
             `form-field-size-${fieldSize}`,
+            widthClass,
             error && touched ? 'form-field-error' : '',
             field.fullWidth ? 'form-field-full' : ''
         ].filter(Boolean).join(' ');

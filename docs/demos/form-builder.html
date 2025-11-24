@@ -270,38 +270,124 @@ form.render('#basic-form');</code></pre>
 
                 <!-- Example 2: All Input Types -->
                 <div class="demo-section">
-                    <h2>2. All Input Types <span class="badge">18 Types</span></h2>
-                    <p>FormBuilder supports all HTML5 input types plus custom controls.</p>
+                    <h2>2. All Input Types with Flexible Grid <span class="badge">12-Column System</span></h2>
+                    <p>FormBuilder supports all HTML5 input types plus custom controls with flexible grid widths (1-12 columns).</p>
+
+                    <!-- Live Style Switcher -->
+                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 24px; border: 2px solid #e8eaed;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
+                            <!-- Field Layout Switcher -->
+                            <div>
+                                <h3 style="font-size: 14px; font-weight: 600; color: #202124; margin-bottom: 12px;">
+                                    🎨 Field Layout (M3 Styles)
+                                </h3>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldLayout" value="standard" checked style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Standard - Classic labels above inputs</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldLayout" value="filled" style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Filled - M3 filled backgrounds with floating labels</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldLayout" value="outlined" style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Outlined - M3 outlined borders with floating labels</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Field Size Switcher -->
+                            <div>
+                                <h3 style="font-size: 14px; font-weight: 600; color: #202124; margin-bottom: 12px;">
+                                    📏 Field Size
+                                </h3>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldSize" value="sm" style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Small (sm) - Compact fields</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldSize" value="md" checked style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Medium (md) - Default size</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
+                                        <input type="radio" name="fieldSize" value="lg" style="accent-color: #1a73e8;">
+                                        <span style="font-size: 14px; color: #202124;">Large (lg) - Bigger touch targets</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="example-demo">
                         <div id="all-types-form"></div>
                     </div>
 
                     <pre class="example-code"><code>const allTypesForm = new FormBuilder({
+    layout: 'grid',  // Enable 12-column grid
     fields: [
-        { key: 'text', label: 'Text', type: 'text', placeholder: 'Text input' },
-        { key: 'email', label: 'Email', type: 'email', placeholder: 'email@example.com' },
-        { key: 'password', label: 'Password', type: 'password', placeholder: 'Enter password' },
-        { key: 'number', label: 'Number', type: 'number', placeholder: '0', min: 0, max: 100 },
-        { key: 'tel', label: 'Phone', type: 'tel', placeholder: '+43 123 4567890' },
-        { key: 'url', label: 'Website', type: 'url', placeholder: 'https://example.com' },
-        { key: 'date', label: 'Date', type: 'date' },
-        { key: 'time', label: 'Time', type: 'time' },
-        { key: 'color', label: 'Color', type: 'color', defaultValue: '#1a73e8' },
-        { key: 'slider', label: 'Slider', type: 'range', min: 0, max: 100, defaultValue: 50 },
-        { key: 'textarea', label: 'Message', type: 'textarea', placeholder: 'Your message...', rows: 3 },
-        { key: 'select', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] },
-        { key: 'checkbox', label: 'I agree to terms', type: 'checkbox' },
-        { key: 'toggle', label: 'Enable notifications', type: 'toggle' },
+        // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
+        { key: 'anrede', label: 'Anrede', type: 'select',
+          options: ['Herr', 'Frau', 'Divers'], width: 3 },
+        { key: 'vorname', label: 'Vorname', type: 'text',
+          placeholder: 'Max', width: 4 },
+        { key: 'nachname', label: 'Nachname', type: 'text',
+          placeholder: 'Mustermann', width: 5 },
+
+        // Row 2: Email (6 cols) + Phone (6 cols) = 12
+        { key: 'email', label: 'Email', type: 'email',
+          placeholder: 'email@example.com', width: 6 },
+        { key: 'tel', label: 'Telefon', type: 'tel',
+          placeholder: '+43 123 4567890', width: 6 },
+
+        // Row 3: Full width
+        { key: 'adresse', label: 'Adresse', type: 'text',
+          placeholder: 'Straße & Hausnummer', fullWidth: true },
+
+        // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
+        { key: 'plz', label: 'PLZ', type: 'text',
+          placeholder: '1010', width: 3 },
+        { key: 'stadt', label: 'Stadt', type: 'text',
+          placeholder: 'Wien', width: 5 },
+        { key: 'land', label: 'Land', type: 'select',
+          options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
+
+        // Row 5: Date + Time
+        { key: 'date', label: 'Datum', type: 'date', width: 6 },
+        { key: 'time', label: 'Zeit', type: 'time', width: 6 },
+
+        // Row 6: Password + Number
+        { key: 'password', label: 'Passwort', type: 'password',
+          placeholder: 'Enter password', width: 6 },
+        { key: 'number', label: 'Anzahl', type: 'number',
+          placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
+
+        // Row 7: Color + Slider
+        { key: 'color', label: 'Farbe', type: 'color',
+          defaultValue: '#1a73e8', width: 3 },
+        { key: 'slider', label: 'Lautstärke', type: 'range',
+          min: 0, max: 100, defaultValue: 50, width: 9 },
+
+        // Row 8: Full width textarea
+        { key: 'textarea', label: 'Nachricht', type: 'textarea',
+          placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
+
+        // Row 9: Checkbox + Toggle (half width each)
+        { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
+        { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
+
+        // Row 10: Radio buttons (full width)
         {
             key: 'radio',
-            label: 'Plan',
+            label: 'Tarif wählen',
             type: 'radio',
             options: [
-                { value: 'free', label: 'Free' },
-                { value: 'pro', label: 'Pro' },
+                { value: 'free', label: 'Gratis' },
+                { value: 'pro', label: 'Pro - €9.99/Monat' },
                 { value: 'enterprise', label: 'Enterprise' }
-            ]
+            ],
+            fullWidth: true
         }
     ],
     submitLabel: 'Submit All Types'
@@ -704,36 +790,107 @@ stateForm.reset();</code></pre>
             }
         });
 
-        // Example 2: All Input Types
-        const allTypesForm = new FormBuilder({
-            containerId: 'all-types-form',
-            fields: [
-                { key: 'text', label: 'Text', type: 'text', placeholder: 'Text input' },
-                { key: 'email', label: 'Email', type: 'email', placeholder: 'email@example.com' },
-                { key: 'password', label: 'Password', type: 'password', placeholder: 'Enter password' },
-                { key: 'number', label: 'Number', type: 'number', placeholder: '0', min: 0, max: 100, defaultValue: 5 },
-                { key: 'tel', label: 'Phone', type: 'tel', placeholder: '+43 123 4567890' },
-                { key: 'url', label: 'Website', type: 'url', placeholder: 'https://example.com' },
-                { key: 'date', label: 'Date', type: 'date' },
-                { key: 'time', label: 'Time', type: 'time' },
-                { key: 'color', label: 'Color', type: 'color', defaultValue: '#1a73e8' },
-                { key: 'slider', label: 'Slider', type: 'range', min: 0, max: 100, defaultValue: 50 },
-                { key: 'textarea', label: 'Message', type: 'textarea', placeholder: 'Your message...', rows: 3 },
-                { key: 'select', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] },
-                { key: 'checkbox', label: 'I agree to terms', type: 'checkbox' },
-                { key: 'toggle', label: 'Enable notifications', type: 'toggle' },
-                {
-                    key: 'radio',
-                    label: 'Plan',
-                    type: 'radio',
-                    options: [
-                        { value: 'free', label: 'Free' },
-                        { value: 'pro', label: 'Pro' },
-                        { value: 'enterprise', label: 'Enterprise' }
-                    ]
+        // Example 2: All Input Types with Flexible Grid + Live Style Switcher
+        const allTypesFieldsConfig = [
+            // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
+            { key: 'anrede', label: 'Anrede', type: 'select',
+              options: ['Herr', 'Frau', 'Divers'], width: 3 },
+            { key: 'vorname', label: 'Vorname', type: 'text',
+              placeholder: 'Max', width: 4 },
+            { key: 'nachname', label: 'Nachname', type: 'text',
+              placeholder: 'Mustermann', width: 5 },
+
+            // Row 2: Email (6 cols) + Phone (6 cols) = 12
+            { key: 'email', label: 'Email', type: 'email',
+              placeholder: 'email@example.com', width: 6 },
+            { key: 'tel', label: 'Telefon', type: 'tel',
+              placeholder: '+43 123 4567890', width: 6 },
+
+            // Row 3: Full width
+            { key: 'adresse', label: 'Adresse', type: 'text',
+              placeholder: 'Straße & Hausnummer', fullWidth: true },
+
+            // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
+            { key: 'plz', label: 'PLZ', type: 'text',
+              placeholder: '1010', width: 3 },
+            { key: 'stadt', label: 'Stadt', type: 'text',
+              placeholder: 'Wien', width: 5 },
+            { key: 'land', label: 'Land', type: 'select',
+              options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
+
+            // Row 5: Date + Time
+            { key: 'date', label: 'Datum', type: 'date', width: 6 },
+            { key: 'time', label: 'Zeit', type: 'time', width: 6 },
+
+            // Row 6: Password + Number
+            { key: 'password', label: 'Passwort', type: 'password',
+              placeholder: 'Enter password', width: 6 },
+            { key: 'number', label: 'Anzahl', type: 'number',
+              placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
+
+            // Row 7: Color + Slider
+            { key: 'color', label: 'Farbe', type: 'color',
+              defaultValue: '#1a73e8', width: 3 },
+            { key: 'slider', label: 'Lautstärke', type: 'range',
+              min: 0, max: 100, defaultValue: 50, width: 9 },
+
+            // Row 8: Full width textarea
+            { key: 'textarea', label: 'Nachricht', type: 'textarea',
+              placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
+
+            // Row 9: Checkbox + Toggle (half width each)
+            { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
+            { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
+
+            // Row 10: Radio buttons (full width)
+            {
+                key: 'radio',
+                label: 'Tarif wählen',
+                type: 'radio',
+                options: [
+                    { value: 'free', label: 'Gratis' },
+                    { value: 'pro', label: 'Pro - €9.99/Monat' },
+                    { value: 'enterprise', label: 'Enterprise' }
+                ],
+                fullWidth: true
+            }
+        ];
+
+        // Function to render form with current settings
+        let allTypesForm;
+        function renderAllTypesForm() {
+            const fieldLayout = document.querySelector('input[name="fieldLayout"]:checked').value;
+            const fieldSize = document.querySelector('input[name="fieldSize"]:checked').value;
+
+            // Add placeholder for M3 layouts (floating labels need it)
+            const fields = allTypesFieldsConfig.map(field => {
+                const f = {...field};
+                if ((fieldLayout === 'filled' || fieldLayout === 'outlined') &&
+                    (field.type === 'text' || field.type === 'email' || field.type === 'password' ||
+                     field.type === 'tel' || field.type === 'number' || field.type === 'textarea')) {
+                    f.placeholder = ' ';  // Space required for floating label
                 }
-            ],
-            submitLabel: 'Submit All Types'
+                return f;
+            });
+
+            allTypesForm = new FormBuilder({
+                containerId: 'all-types-form',
+                layout: 'grid',
+                fieldLayout: fieldLayout,
+                fieldSize: fieldSize,
+                fields: fields,
+                submitLabel: 'Submit All Types'
+            });
+        }
+
+        // Initial render
+        renderAllTypesForm();
+
+        // Add event listeners to radio buttons
+        document.querySelectorAll('input[name="fieldLayout"], input[name="fieldSize"]').forEach(radio => {
+            radio.addEventListener('change', () => {
+                renderAllTypesForm();
+            });
         });
 
         // Example 3: Validation
