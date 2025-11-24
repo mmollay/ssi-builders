@@ -135,11 +135,78 @@ sidebar.render();</code></pre>
                 <li><strong>Persistent State</strong> - Remembers collapse state</li>
                 <li><strong>Active State</strong> - Highlights current page</li>
                 <li><strong>Mobile Drawer</strong> - Responsive overlay on mobile</li>
+                <li><strong>Push Mode (v2.2.0)</strong> - Content shifts instead of overlay</li>
             </ul>
         </div>
 
         <div class="demo-section">
-            <h2>⚙️ Configuration Options</h2>
+            <h2>NEW Push Mode (v2.2.0)</h2>
+            <p class="subtitle">Sidebar pushes content instead of overlaying it</p>
+
+            <p style="color: #5f6368; margin-bottom: 16px;">
+                By default, the sidebar overlays the content. With <code>mode: 'push'</code>,
+                the main content area shifts to make room for the sidebar, creating a more
+                integrated layout experience.
+            </p>
+
+            <h3 style="margin-top: 24px;">Push Mode Example:</h3>
+            <pre class="example-code"><code class="language-javascript">import { SidebarBuilder } from '/vendor/ssi-builders/src/SidebarBuilder.js';
+
+const sidebar = new SidebarBuilder({
+    containerId: 'sidebar-container',
+    items: navigationItems,
+    options: {
+        mode: 'push',                    // NEW: Content is pushed
+        mainContentSelector: '#main',    // CSS selector for content
+        collapsible: true,
+        width: 280,
+        collapsedWidth: 72
+    }
+});
+
+sidebar.render();
+
+// Dynamic mode switching
+sidebar.setMode('overlay');  // Switch to overlay
+sidebar.setMode('push');     // Switch back to push
+sidebar.getMode();           // Returns 'push' or 'overlay'</code></pre>
+
+            <h3 style="margin-top: 24px;">Mode Comparison:</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                <thead>
+                    <tr style="background: #f1f3f4;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Feature</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Overlay (default)</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Push</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Content behavior</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Stays in place, sidebar overlays</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Shifts with sidebar width</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Best for</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Mobile, temporary navigation</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Desktop, persistent layouts</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Mobile behavior</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Overlay</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Falls back to overlay</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Animation</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Sidebar slides in</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Sidebar + content animate</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="demo-section">
+            <h2>Configuration Options</h2>
             <pre class="example-code"><code class="language-javascript">{
     containerId: 'sidebar',           // Container element ID
     items: [...],                     // Navigation items (required)
@@ -147,9 +214,12 @@ sidebar.render();</code></pre>
         collapsible: true,            // Allow collapse/expand
         searchable: true,             // Show search box
         width: 280,                   // Sidebar width (px)
+        collapsedWidth: 72,           // Width when collapsed (px)
         persistent: true,             // Save state to localStorage
         defaultCollapsed: false,      // Start collapsed
-        mobileBreakpoint: 768         // Mobile drawer threshold (px)
+        position: 'left',             // 'left' or 'right'
+        mode: 'overlay',              // NEW v2.2.0: 'overlay' or 'push'
+        mainContentSelector: null     // NEW v2.2.0: CSS selector for push mode
     },
     onNavigate: (itemId) => {...},   // Navigation callback
     onToggle: (collapsed) => {...}   // Collapse state callback

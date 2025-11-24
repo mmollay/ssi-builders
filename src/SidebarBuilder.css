@@ -356,3 +356,26 @@
 .sidebar-backdrop.show {
     display: block;
 }
+
+/* === Push Mode === */
+/* When sidebar pushes content instead of overlaying */
+.sidebar-push-mode {
+    position: fixed; /* Still fixed, but content will shift */
+}
+
+/* Main content transition for smooth push/pull animation */
+.sidebar-push-content {
+    transition: margin-left 0.3s ease, margin-right 0.3s ease;
+}
+
+/* On mobile, push mode should behave like overlay to save space */
+@media (max-width: 1023px) {
+    .sidebar-push-mode {
+        /* Override push mode on mobile - always overlay */
+    }
+
+    .sidebar-push-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}

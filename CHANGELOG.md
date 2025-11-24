@@ -9,6 +9,43 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.2.0] - 2025-11-24
+
+### SidebarBuilder Enhancements
+
+**New Feature: Push Mode**
+- **`mode: 'push' | 'overlay'`** - New option to control how sidebar interacts with content
+  - `overlay` (default): Sidebar overlays content (backwards-compatible)
+  - `push`: Sidebar pushes main content to the side
+- **`mainContentSelector`** - CSS selector for the main content container (required for push mode)
+- **Dynamic margin adjustment** - Content margin updates smoothly when toggling sidebar
+- **CSS Transitions** - Smooth 0.3s ease animation for content shift
+- **Mobile-responsive** - Push mode automatically falls back to overlay on mobile (<1024px)
+- **New methods**:
+  - `getMode()` - Returns current mode ('overlay' or 'push')
+  - `setMode(mode, mainContentSelector?)` - Dynamically switch between modes
+
+**Bug Fix**
+- Fixed `href="#"` default link behavior overriding hash after `onNavigate` callback
+- Added `e.preventDefault()` in navigation click handler to prevent unwanted hash changes
+
+**Usage Example:**
+```javascript
+const sidebar = new SidebarBuilder({
+    containerId: 'sidebar-container',
+    items: navigationItems,
+    options: {
+        mode: 'push',  // Content is pushed, not overlaid
+        mainContentSelector: '#main-container',
+        collapsible: true,
+        width: 280,
+        collapsedWidth: 72
+    }
+});
+```
+
+---
+
 ## [2.1.0] - 2025-01-23
 
 ### 🎨 ChartBuilder Enhancements
