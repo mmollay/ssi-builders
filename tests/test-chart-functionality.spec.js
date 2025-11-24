@@ -16,7 +16,7 @@ test('Test ChartBuilder functionality', async ({ page }) => {
   });
 
   // Navigate to chart-builder
-  await page.goto('http://localhost:5178/docs/demos/chart-builder.html');
+  await page.goto('http://localhost:5177/docs/demos/chart-builder.html');
   await page.waitForLoadState('networkidle', { timeout: 10000 });
 
   // Take initial screenshot

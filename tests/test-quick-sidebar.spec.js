@@ -4,7 +4,7 @@ test('Quick sidebar test', async ({ page }) => {
   console.log('🔍 Testing sidebar on index.html...');
 
   // Navigate to index page
-  await page.goto('http://localhost:5178/index.html');
+  await page.goto('http://localhost:5177/index.html');
 
   // Wait for page to load
   await page.waitForLoadState('networkidle', { timeout: 10000 });

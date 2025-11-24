@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/FormBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
 
     <style>
@@ -240,32 +241,7 @@
                         <div id="basic-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
-
-const form = new FormBuilder({
-    fields: [
-        {
-            key: 'name',
-            label: 'Full Name',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter your name'
-        },
-        {
-            key: 'email',
-            label: 'Email',
-            type: 'email',
-            required: true,
-            placeholder: 'you@example.com'
-        }
-    ],
-    submitLabel: 'Submit',
-    onSubmit: (data) => {
-        console.log('Form data:', data);
-    }
-});
-
-form.render('#basic-form');</code></pre>
+                    <div id="code-basic-form"></div>
                 </div>
 
                 <!-- Example 2: All Input Types -->
@@ -324,76 +300,7 @@ form.render('#basic-form');</code></pre>
                         <div id="all-types-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const allTypesForm = new FormBuilder({
-    layout: 'grid',  // Enable 12-column grid
-    fields: [
-        // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
-        { key: 'anrede', label: 'Anrede', type: 'select',
-          options: ['Herr', 'Frau', 'Divers'], width: 3 },
-        { key: 'vorname', label: 'Vorname', type: 'text',
-          placeholder: 'Max', width: 4 },
-        { key: 'nachname', label: 'Nachname', type: 'text',
-          placeholder: 'Mustermann', width: 5 },
-
-        // Row 2: Email (6 cols) + Phone (6 cols) = 12
-        { key: 'email', label: 'Email', type: 'email',
-          placeholder: 'email@example.com', width: 6 },
-        { key: 'tel', label: 'Telefon', type: 'tel',
-          placeholder: '+43 123 4567890', width: 6 },
-
-        // Row 3: Full width
-        { key: 'adresse', label: 'Adresse', type: 'text',
-          placeholder: 'Straße & Hausnummer', fullWidth: true },
-
-        // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
-        { key: 'plz', label: 'PLZ', type: 'text',
-          placeholder: '1010', width: 3 },
-        { key: 'stadt', label: 'Stadt', type: 'text',
-          placeholder: 'Wien', width: 5 },
-        { key: 'land', label: 'Land', type: 'select',
-          options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
-
-        // Row 5: Date + Time
-        { key: 'date', label: 'Datum', type: 'date', width: 6 },
-        { key: 'time', label: 'Zeit', type: 'time', width: 6 },
-
-        // Row 6: Password + Number
-        { key: 'password', label: 'Passwort', type: 'password',
-          placeholder: 'Enter password', width: 6 },
-        { key: 'number', label: 'Anzahl', type: 'number',
-          placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
-
-        // Row 7: Color + Slider
-        { key: 'color', label: 'Farbe', type: 'color',
-          defaultValue: '#1a73e8', width: 3 },
-        { key: 'slider', label: 'Lautstärke', type: 'range',
-          min: 0, max: 100, defaultValue: 50, width: 9 },
-
-        // Row 8: Full width textarea
-        { key: 'textarea', label: 'Nachricht', type: 'textarea',
-          placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
-
-        // Row 9: Checkbox + Toggle (half width each)
-        { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
-        { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
-
-        // Row 10: Radio buttons (full width)
-        {
-            key: 'radio',
-            label: 'Tarif wählen',
-            type: 'radio',
-            options: [
-                { value: 'free', label: 'Gratis' },
-                { value: 'pro', label: 'Pro - €9.99/Monat' },
-                { value: 'enterprise', label: 'Enterprise' }
-            ],
-            fullWidth: true
-        }
-    ],
-    submitLabel: 'Submit All Types'
-});
-
-allTypesForm.render('#all-types-form');</code></pre>
+                    <div id="code-all-types"></div>
                 </div>
 
                 <!-- Example 3: Validation -->
@@ -405,46 +312,7 @@ allTypesForm.render('#all-types-form');</code></pre>
                         <div id="validation-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const validationForm = new FormBuilder({
-    fields: [
-        {
-            key: 'username',
-            label: 'Username',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter username',
-            validate: (value) => {
-                if (value.length &lt; 3) return 'Username must be at least 3 characters';
-                if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
-                return null;
-            }
-        },
-        {
-            key: 'age',
-            label: 'Age',
-            type: 'number',
-            required: true,
-            validate: (value) => {
-                if (value &lt; 18) return 'Must be 18 or older';
-                if (value &gt; 120) return 'Invalid age';
-                return null;
-            }
-        },
-        {
-            key: 'email',
-            label: 'Email',
-            type: 'email',
-            required: true,
-            placeholder: 'your@email.com'
-        }
-    ],
-    submitLabel: 'Validate & Submit',
-    onSubmit: (data) => {
-        alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
-    }
-});
-
-validationForm.render('#validation-form');</code></pre>
+                    <div id="code-validation"></div>
                 </div>
 
                 <!-- Example 4: Grid Layout -->
@@ -456,23 +324,7 @@ validationForm.render('#validation-form');</code></pre>
                         <div id="grid-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const gridForm = new FormBuilder({
-    layout: 'grid',
-    gridColumns: 2,  // 2, 3, or 4 columns
-    fields: [
-        { key: 'firstName', label: 'First Name', type: 'text', required: true },
-        { key: 'lastName', label: 'Last Name', type: 'text', required: true },
-        { key: 'email', label: 'Email', type: 'email', required: true },
-        { key: 'phone', label: 'Phone', type: 'tel' },
-        { key: 'address', label: 'Address', type: 'text' },
-        { key: 'city', label: 'City', type: 'text' },
-        { key: 'zip', label: 'ZIP Code', type: 'text' },
-        { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
-    ],
-    submitLabel: 'Save Contact'
-});
-
-gridForm.render('#grid-form');</code></pre>
+                    <div id="code-grid"></div>
                 </div>
 
                 <!-- Example 5: Inline & Horizontal Layouts -->
@@ -488,27 +340,7 @@ gridForm.render('#grid-form');</code></pre>
                         <div id="horizontal-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>// Inline Layout - All fields in one row
-const inlineForm = new FormBuilder({
-    containerId: 'inline-form',
-    layout: 'inline',
-    fields: [
-        { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
-        { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
-    ],
-    submitLabel: 'Search'
-});
-
-// Horizontal Layout - Labels beside inputs
-const horizontalForm = new FormBuilder({
-    containerId: 'horizontal-form',
-    layout: 'horizontal',
-    fields: [
-        { key: 'username', label: 'Username', type: 'text', required: true },
-        { key: 'email', label: 'Email', type: 'email', required: true }
-    ],
-    submitLabel: 'Save'
-});</code></pre>
+                    <div id="code-inline-horizontal"></div>
                 </div>
 
                 <!-- Example 6: Interactive Elements -->
@@ -520,39 +352,7 @@ const horizontalForm = new FormBuilder({
                         <div id="interactive-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const interactiveForm = new FormBuilder({
-    fields: [
-        {
-            key: 'password',
-            label: 'Password',
-            type: 'password',
-            placeholder: 'Enter secure password',
-            required: true
-            // Eye icon automatically added for show/hide toggle
-        },
-        {
-            key: 'quantity',
-            label: 'Quantity',
-            type: 'number',
-            defaultValue: 1,
-            min: 1,
-            max: 99
-            // +/- buttons automatically added
-        },
-        {
-            key: 'volume',
-            label: 'Volume',
-            type: 'range',
-            min: 0,
-            max: 100,
-            defaultValue: 50
-            // Slider with live value display
-        }
-    ],
-    submitLabel: 'Continue'
-});
-
-interactiveForm.render('#interactive-form');</code></pre>
+                    <div id="code-interactive"></div>
                 </div>
 
                 <!-- Example 6: Checkboxes, Radio, Toggle -->
@@ -564,35 +364,7 @@ interactiveForm.render('#interactive-form');</code></pre>
                         <div id="choices-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const choicesForm = new FormBuilder({
-    fields: [
-        {
-            key: 'newsletter',
-            label: 'Subscribe to newsletter',
-            type: 'checkbox'
-        },
-        {
-            key: 'notifications',
-            label: 'Enable push notifications',
-            type: 'toggle',
-            defaultValue: true
-        },
-        {
-            key: 'plan',
-            label: 'Select Plan',
-            type: 'radio',
-            options: [
-                { value: 'basic', label: 'Basic - Free' },
-                { value: 'pro', label: 'Pro - €9.99/month' },
-                { value: 'enterprise', label: 'Enterprise - Contact us' }
-            ],
-            defaultValue: 'basic'
-        }
-    ],
-    submitLabel: 'Save Preferences'
-});
-
-choicesForm.render('#choices-form');</code></pre>
+                    <div id="code-choices"></div>
                 </div>
 
                 <!-- Example 7: Conditional Fields -->
@@ -604,32 +376,7 @@ choicesForm.render('#choices-form');</code></pre>
                         <div id="conditional-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const conditionalForm = new FormBuilder({
-    fields: [
-        {
-            key: 'hasCompany',
-            label: 'I have a company',
-            type: 'checkbox'
-        },
-        {
-            key: 'companyName',
-            label: 'Company Name',
-            type: 'text',
-            placeholder: 'Enter company name',
-            showIf: (formData) => formData.hasCompany === true
-        },
-        {
-            key: 'vatNumber',
-            label: 'VAT Number',
-            type: 'text',
-            placeholder: 'ATU12345678',
-            showIf: (formData) => formData.hasCompany === true
-        }
-    ],
-    submitLabel: 'Submit'
-});
-
-conditionalForm.render('#conditional-form');</code></pre>
+                    <div id="code-conditional"></div>
                 </div>
 
                 <!-- Example 8: Material Design 3 - Filled -->
@@ -641,35 +388,7 @@ conditionalForm.render('#conditional-form');</code></pre>
                         <div id="m3-filled-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const m3FilledForm = new FormBuilder({
-    fieldLayout: 'filled',  // M3 Filled Style
-    fields: [
-        {
-            key: 'name',
-            label: 'Full Name',
-            type: 'text',
-            placeholder: ' ',  // Required for floating label
-            required: true
-        },
-        {
-            key: 'email',
-            label: 'Email Address',
-            type: 'email',
-            placeholder: ' ',
-            required: true
-        },
-        {
-            key: 'message',
-            label: 'Message',
-            type: 'textarea',
-            placeholder: ' ',
-            rows: 4
-        }
-    ],
-    submitLabel: 'Send Message'
-});
-
-m3FilledForm.render('#m3-filled-form');</code></pre>
+                    <div id="code-m3-filled"></div>
                 </div>
 
                 <!-- Example 9: Material Design 3 - Outlined -->
@@ -681,33 +400,7 @@ m3FilledForm.render('#m3-filled-form');</code></pre>
                         <div id="m3-outlined-form"></div>
                     </div>
 
-                    <pre class="example-code"><code>const m3OutlinedForm = new FormBuilder({
-    fieldLayout: 'outlined',  // M3 Outlined Style
-    fields: [
-        {
-            key: 'username',
-            label: 'Username',
-            type: 'text',
-            placeholder: ' ',  // Required for floating label
-            required: true
-        },
-        {
-            key: 'password',
-            label: 'Password',
-            type: 'password',
-            placeholder: ' ',
-            required: true
-        },
-        {
-            key: 'rememberMe',
-            label: 'Remember me',
-            type: 'checkbox'
-        }
-    ],
-    submitLabel: 'Sign In'
-});
-
-m3OutlinedForm.render('#m3-outlined-form');</code></pre>
+                    <div id="code-m3-outlined"></div>
                 </div>
 
                 <!-- Example 10: Form State Management -->
@@ -724,33 +417,7 @@ m3OutlinedForm.render('#m3-outlined-form');</code></pre>
                         </div>
                     </div>
 
-                    <pre class="example-code"><code>const stateForm = new FormBuilder({
-    fields: [
-        { key: 'title', label: 'Title', type: 'text' },
-        { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
-        { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
-    ],
-    submitLabel: 'Save'
-});
-
-stateForm.render('#state-form');
-
-// Get current form data
-const data = stateForm.getValue();
-console.log(data); // { title: '...', description: '...', priority: '...' }
-
-// Get specific field value
-const title = stateForm.getValue('title');
-
-// Set form data
-stateForm.setValue({
-    title: 'Example Title',
-    description: 'Pre-filled description',
-    priority: 'High'
-});
-
-// Reset form to defaults
-stateForm.reset();</code></pre>
+                    <div id="code-state"></div>
                 </div>
 
             </div>
@@ -761,6 +428,8 @@ stateForm.reset();</code></pre>
     <script type="module">
         import { initializeLayout } from './layout.js';
         import { FormBuilder } from '../../src/index.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize Sidebar
         initializeLayout('form-builder');
@@ -1152,53 +821,405 @@ stateForm.reset();</code></pre>
             alert('Form has been reset!');
         };
 
-        // Add Copy buttons to all code blocks
-        document.querySelectorAll('.example-code').forEach((codeBlock) => {
-            // Create container
-            const container = document.createElement('div');
-            container.className = 'code-block-container';
-            codeBlock.parentNode.insertBefore(container, codeBlock);
-            container.appendChild(codeBlock);
+        // Code Snippets with CodeSnippetBuilder
+        new CodeSnippetBuilder({
+            containerId: 'code-basic-form',
+            code: `import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
 
-            // Create copy button
-            const copyBtn = document.createElement('button');
-            copyBtn.className = 'code-copy-btn';
-            copyBtn.innerHTML = `
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                <span>Copy</span>
-            `;
+const form = new FormBuilder({
+    fields: [
+        {
+            key: 'name',
+            label: 'Full Name',
+            type: 'text',
+            required: true,
+            placeholder: 'Enter your name'
+        },
+        {
+            key: 'email',
+            label: 'Email',
+            type: 'email',
+            required: true,
+            placeholder: 'you@example.com'
+        }
+    ],
+    submitLabel: 'Submit',
+    onSubmit: (data) => {
+        console.log('Form data:', data);
+    }
+});
 
-            copyBtn.addEventListener('click', async () => {
-                const code = codeBlock.querySelector('code').textContent;
-                try {
-                    await navigator.clipboard.writeText(code);
-                    copyBtn.innerHTML = `
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                        <span>Copied!</span>
-                    `;
-                    copyBtn.classList.add('copied');
+form.render('#basic-form');`,
+            language: 'javascript'
+        });
 
-                    setTimeout(() => {
-                        copyBtn.innerHTML = `
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                            </svg>
-                            <span>Copy</span>
-                        `;
-                        copyBtn.classList.remove('copied');
-                    }, 2000);
-                } catch (err) {
-                    console.error('Failed to copy:', err);
-                }
-            });
+        new CodeSnippetBuilder({
+            containerId: 'code-all-types',
+            code: `const allTypesForm = new FormBuilder({
+    layout: 'grid',  // Enable 12-column grid
+    fields: [
+        // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
+        { key: 'anrede', label: 'Anrede', type: 'select',
+          options: ['Herr', 'Frau', 'Divers'], width: 3 },
+        { key: 'vorname', label: 'Vorname', type: 'text',
+          placeholder: 'Max', width: 4 },
+        { key: 'nachname', label: 'Nachname', type: 'text',
+          placeholder: 'Mustermann', width: 5 },
 
-            container.appendChild(copyBtn);
+        // Row 2: Email (6 cols) + Phone (6 cols) = 12
+        { key: 'email', label: 'Email', type: 'email',
+          placeholder: 'email@example.com', width: 6 },
+        { key: 'tel', label: 'Telefon', type: 'tel',
+          placeholder: '+43 123 4567890', width: 6 },
+
+        // Row 3: Full width
+        { key: 'adresse', label: 'Adresse', type: 'text',
+          placeholder: 'Straße & Hausnummer', fullWidth: true },
+
+        // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
+        { key: 'plz', label: 'PLZ', type: 'text',
+          placeholder: '1010', width: 3 },
+        { key: 'stadt', label: 'Stadt', type: 'text',
+          placeholder: 'Wien', width: 5 },
+        { key: 'land', label: 'Land', type: 'select',
+          options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
+
+        // Row 5: Date + Time
+        { key: 'date', label: 'Datum', type: 'date', width: 6 },
+        { key: 'time', label: 'Zeit', type: 'time', width: 6 },
+
+        // Row 6: Password + Number
+        { key: 'password', label: 'Passwort', type: 'password',
+          placeholder: 'Enter password', width: 6 },
+        { key: 'number', label: 'Anzahl', type: 'number',
+          placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
+
+        // Row 7: Color + Slider
+        { key: 'color', label: 'Farbe', type: 'color',
+          defaultValue: '#1a73e8', width: 3 },
+        { key: 'slider', label: 'Lautstärke', type: 'range',
+          min: 0, max: 100, defaultValue: 50, width: 9 },
+
+        // Row 8: Full width textarea
+        { key: 'textarea', label: 'Nachricht', type: 'textarea',
+          placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
+
+        // Row 9: Checkbox + Toggle (half width each)
+        { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
+        { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
+
+        // Row 10: Radio buttons (full width)
+        {
+            key: 'radio',
+            label: 'Tarif wählen',
+            type: 'radio',
+            options: [
+                { value: 'free', label: 'Gratis' },
+                { value: 'pro', label: 'Pro - €9.99/Monat' },
+                { value: 'enterprise', label: 'Enterprise' }
+            ],
+            fullWidth: true
+        }
+    ],
+    submitLabel: 'Submit All Types'
+});
+
+allTypesForm.render('#all-types-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-validation',
+            code: `const validationForm = new FormBuilder({
+    fields: [
+        {
+            key: 'username',
+            label: 'Username',
+            type: 'text',
+            required: true,
+            placeholder: 'Enter username',
+            validate: (value) => {
+                if (value.length < 3) return 'Username must be at least 3 characters';
+                if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
+                return null;
+            }
+        },
+        {
+            key: 'age',
+            label: 'Age',
+            type: 'number',
+            required: true,
+            validate: (value) => {
+                if (value < 18) return 'Must be 18 or older';
+                if (value > 120) return 'Invalid age';
+                return null;
+            }
+        },
+        {
+            key: 'email',
+            label: 'Email',
+            type: 'email',
+            required: true,
+            placeholder: 'your@email.com'
+        }
+    ],
+    submitLabel: 'Validate & Submit',
+    onSubmit: (data) => {
+        alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
+    }
+});
+
+validationForm.render('#validation-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-grid',
+            code: `const gridForm = new FormBuilder({
+    layout: 'grid',
+    gridColumns: 2,  // 2, 3, or 4 columns
+    fields: [
+        { key: 'firstName', label: 'First Name', type: 'text', required: true },
+        { key: 'lastName', label: 'Last Name', type: 'text', required: true },
+        { key: 'email', label: 'Email', type: 'email', required: true },
+        { key: 'phone', label: 'Phone', type: 'tel' },
+        { key: 'address', label: 'Address', type: 'text' },
+        { key: 'city', label: 'City', type: 'text' },
+        { key: 'zip', label: 'ZIP Code', type: 'text' },
+        { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
+    ],
+    submitLabel: 'Save Contact'
+});
+
+gridForm.render('#grid-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-inline-horizontal',
+            code: `// Inline Layout - All fields in one row
+const inlineForm = new FormBuilder({
+    containerId: 'inline-form',
+    layout: 'inline',
+    fields: [
+        { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
+        { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
+    ],
+    submitLabel: 'Search'
+});
+
+// Horizontal Layout - Labels beside inputs
+const horizontalForm = new FormBuilder({
+    containerId: 'horizontal-form',
+    layout: 'horizontal',
+    fields: [
+        { key: 'username', label: 'Username', type: 'text', required: true },
+        { key: 'email', label: 'Email', type: 'email', required: true }
+    ],
+    submitLabel: 'Save'
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-interactive',
+            code: `const interactiveForm = new FormBuilder({
+    fields: [
+        {
+            key: 'password',
+            label: 'Password',
+            type: 'password',
+            placeholder: 'Enter secure password',
+            required: true
+            // Eye icon automatically added for show/hide toggle
+        },
+        {
+            key: 'quantity',
+            label: 'Quantity',
+            type: 'number',
+            defaultValue: 1,
+            min: 1,
+            max: 99
+            // +/- buttons automatically added
+        },
+        {
+            key: 'volume',
+            label: 'Volume',
+            type: 'range',
+            min: 0,
+            max: 100,
+            defaultValue: 50
+            // Slider with live value display
+        }
+    ],
+    submitLabel: 'Continue'
+});
+
+interactiveForm.render('#interactive-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-choices',
+            code: `const choicesForm = new FormBuilder({
+    fields: [
+        {
+            key: 'newsletter',
+            label: 'Subscribe to newsletter',
+            type: 'checkbox'
+        },
+        {
+            key: 'notifications',
+            label: 'Enable push notifications',
+            type: 'toggle',
+            defaultValue: true
+        },
+        {
+            key: 'plan',
+            label: 'Select Plan',
+            type: 'radio',
+            options: [
+                { value: 'basic', label: 'Basic - Free' },
+                { value: 'pro', label: 'Pro - €9.99/month' },
+                { value: 'enterprise', label: 'Enterprise - Contact us' }
+            ],
+            defaultValue: 'basic'
+        }
+    ],
+    submitLabel: 'Save Preferences'
+});
+
+choicesForm.render('#choices-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-conditional',
+            code: `const conditionalForm = new FormBuilder({
+    fields: [
+        {
+            key: 'hasCompany',
+            label: 'I have a company',
+            type: 'checkbox'
+        },
+        {
+            key: 'companyName',
+            label: 'Company Name',
+            type: 'text',
+            placeholder: 'Enter company name',
+            showIf: (formData) => formData.hasCompany === true
+        },
+        {
+            key: 'vatNumber',
+            label: 'VAT Number',
+            type: 'text',
+            placeholder: 'ATU12345678',
+            showIf: (formData) => formData.hasCompany === true
+        }
+    ],
+    submitLabel: 'Submit'
+});
+
+conditionalForm.render('#conditional-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-m3-filled',
+            code: `const m3FilledForm = new FormBuilder({
+    fieldLayout: 'filled',  // M3 Filled Style
+    fields: [
+        {
+            key: 'name',
+            label: 'Full Name',
+            type: 'text',
+            placeholder: ' ',  // Required for floating label
+            required: true
+        },
+        {
+            key: 'email',
+            label: 'Email Address',
+            type: 'email',
+            placeholder: ' ',
+            required: true
+        },
+        {
+            key: 'message',
+            label: 'Message',
+            type: 'textarea',
+            placeholder: ' ',
+            rows: 4
+        }
+    ],
+    submitLabel: 'Send Message'
+});
+
+m3FilledForm.render('#m3-filled-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-m3-outlined',
+            code: `const m3OutlinedForm = new FormBuilder({
+    fieldLayout: 'outlined',  // M3 Outlined Style
+    fields: [
+        {
+            key: 'username',
+            label: 'Username',
+            type: 'text',
+            placeholder: ' ',  // Required for floating label
+            required: true
+        },
+        {
+            key: 'password',
+            label: 'Password',
+            type: 'password',
+            placeholder: ' ',
+            required: true
+        },
+        {
+            key: 'rememberMe',
+            label: 'Remember me',
+            type: 'checkbox'
+        }
+    ],
+    submitLabel: 'Sign In'
+});
+
+m3OutlinedForm.render('#m3-outlined-form');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-state',
+            code: `const stateForm = new FormBuilder({
+    fields: [
+        { key: 'title', label: 'Title', type: 'text' },
+        { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
+        { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
+    ],
+    submitLabel: 'Save'
+});
+
+stateForm.render('#state-form');
+
+// Get current form data
+const data = stateForm.getValue();
+console.log(data); // { title: '...', description: '...', priority: '...' }
+
+// Get specific field value
+const title = stateForm.getValue('title');
+
+// Set form data
+stateForm.setValue({
+    title: 'Example Title',
+    description: 'Pre-filled description',
+    priority: 'High'
+});
+
+// Reset form to defaults
+stateForm.reset();`,
+            language: 'javascript'
         });
     </script>
 </body>

@@ -5,7 +5,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5178';
+const BASE_URL = 'http://localhost:5177';
 
 test.describe('SSI Builders Landing Page', () => {
     test.beforeEach(async ({ page }) => {

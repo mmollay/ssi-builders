@@ -6,17 +6,15 @@
     <title>Icon System - SSI Builders Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <!-- Material Icons for Demo -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <!-- FontAwesome for Demo -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
+
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="../../src/TooltipBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 {
@@ -49,7 +47,9 @@
             margin: 8px 0;
         }
 
-        .demo-section code {
+        /* Inline code styling (not for CodeSnippetBuilder) */
+        .demo-section p code,
+        .demo-section li code {
             background: #f1f3f4;
             padding: 2px 8px;
             border-radius: 4px;
@@ -58,7 +58,8 @@
             color: #ea4335;
         }
 
-        .demo-section pre {
+        /* Pre blocks that are NOT inside CodeSnippetBuilder */
+        .demo-section pre:not(.code-snippet-block) {
             background: #1e1e1e;
             padding: 20px;
             border-radius: 8px;
@@ -66,7 +67,8 @@
             margin: 16px 0;
         }
 
-        .demo-section pre code {
+        /* Code inside pre blocks (not CodeSnippetBuilder) */
+        .demo-section pre:not(.code-snippet-block) code {
             background: transparent;
             color: #d4d4d4;
             padding: 0;
@@ -80,6 +82,8 @@
             border: 1px solid #e8eaed;
             margin-bottom: 24px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         .control-group {
@@ -148,6 +152,13 @@
             font-size: 12px;
             color: #5f6368;
             font-family: 'Roboto Mono', monospace;
+            word-break: break-word;
+        }
+
+        /* Prevent horizontal overflow */
+        .demo-content-inner {
+            max-width: 100%;
+            overflow-x: hidden;
         }
 
         /* Tooltip Styles - handled by TooltipBuilder */
@@ -155,7 +166,7 @@
         /* Comparison Styles */
         .comparison {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(min(250px, 100%), 1fr));
             gap: 24px;
             margin-top: 24px;
         }
@@ -165,6 +176,8 @@
             background: #f8f9fa;
             border-radius: 8px;
             border: 1px solid #e8eaed;
+            min-width: 0;
+            overflow-wrap: break-word;
         }
 
         .comparison-item h3 {
@@ -199,6 +212,8 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: block;
+            overflow-x: auto;
         }
 
         .icon-table th,
@@ -206,6 +221,7 @@
             text-align: left;
             padding: 16px;
             border-bottom: 1px solid #e8eaed;
+            white-space: nowrap;
         }
 
         .icon-table th {
@@ -270,15 +286,7 @@
                     </div>
 
                     <h3 style="margin-top: 32px;">Generated Configuration</h3>
-                    <pre><code class="language-javascript" id="configCode">
-// Initial Configuration
-import { IconManager, GlobalConfig } from '/vendor/ssi-builders/src/index.js';
-
-GlobalConfig.configure({
-    iconPreset: 'lucide',
-    iconWeight: 'regular'
-});
-                    </code></pre>
+                    <div id="code-generated-config"></div>
                 </div>
 
                 <!-- Comparison Section -->
@@ -342,20 +350,7 @@ GlobalConfig.configure({
                     <p>Fehlt ein Icon? Du kannst das System ganz einfach erweitern, indem du eigene Icons registrierst.</p>
 
                     <h3>Custom Icon registrieren</h3>
-                    <pre><code class="language-javascript">import { IconManager } from '/vendor/ssi-builders/src/index.js';
-
-// Neues Icon 'rocket' registrieren
-IconManager.registerIcon('rocket', {
-    // Für jedes Preset eine Definition hinterlegen
-    lucide: '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.1 4-1 4-1s.25 1.5-1 2.5"/></svg>',
-    emoji: '🚀',
-    material: '<i class="material-icons">rocket_launch</i>',
-    fontawesome: '<i class="fa fa-rocket"></i>',
-    heroicons: '<svg>...</svg>' // Optional
-});
-
-// Jetzt überall nutzbar
-const icon = IconManager.getIcon('rocket');</code></pre>
+                    <div id="code-custom-icons"></div>
 
                     <div class="info-box info-box-info" style="margin-top: 16px;">
                         <strong>Tipp:</strong> Registriere deine Custom Icons am besten direkt beim App-Start in deiner <code>main.js</code> oder <code>app.js</code>, damit sie überall verfügbar sind.
@@ -367,35 +362,10 @@ const icon = IconManager.getIcon('rocket');</code></pre>
                     <h2>🚀 Quick Start</h2>
                     
                     <h3>1. Global konfigurieren</h3>
-                    <pre><code class="language-javascript">import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
-
-// Einmalig beim App-Start
-GlobalConfig.configure({
-    iconPreset: 'lucide', // 'emoji', 'material', 'fontawesome', 'heroicons'
-    iconWeight: 'regular' // 'thin', 'regular', 'bold'
-});</code></pre>
+                    <div id="code-global-config"></div>
 
                     <h3>2. In Buildern nutzen</h3>
-                    <pre><code class="language-javascript">import { ListBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
-
-const list = new ListBuilder({
-    // ...
-    actions: {
-        row: [
-            {
-                key: 'edit',
-                icon: IconManager.getIcon('edit'), // Nutzt globale Config
-                label: 'Bearbeiten'
-            },
-            {
-                key: 'delete',
-                icon: IconManager.getIcon('delete', 'emoji'), // Override: Immer Emoji
-                label: 'Löschen',
-                buttonType: 'danger'
-            }
-        ]
-    }
-});</code></pre>
+                    <div id="code-in-builders"></div>
                 </div>
 
             </div>
@@ -408,6 +378,7 @@ const list = new ListBuilder({
         import { IconManager } from '../../src/IconManager.js';
         import { GlobalConfig } from '../../src/GlobalConfig.js';
         import { TooltipBuilder } from '../../src/TooltipBuilder.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
 
         // Initialize layout
         initializeDemoLayout('icon-system');
@@ -467,13 +438,16 @@ const list = new ListBuilder({
         const weightControlGroup = document.getElementById('weightControlGroup');
         const iconGrid = document.getElementById('iconGrid');
         const availableIconsGrid = document.getElementById('availableIconsGrid');
-        const configCode = document.getElementById('configCode');
         const iconSearch = document.getElementById('iconSearch');
         const iconCounter = document.getElementById('iconCounter');
         const noIconsFound = document.getElementById('noIconsFound');
 
+        // CodeSnippetBuilder instance for dynamic config
+        let configCodeSnippet = null;
+
         // Initialize
         function init() {
+            initCodeSnippets();
             renderPlayground();
             renderComparison();
             renderAvailableIcons();
@@ -606,25 +580,97 @@ const list = new ListBuilder({
             }
         }
 
+        function initCodeSnippets() {
+            // Dynamic config snippet
+            configCodeSnippet = new CodeSnippetBuilder({
+                containerId: 'code-generated-config',
+                code: `import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+GlobalConfig.configure({
+    iconPreset: 'lucide',
+    iconWeight: 'regular'
+});`,
+                language: 'javascript'
+            });
+
+            // Static snippets
+            new CodeSnippetBuilder({
+                containerId: 'code-custom-icons',
+                code: `import { IconManager } from '/vendor/ssi-builders/src/index.js';
+
+// Neues Icon 'rocket' registrieren
+IconManager.registerIcon('rocket', {
+    // Für jedes Preset eine Definition hinterlegen
+    lucide: \`<svg xmlns="http://www.w3.org/2000/svg"
+         width="20" height="20" viewBox="0 0 24 24"
+         fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5..."/>
+        <path d="m12 15-3-3a22 22 0 0 1 2-3.95..."/>
+    </svg>\`,
+    emoji: '🚀',
+    material: '<i class="material-icons">rocket_launch</i>',
+    fontawesome: '<i class="fa fa-rocket"></i>',
+    heroicons: '<svg>...</svg>' // Optional
+});
+
+// Jetzt überall nutzbar
+const icon = IconManager.getIcon('rocket');`,
+                language: 'javascript'
+            });
+
+            new CodeSnippetBuilder({
+                containerId: 'code-global-config',
+                code: `import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+// Einmalig beim App-Start
+GlobalConfig.configure({
+    iconPreset: 'lucide', // 'emoji', 'material', 'fontawesome', 'heroicons'
+    iconWeight: 'regular' // 'thin', 'regular', 'bold'
+});`,
+                language: 'javascript'
+            });
+
+            new CodeSnippetBuilder({
+                containerId: 'code-in-builders',
+                code: `import { ListBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+const list = new ListBuilder({
+    // ...
+    actions: {
+        row: [
+            {
+                key: 'edit',
+                icon: IconManager.getIcon('edit'), // Nutzt globale Config
+                label: 'Bearbeiten'
+            },
+            {
+                key: 'delete',
+                icon: IconManager.getIcon('delete', 'emoji'), // Override: Immer Emoji
+                label: 'Löschen',
+                buttonType: 'danger'
+            }
+        ]
+    }
+});`,
+                language: 'javascript'
+            });
+        }
+
         function updateCode() {
-            const code = `
-import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+            const code = `import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
 
 GlobalConfig.configure({
     iconPreset: '${currentPreset}',
     iconWeight: '${currentWeight}'
 });`;
-            configCode.textContent = code.trim();
-            hljs.highlightElement(configCode);
+
+            if (configCodeSnippet) {
+                configCodeSnippet.setContent(code);
+            }
         }
 
         // Run
         init();
-        
-        // Syntax highlighting for static blocks
-        document.querySelectorAll('pre code:not(#configCode)').forEach((block) => {
-            hljs.highlightElement(block);
-        });
 
     </script>
 </body>

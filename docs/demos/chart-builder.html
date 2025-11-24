@@ -6,12 +6,10 @@
     <title>ChartBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="../../src/ChartBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 {
@@ -119,28 +117,7 @@
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
-
-const barChart = new ChartBuilder({
-    containerId: 'barChart',
-    type: 'bar',
-    data: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-        datasets: [{
-            label: 'Sales 2024',
-            data: [12, 19, 8, 15, 22, 13],
-            backgroundColor: '#1a73e8'
-        }]
-    },
-    options: {
-        title: 'Monthly Sales',
-        showLegend: true,
-        showTooltip: true,
-        responsive: true
-    }
-});
-
-barChart.render();</code></pre>
+            <div id="code-bar-chart"></div>
         </div>
 
         <!-- Line Chart Example -->
@@ -153,36 +130,7 @@ barChart.render();</code></pre>
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
-
-const lineChart = new ChartBuilder({
-    containerId: 'lineChart',
-    type: 'line',
-    data: {
-        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
-        datasets: [
-            {
-                label: 'Product A',
-                data: [65, 78, 90, 81],
-                borderColor: '#1a73e8',
-                backgroundColor: 'rgba(26, 115, 232, 0.1)'
-            },
-            {
-                label: 'Product B',
-                data: [45, 55, 70, 65],
-                borderColor: '#34a853',
-                backgroundColor: 'rgba(52, 168, 83, 0.1)'
-            }
-        ]
-    },
-    options: {
-        title: 'Weekly Performance',
-        showLegend: true,
-        smooth: true
-    }
-});
-
-lineChart.render();</code></pre>
+            <div id="code-line-chart"></div>
         </div>
 
         <!-- Pie & Donut Charts -->
@@ -203,39 +151,7 @@ lineChart.render();</code></pre>
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">// Pie Chart
-const pieChart = new ChartBuilder({
-    containerId: 'pieChart',
-    type: 'pie',
-    data: {
-        labels: ['Direct', 'Organic', 'Referral', 'Social'],
-        datasets: [{
-            data: [30, 45, 15, 10],
-            backgroundColor: ['#1a73e8', '#34a853', '#fbbc04', '#ea4335']
-        }]
-    },
-    options: {
-        title: 'Traffic Sources',
-        showLegend: true
-    }
-});
-
-// Donut Chart
-const donutChart = new ChartBuilder({
-    containerId: 'donutChart',
-    type: 'donut',
-    data: {
-        labels: ['Desktop', 'Mobile', 'Tablet'],
-        datasets: [{
-            data: [55, 35, 10],
-            backgroundColor: ['#667eea', '#764ba2', '#f093fb']
-        }]
-    },
-    options: {
-        title: 'Device Usage',
-        showLegend: true
-    }
-});</code></pre>
+            <div id="code-pie-donut"></div>
         </div>
 
         <!-- Configuration Reference -->
@@ -276,18 +192,7 @@ const donutChart = new ChartBuilder({
             </table>
 
             <h3 style="margin-top: 24px; margin-bottom: 12px;">Data Structure</h3>
-            <pre class="example-code"><code class="language-javascript">data: {
-    labels: ['Label 1', 'Label 2', 'Label 3'],
-    datasets: [
-        {
-            label: 'Dataset Name',
-            data: [10, 20, 30],
-            backgroundColor: '#1a73e8',      // Single color or array
-            borderColor: '#1a73e8',          // Line charts
-            borderWidth: 2                   // Line width
-        }
-    ]
-}</code></pre>
+            <div id="code-data-structure"></div>
 
             <h3 style="margin-top: 24px; margin-bottom: 12px;">Options</h3>
             <table class="config-table">
@@ -386,6 +291,8 @@ const donutChart = new ChartBuilder({
     <script type="module">
         import { ChartBuilder } from '../../src/ChartBuilder.js';
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeLayout('chart-builder');
@@ -473,8 +380,123 @@ const donutChart = new ChartBuilder({
             }
         }).render();
 
-        // Syntax highlighting
-        hljs.highlightAll();
+        // Code Snippets with CodeSnippetBuilder
+        new CodeSnippetBuilder({
+            containerId: 'code-bar-chart',
+            code: `import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
+
+const barChart = new ChartBuilder({
+    containerId: 'barChart',
+    type: 'bar',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+        datasets: [{
+            label: 'Sales 2024',
+            data: [12, 19, 8, 15, 22, 13],
+            backgroundColor: '#1a73e8'
+        }]
+    },
+    options: {
+        title: 'Monthly Sales',
+        showLegend: true,
+        showTooltip: true,
+        responsive: true
+    }
+});
+
+barChart.render();`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-line-chart',
+            code: `import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
+
+const lineChart = new ChartBuilder({
+    containerId: 'lineChart',
+    type: 'line',
+    data: {
+        labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
+        datasets: [
+            {
+                label: 'Product A',
+                data: [65, 78, 90, 81],
+                borderColor: '#1a73e8',
+                backgroundColor: 'rgba(26, 115, 232, 0.1)'
+            },
+            {
+                label: 'Product B',
+                data: [45, 55, 70, 65],
+                borderColor: '#34a853',
+                backgroundColor: 'rgba(52, 168, 83, 0.1)'
+            }
+        ]
+    },
+    options: {
+        title: 'Weekly Performance',
+        showLegend: true,
+        smooth: true
+    }
+});
+
+lineChart.render();`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-pie-donut',
+            code: `// Pie Chart
+const pieChart = new ChartBuilder({
+    containerId: 'pieChart',
+    type: 'pie',
+    data: {
+        labels: ['Direct', 'Organic', 'Referral', 'Social'],
+        datasets: [{
+            data: [30, 45, 15, 10],
+            backgroundColor: ['#1a73e8', '#34a853', '#fbbc04', '#ea4335']
+        }]
+    },
+    options: {
+        title: 'Traffic Sources',
+        showLegend: true
+    }
+});
+
+// Donut Chart
+const donutChart = new ChartBuilder({
+    containerId: 'donutChart',
+    type: 'donut',
+    data: {
+        labels: ['Desktop', 'Mobile', 'Tablet'],
+        datasets: [{
+            data: [55, 35, 10],
+            backgroundColor: ['#667eea', '#764ba2', '#f093fb']
+        }]
+    },
+    options: {
+        title: 'Device Usage',
+        showLegend: true
+    }
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-data-structure',
+            code: `data: {
+    labels: ['Label 1', 'Label 2', 'Label 3'],
+    datasets: [
+        {
+            label: 'Dataset Name',
+            data: [10, 20, 30],
+            backgroundColor: '#1a73e8',      // Single color or array
+            borderColor: '#1a73e8',          // Line charts
+            borderWidth: 2                   // Line width
+        }
+    ]
+}`,
+            language: 'javascript'
+        });
     </script>
 </body>
 </html>

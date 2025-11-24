@@ -115,6 +115,16 @@ export class GlobalConfig {
             offset: 8,                  // Distance from target element
             arrow: true,                // Show arrow/pointer
             maxWidth: 300               // Maximum width in pixels
+        },
+
+        // CodeSnippet Defaults
+        codeSnippets: {
+            theme: 'dark',              // 'dark' | 'light'
+            showLineNumbers: false,     // Show line numbers by default
+            copyButton: true,           // Show copy button
+            syntaxHighlighting: true,   // Enable syntax highlighting
+            size: 'medium',             // 'small' | 'medium' | 'large'
+            maxHeight: null             // Max height (null = no limit)
         }
     };
 
@@ -268,6 +278,23 @@ export class GlobalConfig {
             toasts: {
                 duration: 3000,
                 position: 'top-right'
+            },
+            tooltips: {
+                position: 'top',
+                trigger: 'hover',
+                delay: 200,
+                hideDelay: 0,
+                offset: 8,
+                arrow: true,
+                maxWidth: 300
+            },
+            codeSnippets: {
+                theme: 'dark',
+                showLineNumbers: false,
+                copyButton: true,
+                syntaxHighlighting: true,
+                size: 'medium',
+                maxHeight: null
             }
         };
 

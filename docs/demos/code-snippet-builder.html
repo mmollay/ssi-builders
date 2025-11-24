@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CodeSnippetBuilder Demo - SSI Builders</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>💻 CodeSnippetBuilder</h1>
+                    <p>Professional code display with copy functionality - perfect for documentation!</p>
+                </div>
+
+                <!-- Example 1: Basic Code Snippet -->
+                <div class="demo-section">
+                    <h2>1. Basic Code Snippet <span class="badge">Quick Start</span></h2>
+                    <p>Display code with automatic copy button and dark theme (default).</p>
+
+                    <div class="example-demo">
+                        <div id="basic-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 2: Light Theme -->
+                <div class="demo-section">
+                    <h2>2. Light Theme <span class="badge">Theme Variant</span></h2>
+                    <p>Use light background for better readability in bright environments.</p>
+
+                    <div class="example-demo">
+                        <div id="light-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 3: Line Numbers -->
+                <div class="demo-section">
+                    <h2>3. Line Numbers <span class="badge">Enhanced</span></h2>
+                    <p>Show line numbers for easier code reference and debugging.</p>
+
+                    <div class="example-demo">
+                        <div id="linenumbers-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 4: HTML Code -->
+                <div class="demo-section">
+                    <h2>4. HTML Code <span class="badge">Multi-Language</span></h2>
+                    <p>Display HTML markup with proper syntax highlighting hints.</p>
+
+                    <div class="example-demo">
+                        <div id="html-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 5: CSS Code -->
+                <div class="demo-section">
+                    <h2>5. CSS Code <span class="badge">Stylesheets</span></h2>
+                    <p>Display CSS with proper formatting and copy functionality.</p>
+
+                    <div class="example-demo">
+                        <div id="css-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 6: Plain Black & White -->
+                <div class="demo-section">
+                    <h2>6. Plain Black & White <span class="badge">No Highlighting</span></h2>
+                    <p>Display code without syntax highlighting - just plain black and white text.</p>
+
+                    <div class="example-demo">
+                        <div id="plain-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 7: Long Code with Scrollbar -->
+                <div class="demo-section">
+                    <h2>7. Long Code with Scrollbar <span class="badge">Max Height</span></h2>
+                    <p>Limit height with scrollbar to prevent very long code from making pages too long.</p>
+
+                    <div class="example-demo">
+                        <div id="scrollbar-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 8: Without Copy Button -->
+                <div class="demo-section">
+                    <h2>8. Without Copy Button <span class="badge">Read-Only</span></h2>
+                    <p>Display code without copy functionality for read-only presentation.</p>
+
+                    <div class="example-demo">
+                        <div id="nocopy-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 9: Dynamic Update -->
+                <div class="demo-section">
+                    <h2>9. Dynamic Code Update <span class="badge">Interactive</span></h2>
+                    <p>Update code content dynamically using the updateCode() method.</p>
+
+                    <div class="example-demo">
+                        <div id="dynamic-snippet"></div>
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button class="ssi-btn ssi-btn-primary" onclick="updateToJS()">Show JavaScript</button>
+                            <button class="ssi-btn ssi-btn-primary" onclick="updateToPython()">Show Python</button>
+                            <button class="ssi-btn ssi-btn-primary" onclick="updateToHTML()">Show HTML</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 10: Auto-Render -->
+                <div class="demo-section">
+                    <h2>10. Auto-Render with containerId <span class="badge">Simplified</span></h2>
+                    <p>Automatically render when providing containerId in constructor - no need to call render()!</p>
+
+                    <div class="example-demo">
+                        <div id="autorender-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 11: Size Variants -->
+                <div class="demo-section">
+                    <h2>11. Size Variants <span class="badge">Font Size</span></h2>
+                    <p>Control code font size: small (12px), medium (14px), large (16px)</p>
+
+                    <h3 style="margin: 24px 0 12px 0;">Small</h3>
+                    <div class="example-demo">
+                        <div id="size-small-snippet"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Medium (Default)</h3>
+                    <div class="example-demo">
+                        <div id="size-medium-snippet"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Large</h3>
+                    <div class="example-demo">
+                        <div id="size-large-snippet"></div>
+                    </div>
+                </div>
+
+                <!-- Example 12: GlobalConfig -->
+                <div class="demo-section">
+                    <h2>12. GlobalConfig Integration <span class="badge">Advanced</span></h2>
+                    <p>Configure ALL CodeSnippets globally! Change theme, size, line numbers for all snippets at once.</p>
+
+                    <div class="example-demo">
+                        <div style="background: #f8f9fa; padding: 16px; border-radius: 8px; margin-bottom: 16px;">
+                            <h4 style="margin: 0 0 12px 0;">Try it:</h4>
+                            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                <button class="ssi-btn ssi-btn-primary" onclick="applyGlobalThemeLight()">Light Theme (All)</button>
+                                <button class="ssi-btn ssi-btn-primary" onclick="applyGlobalThemeDark()">Dark Theme (All)</button>
+                                <button class="ssi-btn ssi-btn-primary" onclick="applyGlobalSizeSmall()">Small Size (All)</button>
+                                <button class="ssi-btn ssi-btn-primary" onclick="applyGlobalSizeLarge()">Large Size (All)</button>
+                                <button class="ssi-btn ssi-btn-primary" onclick="applyGlobalLineNumbers()">Line Numbers (All)</button>
+                            </div>
+                        </div>
+
+                        <div id="global-snippet-1"></div>
+                        <div id="global-snippet-2" style="margin-top: 16px;"></div>
+                    </div>
+
+                    <div style="margin-top: 16px;">
+                        <h4>How to use GlobalConfig:</h4>
+                        <div id="globalconfig-code"></div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { initializeLayout } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
+
+        // Configure Icon System
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // Configure Global Defaults for CodeSnippets
+        GlobalConfig.configure({
+            codeSnippets: {
+                theme: 'dark',
+                size: 'medium',
+                showLineNumbers: false,
+                syntaxHighlighting: true,
+                copyButton: true,
+                maxHeight: null
+            }
+        });
+
+        // Initialize Sidebar
+        initializeLayout('code-snippet-builder');
+
+        // Example 1: Basic
+        const basicSnippet = new CodeSnippetBuilder({
+            containerId: 'basic-snippet',
+            code: `const greeting = 'Hello World';
+console.log(greeting);`,
+            language: 'javascript'
+        });
+
+        // Example 2: Light Theme
+        const lightSnippet = new CodeSnippetBuilder({
+            containerId: 'light-snippet',
+            code: `function fibonacci(n) {
+    if (n <= 1) return n;
+    return fibonacci(n - 1) + fibonacci(n - 2);
+}`,
+            language: 'javascript',
+            theme: 'light'
+        });
+
+        // Example 3: Line Numbers
+        const lineNumbersSnippet = new CodeSnippetBuilder({
+            containerId: 'linenumbers-snippet',
+            code: `class UserManager {
+    constructor() {
+        this.users = [];
+    }
+
+    addUser(name) {
+        this.users.push({ name, id: Date.now() });
+    }
+
+    getUsers() {
+        return this.users;
+    }
+}`,
+            language: 'javascript',
+            showLineNumbers: true
+        });
+
+        // Example 4: HTML
+        const htmlSnippet = new CodeSnippetBuilder({
+            containerId: 'html-snippet',
+            code: `<div class="card">
+    <h2>Card Title</h2>
+    <p>Card content goes here.</p>
+    <button>Click Me</button>
+</div>`,
+            language: 'html'
+        });
+
+        // Example 5: CSS
+        const cssSnippet = new CodeSnippetBuilder({
+            containerId: 'css-snippet',
+            code: `.button {
+    padding: 12px 24px;
+    background: var(--ssi-primary);
+    color: white;
+    border: none;
+    border-radius: var(--ssi-radius-md);
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.button:hover {
+    background: var(--ssi-primary-dark);
+    box-shadow: var(--ssi-shadow-md);
+}`,
+            language: 'css',
+            theme: 'dark'
+        });
+
+        // Example 6: Plain Black & White (No Highlighting)
+        const plainSnippet = new CodeSnippetBuilder({
+            containerId: 'plain-snippet',
+            code: `// Plain black & white - no syntax highlighting
+const example = "Just plain text";
+function calculate(x, y) {
+    return x + y;
+}`,
+            language: 'javascript',
+            syntaxHighlighting: false  // Disable syntax highlighting
+        });
+
+        // Example 7: Long Code with Scrollbar
+        const scrollbarSnippet = new CodeSnippetBuilder({
+            containerId: 'scrollbar-snippet',
+            code: `class DataManager {
+    constructor() {
+        this.data = [];
+        this.filters = {};
+        this.sortOrder = 'asc';
+    }
+
+    addItem(item) {
+        this.data.push(item);
+        this.notifyListeners('add', item);
+    }
+
+    removeItem(id) {
+        const index = this.data.findIndex(item => item.id === id);
+        if (index !== -1) {
+            const removed = this.data.splice(index, 1)[0];
+            this.notifyListeners('remove', removed);
+            return removed;
+        }
+        return null;
+    }
+
+    updateItem(id, updates) {
+        const item = this.data.find(item => item.id === id);
+        if (item) {
+            Object.assign(item, updates);
+            this.notifyListeners('update', item);
+            return item;
+        }
+        return null;
+    }
+
+    getAll() {
+        let result = [...this.data];
+
+        // Apply filters
+        if (Object.keys(this.filters).length > 0) {
+            result = result.filter(item => {
+                return Object.entries(this.filters).every(([key, value]) => {
+                    return item[key] === value;
+                });
+            });
+        }
+
+        // Apply sorting
+        result.sort((a, b) => {
+            if (this.sortOrder === 'asc') {
+                return a.name > b.name ? 1 : -1;
+            } else {
+                return a.name < b.name ? 1 : -1;
+            }
+        });
+
+        return result;
+    }
+
+    setFilter(key, value) {
+        this.filters[key] = value;
+        this.notifyListeners('filter', this.filters);
+    }
+
+    clearFilters() {
+        this.filters = {};
+        this.notifyListeners('filter', {});
+    }
+
+    setSortOrder(order) {
+        this.sortOrder = order;
+        this.notifyListeners('sort', order);
+    }
+
+    notifyListeners(event, data) {
+        console.log(\`Event: \${event}\`, data);
+    }
+}`,
+            language: 'javascript',
+            maxHeight: 300  // Limit height to 300px with scrollbar
+        });
+
+        // Example 8: Without Copy Button
+        const noCopySnippet = new CodeSnippetBuilder({
+            containerId: 'nocopy-snippet',
+            code: `// This snippet doesn't have a copy button
+const example = "Read-only code";
+console.log(example);`,
+            language: 'javascript',
+            copyButton: false
+        });
+
+        // Example 9: Dynamic Update
+        const dynamicSnippet = new CodeSnippetBuilder({
+            containerId: 'dynamic-snippet',
+            code: `const x = 5;
+console.log(x);`,
+            language: 'javascript'
+        });
+
+        // Dynamic update functions
+        window.updateToJS = () => {
+            dynamicSnippet.updateCode(`const greeting = "Hello from JavaScript!";
+console.log(greeting);`);
+        };
+
+        window.updateToPython = () => {
+            dynamicSnippet.updateCode(`def greet():
+    print("Hello from Python!")
+
+greet()`);
+        };
+
+        window.updateToHTML = () => {
+            dynamicSnippet.updateCode(`<div class="greeting">
+    <h1>Hello from HTML!</h1>
+    <p>This is dynamically updated content.</p>
+</div>`);
+        };
+
+        // Example 10: Auto-render
+        new CodeSnippetBuilder({
+            containerId: 'autorender-snippet',
+            code: `// Auto-renders immediately - no .render() needed!
+new CodeSnippetBuilder({
+    containerId: 'my-container',
+    code: 'const auto = true;'
+});`,
+            language: 'javascript'
+        });
+
+        // Example 11: Size Variants
+        new CodeSnippetBuilder({
+            containerId: 'size-small-snippet',
+            code: `// Small size (12px)
+const smallCode = "Compact view for tight spaces";
+console.log(smallCode);`,
+            language: 'javascript',
+            size: 'small'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'size-medium-snippet',
+            code: `// Medium size (14px) - Default
+const mediumCode = "Standard readable size";
+console.log(mediumCode);`,
+            language: 'javascript',
+            size: 'medium'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'size-large-snippet',
+            code: `// Large size (16px)
+const largeCode = "Larger text for better readability";
+console.log(largeCode);`,
+            language: 'javascript',
+            size: 'large'
+        });
+
+        // Example 12: GlobalConfig Integration
+        let globalSnippet1, globalSnippet2;
+
+        // Create snippets that will use global config
+        const createGlobalSnippets = () => {
+            // Clear existing snippets
+            document.getElementById('global-snippet-1').innerHTML = '';
+            document.getElementById('global-snippet-2').innerHTML = '';
+
+            globalSnippet1 = new CodeSnippetBuilder({
+                containerId: 'global-snippet-1',
+                code: `const example1 = "I follow GlobalConfig!";
+console.log(example1);`,
+                language: 'javascript'
+            });
+
+            globalSnippet2 = new CodeSnippetBuilder({
+                containerId: 'global-snippet-2',
+                code: `function example2() {
+    return "Me too! All settings from GlobalConfig.";
+}`,
+                language: 'javascript'
+            });
+        };
+
+        createGlobalSnippets();
+
+        // Global config functions
+        window.applyGlobalThemeLight = () => {
+            GlobalConfig.set('codeSnippets.theme', 'light');
+            createGlobalSnippets();
+        };
+
+        window.applyGlobalThemeDark = () => {
+            GlobalConfig.set('codeSnippets.theme', 'dark');
+            createGlobalSnippets();
+        };
+
+        window.applyGlobalSizeSmall = () => {
+            GlobalConfig.set('codeSnippets.size', 'small');
+            createGlobalSnippets();
+        };
+
+        window.applyGlobalSizeLarge = () => {
+            GlobalConfig.set('codeSnippets.size', 'large');
+            createGlobalSnippets();
+        };
+
+        window.applyGlobalLineNumbers = () => {
+            const current = GlobalConfig.get('codeSnippets.showLineNumbers');
+            GlobalConfig.set('codeSnippets.showLineNumbers', !current);
+            createGlobalSnippets();
+        };
+
+        // GlobalConfig code example
+        new CodeSnippetBuilder({
+            containerId: 'globalconfig-code',
+            code: `import { GlobalConfig } from './GlobalConfig.js';
+
+// Configure ALL CodeSnippets at once
+GlobalConfig.configure({
+    codeSnippets: {
+        theme: 'light',           // All snippets will be light
+        size: 'large',            // All snippets will be large
+        showLineNumbers: true,    // All snippets show line numbers
+        syntaxHighlighting: true,
+        copyButton: true
+    }
+});
+
+// Or change individual settings
+GlobalConfig.set('codeSnippets.theme', 'dark');
+GlobalConfig.set('codeSnippets.size', 'small');
+
+// Then create snippets - they automatically use global config!
+new CodeSnippetBuilder({
+    containerId: 'my-snippet',
+    code: 'const x = 5;'
+    // No need to specify theme, size, etc.
+    // They come from GlobalConfig!
+});`,
+            language: 'javascript',
+            theme: 'light'
+        });
+
+        console.log('✅ CodeSnippetBuilder Demo initialized successfully!');
+    </script>
+</body>
+</html>

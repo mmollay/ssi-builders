@@ -6,14 +6,10 @@
     <title>SiteBuilder + GlobalConfig - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">        hljs.highlightAll();
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js">        hljs.highlightAll();
-    </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SiteBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 {
@@ -39,17 +35,6 @@
             flex-wrap: wrap;
             gap: 12px;
             margin-bottom: 24px;
-        }
-
-        .example-code {
-            background: #202124;
-            color: #e8eaed;
-            padding: 20px;
-            border-radius: 8px;
-            overflow-x: auto;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 14px;
-            line-height: 1.6;
         }
 
         .example-code .keyword { color: #c792ea; }
@@ -163,42 +148,7 @@
             <p>Zentrale Konfiguration für alle SSI Builders. Einmal beim App-Start konfigurieren, überall nutzen!</p>
 
             <h3>Setup</h3>
-            <pre class="example-code"><code>import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
-
-// App-Start: Einmal konfigurieren
-GlobalConfig.configure({
-    // Icon System
-    iconPreset: 'lucide',  // 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'
-
-    // Theme/Colors
-    theme: {
-        primary: '#1a73e8',
-        secondary: '#5f6368',
-        success: '#34a853',
-        danger: '#ea4335'
-    },
-
-    // Builder Defaults
-    buttons: {
-        defaultSize: 'medium',
-        defaultType: 'outlined'
-    },
-
-    lists: {
-        itemsPerPage: 20,
-        actionDisplayType: 'icon'
-    },
-
-    modals: {
-        defaultSize: 'medium',
-        closeOnBackdrop: true
-    },
-
-    forms: {
-        submitLabel: 'Speichern',
-        autoSave: false
-    }
-});</code></pre>
+            <div id="code-global-config-setup"></div>
 
             <h3>API Methods</h3>
             <table class="config-table">
@@ -245,42 +195,7 @@ GlobalConfig.configure({
             <p>Komplettes Layout-Gerippe: Header, Sidebar, Content, Footer. Perfekt für Admin-Panels, Dashboards, und Webapps.</p>
 
             <h3>Quick Start</h3>
-            <pre class="example-code"><code>import { SiteBuilder } from '/vendor/ssi-builders/src/index.js';
-
-const site = new SiteBuilder({
-    containerId: 'app',
-    layout: 'admin',  // 'admin' | 'website' | 'dashboard' | 'landing'
-
-    header: {
-        logo: '/assets/logo.svg',
-        title: 'My App',
-        menu: [
-            { label: 'Dashboard', href: '/', icon: 'home' },
-            { label: 'Users', href: '/users', icon: 'users' }
-        ],
-        actions: [
-            { icon: 'bell', onClick: () => showNotifications() },
-            { icon: 'user', onClick: () => showProfile() }
-        ]
-    },
-
-    sidebar: {
-        navigation: [
-            { label: 'Dashboard', icon: 'home', href: '/' },
-            { label: 'Users', icon: 'users', href: '/users' },
-            { label: 'Settings', icon: 'settings', href: '/settings' }
-        ]
-    }
-});
-
-// Content rendern
-site.renderContent('&lt;h1&gt;Welcome!&lt;/h1&gt;');
-
-// Oder: Builder direkt hinzufügen
-site.addBuilder('list', {
-    containerId: 'userList',
-    columns: [...]
-});</code></pre>
+            <div id="code-site-builder-quick-start"></div>
 
             <h3>Layout Templates</h3>
             <div class="example-demo">
@@ -401,7 +316,124 @@ site.addBuilder('list', {
             <h2>4. Real-World Beispiel</h2>
             <p>Komplette App mit GlobalConfig + SiteBuilder + ListBuilder Integration.</p>
 
-            <pre class="example-code"><code>// === main.js - App Entry Point ===
+            <div id="code-complete-example"></div>
+        </div>
+
+        <!-- Benefits Section -->
+        <div class="demo-section">
+            <h2>5. Vorteile</h2>
+            <p>Warum GlobalConfig + SiteBuilder nutzen?</p>
+
+            <ul style="list-style-position: inside; color: #5f6368; line-height: 2;">
+                <li>✅ <strong>Einmal konfigurieren</strong> - Alle Builder nutzen dieselben Einstellungen</li>
+                <li>✅ <strong>Konsistentes Design</strong> - Icons, Buttons, Farben harmonisieren automatisch</li>
+                <li>✅ <strong>Schnellere Entwicklung</strong> - Layout-Gerippe in 10 Zeilen Code</li>
+                <li>✅ <strong>Weniger Boilerplate</strong> - Kein redundantes Header/Sidebar/Footer HTML</li>
+                <li>✅ <strong>Production-Ready</strong> - Material Design 3, Responsive, Accessible</li>
+                <li>✅ <strong>Flexibel</strong> - 4 Templates + Custom-Layout möglich</li>
+                <li>✅ <strong>Builder-Integration</strong> - <code>addBuilder()</code> für nahtloses Hinzufügen</li>
+            </ul>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('site-builder');
+        addMobileMenuToggle();
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-global-config-setup',
+            code: `import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+// App-Start: Einmal konfigurieren
+GlobalConfig.configure({
+    // Icon System
+    iconPreset: 'lucide',  // 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'
+
+    // Theme/Colors
+    theme: {
+        primary: '#1a73e8',
+        secondary: '#5f6368',
+        success: '#34a853',
+        danger: '#ea4335'
+    },
+
+    // Builder Defaults
+    buttons: {
+        defaultSize: 'medium',
+        defaultType: 'outlined'
+    },
+
+    lists: {
+        itemsPerPage: 20,
+        actionDisplayType: 'icon'
+    },
+
+    modals: {
+        defaultSize: 'medium',
+        closeOnBackdrop: true
+    },
+
+    forms: {
+        submitLabel: 'Speichern',
+        autoSave: false
+    }
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-site-builder-quick-start',
+            code: `import { SiteBuilder } from '/vendor/ssi-builders/src/index.js';
+
+const site = new SiteBuilder({
+    containerId: 'app',
+    layout: 'admin',  // 'admin' | 'website' | 'dashboard' | 'landing'
+
+    header: {
+        logo: '/assets/logo.svg',
+        title: 'My App',
+        menu: [
+            { label: 'Dashboard', href: '/', icon: 'home' },
+            { label: 'Users', href: '/users', icon: 'users' }
+        ],
+        actions: [
+            { icon: 'bell', onClick: () => showNotifications() },
+            { icon: 'user', onClick: () => showProfile() }
+        ]
+    },
+
+    sidebar: {
+        navigation: [
+            { label: 'Dashboard', icon: 'home', href: '/' },
+            { label: 'Users', icon: 'users', href: '/users' },
+            { label: 'Settings', icon: 'settings', href: '/settings' }
+        ]
+    }
+});
+
+// Content rendern
+site.renderContent('<h1>Welcome!</h1>');
+
+// Oder: Builder direkt hinzufügen
+site.addBuilder('list', {
+    containerId: 'userList',
+    columns: [...]
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-complete-example',
+            code: `// === main.js - App Entry Point ===
 import {
     GlobalConfig,
     SiteBuilder,
@@ -454,7 +486,7 @@ const site = new SiteBuilder({
 });
 
 // 3. Content mit Buildern füllen
-site.renderContent('&lt;div id="userList"&gt;&lt;/div&gt;');
+site.renderContent('<div id="userList"></div>');
 
 const userList = new ListBuilder({
     containerId: 'userList',
@@ -473,49 +505,13 @@ const userList = new ListBuilder({
             }
         ]
     }
-});</code></pre>
-        </div>
-
-        <!-- Benefits Section -->
-        <div class="demo-section">
-            <h2>5. Vorteile</h2>
-            <p>Warum GlobalConfig + SiteBuilder nutzen?</p>
-
-            <ul style="list-style-position: inside; color: #5f6368; line-height: 2;">
-                <li>✅ <strong>Einmal konfigurieren</strong> - Alle Builder nutzen dieselben Einstellungen</li>
-                <li>✅ <strong>Konsistentes Design</strong> - Icons, Buttons, Farben harmonisieren automatisch</li>
-                <li>✅ <strong>Schnellere Entwicklung</strong> - Layout-Gerippe in 10 Zeilen Code</li>
-                <li>✅ <strong>Weniger Boilerplate</strong> - Kein redundantes Header/Sidebar/Footer HTML</li>
-                <li>✅ <strong>Production-Ready</strong> - Material Design 3, Responsive, Accessible</li>
-                <li>✅ <strong>Flexibel</strong> - 4 Templates + Custom-Layout möglich</li>
-                <li>✅ <strong>Builder-Integration</strong> - <code>addBuilder()</code> für nahtloses Hinzufügen</li>
-            </ul>
-                </div>
-
-            </div>
-        </main>
-    </div>
-
-    <script type="module">
-        import { initializeLayout, addMobileMenuToggle } from './layout.js';
-
-        // Initialize layout with sidebar
-        initializeLayout('site-builder');
-        addMobileMenuToggle();
+});`,
+            language: 'javascript'
+        });
 
         // This page documents the SiteBuilder, but doesn't run a live demo
         // to avoid nested SiteBuilder instances (meta!)
         console.log('[SiteBuilder Demo] Documentation loaded');
-        hljs.highlightAll();
-    </script>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
-                hljs.highlightElement(block);
-            });
-        });
-            hljs.highlightAll();
     </script>
 </body>
 </html>

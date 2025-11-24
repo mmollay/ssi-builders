@@ -6,15 +6,14 @@
     <title>SidebarBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
         .demo-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
-        
+
         .example-demo {
             background: #f8f9fa;
             padding: 24px;
@@ -29,18 +28,6 @@
             position: absolute;
             right: 0;
             left: auto;
-        }
-        
-        pre.example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            font-family: 'Roboto Mono', monospace !important;
-            font-size: 13px !important;
-            line-height: 1.6 !important;
-            margin: 16px 0;
-            overflow-x: auto;
         }
     </style>
 </head>
@@ -65,7 +52,153 @@
             <div class="example-demo" id="sidebarDemo"></div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">import { SidebarBuilder } from '/vendor/ssi-builders/src/SidebarBuilder.js';
+            <div id="code-sidebar-basic"></div>
+        </div>
+
+        <div class="demo-section">
+            <h2>✨ Features</h2>
+            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
+                <li><strong>Collapsible</strong> - Save space with collapse/expand</li>
+                <li><strong>Search</strong> - Filter navigation items</li>
+                <li><strong>Nested Items</strong> - Unlimited depth</li>
+                <li><strong>Badges</strong> - Show counts and notifications</li>
+                <li><strong>Icons</strong> - Visual navigation aids</li>
+                <li><strong>Persistent State</strong> - Remembers collapse state</li>
+                <li><strong>Active State</strong> - Highlights current page</li>
+                <li><strong>Mobile Drawer</strong> - Responsive overlay on mobile</li>
+                <li><strong>Push Mode (v2.2.0)</strong> - Content shifts instead of overlay</li>
+            </ul>
+        </div>
+
+        <div class="demo-section">
+            <h2>🆕 Push Mode (v2.2.0)</h2>
+            <p class="subtitle">Sidebar pushes content instead of overlaying it</p>
+
+            <p style="color: #5f6368; margin-bottom: 16px;">
+                By default, the sidebar overlays the content. With <code>mode: 'push'</code>,
+                the main content area shifts to make room for the sidebar, creating a more
+                integrated layout experience.
+            </p>
+
+            <!-- Interactive Push Mode Demo -->
+            <div style="background: #f8f9fa; border-radius: 12px; overflow: hidden; margin: 24px 0; border: 1px solid #e8eaed;">
+                <div style="display: flex; height: 400px;">
+                    <!-- Sidebar Container -->
+                    <div id="pushModeDemo" style="flex-shrink: 0;"></div>
+                    <!-- Main Content (will be pushed) -->
+                    <div id="pushModeContent" style="flex: 1; padding: 24px; background: white; transition: margin-left 0.3s ease;">
+                        <h3 style="margin-bottom: 16px; color: #202124;">📄 Main Content Area</h3>
+                        <p style="color: #5f6368; margin-bottom: 16px;">
+                            This content area shifts when the sidebar expands/collapses.
+                            Click the toggle button (◂) to see the push effect!
+                        </p>
+                        <div style="display: flex; gap: 12px; margin-top: 24px;">
+                            <button id="togglePushMode" style="padding: 12px 24px; background: #1a73e8; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 500;">
+                                Toggle Mode: Push
+                            </button>
+                        </div>
+                        <p id="modeStatus" style="margin-top: 16px; color: #34a853; font-weight: 500;">
+                            ✓ Push Mode Active - Content shifts with sidebar
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Push Mode Code:</h3>
+            <div id="code-push-mode"></div>
+
+            <h3 style="margin-top: 24px;">Mode Comparison:</h3>
+            <table style="width: 100%; border-collapse: collapse; margin: 16px 0;">
+                <thead>
+                    <tr style="background: #f1f3f4;">
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Feature</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Overlay (default)</th>
+                        <th style="padding: 12px; text-align: left; border-bottom: 2px solid #dadce0;">Push</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Content behavior</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Stays in place, sidebar overlays</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Shifts with sidebar width</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Best for</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Mobile, temporary navigation</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Desktop, persistent layouts</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Animation</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Sidebar slides in</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #e8eaed;">Sidebar + content animate together</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="demo-section">
+            <h2>⚙️ Configuration Options</h2>
+            <div id="code-sidebar-config"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { SidebarBuilder } from '../../src/SidebarBuilder.js';
+        import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
+        import { IconManager } from '../../src/IconManager.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('sidebar-builder');
+        addMobileMenuToggle();
+
+        const sidebar = new SidebarBuilder({
+            containerId: 'sidebarDemo',
+            items: [
+                { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '#dashboard' },
+                {
+                    id: 'products',
+                    label: 'Products',
+                    icon: '📦',
+                    badge: '12',
+                    children: [
+                        { id: 'all-products', label: 'All Products', href: '#products' },
+                        { id: 'categories', label: 'Categories', href: '#categories' },
+                        { id: 'add-product', label: 'Add New', href: '#add' }
+                    ]
+                },
+                { id: 'orders', label: 'Orders', icon: '🛒', badge: '5', href: '#orders' },
+                { id: 'customers', label: 'Customers', icon: '👥', href: '#customers' },
+                {
+                    id: 'settings',
+                    label: 'Settings',
+                    icon: '⚙️',
+                    children: [
+                        { id: 'profile', label: 'Profile', href: '#profile' },
+                        { id: 'security', label: 'Security', href: '#security' }
+                    ]
+                }
+            ],
+            options: {
+                collapsible: true,
+                searchable: true,
+                width: 280
+            },
+            onNavigate: (itemId) => {
+                console.log('Navigated to:', itemId);
+            }
+        });
+
+        sidebar.render();
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-sidebar-basic',
+            code: `import { SidebarBuilder } from '/vendor/ssi-builders/src/SidebarBuilder.js';
 
 const sidebar = new SidebarBuilder({
     containerId: 'sidebarDemo',
@@ -121,92 +254,96 @@ const sidebar = new SidebarBuilder({
     }
 });
 
-sidebar.render();</code></pre>
-        </div>
+sidebar.render();`,
+            language: 'javascript'
+        });
 
-        <div class="demo-section">
-            <h2>✨ Features</h2>
-            <ul style="padding-left: 24px; color: #5f6368; line-height: 2;">
-                <li><strong>Collapsible</strong> - Save space with collapse/expand</li>
-                <li><strong>Search</strong> - Filter navigation items</li>
-                <li><strong>Nested Items</strong> - Unlimited depth</li>
-                <li><strong>Badges</strong> - Show counts and notifications</li>
-                <li><strong>Icons</strong> - Visual navigation aids</li>
-                <li><strong>Persistent State</strong> - Remembers collapse state</li>
-                <li><strong>Active State</strong> - Highlights current page</li>
-                <li><strong>Mobile Drawer</strong> - Responsive overlay on mobile</li>
-            </ul>
-        </div>
-
-        <div class="demo-section">
-            <h2>⚙️ Configuration Options</h2>
-            <pre class="example-code"><code class="language-javascript">{
+        new CodeSnippetBuilder({
+            containerId: 'code-sidebar-config',
+            code: `{
     containerId: 'sidebar',           // Container element ID
     items: [...],                     // Navigation items (required)
     options: {
         collapsible: true,            // Allow collapse/expand
         searchable: true,             // Show search box
         width: 280,                   // Sidebar width (px)
+        collapsedWidth: 72,           // Width when collapsed (px)
         persistent: true,             // Save state to localStorage
         defaultCollapsed: false,      // Start collapsed
-        mobileBreakpoint: 768         // Mobile drawer threshold (px)
+        position: 'left',             // 'left' or 'right'
+        mode: 'overlay',              // NEW v2.2.0: 'overlay' or 'push'
+        mainContentSelector: null     // NEW v2.2.0: CSS selector for push mode
     },
     onNavigate: (itemId) => {...},   // Navigation callback
     onToggle: (collapsed) => {...}   // Collapse state callback
-}</code></pre>
-                </div>
-
-            </div>
-        </main>
-    </div>
-
-    <script type="module">
-        import { SidebarBuilder } from '../../src/SidebarBuilder.js';
-        import { initializeLayout, addMobileMenuToggle } from './layout.js';
-
-        // Initialize layout with sidebar
-        initializeLayout('sidebar-builder');
-        addMobileMenuToggle();
-
-        const sidebar = new SidebarBuilder({
-            containerId: 'sidebarDemo',
-            items: [
-                { id: 'dashboard', label: 'Dashboard', icon: '📊', href: '#dashboard' },
-                {
-                    id: 'products',
-                    label: 'Products',
-                    icon: '📦',
-                    badge: '12',
-                    children: [
-                        { id: 'all-products', label: 'All Products', href: '#products' },
-                        { id: 'categories', label: 'Categories', href: '#categories' },
-                        { id: 'add-product', label: 'Add New', href: '#add' }
-                    ]
-                },
-                { id: 'orders', label: 'Orders', icon: '🛒', badge: '5', href: '#orders' },
-                { id: 'customers', label: 'Customers', icon: '👥', href: '#customers' },
-                {
-                    id: 'settings',
-                    label: 'Settings',
-                    icon: '⚙️',
-                    children: [
-                        { id: 'profile', label: 'Profile', href: '#profile' },
-                        { id: 'security', label: 'Security', href: '#security' }
-                    ]
-                }
-            ],
-            options: {
-                collapsible: true,
-                searchable: true,
-                width: 280
-            },
-            onNavigate: (itemId) => {
-                console.log('Navigated to:', itemId);
-            }
+}`,
+            language: 'javascript'
         });
 
-        sidebar.render();
-        hljs.highlightAll();
+        // Push Mode Code Snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-push-mode',
+            code: `import { SidebarBuilder } from '/vendor/ssi-builders/src/SidebarBuilder.js';
+
+const sidebar = new SidebarBuilder({
+    containerId: 'sidebar-container',
+    items: navigationItems,
+    options: {
+        mode: 'push',                    // NEW: Content is pushed
+        mainContentSelector: '#main',    // CSS selector for content
+        collapsible: true,
+        width: 280,
+        collapsedWidth: 72
+    }
+});
+
+sidebar.render();
+
+// Dynamic mode switching
+sidebar.setMode('overlay');  // Switch to overlay
+sidebar.setMode('push');     // Switch back to push
+sidebar.getMode();           // Returns 'push' or 'overlay'`,
+            language: 'javascript'
+        });
+
+        // Push Mode Interactive Demo
+        const pushModeSidebar = new SidebarBuilder({
+            containerId: 'pushModeDemo',
+            items: [
+                { key: 'home', label: 'Home', icon: IconManager.getIcon('home'), href: '#home' },
+                { key: 'analytics', label: 'Analytics', icon: IconManager.getIcon('chart'), href: '#analytics' },
+                { key: 'reports', label: 'Reports', icon: IconManager.getIcon('list'), href: '#reports' },
+                { key: 'settings', label: 'Settings', icon: IconManager.getIcon('settings'), href: '#settings' }
+            ],
+            options: {
+                mode: 'push',
+                mainContentSelector: '#pushModeContent',
+                collapsible: true,
+                persistent: false,
+                defaultCollapsed: false,
+                width: 200,
+                collapsedWidth: 56,
+                header: (collapsed) => collapsed
+                    ? `<div style="text-align:center;padding:12px;">${IconManager.getIcon('chart')}</div>`
+                    : '<div style="padding:16px;font-weight:600;color:#202124;">Push Demo</div>'
+            }
+        });
+        pushModeSidebar.render();
+
+        // Toggle button functionality
+        const toggleBtn = document.getElementById('togglePushMode');
+        const modeStatus = document.getElementById('modeStatus');
+        let isPushMode = true;
+
+        toggleBtn?.addEventListener('click', () => {
+            isPushMode = !isPushMode;
+            pushModeSidebar.setMode(isPushMode ? 'push' : 'overlay', '#pushModeContent');
+            toggleBtn.textContent = `Toggle Mode: ${isPushMode ? 'Push' : 'Overlay'}`;
+            modeStatus.innerHTML = isPushMode
+                ? '✓ Push Mode Active - Content shifts with sidebar'
+                : '○ Overlay Mode - Sidebar covers content';
+            modeStatus.style.color = isPushMode ? '#34a853' : '#5f6368';
+        });
     </script>
 </body>
 </html>

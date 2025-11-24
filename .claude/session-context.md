@@ -6,9 +6,9 @@
 - **Aktuelle Features:**
   - FormBuilder M3 Filled/Outlined/Standard verbessert (neutrale Farben, Google Blue, bessere Abstände)
   - Neues M3-Perfect-Formular erstellt (docs/demos/m3-form-perfect.html)
-- **Branch:** main (1 commit ahead of origin)
+- **Branch:** main (2 commits ahead of origin)
 - **Browser-Status:** Running on http://localhost:5177
-- **Git Status:** ⚠️ Uncommitted changes (4 modified, 4 new files)
+- **Git Status:** ✅ Working tree clean (Commit: a5c338a)
 
 ## Completed Tasks (Latest Session)
 
@@ -177,7 +177,7 @@ docs/demos/m3-form-perfect.js
 
 ## Token-Optimierung Status
 
-- ✅ Working tree needs commit (4 new files, 3 modified)
+- ✅ Git committed (working tree clean)
 - 🟡 Browser running (can be closed if needed)
 - ✅ Tests documented (7/59 passing)
 - ✅ Session context saved

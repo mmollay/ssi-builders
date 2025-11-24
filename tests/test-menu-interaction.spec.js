@@ -17,7 +17,7 @@ test('Test menu-builder interactions', async ({ page }) => {
   });
 
   // Navigate to menu-builder
-  await page.goto('http://localhost:5178/docs/demos/menu-builder.html');
+  await page.goto('http://localhost:5177/docs/demos/menu-builder.html');
   await page.waitForLoadState('networkidle', { timeout: 10000 });
 
   console.log('Page loaded successfully');

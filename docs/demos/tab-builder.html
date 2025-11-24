@@ -6,12 +6,10 @@
     <title>TabBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/TabBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 {
@@ -107,38 +105,7 @@
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">import { TabBuilder } from '/vendor/ssi-builders/src/TabBuilder.js';
-
-const underlineTabs = new TabBuilder({
-    containerId: 'underlineTabs',
-    style: 'underline', // Default
-    tabs: [
-        {
-            id: 'overview',
-            label: 'Overview',
-            icon: '📊',
-            content: '<h3>Overview</h3><p>Dashboard overview content...</p>'
-        },
-        {
-            id: 'analytics',
-            label: 'Analytics',
-            icon: '📈',
-            content: '<h3>Analytics</h3><p>Analytics data and charts...</p>'
-        },
-        {
-            id: 'settings',
-            label: 'Settings',
-            icon: '⚙️',
-            content: '<h3>Settings</h3><p>Configuration options...</p>'
-        }
-    ],
-    activeTab: 'overview',
-    onChange: (tabId) => {
-        console.log('Active tab:', tabId);
-    }
-});
-
-underlineTabs.render();</code></pre>
+            <div id="code-underline-tabs"></div>
         </div>
 
         <!-- Pill Style -->
@@ -151,28 +118,7 @@ underlineTabs.render();</code></pre>
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">const pillTabs = new TabBuilder({
-    containerId: 'pillTabs',
-    style: 'pill',
-    tabs: [
-        {
-            id: 'profile',
-            label: 'Profile',
-            content: '<h3>Profile</h3><p>User profile information...</p>'
-        },
-        {
-            id: 'account',
-            label: 'Account',
-            badge: '3',
-            content: '<h3>Account</h3><p>Account settings and billing...</p>'
-        },
-        {
-            id: 'security',
-            label: 'Security',
-            content: '<h3>Security</h3><p>Security and privacy settings...</p>'
-        }
-    ]
-});</code></pre>
+            <div id="code-pill-tabs"></div>
         </div>
 
         <!-- Contained Style -->
@@ -185,27 +131,7 @@ underlineTabs.render();</code></pre>
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">const containedTabs = new TabBuilder({
-    containerId: 'containedTabs',
-    style: 'contained',
-    tabs: [
-        {
-            id: 'day',
-            label: 'Day',
-            content: '<h3>Day View</h3><p>Daily schedule and events...</p>'
-        },
-        {
-            id: 'week',
-            label: 'Week',
-            content: '<h3>Week View</h3><p>Weekly calendar view...</p>'
-        },
-        {
-            id: 'month',
-            label: 'Month',
-            content: '<h3>Month View</h3><p>Monthly calendar overview...</p>'
-        }
-    ]
-});</code></pre>
+            <div id="code-contained-tabs"></div>
         </div>
 
         <!-- URL Hash Support -->
@@ -218,17 +144,7 @@ underlineTabs.render();</code></pre>
             </div>
 
             <h3 style="margin-top: 24px;">Code Example:</h3>
-            <pre class="example-code"><code class="language-javascript">const hashTabs = new TabBuilder({
-    containerId: 'hashTabs',
-    tabs: [
-        { id: 'home', label: 'Home', content: 'Home content...' },
-        { id: 'about', label: 'About', content: 'About us...' },
-        { id: 'contact', label: 'Contact', content: 'Contact form...' }
-    ],
-    useUrlHash: true  // Enable URL hash sync
-});
-
-// Navigate to: yoursite.com/page.html#tab-about</code></pre>
+            <div id="code-hash-tabs"></div>
         </div>
 
         <!-- Configuration Reference -->
@@ -298,14 +214,7 @@ underlineTabs.render();</code></pre>
             </table>
 
             <h3 style="margin-top: 24px; margin-bottom: 12px;">Tab Object Structure</h3>
-            <pre class="example-code"><code class="language-javascript">{
-    id: 'unique-id',           // Required: unique identifier
-    label: 'Tab Label',        // Required: display text
-    icon: '📊',                // Optional: icon (emoji or HTML)
-    badge: '3',                // Optional: badge text
-    content: '<p>...</p>',     // Required: tab panel content (HTML or function)
-    disabled: false            // Optional: disable tab
-}</code></pre>
+            <div id="code-tab-structure"></div>
 
             <h3 style="margin-top: 24px; margin-bottom: 12px;">Methods</h3>
             <table class="config-table">
@@ -383,6 +292,8 @@ underlineTabs.render();</code></pre>
     <script type="module">
         import { TabBuilder } from '../../src/TabBuilder.js';
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeLayout('tab-builder');
@@ -472,8 +383,125 @@ underlineTabs.render();</code></pre>
             useUrlHash: true
         }).render();
 
-        // Syntax highlighting
-        hljs.highlightAll();
+        // Code Snippets with CodeSnippetBuilder
+        new CodeSnippetBuilder({
+            containerId: 'code-underline-tabs',
+            code: `import { TabBuilder } from '/vendor/ssi-builders/src/TabBuilder.js';
+
+const underlineTabs = new TabBuilder({
+    containerId: 'underlineTabs',
+    style: 'underline', // Default
+    tabs: [
+        {
+            id: 'overview',
+            label: 'Overview',
+            icon: '📊',
+            content: '<h3>Overview</h3><p>Dashboard overview content...</p>'
+        },
+        {
+            id: 'analytics',
+            label: 'Analytics',
+            icon: '📈',
+            content: '<h3>Analytics</h3><p>Analytics data and charts...</p>'
+        },
+        {
+            id: 'settings',
+            label: 'Settings',
+            icon: '⚙️',
+            content: '<h3>Settings</h3><p>Configuration options...</p>'
+        }
+    ],
+    activeTab: 'overview',
+    onChange: (tabId) => {
+        console.log('Active tab:', tabId);
+    }
+});
+
+underlineTabs.render();`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-pill-tabs',
+            code: `const pillTabs = new TabBuilder({
+    containerId: 'pillTabs',
+    style: 'pill',
+    tabs: [
+        {
+            id: 'profile',
+            label: 'Profile',
+            content: '<h3>Profile</h3><p>User profile information...</p>'
+        },
+        {
+            id: 'account',
+            label: 'Account',
+            badge: '3',
+            content: '<h3>Account</h3><p>Account settings and billing...</p>'
+        },
+        {
+            id: 'security',
+            label: 'Security',
+            content: '<h3>Security</h3><p>Security and privacy settings...</p>'
+        }
+    ]
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-contained-tabs',
+            code: `const containedTabs = new TabBuilder({
+    containerId: 'containedTabs',
+    style: 'contained',
+    tabs: [
+        {
+            id: 'day',
+            label: 'Day',
+            content: '<h3>Day View</h3><p>Daily schedule and events...</p>'
+        },
+        {
+            id: 'week',
+            label: 'Week',
+            content: '<h3>Week View</h3><p>Weekly calendar view...</p>'
+        },
+        {
+            id: 'month',
+            label: 'Month',
+            content: '<h3>Month View</h3><p>Monthly calendar overview...</p>'
+        }
+    ]
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-hash-tabs',
+            code: `const hashTabs = new TabBuilder({
+    containerId: 'hashTabs',
+    tabs: [
+        { id: 'home', label: 'Home', content: 'Home content...' },
+        { id: 'about', label: 'About', content: 'About us...' },
+        { id: 'contact', label: 'Contact', content: 'Contact form...' }
+    ],
+    useUrlHash: true  // Enable URL hash sync
+});
+
+// Navigate to: yoursite.com/page.html#tab-about`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-tab-structure',
+            code: `{
+    id: 'unique-id',           // Required: unique identifier
+    label: 'Tab Label',        // Required: display text
+    icon: '📊',                // Optional: icon (emoji or HTML)
+    badge: '3',                // Optional: badge text
+    content: '<p>...</p>',     // Required: tab panel content (HTML or function)
+    disabled: false            // Optional: disable tab
+}`,
+            language: 'javascript'
+        });
     </script>
 </body>
 </html>

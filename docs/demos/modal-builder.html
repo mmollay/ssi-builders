@@ -6,14 +6,10 @@
     <title>ModalBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js">        hljs.highlightAll();
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js">        hljs.highlightAll();
-    </script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/ModalBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 {
@@ -164,22 +160,7 @@
                 <button class="ssi-btn ssi-btn-primary" onclick="openModal('fullscreen')">Fullscreen</button>
             </div>
 
-            <pre class="example-code"><code>import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';
-
-const modal = new ModalBuilder({
-    size: 'medium',  // xs | small | medium | large | xl | fullscreen
-    title: 'Modal Title',
-    content: '<p>Your content here...</p>',
-    actions: [
-        {
-            label: 'Close',
-            type: 'secondary',
-            onClick: (modal) => modal.close()
-        }
-    ]
-});
-
-modal.open();</code></pre>
+            <div id="code-modal-sizes"></div>
         </div>
 
         <!-- Example 2: Side Drawers -->
@@ -192,13 +173,7 @@ modal.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('side-right')">Side Right Drawer</button>
             </div>
 
-            <pre class="example-code"><code>const drawer = new ModalBuilder({
-    size: 'side-right',  // side-left | side-right
-    title: 'Filter Options',
-    content: '<p>Filter UI here...</p>'
-});
-
-drawer.open();</code></pre>
+            <div id="code-side-drawers"></div>
         </div>
 
         <!-- Example 3: Bottom Sheet -->
@@ -210,13 +185,7 @@ drawer.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="openModal('bottom')">Bottom Sheet</button>
             </div>
 
-            <pre class="example-code"><code>const sheet = new ModalBuilder({
-    size: 'bottom',
-    title: 'Share Options',
-    content: '<p>Share via Email, Link, etc.</p>'
-});
-
-sheet.open();</code></pre>
+            <div id="code-bottom-sheet"></div>
         </div>
 
         <!-- Example 4: Static Methods -->
@@ -230,35 +199,7 @@ sheet.open();</code></pre>
                 <button class="ssi-btn ssi-btn-outlined" onclick="testPrompt()">Prompt</button>
             </div>
 
-            <pre class="example-code"><code>// Alert
-await ModalBuilder.alert({
-    title: 'Success!',
-    message: 'Your data has been saved.',
-    type: 'success'
-});
-
-// Confirm
-const confirmed = await ModalBuilder.confirm({
-    title: 'Delete Item?',
-    message: 'This action cannot be undone.',
-    confirmLabel: 'Delete',
-    confirmType: 'danger'
-});
-
-if (confirmed) {
-    // Delete logic
-}
-
-// Prompt
-const name = await ModalBuilder.prompt({
-    title: 'Enter Your Name',
-    message: 'Please provide your full name:',
-    placeholder: 'John Doe'
-});
-
-if (name) {
-    console.log('Name:', name);
-}</code></pre>
+            <div id="code-static-methods"></div>
         </div>
 
         <!-- Example 5: Custom Actions -->
@@ -270,37 +211,7 @@ if (name) {
                 <button class="ssi-btn ssi-btn-primary" onclick="openCustomModal()">Open Custom Modal</button>
             </div>
 
-            <pre class="example-code"><code>const modal = new ModalBuilder({
-    title: 'Confirm Action',
-    content: '<p>Are you sure you want to proceed?</p>',
-    actions: [
-        {
-            label: 'Cancel',
-            type: 'secondary',
-            onClick: (modal) => {
-                modal.close();
-            }
-        },
-        {
-            label: 'Save Draft',
-            type: 'outlined',
-            onClick: async (modal) => {
-                await saveDraft();
-                modal.close();
-            }
-        },
-        {
-            label: 'Publish',
-            type: 'primary',
-            onClick: async (modal) => {
-                await publish();
-                modal.close();
-            }
-        }
-    ]
-});
-
-modal.open();</code></pre>
+            <div id="code-custom-actions"></div>
         </div>
 
         <!-- Size Reference -->
@@ -482,6 +393,8 @@ modal.open();</code></pre>
     <script type="module">
         import { ModalBuilder } from '../../src/ModalBuilder.js';
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeLayout('modal-builder');
@@ -579,16 +492,122 @@ modal.open();</code></pre>
                 alert('No name provided');
             }
         };
-            hljs.highlightAll();
-    </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            document.querySelectorAll("pre code, .example-code, .code-block").forEach((block) => {
-                hljs.highlightElement(block);
-            });
+        // Code Snippets with CodeSnippetBuilder
+        new CodeSnippetBuilder({
+            containerId: 'code-modal-sizes',
+            code: `import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';
+
+const modal = new ModalBuilder({
+    size: 'medium',  // xs | small | medium | large | xl | fullscreen
+    title: 'Modal Title',
+    content: '<p>Your content here...</p>',
+    actions: [
+        {
+            label: 'Close',
+            type: 'secondary',
+            onClick: (modal) => modal.close()
+        }
+    ]
+});
+
+modal.open();`,
+            language: 'javascript'
         });
-            hljs.highlightAll();
+
+        new CodeSnippetBuilder({
+            containerId: 'code-side-drawers',
+            code: `const drawer = new ModalBuilder({
+    size: 'side-right',  // side-left | side-right
+    title: 'Filter Options',
+    content: '<p>Filter UI here...</p>'
+});
+
+drawer.open();`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-bottom-sheet',
+            code: `const sheet = new ModalBuilder({
+    size: 'bottom',
+    title: 'Share Options',
+    content: '<p>Share via Email, Link, etc.</p>'
+});
+
+sheet.open();`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-static-methods',
+            code: `// Alert
+await ModalBuilder.alert({
+    title: 'Success!',
+    message: 'Your data has been saved.',
+    type: 'success'
+});
+
+// Confirm
+const confirmed = await ModalBuilder.confirm({
+    title: 'Delete Item?',
+    message: 'This action cannot be undone.',
+    confirmLabel: 'Delete',
+    confirmType: 'danger'
+});
+
+if (confirmed) {
+    // Delete logic
+}
+
+// Prompt
+const name = await ModalBuilder.prompt({
+    title: 'Enter Your Name',
+    message: 'Please provide your full name:',
+    placeholder: 'John Doe'
+});
+
+if (name) {
+    console.log('Name:', name);
+}`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-custom-actions',
+            code: `const modal = new ModalBuilder({
+    title: 'Confirm Action',
+    content: '<p>Are you sure you want to proceed?</p>',
+    actions: [
+        {
+            label: 'Cancel',
+            type: 'secondary',
+            onClick: (modal) => {
+                modal.close();
+            }
+        },
+        {
+            label: 'Save Draft',
+            type: 'outlined',
+            onClick: async (modal) => {
+                await saveDraft();
+                modal.close();
+            }
+        },
+        {
+            label: 'Publish',
+            type: 'primary',
+            onClick: async (modal) => {
+                await publish();
+                modal.close();
+            }
+        }
+    ]
+});
+
+modal.open();`,
+            language: 'javascript'
+        });
     </script>
 </body>
 </html>

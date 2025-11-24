@@ -13,6 +13,7 @@
  * - Search/filter items
  * - User profile section
  * - Footer actions
+ * - Push Mode (v2.2.0): Content shifts instead of being overlaid
  *
  * @version 2.2.0
  */
@@ -28,6 +29,8 @@ export class SidebarBuilder {
      * @param {string} config.containerId - Container element ID
      * @param {Array} config.items - Navigation items
      * @param {Object} config.options - Additional options
+     * @param {string} config.options.mode - 'overlay' (default) or 'push' - determines if content is overlaid or pushed
+     * @param {string} config.options.mainContentSelector - CSS selector for main content container (required for push mode)
      */
     constructor(config) {
         this.id = `sidebar_${++SidebarBuilder.sidebarCounter}`;
@@ -44,8 +47,12 @@ export class SidebarBuilder {
             footer: config.options?.footer || null,
             searchable: config.options?.searchable || false,
             onNavigate: config.options?.onNavigate || null,
+            mode: config.options?.mode || 'overlay', // 'overlay' | 'push'
+            mainContentSelector: config.options?.mainContentSelector || null, // Required for push mode
             ...config.options
         };
+
+        this.mainContentElement = null;
 
         this.isCollapsed = this.options.persistent
             ? localStorage.getItem(`sidebar_${this.id}_collapsed`) === 'true'
@@ -67,9 +74,10 @@ export class SidebarBuilder {
         }
 
         const width = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
+        const isPushMode = this.options.mode === 'push';
 
         const html = `
-            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''}" id="${this.id}" style="width: ${width}px;">
+            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''} ${isPushMode ? 'sidebar-push-mode' : ''}" id="${this.id}" style="width: ${width}px;">
                 ${this.options.header ? this.renderHeader() : ''}
                 ${this.options.searchable ? this.renderSearch() : ''}
                 ${this.renderNav()}
@@ -82,10 +90,55 @@ export class SidebarBuilder {
         this.container.innerHTML = html;
         this.attachEventListeners();
 
+        // Initialize push mode if enabled
+        if (isPushMode) {
+            this.initPushMode();
+        }
+
         // Set active item from URL
         this.updateActiveFromUrl();
 
         return this;
+    }
+
+    /**
+     * Initialize push mode - set up main content margin
+     */
+    initPushMode() {
+        if (!this.options.mainContentSelector) {
+            console.warn('SidebarBuilder: Push mode requires mainContentSelector option');
+            return;
+        }
+
+        this.mainContentElement = document.querySelector(this.options.mainContentSelector);
+        if (!this.mainContentElement) {
+            console.warn(`SidebarBuilder: Main content element "${this.options.mainContentSelector}" not found`);
+            return;
+        }
+
+        // Add transition class to main content
+        this.mainContentElement.classList.add('sidebar-push-content');
+
+        // Set initial margin
+        this.updateContentMargin();
+    }
+
+    /**
+     * Update main content margin based on sidebar state (for push mode)
+     */
+    updateContentMargin() {
+        if (this.options.mode !== 'push' || !this.mainContentElement) return;
+
+        const margin = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
+        const position = this.options.position;
+
+        if (position === 'left') {
+            this.mainContentElement.style.marginLeft = `${margin}px`;
+            this.mainContentElement.style.marginRight = '';
+        } else {
+            this.mainContentElement.style.marginRight = `${margin}px`;
+            this.mainContentElement.style.marginLeft = '';
+        }
     }
 
     /**
@@ -108,7 +161,7 @@ export class SidebarBuilder {
                 <input
                     type="text"
                     class="sidebar-search-input"
-                    placeholder="${this.isCollapsed ? '🔍' : 'Suchen...'}"
+                    placeholder="${this.isCollapsed ? IconManager.getIcon('search') : 'Suchen...'}"
                     aria-label="Suche"
                 />
             </div>
@@ -261,7 +314,8 @@ export class SidebarBuilder {
                     e.preventDefault();
                     this.toggleGroup(itemKey);
                 } else {
-                    // Handle navigation
+                    // Handle navigation - prevent default href="#" behavior
+                    e.preventDefault();
                     this.setActive(itemKey);
                     this.options.onNavigate?.(itemKey, this.findItemByKey(itemKey));
                 }
@@ -290,8 +344,11 @@ export class SidebarBuilder {
         // Update search placeholder
         const searchInput = sidebarElement.querySelector('.sidebar-search-input');
         if (searchInput) {
-            searchInput.placeholder = this.isCollapsed ? '🔍' : 'Suchen...';
+            searchInput.placeholder = this.isCollapsed ? IconManager.getIcon('search') : 'Suchen...';
         }
+
+        // Update main content margin for push mode
+        this.updateContentMargin();
 
         // Save state
         if (this.options.persistent) {
@@ -451,7 +508,58 @@ export class SidebarBuilder {
      * Destroy sidebar
      */
     destroy() {
+        // Clean up push mode styles
+        if (this.mainContentElement) {
+            this.mainContentElement.classList.remove('sidebar-push-content');
+            this.mainContentElement.style.marginLeft = '';
+            this.mainContentElement.style.marginRight = '';
+        }
         this.container.innerHTML = '';
+    }
+
+    /**
+     * Get current mode
+     * @returns {string} 'overlay' or 'push'
+     */
+    getMode() {
+        return this.options.mode;
+    }
+
+    /**
+     * Set mode dynamically
+     * @param {string} mode - 'overlay' or 'push'
+     * @param {string} mainContentSelector - CSS selector for push mode (optional if already set)
+     */
+    setMode(mode, mainContentSelector = null) {
+        if (mode !== 'overlay' && mode !== 'push') {
+            console.warn('SidebarBuilder: Invalid mode. Use "overlay" or "push"');
+            return this;
+        }
+
+        const previousMode = this.options.mode;
+        this.options.mode = mode;
+
+        if (mainContentSelector) {
+            this.options.mainContentSelector = mainContentSelector;
+        }
+
+        const sidebarElement = document.getElementById(this.id);
+
+        if (mode === 'push') {
+            sidebarElement?.classList.add('sidebar-push-mode');
+            this.initPushMode();
+        } else {
+            sidebarElement?.classList.remove('sidebar-push-mode');
+            // Clean up push mode styles
+            if (this.mainContentElement) {
+                this.mainContentElement.classList.remove('sidebar-push-content');
+                this.mainContentElement.style.marginLeft = '';
+                this.mainContentElement.style.marginRight = '';
+            }
+            this.mainContentElement = null;
+        }
+
+        return this;
     }
 }
 

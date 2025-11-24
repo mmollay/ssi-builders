@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5178';
+const BASE_URL = 'http://localhost:5177';
 
 test.describe('Changelog Page Verification', () => {
     test('Changelog button navigates to HTML page', async ({ page }) => {

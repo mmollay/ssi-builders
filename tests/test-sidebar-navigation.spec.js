@@ -5,7 +5,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const BASE_URL = 'http://localhost:5178';
+const BASE_URL = 'http://localhost:5177';
 
 // All pages that should have sidebar navigation
 const PAGES_WITH_SIDEBAR = [

@@ -22,7 +22,7 @@ test('Final verification - MenuBuilder and ChartBuilder', async ({ page }) => {
 
   // TEST 1: MenuBuilder
   console.log('\n📋 Testing MenuBuilder...');
-  await page.goto('http://localhost:5178/docs/demos/menu-builder.html');
+  await page.goto('http://localhost:5177/docs/demos/menu-builder.html');
   await page.waitForLoadState('networkidle', { timeout: 10000 });
 
   // Click dropdown menu
@@ -45,7 +45,7 @@ test('Final verification - MenuBuilder and ChartBuilder', async ({ page }) => {
 
   // TEST 2: ChartBuilder
   console.log('\n📊 Testing ChartBuilder...');
-  await page.goto('http://localhost:5178/docs/demos/chart-builder.html');
+  await page.goto('http://localhost:5177/docs/demos/chart-builder.html');
   await page.waitForLoadState('networkidle', { timeout: 10000 });
 
   const chartContainers = await page.locator('.chart-container').count();

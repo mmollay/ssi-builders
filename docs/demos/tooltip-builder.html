@@ -6,12 +6,10 @@
     <title>TooltipBuilder - SSI Builders Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/vs2015.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/javascript.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="../../src/TooltipBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section {
@@ -163,13 +161,7 @@
                         </div>
                     </div>
 
-                    <pre><code class="language-javascript">import { TooltipBuilder } from '/vendor/ssi-builders/src/index.js';
-
-new TooltipBuilder({
-    target: document.getElementById('my-button'),
-    content: 'Dieser Tooltip steht oben',
-    position: 'top' // 'top', 'bottom', 'left', 'right', 'auto'
-});</code></pre>
+                    <div id="code-positions"></div>
                 </div>
 
                 <!-- Trigger Modes -->
@@ -188,31 +180,7 @@ new TooltipBuilder({
                         </div>
                     </div>
 
-                    <pre><code class="language-javascript">// Hover Mode (Default)
-new TooltipBuilder({
-    target: element,
-    content: 'Hover Tooltip',
-    trigger: 'hover',
-    delay: 200  // Verzögerung in ms
-});
-
-// Click Mode
-new TooltipBuilder({
-    target: element,
-    content: 'Click Tooltip',
-    trigger: 'click'
-});
-
-// Manual Mode (programmatisch)
-const tooltip = new TooltipBuilder({
-    target: element,
-    content: 'Manual Tooltip',
-    trigger: 'manual'
-});
-
-tooltip.show();  // Manuell zeigen
-tooltip.hide();  // Manuell verstecken
-tooltip.toggle(); // Toggle</code></pre>
+                    <div id="code-trigger-modes"></div>
                 </div>
 
                 <!-- Color Variants -->
@@ -247,11 +215,7 @@ tooltip.toggle(); // Toggle</code></pre>
                         </div>
                     </div>
 
-                    <pre><code class="language-javascript">new TooltipBuilder({
-    target: element,
-    content: 'Primary Tooltip',
-    className: 'ssi-tooltip-primary' // oder: success, warning, danger, light
-});</code></pre>
+                    <div id="code-color-variants"></div>
                 </div>
 
                 <!-- HTML Content -->
@@ -265,17 +229,7 @@ tooltip.toggle(); // Toggle</code></pre>
                         </div>
                     </div>
 
-                    <pre><code class="language-javascript">const content = document.createElement('div');
-content.innerHTML = `
-    <strong>Benutzer:</strong> Max Mustermann<br>
-    <small>max@example.com</small>
-`;
-
-new TooltipBuilder({
-    target: element,
-    content: content,
-    maxWidth: 250
-});</code></pre>
+                    <div id="code-html-content"></div>
                 </div>
 
                 <!-- API Reference -->
@@ -408,15 +362,7 @@ new TooltipBuilder({
                         </tbody>
                     </table>
 
-                    <pre style="margin-top: 24px;"><code class="language-javascript">const target = document.getElementById('my-element');
-
-target.addEventListener('tooltip:show', (e) => {
-    console.log('Tooltip shown:', e.detail.tooltip);
-});
-
-target.addEventListener('tooltip:hide', (e) => {
-    console.log('Tooltip hidden:', e.detail.tooltip);
-});</code></pre>
+                    <div id="code-events" style="margin-top: 24px;"></div>
                 </div>
 
             </div>
@@ -427,6 +373,8 @@ target.addEventListener('tooltip:hide', (e) => {
         import { SidebarBuilder } from '../../src/SidebarBuilder.js';
         import { initializeDemoLayout } from './layout.js';
         import { TooltipBuilder } from '../../src/TooltipBuilder.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeDemoLayout('tooltip-builder');
@@ -534,9 +482,87 @@ target.addEventListener('tooltip:hide', (e) => {
             position: 'top'
         });
 
-        // Syntax highlighting
-        document.querySelectorAll('pre code').forEach((block) => {
-            hljs.highlightElement(block);
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-positions',
+            code: `import { TooltipBuilder } from '/vendor/ssi-builders/src/index.js';
+
+new TooltipBuilder({
+    target: document.getElementById('my-button'),
+    content: 'Dieser Tooltip steht oben',
+    position: 'top' // 'top', 'bottom', 'left', 'right', 'auto'
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-trigger-modes',
+            code: `// Hover Mode (Default)
+new TooltipBuilder({
+    target: element,
+    content: 'Hover Tooltip',
+    trigger: 'hover',
+    delay: 200  // Verzögerung in ms
+});
+
+// Click Mode
+new TooltipBuilder({
+    target: element,
+    content: 'Click Tooltip',
+    trigger: 'click'
+});
+
+// Manual Mode (programmatisch)
+const tooltip = new TooltipBuilder({
+    target: element,
+    content: 'Manual Tooltip',
+    trigger: 'manual'
+});
+
+tooltip.show();  // Manuell zeigen
+tooltip.hide();  // Manuell verstecken
+tooltip.toggle(); // Toggle`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-color-variants',
+            code: `new TooltipBuilder({
+    target: element,
+    content: 'Primary Tooltip',
+    className: 'ssi-tooltip-primary' // oder: success, warning, danger, light
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-html-content',
+            code: `const content = document.createElement('div');
+content.innerHTML = \`
+    <strong>Benutzer:</strong> Max Mustermann<br>
+    <small>max@example.com</small>
+\`;
+
+new TooltipBuilder({
+    target: element,
+    content: content,
+    maxWidth: 250
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-events',
+            code: `const target = document.getElementById('my-element');
+
+target.addEventListener('tooltip:show', (e) => {
+    console.log('Tooltip shown:', e.detail.tooltip);
+});
+
+target.addEventListener('tooltip:hide', (e) => {
+    console.log('Tooltip hidden:', e.detail.tooltip);
+});`,
+            language: 'javascript'
         });
     </script>
 </body>

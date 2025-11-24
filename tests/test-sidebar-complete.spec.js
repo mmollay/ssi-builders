@@ -5,7 +5,7 @@ test.describe('Complete Sidebar Tests', () => {
   test('Sidebar sections should be collapsible', async ({ page }) => {
     console.log('🔍 Testing sidebar section collapse...');
 
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     // Find "Core Builders" section header
@@ -30,7 +30,7 @@ test.describe('Complete Sidebar Tests', () => {
   test('Navigation should work - click ListBuilder', async ({ page }) => {
     console.log('🔍 Testing navigation to ListBuilder...');
 
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     // Find ListBuilder link in sidebar
@@ -61,7 +61,7 @@ test.describe('Complete Sidebar Tests', () => {
   test('Navigation should work - click FormBuilder', async ({ page }) => {
     console.log('🔍 Testing navigation to FormBuilder...');
 
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     // Find FormBuilder link
@@ -90,7 +90,7 @@ test.describe('Complete Sidebar Tests', () => {
     console.log('🔍 Testing sidebar persistence...');
 
     // Start on index
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     // Sidebar should be visible
@@ -124,7 +124,7 @@ test.describe('Complete Sidebar Tests', () => {
   test('Check all navigation links work', async ({ page }) => {
     console.log('🔍 Testing all navigation links...');
 
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     const links = [
@@ -138,7 +138,7 @@ test.describe('Complete Sidebar Tests', () => {
       console.log(`Testing ${link.text}...`);
 
       // Go back to index
-      await page.goto('http://localhost:5178/index.html');
+      await page.goto('http://localhost:5177/index.html');
       await page.waitForLoadState('networkidle');
 
       // Click link
@@ -158,7 +158,7 @@ test.describe('Complete Sidebar Tests', () => {
   test('Icons should be visible in sidebar', async ({ page }) => {
     console.log('🔍 Testing sidebar icons...');
 
-    await page.goto('http://localhost:5178/index.html');
+    await page.goto('http://localhost:5177/index.html');
     await page.waitForLoadState('networkidle');
 
     // Check for SVG icons (Lucide preset)

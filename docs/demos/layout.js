@@ -96,21 +96,26 @@ export function initializeDemoLayout(activePage) {
         label: 'SiteBuilder',
         icon: IconManager.getIcon('layout'),
         key: 'site-builder',
-        href: '/docs/demos/site-builder.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/site-builder.html'
       },
       {
         label: 'ToastBuilder',
         icon: IconManager.getIcon('bell'),
         key: 'toast-builder',
-        href: '/docs/demos/toast-builder.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/toast-builder.html'
       },
       {
         label: 'TooltipBuilder',
         icon: IconManager.getIcon('info'),
         key: 'tooltip-builder',
         href: '/docs/demos/tooltip-builder.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        label: 'CodeSnippetBuilder',
+        icon: IconManager.getIcon('copy'),
+        key: 'code-snippet-builder',
+        href: '/docs/demos/code-snippet-builder.html',
         badge: { text: 'New', color: '#1a73e8' }
       },
       {

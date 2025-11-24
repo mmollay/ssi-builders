@@ -106,15 +106,15 @@
 
 /* === Sidebar Item === */
 .sidebar-item {
-    margin: 2px 8px;
+    margin: 0 8px;
 }
 
 /* === Sidebar Link === */
 .sidebar-link {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 10px 12px;
+    gap: 10px;
+    padding: 6px 12px;
     border-radius: 8px;
     text-decoration: none;
     color: #5f6368;
@@ -237,7 +237,7 @@
 
 /* === Sidebar Heading === */
 .sidebar-heading {
-    padding: 20px 16px 8px;
+    padding: 12px 16px 4px;
     color: #5f6368;
     font-size: 11px;
     font-weight: 600;
@@ -376,4 +376,28 @@
 
 .sidebar-collapsed .ssi-version-badge {
     display: none;
+}
+
+/* === Push Mode (v2.2.0) === */
+/* When sidebar pushes content instead of overlaying it */
+
+.sidebar-push-mode {
+    position: relative;
+}
+
+.sidebar-push-content {
+    transition: margin-left 0.3s cubic-bezier(0.4, 0.0, 0.2, 1),
+                margin-right 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Push mode on mobile still uses overlay */
+@media (max-width: 1023px) {
+    .sidebar-push-mode {
+        position: fixed;
+    }
+
+    .sidebar-push-content {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
 }

@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="/src/ListBuilder.css">
     <link rel="stylesheet" href="/src/FormBuilder.css">
     <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
 
     <style>
@@ -71,7 +72,9 @@
         }
 
         .control-item select,
-        .control-item input[type="color"] {
+        .control-item input[type="color"],
+        .control-item input[type="text"],
+        .control-item input[type="number"] {
             padding: 10px;
             border: 1px solid #e0e0e0;
             border-radius: 8px;
@@ -80,7 +83,9 @@
         }
 
         body.dark-mode .control-item select,
-        body.dark-mode .control-item input[type="color"] {
+        body.dark-mode .control-item input[type="color"],
+        body.dark-mode .control-item input[type="text"],
+        body.dark-mode .control-item input[type="number"] {
             background: #3d3d3d;
             color: #e0e0e0;
             border-color: #555;
@@ -209,24 +214,6 @@
         body.dark-mode .icon-item span {
             color: #b0b0b0;
         }
-
-        /* Code Display */
-        .code-display {
-            background: #1e1e1e;
-            color: #d4d4d4;
-            padding: 20px;
-            border-radius: 8px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 13px;
-            line-height: 1.6;
-            overflow-x: auto;
-            margin-top: 16px;
-        }
-
-        .code-keyword { color: #569cd6; }
-        .code-string { color: #ce9178; }
-        .code-function { color: #dcdcaa; }
-        .code-property { color: #9cdcfe; }
     </style>
 </head>
 <body>
@@ -326,6 +313,227 @@
                     </div>
                 </div>
             </div>
+
+            <div class="control-section">
+                <h3>🔘 Button Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Default Size</label>
+                        <select id="buttonDefaultSize">
+                            <option value="sm">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="lg">Large</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Default Type</label>
+                        <select id="buttonDefaultType">
+                            <option value="primary">Primary</option>
+                            <option value="outlined" selected>Outlined</option>
+                            <option value="text">Text</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🪟 Modal Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Default Size</label>
+                        <select id="modalDefaultSize">
+                            <option value="xs">Extra Small</option>
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                            <option value="xl">Extra Large</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Close on Backdrop</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="modalCloseOnBackdrop" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Close on ESC</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="modalCloseOnEsc" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📝 Form Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Auto-Save</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="formAutoSave">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Submit Label</label>
+                        <input type="text" id="formSubmitLabel" value="Speichern" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <div class="control-item">
+                        <label>Show Cancel Button</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="formShowCancel">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📊 Chart Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Responsive</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="chartResponsive" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Show Legend</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="chartShowLegend" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>📑 Tab Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Style</label>
+                        <select id="tabStyle">
+                            <option value="underline" selected>Underline</option>
+                            <option value="pill">Pill</option>
+                            <option value="contained">Contained</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Orientation</label>
+                        <select id="tabOrientation">
+                            <option value="horizontal" selected>Horizontal</option>
+                            <option value="vertical">Vertical</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🗂️ Sidebar Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Width (px)</label>
+                        <input type="number" id="sidebarWidth" value="280" min="200" max="400" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <div class="control-item">
+                        <label>Collapsible</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="sidebarCollapsible" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>🍞 Toast Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Duration (ms)</label>
+                        <input type="number" id="toastDuration" value="3000" min="1000" max="10000" step="500" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
+                    </div>
+                    <div class="control-item">
+                        <label>Position</label>
+                        <select id="toastPosition">
+                            <option value="top-right" selected>Top Right</option>
+                            <option value="top-left">Top Left</option>
+                            <option value="bottom-right">Bottom Right</option>
+                            <option value="bottom-left">Bottom Left</option>
+                            <option value="top-center">Top Center</option>
+                            <option value="bottom-center">Bottom Center</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>💬 Tooltip Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Position</label>
+                        <select id="tooltipPosition">
+                            <option value="top" selected>Top</option>
+                            <option value="bottom">Bottom</option>
+                            <option value="left">Left</option>
+                            <option value="right">Right</option>
+                            <option value="auto">Auto</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Trigger</label>
+                        <select id="tooltipTrigger">
+                            <option value="hover" selected>Hover</option>
+                            <option value="click">Click</option>
+                            <option value="manual">Manual</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Show Arrow</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="tooltipArrow" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="control-section">
+                <h3>💻 CodeSnippet Defaults</h3>
+                <div class="control-row">
+                    <div class="control-item">
+                        <label>Theme</label>
+                        <select id="codeSnippetTheme">
+                            <option value="dark" selected>Dark</option>
+                            <option value="light">Light</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Size</label>
+                        <select id="codeSnippetSize">
+                            <option value="small">Small</option>
+                            <option value="medium" selected>Medium</option>
+                            <option value="large">Large</option>
+                        </select>
+                    </div>
+                    <div class="control-item">
+                        <label>Show Line Numbers</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="codeSnippetLineNumbers">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="control-item">
+                        <label>Copy Button</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="codeSnippetCopyButton" checked>
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Preview Grid -->
@@ -367,7 +575,7 @@
                 <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
                     Kopiere diesen Code in deine App:
                 </p>
-                <div class="code-display" id="generatedCode">
+                <div id="generatedCode">
                     <!-- Code will be generated here -->
                 </div>
             </div>
@@ -380,9 +588,13 @@
         import { GlobalConfig } from '/src/GlobalConfig.js';
         import { IconManager } from '/src/IconManager.js';
         import { ListBuilder } from '/src/ListBuilder.js';
+        import { CodeSnippetBuilder } from '/src/CodeSnippetBuilder.js';
 
         // Initialize layout with sidebar
         initializeDemoLayout('global-config');
+
+        // CodeSnippetBuilder instance for generated code
+        let codeSnippetBuilder = null;
 
         // Initialize with defaults
         GlobalConfig.configure({
@@ -523,27 +735,125 @@
             const actionDisplay = document.getElementById('listActionDisplay').value;
             const itemsPerPage = document.getElementById('itemsPerPage').value;
 
-            const code = `<span class="code-keyword">import</span> { <span class="code-property">GlobalConfig</span> } <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;
+            // New v2.2+ options
+            const buttonSize = document.getElementById('buttonDefaultSize').value;
+            const buttonType = document.getElementById('buttonDefaultType').value;
+            const modalSize = document.getElementById('modalDefaultSize').value;
+            const modalBackdrop = document.getElementById('modalCloseOnBackdrop').checked;
+            const modalEsc = document.getElementById('modalCloseOnEsc').checked;
+            const formAutoSave = document.getElementById('formAutoSave').checked;
+            const formSubmitLabel = document.getElementById('formSubmitLabel').value;
+            const formShowCancel = document.getElementById('formShowCancel').checked;
+            const chartResponsive = document.getElementById('chartResponsive').checked;
+            const chartLegend = document.getElementById('chartShowLegend').checked;
+            const tabStyle = document.getElementById('tabStyle').value;
+            const tabOrientation = document.getElementById('tabOrientation').value;
+            const sidebarWidth = document.getElementById('sidebarWidth').value;
+            const sidebarCollapsible = document.getElementById('sidebarCollapsible').checked;
+            const toastDuration = document.getElementById('toastDuration').value;
+            const toastPosition = document.getElementById('toastPosition').value;
+            const tooltipPosition = document.getElementById('tooltipPosition').value;
+            const tooltipTrigger = document.getElementById('tooltipTrigger').value;
+            const tooltipArrow = document.getElementById('tooltipArrow').checked;
+            const codeTheme = document.getElementById('codeSnippetTheme').value;
+            const codeSize = document.getElementById('codeSnippetSize').value;
+            const codeLineNumbers = document.getElementById('codeSnippetLineNumbers').checked;
+            const codeCopyButton = document.getElementById('codeSnippetCopyButton').checked;
 
-<span class="code-comment">// App-Start: Einmalig konfigurieren</span>
-<span class="code-property">GlobalConfig</span>.<span class="code-function">configure</span>({
-    <span class="code-property">iconPreset</span>: <span class="code-string">'${preset}'</span>,
-    <span class="code-property">iconWeight</span>: <span class="code-string">'${weight}'</span>,
-    <span class="code-property">theme</span>: {
-        <span class="code-property">primary</span>: <span class="code-string">'${primary}'</span>,
-        <span class="code-property">success</span>: <span class="code-string">'${success}'</span>,
-        <span class="code-property">danger</span>: <span class="code-string">'${danger}'</span>,
-        <span class="code-property">secondary</span>: <span class="code-string">'${secondary}'</span>
+            const code = `import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+// App-Start: Einmalig konfigurieren
+GlobalConfig.configure({
+    // Icon System
+    iconPreset: '${preset}',
+    iconWeight: '${weight}',
+
+    // Theme Colors
+    theme: {
+        primary: '${primary}',
+        success: '${success}',
+        danger: '${danger}',
+        secondary: '${secondary}'
     },
-    <span class="code-property">lists</span>: {
-        <span class="code-property">itemsPerPage</span>: ${itemsPerPage},
-        <span class="code-property">actionDisplayType</span>: <span class="code-string">'${actionDisplay}'</span>
+
+    // Button Defaults
+    buttons: {
+        defaultSize: '${buttonSize}',
+        defaultType: '${buttonType}'
+    },
+
+    // Modal Defaults
+    modals: {
+        defaultSize: '${modalSize}',
+        closeOnBackdrop: ${modalBackdrop},
+        closeOnEsc: ${modalEsc}
+    },
+
+    // Form Defaults
+    forms: {
+        autoSave: ${formAutoSave},
+        submitLabel: '${formSubmitLabel}',
+        showCancelButton: ${formShowCancel}
+    },
+
+    // List Defaults
+    lists: {
+        itemsPerPage: ${itemsPerPage},
+        actionDisplayType: '${actionDisplay}'
+    },
+
+    // Chart Defaults
+    charts: {
+        responsive: ${chartResponsive},
+        showLegend: ${chartLegend}
+    },
+
+    // Tab Defaults
+    tabs: {
+        style: '${tabStyle}',
+        orientation: '${tabOrientation}'
+    },
+
+    // Sidebar Defaults
+    sidebar: {
+        width: ${sidebarWidth},
+        collapsible: ${sidebarCollapsible}
+    },
+
+    // Toast Defaults
+    toasts: {
+        duration: ${toastDuration},
+        position: '${toastPosition}'
+    },
+
+    // Tooltip Defaults
+    tooltips: {
+        position: '${tooltipPosition}',
+        trigger: '${tooltipTrigger}',
+        arrow: ${tooltipArrow}
+    },
+
+    // CodeSnippet Defaults
+    codeSnippets: {
+        theme: '${codeTheme}',
+        size: '${codeSize}',
+        showLineNumbers: ${codeLineNumbers},
+        copyButton: ${codeCopyButton}
     }
 });
 
-<span class="code-comment">// Jetzt nutzen alle Builder automatisch diese Einstellungen!</span>`;
+// Jetzt nutzen alle Builder automatisch diese Einstellungen!`;
 
-            document.getElementById('generatedCode').innerHTML = code;
+            // Clear and recreate CodeSnippetBuilder
+            const container = document.getElementById('generatedCode');
+            container.innerHTML = '';  // Clear previous content
+
+            codeSnippetBuilder = new CodeSnippetBuilder({
+                containerId: 'generatedCode',
+                code: code,
+                language: 'javascript',
+                theme: 'dark'
+            });
         }
 
         // Apply all updates
@@ -557,9 +867,50 @@
                     danger: document.getElementById('dangerColor').value,
                     secondary: document.getElementById('secondaryColor').value
                 },
+                buttons: {
+                    defaultSize: document.getElementById('buttonDefaultSize').value,
+                    defaultType: document.getElementById('buttonDefaultType').value
+                },
+                modals: {
+                    defaultSize: document.getElementById('modalDefaultSize').value,
+                    closeOnBackdrop: document.getElementById('modalCloseOnBackdrop').checked,
+                    closeOnEsc: document.getElementById('modalCloseOnEsc').checked
+                },
+                forms: {
+                    autoSave: document.getElementById('formAutoSave').checked,
+                    submitLabel: document.getElementById('formSubmitLabel').value,
+                    showCancelButton: document.getElementById('formShowCancel').checked
+                },
                 lists: {
                     itemsPerPage: parseInt(document.getElementById('itemsPerPage').value),
                     actionDisplayType: document.getElementById('listActionDisplay').value
+                },
+                charts: {
+                    responsive: document.getElementById('chartResponsive').checked,
+                    showLegend: document.getElementById('chartShowLegend').checked
+                },
+                tabs: {
+                    style: document.getElementById('tabStyle').value,
+                    orientation: document.getElementById('tabOrientation').value
+                },
+                sidebar: {
+                    width: parseInt(document.getElementById('sidebarWidth').value),
+                    collapsible: document.getElementById('sidebarCollapsible').checked
+                },
+                toasts: {
+                    duration: parseInt(document.getElementById('toastDuration').value),
+                    position: document.getElementById('toastPosition').value
+                },
+                tooltips: {
+                    position: document.getElementById('tooltipPosition').value,
+                    trigger: document.getElementById('tooltipTrigger').value,
+                    arrow: document.getElementById('tooltipArrow').checked
+                },
+                codeSnippets: {
+                    theme: document.getElementById('codeSnippetTheme').value,
+                    size: document.getElementById('codeSnippetSize').value,
+                    showLineNumbers: document.getElementById('codeSnippetLineNumbers').checked,
+                    copyButton: document.getElementById('codeSnippetCopyButton').checked
                 }
             };
 
@@ -576,14 +927,58 @@
             document.body.classList.toggle('dark-mode', e.target.checked);
         });
 
+        // Icon & Theme
         document.getElementById('iconPreset').addEventListener('change', applyConfig);
         document.getElementById('iconWeight').addEventListener('change', applyConfig);
         document.getElementById('primaryColor').addEventListener('input', applyConfig);
         document.getElementById('successColor').addEventListener('input', applyConfig);
         document.getElementById('dangerColor').addEventListener('input', applyConfig);
         document.getElementById('secondaryColor').addEventListener('input', applyConfig);
+
+        // List
         document.getElementById('listActionDisplay').addEventListener('change', applyConfig);
         document.getElementById('itemsPerPage').addEventListener('change', applyConfig);
+
+        // Buttons
+        document.getElementById('buttonDefaultSize').addEventListener('change', applyConfig);
+        document.getElementById('buttonDefaultType').addEventListener('change', applyConfig);
+
+        // Modals
+        document.getElementById('modalDefaultSize').addEventListener('change', applyConfig);
+        document.getElementById('modalCloseOnBackdrop').addEventListener('change', applyConfig);
+        document.getElementById('modalCloseOnEsc').addEventListener('change', applyConfig);
+
+        // Forms
+        document.getElementById('formAutoSave').addEventListener('change', applyConfig);
+        document.getElementById('formSubmitLabel').addEventListener('input', applyConfig);
+        document.getElementById('formShowCancel').addEventListener('change', applyConfig);
+
+        // Charts
+        document.getElementById('chartResponsive').addEventListener('change', applyConfig);
+        document.getElementById('chartShowLegend').addEventListener('change', applyConfig);
+
+        // Tabs
+        document.getElementById('tabStyle').addEventListener('change', applyConfig);
+        document.getElementById('tabOrientation').addEventListener('change', applyConfig);
+
+        // Sidebar
+        document.getElementById('sidebarWidth').addEventListener('input', applyConfig);
+        document.getElementById('sidebarCollapsible').addEventListener('change', applyConfig);
+
+        // Toasts
+        document.getElementById('toastDuration').addEventListener('input', applyConfig);
+        document.getElementById('toastPosition').addEventListener('change', applyConfig);
+
+        // Tooltips
+        document.getElementById('tooltipPosition').addEventListener('change', applyConfig);
+        document.getElementById('tooltipTrigger').addEventListener('change', applyConfig);
+        document.getElementById('tooltipArrow').addEventListener('change', applyConfig);
+
+        // CodeSnippets
+        document.getElementById('codeSnippetTheme').addEventListener('change', applyConfig);
+        document.getElementById('codeSnippetSize').addEventListener('change', applyConfig);
+        document.getElementById('codeSnippetLineNumbers').addEventListener('change', applyConfig);
+        document.getElementById('codeSnippetCopyButton').addEventListener('change', applyConfig);
 
         // Initial render
         applyConfig();

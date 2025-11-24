@@ -6,11 +6,10 @@
     <title>MenuBuilder - Interactive Documentation</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/MenuBuilder.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
@@ -26,19 +25,7 @@
             align-items: center;
             justify-content: center;
         }
-        
-        pre.example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            font-family: 'Roboto Mono', monospace !important;
-            font-size: 13px !important;
-            line-height: 1.6 !important;
-            margin: 16px 0;
-            overflow-x: auto;
-        }
-        
+
         .demo-card {
             display: inline-block;
             padding: 24px;
@@ -69,30 +56,7 @@
             <div class="example-demo">
                 <button class="ssi-btn ssi-btn-primary" id="dropdownBtn">Open Menu ▼</button>
             </div>
-            <pre class="example-code"><code class="language-javascript">import { MenuBuilder } from '/vendor/ssi-builders/src/MenuBuilder.js';
-
-const menu = new MenuBuilder({
-    trigger: '#dropdownBtn',
-    items: [
-        { id: 'new', label: 'New File', icon: '📄', shortcut: 'Ctrl+N' },
-        { id: 'open', label: 'Open', icon: '📂', shortcut: 'Ctrl+O' },
-        { type: 'divider' },
-        { id: 'save', label: 'Save', icon: '💾', shortcut: 'Ctrl+S' },
-        { id: 'saveas', label: 'Save As...', icon: '💾' },
-        { type: 'divider' },
-        {
-            id: 'export',
-            label: 'Export',
-            icon: '📤',
-            submenu: [
-                { id: 'pdf', label: 'PDF' },
-                { id: 'csv', label: 'CSV' },
-                { id: 'json', label: 'JSON' }
-            ]
-        }
-    ],
-    onSelect: (itemId) => console.log('Selected:', itemId)
-});</code></pre>
+            <div id="code-dropdown-menu"></div>
         </div>
 
         <div class="demo-section">
@@ -104,16 +68,7 @@ const menu = new MenuBuilder({
                     <p>Try right-clicking to see context menu</p>
                 </div>
             </div>
-            <pre class="example-code"><code class="language-javascript">const contextMenu = new MenuBuilder({
-    trigger: '#contextCard',
-    triggerEvent: 'contextmenu', // Right-click
-    items: [
-        { id: 'copy', label: 'Copy', icon: '📋' },
-        { id: 'paste', label: 'Paste', icon: '📄' },
-        { type: 'divider' },
-        { id: 'delete', label: 'Delete', icon: '🗑️' }
-    ]
-});</code></pre>
+            <div id="code-context-menu"></div>
         </div>
 
         <div class="demo-section">
@@ -136,6 +91,8 @@ const menu = new MenuBuilder({
     <script type="module">
         import { MenuBuilder } from '../../src/MenuBuilder.js';
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeLayout('menu-builder');
@@ -176,7 +133,50 @@ const menu = new MenuBuilder({
             onSelect: (itemId) => alert(`Context action: ${itemId}`)
         });
 
-        hljs.highlightAll();
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-dropdown-menu',
+            code: `import { MenuBuilder } from '/vendor/ssi-builders/src/MenuBuilder.js';
+
+const menu = new MenuBuilder({
+    trigger: '#dropdownBtn',
+    items: [
+        { id: 'new', label: 'New File', icon: '📄', shortcut: 'Ctrl+N' },
+        { id: 'open', label: 'Open', icon: '📂', shortcut: 'Ctrl+O' },
+        { type: 'divider' },
+        { id: 'save', label: 'Save', icon: '💾', shortcut: 'Ctrl+S' },
+        { id: 'saveas', label: 'Save As...', icon: '💾' },
+        { type: 'divider' },
+        {
+            id: 'export',
+            label: 'Export',
+            icon: '📤',
+            submenu: [
+                { id: 'pdf', label: 'PDF' },
+                { id: 'csv', label: 'CSV' },
+                { id: 'json', label: 'JSON' }
+            ]
+        }
+    ],
+    onSelect: (itemId) => console.log('Selected:', itemId)
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-context-menu',
+            code: `const contextMenu = new MenuBuilder({
+    trigger: '#contextCard',
+    triggerEvent: 'contextmenu', // Right-click
+    items: [
+        { id: 'copy', label: 'Copy', icon: '📋' },
+        { id: 'paste', label: 'Paste', icon: '📄' },
+        { type: 'divider' },
+        { id: 'delete', label: 'Delete', icon: '🗑️' }
+    ]
+});`,
+            language: 'javascript'
+        });
     </script>
 </body>
 </html>

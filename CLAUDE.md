@@ -49,7 +49,7 @@ SSI Builders ist die **einzige Source of Truth** für UI-Komponenten in allen SS
 
 ---
 
-## 📋 Verfügbare Builder (v1.0.0)
+## 📋 Verfügbare Builder (v2.2.0)
 
 | Builder | Purpose | Status |
 |---------|---------|--------|
@@ -60,6 +60,10 @@ SSI Builders ist die **einzige Source of Truth** für UI-Komponenten in allen SS
 | 📑 **TabBuilder** | Tabs mit Keyboard Nav | ✅ Prod |
 | 📜 **MenuBuilder** | Dropdown/Context Menus | ✅ Prod |
 | 🗂️ **SidebarBuilder** | Navigation Sidebar | ✅ Prod |
+| 🏗️ **SiteBuilder** | Complete Page Layouts | ✅ Prod |
+| 🔔 **ToastBuilder** | Notifications/Toasts | ✅ Prod |
+| 💬 **TooltipBuilder** | Hover Tooltips | ✅ Prod |
+| 💻 **CodeSnippetBuilder** | Code Display with Copy | ✅ Prod |
 
 ---
 
@@ -157,15 +161,133 @@ const deleteIcon = '🗑️'; // Unprofessionell!
 **Verfügbare Icons:**
 - `add`, `edit`, `delete`, `view`, `search`, `save`, `close`
 - `settings`, `refresh`, `download`, `upload`, `filter`
-- `check`, `warning`, `info`, `home`, `list`, `menu`
+- `check`, `copy`, `warning`, `info`, `home`, `list`, `menu`
 - `folder`, `sidebar`, `layout`, `modal`, `chart`, `tab`
-- `star`, `grid`, `github`, `book`
+- `star`, `grid`, `github`, `book`, `bell`, `history`
 - `eye`, `eye-off` (für Password Toggle)
 
 **Icon Weight:**
 - `thin` (1.5px) - Ultra-minimalistisch
 - `regular` (2px) - Default, ausgewogen
 - `bold` (2.5px) - Kräftig, auffällig
+
+### 🎛️ GlobalConfig (v2.2+)
+
+**Zentrale Konfiguration für alle Builder - einmal setzen, überall nutzen!**
+
+```javascript
+import { GlobalConfig } from '/vendor/ssi-builders/src/index.js';
+
+// Beim App-Start konfigurieren
+GlobalConfig.configure({
+    // Icon System
+    iconPreset: 'lucide',           // 'emoji' | 'lucide' | 'heroicons' | 'material' | 'fontawesome'
+    iconWeight: 'regular',          // 'thin' | 'regular' | 'bold'
+
+    // Theme/Colors (Material Design 3)
+    theme: {
+        primary: '#1a73e8',         // Google Blue
+        secondary: '#5f6368',       // Gray
+        success: '#34a853',         // Green
+        danger: '#ea4335',          // Red
+        warning: '#fbbc04',         // Yellow
+        info: '#4285f4'            // Light Blue
+    },
+
+    // Button Defaults
+    buttons: {
+        defaultSize: 'medium',      // 'sm' | 'medium' | 'lg'
+        defaultType: 'outlined'     // 'primary' | 'outlined' | 'text' | 'danger' | 'success'
+    },
+
+    // Modal Defaults
+    modals: {
+        defaultSize: 'medium',      // 'xs' | 'small' | 'medium' | 'large' | 'xl' | 'fullscreen'
+        closeOnBackdrop: true,
+        closeOnEsc: true
+    },
+
+    // Form Defaults
+    forms: {
+        autoSave: false,
+        submitLabel: 'Speichern',
+        cancelLabel: 'Abbrechen'
+    },
+
+    // List Defaults
+    lists: {
+        itemsPerPage: 20,
+        showSearch: true,
+        actionDisplayType: 'icon'   // 'icon' | 'emoji' | 'button' | 'button-icon'
+    },
+
+    // Chart Defaults
+    charts: {
+        responsive: true,
+        showLegend: true
+    },
+
+    // Tab Defaults
+    tabs: {
+        style: 'underline',         // 'underline' | 'pill' | 'contained'
+        orientation: 'horizontal'   // 'horizontal' | 'vertical'
+    },
+
+    // Sidebar Defaults
+    sidebar: {
+        width: 280,
+        collapsible: true,
+        persistent: true            // Save state to localStorage
+    },
+
+    // Toast Defaults
+    toasts: {
+        duration: 3000,
+        position: 'top-right'       // 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left'
+    },
+
+    // Tooltip Defaults (v2.2+)
+    tooltips: {
+        position: 'top',            // 'top' | 'bottom' | 'left' | 'right' | 'auto'
+        trigger: 'hover',           // 'hover' | 'click' | 'manual'
+        delay: 200,                 // Show delay in ms
+        arrow: true,                // Show arrow/pointer
+        maxWidth: 300               // Maximum width in pixels
+    },
+
+    // CodeSnippet Defaults (v2.2+)
+    codeSnippets: {
+        theme: 'dark',              // 'dark' | 'light'
+        showLineNumbers: false,     // Show line numbers
+        copyButton: true,           // Show copy button
+        syntaxHighlighting: true,   // Enable syntax highlighting
+        size: 'medium',             // 'small' | 'medium' | 'large'
+        maxHeight: null             // Max height (null = no limit)
+    }
+});
+```
+
+**API Methods:**
+```javascript
+// Get single value
+const primary = GlobalConfig.get('theme.primary');
+
+// Get entire section
+const theme = GlobalConfig.get('theme');
+
+// Check if value exists
+if (GlobalConfig.has('forms.autoSave')) { ... }
+
+// Reset to defaults
+GlobalConfig.reset();
+```
+
+**Best Practices:**
+- ✅ Konfiguriere GlobalConfig **einmal** beim App-Start (z.B. in `main.js`)
+- ✅ Alle Builder nutzen automatisch diese Defaults
+- ✅ Builder-spezifische Config überschreibt GlobalConfig
+- ✅ Ändere Theme-Colors zentral → alle Builder passen sich an
+- ❌ Setze GlobalConfig nicht mehrfach im Code
 
 ### Material Design 3
 - Alle Komponenten folgen MD3 Guidelines

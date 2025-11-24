@@ -8,38 +8,23 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <!-- Syntax Highlighting -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    
+
     <!-- Styles -->
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="../../src/ToastBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
     <link rel="stylesheet" href="./layout.css">
     
     <style>
         .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: #202124; }
         .demo-section .subtitle { color: #5f6368; font-size: 16px; margin-bottom: 24px; }
-        
+
         .example-demo {
             background: #f8f9fa;
             padding: 24px;
             border-radius: 8px;
             margin: 24px 0;
-        }
-        
-        pre.example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            font-family: 'Roboto Mono', monospace !important;
-            font-size: 13px !important;
-            line-height: 1.6 !important;
-            margin: 16px 0;
-            overflow-x: auto;
         }
 
         .btn-group {
@@ -96,20 +81,7 @@
                     </div>
 
                     <h3 style="margin-top: 24px;">Code Example:</h3>
-                    <pre class="example-code"><code class="language-javascript">import { ToastBuilder } from '/vendor/ssi-builders/src/index.js';
-
-// Simple usage
-ToastBuilder.success('Data saved successfully!', 'Success');
-ToastBuilder.error('Failed to save data.', 'Error');
-
-// Advanced usage
-ToastBuilder.show({
-    title: 'Custom Toast',
-    message: 'This is a custom toast notification',
-    type: 'info',
-    position: 'bottom-right',
-    duration: 5000
-});</code></pre>
+                    <div id="code-toast-example"></div>
                 </div>
 
                 <div class="demo-section">
@@ -130,9 +102,31 @@ ToastBuilder.show({
     <script type="module">
         import { ToastBuilder } from '../../src/index.js';
         import { initializeLayout } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
 
         // Initialize layout with sidebar
         initializeLayout('toast-builder');
+
+        // Code Snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-toast-example',
+            code: `import { ToastBuilder } from '/vendor/ssi-builders/src/index.js';
+
+// Simple usage
+ToastBuilder.success('Data saved successfully!', 'Success');
+ToastBuilder.error('Failed to save data.', 'Error');
+
+// Advanced usage
+ToastBuilder.show({
+    title: 'Custom Toast',
+    message: 'This is a custom toast notification',
+    type: 'info',
+    position: 'bottom-right',
+    duration: 5000
+});`,
+            language: 'javascript'
+        });
         
         // Expose to window for button clicks
         window.showSuccess = () => {

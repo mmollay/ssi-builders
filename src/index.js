@@ -19,6 +19,7 @@ import { GlobalConfig } from './GlobalConfig.js';
 import { SiteBuilder } from './SiteBuilder.js';
 import { ToastBuilder } from './ToastBuilder.js';
 import { TooltipBuilder } from './TooltipBuilder.js';
+import { CodeSnippetBuilder } from './CodeSnippetBuilder.js';
 
 export {
     ListBuilder,
@@ -34,7 +35,8 @@ export {
     GlobalConfig,
     SiteBuilder,
     ToastBuilder,
-    TooltipBuilder
+    TooltipBuilder,
+    CodeSnippetBuilder
 };
 
 // Default export for convenience
@@ -48,6 +50,7 @@ export default {
     SidebarBuilder,
     ToastBuilder,
     TooltipBuilder,
+    CodeSnippetBuilder,
     getVersion,
     createVersionBadge,
     IconManager,

@@ -7,19 +7,56 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### 📝 FormBuilder - UX Enhancements & Complete Demo
+---
 
-#### **New Features:**
+## [2.2.0] - 2025-11-24
+
+### 🎉 New Components
+
+#### **ToastBuilder** 🍞
+
+Professional toast notification system with M3 design:
+
+- **Toast Notifications**: Success, Error, Warning, and Info notifications
+- **Positioning**: Top/Bottom Right/Left/Center support
+- **Auto-dismiss**: Configurable duration
+- **Integration**: Fully integrated with GlobalConfig and IconManager
+
+#### **TooltipBuilder** 💬
+
+Advanced tooltip system with rich content support:
+
+- **Smart Positioning**: Auto-adjusts to viewport (top, bottom, left, right)
+- **Rich Content**: Supports HTML, links, and formatting
+- **Multiple Triggers**: Hover, click, focus, manual
+- **Customizable**: Arrow, delays, max-width, animations
+- **Accessibility**: ARIA attributes, keyboard support
+- **Integration**: GlobalConfig defaults (position, theme, animation, delays)
+
+#### **CodeSnippetBuilder** 💻
+
+Professional code snippet display with syntax highlighting:
+
+- **Syntax Highlighting**: Language-specific color schemes (JavaScript, HTML, CSS, JSON, Python, etc.)
+- **Copy Button**: One-click copy-to-clipboard with visual feedback
+- **Themes**: Dark (default) and Light themes
+- **Line Numbers**: Optional line numbering
+- **Language Labels**: Auto-displays language badge
+- **XSS Protection**: Built-in HTML sanitization
+- **Integration**: GlobalConfig defaults (theme, lineNumbers, copyButton)
+
+### 📝 FormBuilder Enhancements
 
 **Password Toggle with Eye Icon** ✨
+
 - Interactive show/hide password functionality
-- Eye icon (👁️) / Eye-off icon (🙈) toggle button
+- Eye icon / Eye-off icon toggle button using IconManager
 - Positioned inside password field (right-aligned)
 - Smooth icon transitions with hover states
 - ARIA labels for accessibility
-- Uses Lucide SVG icons from IconManager
 
 **Number Stepper Buttons** ✨
+
 - Increment (+) and Decrement (−) buttons for number inputs
 - Respects min/max constraints automatically
 - Custom step support (field.step)
@@ -28,71 +65,93 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Integrated seamlessly with form validation
 
 **M3-Enhanced UI Components:**
+
 - **Checkbox & Radio**: Improved hover states, accent-color support, focus rings
 - **Toggle Switch**: Redesigned with M3 specifications (larger handle on checked state)
 - All components use Design Tokens (`--ssi-primary`, `--ssi-spacing-*`, `--ssi-radius-*`)
 
-#### **IconManager Updates:**
+**Enhanced FormBuilder Demo Page** (`/docs/demos/form-builder.html`):
+
+- **7 Comprehensive Sections**: Design-Systeme Vergleich, Text Inputs, Selection Controls, Advanced Inputs, States & Validation, Responsive Layouts, Complete Registration Form
+- Demo improvements with Design Tokens, Info-Boxen, Code-Snippets, Badges
+- Comparison Grid für visuellen Vergleich der Design-Systeme
+
+### 🎨 IconManager Updates
 
 **New Icons Added:**
+
 - `eye` - Show password icon (Lucide: eye SVG)
 - `eye-off` - Hide password icon (Lucide: eye-off with slash)
 
-#### **Enhanced FormBuilder Demo Page** (`/docs/demos/form-builder.html`)
+### 🔧 GlobalConfig Enhancements
 
-**7 Comprehensive Sections:**
-1. **Design-Systeme Vergleich**: Side-by-Side Darstellung aller 3 Layouts (Standard, Filled M3, Outlined M3)
-2. **Text Inputs Showcase**: Alle 7 Text-basierten Eingabefelder (Text, Email, URL, Tel, Password mit Toggle, Number mit Stepper, Textarea)
-3. **Selection Controls**: Komplette Demos für Select, Checkbox, Radio Buttons (vertical/horizontal/grid-3), Toggle Switches
-4. **Advanced Inputs**: Date/Time/DateTime Picker, Range Slider mit Live-Anzeige, Color Picker, File Upload (Single & Multiple)
-5. **States & Validation**: Error States, Required Fields, Disabled States, Custom Validation Messages
-6. **Responsive Grid Layouts**: 2-Column, 3-Column, Mixed Grid mit fullWidth Support
-7. **Komplettes Registrierungs-Formular**: Realistischer Use Case mit allen Features
+**New Configuration Sections:**
 
-**Demo Improvements:**
-- Nutzt Design Tokens (`--ssi-spacing-*`, `--ssi-radius-*`, `--ssi-shadow-*`) durchgehend
-- Info-Boxen für bessere UX-Hinweise
-- Code-Snippets für jede Section
-- Badges ("Neu", "Erweitert", "Recommended")
-- Comparison Grid für visuellen Vergleich der Design-Systeme
+- **tooltips**: Default position, theme, animation, showArrow, delays
+- **codeSnippets**: Default theme, lineNumbers, copyButton, language display
 
-#### **CSS Enhancements:**
+**Complete v2.2+ Config Example:**
 
-**New CSS Classes:**
-- `.form-password-wrapper`, `.form-password-input`, `.form-password-toggle` - Password field with toggle
-- `.form-number-wrapper`, `.form-number-input`, `.form-number-btn` - Number field with steppers
-- `.form-number-decrement`, `.form-number-increment` - Stepper button variants
-
-**M3-Optimized Styles:**
-- Checkbox/Radio: hover backgrounds, `accent-color` support, improved focus states
-- Toggle Switch: M3-spec dimensions (52×32px), animated handle size change, border states
-- All hover states use `rgba(0, 0, 0, 0.04)` for M3 state layer effect
-- Consistent use of Design Tokens for colors, spacing, shadows, transitions
-
-#### **JavaScript Enhancements:**
-
-**Event Handlers Added:**
-- Password toggle click handler (toggles input type, swaps icons)
-- Number stepper click handlers (increment/decrement with constraints)
-- Both handlers properly update form state and trigger validation
-
----
-
-## [2.2.0] - 2025-11-23
-
-### 🍞 New: ToastBuilder
-
-**New Component: ToastBuilder**
-
-- **Toast Notifications**: Success, Error, Warning, and Info notifications.
-- **Positioning**: Top/Bottom Right/Left/Center support.
-- **Auto-dismiss**: Configurable duration.
-- **Integration**: Fully integrated with GlobalConfig and IconManager.
+```javascript
+GlobalConfig.configure({
+  iconPreset: "lucide",
+  iconWeight: "regular",
+  theme: {
+    /* colors */
+  },
+  buttons: {
+    /* button defaults */
+  },
+  modals: {
+    /* modal defaults */
+  },
+  forms: {
+    /* form defaults */
+  },
+  lists: {
+    /* list defaults */
+  },
+  charts: {
+    /* chart defaults */
+  },
+  tabs: {
+    /* tab defaults */
+  },
+  sidebar: {
+    /* sidebar defaults */
+  },
+  toasts: {
+    /* toast defaults */
+  },
+  tooltips: {
+    /* tooltip defaults - NEW */
+  },
+  codeSnippets: {
+    /* code snippet defaults - NEW */
+  },
+});
+```
 
 ### 🛠️ Core Improvements
 
-- **Code Deduplication**: Created `src/utils.js` for shared utility functions.
-- **Refactoring**: Updated `GlobalConfig.js` and `SiteBuilder.js` to use shared utilities.
+- **Code Deduplication**: Created `src/utils.js` for shared utility functions
+- **Refactoring**: Updated `GlobalConfig.js` and `SiteBuilder.js` to use shared utilities
+- **SidebarBuilder**: Fixed emoji violations - replaced 🔍 with `IconManager.getIcon('search')`
+
+### 📚 Documentation Improvements
+
+**New Demo Pages:**
+
+- `/docs/demos/icon-system.html` - Complete IconManager documentation with interactive playground
+- `/docs/demos/global-config-playground.html` - Interactive GlobalConfig demo with live preview
+- Both pages use CodeSnippetBuilder for professional code display
+
+**Page Enhancements:**
+
+- Fixed horizontal overflow on icon-system page (responsive grid, SVG formatting)
+- Fixed copy button positioning in code snippets
+- Migrated global-config-playground to use CodeSnippetBuilder
+- All pages follow M3 design guidelines with Design Tokens
 
 ---
 
