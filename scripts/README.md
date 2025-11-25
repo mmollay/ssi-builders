@@ -26,7 +26,7 @@ node scripts/sync-version.js
 ### Output
 
 ```
-🔄 Syncing version to: 2.2.0
+🔄 Syncing version to: 2.3.0
 
 ✅ src/version.js - Already up to date (Version constant)
 ✅ docs/demos/layout.js - Already up to date (Sidebar version)
@@ -34,7 +34,7 @@ node scripts/sync-version.js
 ==================================================
 📊 SUMMARY
 ==================================================
-Version: 2.2.0
+Version: 2.3.0
 Files checked: 2
 Files updated: 0
 Errors: 0
@@ -46,7 +46,7 @@ Errors: 0
 
 **Nach Version Bump:**
 ```bash
-npm version minor     # 2.2.0 → 2.3.0
+npm version minor     # 2.3.0 → 2.4.0
 npm run version:sync  # Sync all files
 git add -A
 git commit -m "chore: Sync version to v2.3.0"

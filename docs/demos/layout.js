@@ -22,7 +22,7 @@ export function initializeDemoLayout(activePage) {
   const sidebar = new SidebarBuilder({
     containerId: 'sidebar-container',
     title: 'SSI Builders',
-    version: '2.2.0',
+    version: '2.3.0',
     logo: {
       text: 'SSI',
       background: '#1a73e8'

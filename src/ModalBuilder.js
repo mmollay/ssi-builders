@@ -12,7 +12,7 @@
  * - Accessibility (focus trap, ARIA)
  * - Animations (slide, fade, zoom)
  *
- * @version 2.2.0
+ * @version 2.3.0
  */
 
 import { createVersionBadge } from './version.js';

@@ -33,10 +33,10 @@ grep -r "version:.*['\"].*[0-9]" src/ docs/ --include="*.js"
 
 **Vergleiche:**
 ```
-package.json:     2.2.0
-src/version.js:   2.2.0 ✅
-layout.js:        2.2.0 ✅
-FormBuilder.js:   2.2.0 ✅
+package.json:     2.3.0
+src/version.js:   2.3.0 ✅
+layout.js:        2.3.0 ✅
+FormBuilder.js:   2.3.0 ✅
 ...
 ```
 
@@ -80,7 +80,7 @@ const newVersion = pkg.version;
 
 ```bash
 # Zeige alle Vorkommen der neuen Version
-grep -r "2\.2\.0" src/ docs/ --include="*.js" | wc -l
+grep -r "2\.3\.0" src/ docs/ --include="*.js" | wc -l
 
 # Git diff - Was wurde geändert?
 git diff --stat
@@ -91,7 +91,7 @@ git diff src/version.js docs/demos/layout.js
 ```
 ✅ VERSION UPDATE COMPLETE
 
-Neue Version: 2.2.0
+Neue Version: 2.3.0
 
 Updated Files:
   ✅ src/version.js

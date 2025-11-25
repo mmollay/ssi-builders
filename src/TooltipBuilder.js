@@ -2,7 +2,7 @@
  * TooltipBuilder.js - Reusable Tooltip Component
  * Provides accessible, positioned tooltips with Material Design 3 styling
  * 
- * @version 2.2.0
+ * @version 2.3.0
  */
 
 export class TooltipBuilder {

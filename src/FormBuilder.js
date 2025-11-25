@@ -13,7 +13,7 @@
  * - Async submit with loading states
  * - Mobile-responsive
  *
- * @version 2.2.0
+ * @version 2.3.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';

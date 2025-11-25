@@ -49,7 +49,7 @@ SSI Builders ist die **einzige Source of Truth** für UI-Komponenten in allen SS
 
 ---
 
-## 📋 Verfügbare Builder (v2.2.0)
+## 📋 Verfügbare Builder (v2.3.0)
 
 | Builder | Purpose | Status |
 |---------|---------|--------|
