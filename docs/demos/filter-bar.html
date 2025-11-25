@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilterBar - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/AnalyticsBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    <style>
+        .demo-box {
+            background: var(--analytics-bg-page, #f8f9fa);
+            padding: 24px;
+            border-radius: 8px;
+            border: 2px solid #e8eaed;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .output-log {
+            background: #1e1e1e;
+            color: #d4d4d4;
+            padding: 16px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 16px;
+        }
+
+        .output-log .log-entry {
+            margin: 4px 0;
+            padding: 4px 8px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 4px;
+        }
+
+        .output-log .log-entry:last-child {
+            background: rgba(26, 115, 232, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <div id="sidebar-container"></div>
+
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <div class="page-header">
+                    <h1>FilterBar</h1>
+                    <p>Global filter component for analytics dashboards with select, search, date, and checkbox filters</p>
+                </div>
+
+                <!-- Basic FilterBar -->
+                <div class="demo-section">
+                    <h2>1. Basic FilterBar <span class="badge new">NEW</span></h2>
+                    <p>Simple filter bar with select and search filters</p>
+
+                    <div class="demo-box">
+                        <div id="filter-basic"></div>
+                        <div id="output-basic" class="output-log">
+                            <div class="log-entry">Filter changes will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div id="code-basic" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- All Filter Types -->
+                <div class="demo-section">
+                    <h2>2. All Filter Types</h2>
+                    <p>Demonstration of all available filter types: select, search, date, checkbox</p>
+
+                    <div class="demo-box">
+                        <div id="filter-all-types"></div>
+                        <div id="output-all-types" class="output-log">
+                            <div class="log-entry">Filter changes will appear here...</div>
+                        </div>
+                    </div>
+
+                    <div id="code-all-types" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- With Action Buttons -->
+                <div class="demo-section">
+                    <h2>3. Action Buttons</h2>
+                    <p>FilterBar with refresh, reset, and export buttons</p>
+
+                    <div class="demo-box">
+                        <div id="filter-actions"></div>
+                        <div id="output-actions" class="output-log">
+                            <div class="log-entry">Action events will appear here...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Debounced Search -->
+                <div class="demo-section">
+                    <h2>4. Debounced Search</h2>
+                    <p>Search input with configurable debounce delay (default: 300ms)</p>
+
+                    <div class="demo-box">
+                        <div id="filter-debounced"></div>
+                        <div id="output-debounced" class="output-log">
+                            <div class="log-entry">Type in the search field - onChange fires after 500ms...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programmatic Control -->
+                <div class="demo-section">
+                    <h2>5. Programmatic Control</h2>
+                    <p>Control filter values programmatically</p>
+
+                    <div class="demo-box">
+                        <div id="filter-programmatic"></div>
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button id="btn-set-values" class="ssi-btn ssi-btn-primary">Set Values</button>
+                            <button id="btn-get-values" class="ssi-btn ssi-btn-secondary">Get Values</button>
+                            <button id="btn-reset" class="ssi-btn ssi-btn-secondary">Reset</button>
+                            <button id="btn-update-options" class="ssi-btn ssi-btn-secondary">Update Options</button>
+                        </div>
+                        <div id="output-programmatic" class="output-log">
+                            <div class="log-entry">Click buttons to see programmatic control...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Real-World Example -->
+                <div class="demo-section">
+                    <h2>6. Real-World Analytics Example</h2>
+                    <p>Complete filter bar setup for an analytics dashboard</p>
+
+                    <div class="demo-box">
+                        <div id="filter-analytics"></div>
+                        <div style="margin-top: 16px; padding: 16px; background: white; border-radius: 8px; border: 1px solid #e8eaed;">
+                            <strong>Current Filters:</strong>
+                            <pre id="analytics-output" style="margin-top: 8px; background: #f1f3f4; padding: 12px; border-radius: 4px; overflow-x: auto;"></pre>
+                        </div>
+                    </div>
+
+                    <div id="code-analytics" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- API Reference -->
+                <div class="demo-section">
+                    <h2>Configuration Options</h2>
+
+                    <h3>FilterBar Options</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>containerId</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Container element ID (required)</td>
+                            </tr>
+                            <tr>
+                                <td><code>filters</code></td>
+                                <td>array</td>
+                                <td>[]</td>
+                                <td>Array of filter configurations</td>
+                            </tr>
+                            <tr>
+                                <td><code>onChange</code></td>
+                                <td>function</td>
+                                <td>-</td>
+                                <td>Callback when any filter changes</td>
+                            </tr>
+                            <tr>
+                                <td><code>showRefresh</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Show refresh button</td>
+                            </tr>
+                            <tr>
+                                <td><code>showReset</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Show reset button</td>
+                            </tr>
+                            <tr>
+                                <td><code>showExport</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Show export button</td>
+                            </tr>
+                            <tr>
+                                <td><code>onRefresh</code></td>
+                                <td>function</td>
+                                <td>-</td>
+                                <td>Refresh button handler</td>
+                            </tr>
+                            <tr>
+                                <td><code>onExport</code></td>
+                                <td>function</td>
+                                <td>-</td>
+                                <td>Export button handler</td>
+                            </tr>
+                            <tr>
+                                <td><code>debounceMs</code></td>
+                                <td>number</td>
+                                <td>300</td>
+                                <td>Debounce delay for search inputs (ms)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Filter Types</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Properties</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>select</code></td>
+                                <td>key, label, options, defaultValue, includeAll</td>
+                                <td>Dropdown select filter</td>
+                            </tr>
+                            <tr>
+                                <td><code>search</code></td>
+                                <td>key, label, placeholder, defaultValue</td>
+                                <td>Search input with debounce</td>
+                            </tr>
+                            <tr>
+                                <td><code>date</code></td>
+                                <td>key, label, min, max, defaultValue</td>
+                                <td>Date picker input</td>
+                            </tr>
+                            <tr>
+                                <td><code>checkbox</code></td>
+                                <td>key, label, defaultValue</td>
+                                <td>Boolean checkbox filter</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Methods</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>getValues()</code></td>
+                                <td>-</td>
+                                <td>Get all current filter values</td>
+                            </tr>
+                            <tr>
+                                <td><code>getValue(key)</code></td>
+                                <td>key: string</td>
+                                <td>Get a specific filter value</td>
+                            </tr>
+                            <tr>
+                                <td><code>setValues(values, trigger?)</code></td>
+                                <td>values: object, trigger?: boolean</td>
+                                <td>Set filter values programmatically</td>
+                            </tr>
+                            <tr>
+                                <td><code>reset()</code></td>
+                                <td>-</td>
+                                <td>Reset all filters to defaults</td>
+                            </tr>
+                            <tr>
+                                <td><code>updateOptions(key, options)</code></td>
+                                <td>key: string, options: array</td>
+                                <td>Update select filter options dynamically</td>
+                            </tr>
+                            <tr>
+                                <td><code>setEnabled(key, enabled)</code></td>
+                                <td>key: string, enabled: boolean</td>
+                                <td>Enable/disable a filter</td>
+                            </tr>
+                            <tr>
+                                <td><code>destroy()</code></td>
+                                <td>-</td>
+                                <td>Remove filter bar from DOM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { FilterBar } from '../../src/FilterBar.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+
+        initializeDemoLayout('filter-bar');
+        IconManager.setPreset('lucide');
+
+        // Helper to log output
+        function logOutput(containerId, message) {
+            const container = document.getElementById(containerId);
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            container.appendChild(entry);
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // 1. Basic FilterBar
+        new FilterBar({
+            containerId: 'filter-basic',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'category',
+                    label: 'Category',
+                    options: [
+                        { value: 'electronics', label: 'Electronics' },
+                        { value: 'clothing', label: 'Clothing' },
+                        { value: 'books', label: 'Books' }
+                    ]
+                },
+                {
+                    type: 'search',
+                    key: 'query',
+                    placeholder: 'Search products...'
+                }
+            ],
+            onChange: (values) => {
+                logOutput('output-basic', `Filters changed: ${JSON.stringify(values)}`);
+            },
+            onRefresh: () => {
+                logOutput('output-basic', 'Refresh clicked!');
+            }
+        });
+
+        // 2. All Filter Types
+        new FilterBar({
+            containerId: 'filter-all-types',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'status',
+                    label: 'Status',
+                    options: [
+                        { value: 'active', label: 'Active' },
+                        { value: 'inactive', label: 'Inactive' },
+                        { value: 'pending', label: 'Pending' }
+                    ]
+                },
+                {
+                    type: 'search',
+                    key: 'search',
+                    placeholder: 'Search...'
+                },
+                {
+                    type: 'date',
+                    key: 'date',
+                    label: 'Date'
+                },
+                {
+                    type: 'checkbox',
+                    key: 'premium',
+                    label: 'Premium only'
+                }
+            ],
+            onChange: (values) => {
+                logOutput('output-all-types', `Values: ${JSON.stringify(values)}`);
+            },
+            showRefresh: false,
+            showReset: true
+        });
+
+        // 3. Action Buttons
+        new FilterBar({
+            containerId: 'filter-actions',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'format',
+                    label: 'Format',
+                    options: [
+                        { value: 'csv', label: 'CSV' },
+                        { value: 'json', label: 'JSON' },
+                        { value: 'xlsx', label: 'Excel' }
+                    ]
+                }
+            ],
+            showRefresh: true,
+            showReset: true,
+            showExport: true,
+            onRefresh: () => logOutput('output-actions', 'Refresh triggered'),
+            onExport: () => logOutput('output-actions', 'Export triggered'),
+            onChange: (values) => logOutput('output-actions', `Format: ${values.format}`)
+        });
+
+        // 4. Debounced Search
+        new FilterBar({
+            containerId: 'filter-debounced',
+            filters: [
+                {
+                    type: 'search',
+                    key: 'search',
+                    placeholder: 'Type here (500ms debounce)...'
+                }
+            ],
+            debounceMs: 500,
+            showRefresh: false,
+            showReset: false,
+            onChange: (values) => {
+                logOutput('output-debounced', `Search: "${values.search}"`);
+            }
+        });
+
+        // 5. Programmatic Control
+        const programmaticFilter = new FilterBar({
+            containerId: 'filter-programmatic',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'country',
+                    label: 'Country',
+                    options: [
+                        { value: 'us', label: 'United States' },
+                        { value: 'de', label: 'Germany' },
+                        { value: 'at', label: 'Austria' }
+                    ]
+                },
+                {
+                    type: 'search',
+                    key: 'city',
+                    placeholder: 'City...'
+                }
+            ],
+            showRefresh: false,
+            showReset: false,
+            onChange: (values) => {
+                logOutput('output-programmatic', `Values: ${JSON.stringify(values)}`);
+            }
+        });
+
+        document.getElementById('btn-set-values').addEventListener('click', () => {
+            programmaticFilter.setValues({ country: 'de', city: 'Vienna' });
+            logOutput('output-programmatic', 'setValues({ country: "de", city: "Vienna" })');
+        });
+
+        document.getElementById('btn-get-values').addEventListener('click', () => {
+            const values = programmaticFilter.getValues();
+            logOutput('output-programmatic', `getValues() => ${JSON.stringify(values)}`);
+        });
+
+        document.getElementById('btn-reset').addEventListener('click', () => {
+            programmaticFilter.reset();
+            logOutput('output-programmatic', 'reset() called');
+        });
+
+        document.getElementById('btn-update-options').addEventListener('click', () => {
+            programmaticFilter.updateOptions('country', [
+                { value: 'fr', label: 'France' },
+                { value: 'it', label: 'Italy' },
+                { value: 'es', label: 'Spain' }
+            ]);
+            logOutput('output-programmatic', 'Options updated to: France, Italy, Spain');
+        });
+
+        // 6. Real-World Analytics Example
+        const analyticsFilter = new FilterBar({
+            containerId: 'filter-analytics',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'metric',
+                    label: 'Metric',
+                    includeAll: false,
+                    defaultValue: 'searches',
+                    options: [
+                        { value: 'searches', label: 'Searches' },
+                        { value: 'costs', label: 'Costs' },
+                        { value: 'latency', label: 'Latency' },
+                        { value: 'errors', label: 'Errors' }
+                    ]
+                },
+                {
+                    type: 'select',
+                    key: 'provider',
+                    label: 'Provider',
+                    options: [
+                        { value: 'gemini', label: 'Gemini' },
+                        { value: 'openai', label: 'OpenAI' },
+                        { value: 'claude', label: 'Claude' }
+                    ]
+                },
+                {
+                    type: 'search',
+                    key: 'query',
+                    placeholder: 'Filter queries...'
+                },
+                {
+                    type: 'checkbox',
+                    key: 'cached',
+                    label: 'Include cached'
+                }
+            ],
+            showExport: true,
+            onChange: (values) => {
+                document.getElementById('analytics-output').textContent = JSON.stringify(values, null, 2);
+            },
+            onRefresh: () => alert('Refreshing data...'),
+            onExport: () => alert('Exporting data...')
+        });
+
+        // Initial display
+        document.getElementById('analytics-output').textContent = JSON.stringify(analyticsFilter.getValues(), null, 2);
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-basic',
+            code: `import { FilterBar } from '/vendor/ssi-builders/src/FilterBar.js';
+
+const filterBar = new FilterBar({
+    containerId: 'my-filters',
+    filters: [
+        {
+            type: 'select',
+            key: 'category',
+            label: 'Category',
+            options: [
+                { value: 'electronics', label: 'Electronics' },
+                { value: 'clothing', label: 'Clothing' }
+            ]
+        },
+        {
+            type: 'search',
+            key: 'query',
+            placeholder: 'Search...'
+        }
+    ],
+    onChange: (values) => {
+        console.log('Filters:', values);
+        loadData(values);
+    }
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-all-types',
+            code: `// All filter types
+filters: [
+    // Select dropdown
+    { type: 'select', key: 'status', label: 'Status', options: [...] },
+
+    // Search with debounce
+    { type: 'search', key: 'query', placeholder: 'Search...' },
+
+    // Date picker
+    { type: 'date', key: 'date', label: 'Date', min: '2024-01-01' },
+
+    // Checkbox
+    { type: 'checkbox', key: 'active', label: 'Active only' }
+]`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-analytics',
+            code: `// Complete analytics filter setup
+const filterBar = new FilterBar({
+    containerId: 'analytics-filters',
+    filters: [
+        { type: 'select', key: 'metric', label: 'Metric', options: [...] },
+        { type: 'select', key: 'provider', label: 'Provider', options: [...] },
+        { type: 'search', key: 'query', placeholder: 'Filter queries...' },
+        { type: 'checkbox', key: 'cached', label: 'Include cached' }
+    ],
+    showExport: true,
+    debounceMs: 300,
+    onChange: (values) => {
+        // Reload data with new filters
+        loadAnalyticsData(values);
+    },
+    onRefresh: () => loadAnalyticsData(filterBar.getValues()),
+    onExport: () => exportData(filterBar.getValues())
+});`,
+            language: 'javascript'
+        });
+
+        console.log('FilterBar Demo initialized!');
+    </script>
+</body>
+</html>

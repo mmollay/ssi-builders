@@ -46,6 +46,31 @@ export function initializeDemoLayout(activePage) {
       },
       {
         type: 'heading',
+        label: 'Analytics'
+      },
+      {
+        label: 'AnalyticsCard',
+        icon: IconManager.getIcon('chart'),
+        key: 'analytics-card',
+        href: '/docs/demos/analytics-card.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        label: 'FilterBar',
+        icon: IconManager.getIcon('filter'),
+        key: 'filter-bar',
+        href: '/docs/demos/filter-bar.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        label: 'TimeRangePicker',
+        icon: IconManager.getIcon('clock'),
+        key: 'time-range-picker',
+        href: '/docs/demos/time-range-picker.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        type: 'heading',
         label: 'Core Builders'
       },
       {

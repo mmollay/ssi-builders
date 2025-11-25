@@ -1,0 +1,1194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3 Form Elements Test - Material Design 3</title>
+
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========================================
+           M3 DESIGN TOKENS - Google Material Design 3
+           ======================================== */
+        :root {
+            /* M3 Colors - Google Palette */
+            --md-sys-color-primary: #1a73e8;           /* Google Blue */
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #d4e3ff;
+            --md-sys-color-on-primary-container: #001c3a;
+
+            --md-sys-color-error: #ea4335;             /* Google Red */
+            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-error-container: #ffdad6;
+
+            --md-sys-color-surface: #fefbff;
+            --md-sys-color-on-surface: #1a1c1e;
+            --md-sys-color-surface-variant: #e1e2ec;
+            --md-sys-color-on-surface-variant: #44474e;
+            --md-sys-color-outline: #74777f;
+            --md-sys-color-outline-variant: #c4c6d0;
+
+            /* M3 Typography Scale */
+            --md-sys-typescale-body-large-font: 'Roboto', sans-serif;
+            --md-sys-typescale-body-large-size: 16px;
+            --md-sys-typescale-body-large-line-height: 24px;
+            --md-sys-typescale-body-large-weight: 400;
+
+            --md-sys-typescale-body-small-size: 12px;
+            --md-sys-typescale-body-small-line-height: 16px;
+            --md-sys-typescale-body-small-weight: 400;
+
+            /* M3 State Layers (Opacity) */
+            --md-sys-state-hover-opacity: 0.08;
+            --md-sys-state-focus-opacity: 0.12;
+            --md-sys-state-pressed-opacity: 0.12;
+
+            /* M3 Elevation (Shadows) */
+            --md-sys-elevation-1: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
+            --md-sys-elevation-2: 0 1px 2px rgba(0,0,0,0.3), 0 2px 6px 2px rgba(0,0,0,0.15);
+
+            /* M3 Shape */
+            --md-sys-shape-corner-extra-small: 4px;
+            --md-sys-shape-corner-small: 8px;
+            --md-sys-shape-corner-medium: 12px;
+            --md-sys-shape-corner-full: 9999px;
+
+            /* M3 Component Specific */
+            --md-filled-text-field-container-height: 56px;
+            --md-outlined-text-field-container-height: 56px;
+            --md-text-field-focus-indicator-thickness: 2px;
+        }
+
+        /* ========================================
+           GLOBAL STYLES
+           ======================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--md-sys-typescale-body-large-font);
+            font-size: var(--md-sys-typescale-body-large-size);
+            line-height: var(--md-sys-typescale-body-large-line-height);
+            color: var(--md-sys-color-on-surface);
+            background-color: var(--md-sys-color-surface);
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--md-sys-color-primary);
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 40px;
+        }
+
+        .section {
+            margin-bottom: 60px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: 500;
+            margin-bottom: 24px;
+            color: var(--md-sys-color-on-surface);
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            padding-bottom: 12px;
+        }
+
+        .variant-group {
+            margin-bottom: 40px;
+        }
+
+        .variant-title {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 16px;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .state-showcase {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .state-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface-variant);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ========================================
+           M3 FILLED TEXT FIELD
+           ======================================== */
+        .md-text-field {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            width: 100%;
+            cursor: text;
+        }
+
+        .md-text-field--filled {
+            height: var(--md-filled-text-field-container-height);
+            background-color: var(--md-sys-color-surface-variant);
+            border-radius: var(--md-sys-shape-corner-extra-small) var(--md-sys-shape-corner-extra-small) 0 0;
+            padding: 0 16px;
+        }
+
+        .md-text-field--filled::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: var(--md-sys-color-on-surface-variant);
+            transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-text-field--filled::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: var(--md-text-field-focus-indicator-thickness);
+            background-color: var(--md-sys-color-primary);
+            transform: scaleX(0);
+            transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-text-field--filled:hover::before {
+            background-color: var(--md-sys-color-on-surface);
+        }
+
+        .md-text-field--filled:focus-within::after {
+            transform: scaleX(1);
+        }
+
+        /* ========================================
+           M3 OUTLINED TEXT FIELD
+           ======================================== */
+        .md-text-field--outlined {
+            height: var(--md-outlined-text-field-container-height);
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: var(--md-sys-shape-corner-extra-small);
+            padding: 0 16px;
+            background-color: transparent;
+            transition: border-color 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-text-field--outlined:hover {
+            border-color: var(--md-sys-color-on-surface);
+        }
+
+        .md-text-field--outlined:focus-within {
+            border-width: var(--md-text-field-focus-indicator-thickness);
+            border-color: var(--md-sys-color-primary);
+            padding: 0 15px; /* Compensate for border width change */
+        }
+
+        /* ========================================
+           M3 TEXT FIELD - FLOATING LABEL
+           ======================================== */
+        .md-floating-label {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: var(--md-sys-typescale-body-large-size);
+            font-weight: 400;
+            color: var(--md-sys-color-on-surface-variant);
+            pointer-events: none;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            background-color: transparent;
+            padding: 0 4px;
+            margin-left: -4px;
+        }
+
+        /* Filled - Label floating */
+        .md-text-field--filled .md-floating-label--float,
+        .md-text-field--filled:focus-within .md-floating-label,
+        .md-text-field--filled .md-text-field__input:not(:placeholder-shown) ~ .md-floating-label {
+            top: 8px;
+            transform: translateY(0);
+            font-size: var(--md-sys-typescale-body-small-size);
+            font-weight: 500;
+        }
+
+        /* Outlined - Label floating */
+        .md-text-field--outlined .md-floating-label--float,
+        .md-text-field--outlined:focus-within .md-floating-label,
+        .md-text-field--outlined .md-text-field__input:not(:placeholder-shown) ~ .md-floating-label {
+            top: 0;
+            transform: translateY(-50%);
+            font-size: var(--md-sys-typescale-body-small-size);
+            font-weight: 500;
+            background-color: var(--md-sys-color-surface);
+        }
+
+        .md-text-field:focus-within .md-floating-label {
+            color: var(--md-sys-color-primary);
+        }
+
+        /* ========================================
+           M3 TEXT FIELD - INPUT
+           ======================================== */
+        .md-text-field__input {
+            width: 100%;
+            height: 100%;
+            border: none;
+            outline: none;
+            background-color: transparent;
+            font-family: var(--md-sys-typescale-body-large-font);
+            font-size: var(--md-sys-typescale-body-large-size);
+            color: var(--md-sys-color-on-surface);
+            padding-top: 24px;
+            padding-bottom: 8px;
+        }
+
+        .md-text-field--outlined .md-text-field__input {
+            padding-top: 0;
+            padding-bottom: 0;
+        }
+
+        .md-text-field__input::placeholder {
+            color: var(--md-sys-color-on-surface-variant);
+            opacity: 0;
+            transition: opacity 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-text-field:focus-within .md-text-field__input::placeholder,
+        .md-text-field__input:not(:placeholder-shown)::placeholder {
+            opacity: 1;
+        }
+
+        /* ========================================
+           M3 TEXT FIELD - HELPER TEXT
+           ======================================== */
+        .md-text-field-helper-text {
+            font-size: var(--md-sys-typescale-body-small-size);
+            line-height: var(--md-sys-typescale-body-small-line-height);
+            color: var(--md-sys-color-on-surface-variant);
+            padding: 0 16px;
+            margin-top: 2px;
+        }
+
+        /* ========================================
+           M3 TEXT FIELD - ERROR STATE
+           ======================================== */
+        .md-text-field--error.md-text-field--filled::before {
+            background-color: var(--md-sys-color-error);
+        }
+
+        .md-text-field--error.md-text-field--filled::after {
+            background-color: var(--md-sys-color-error);
+        }
+
+        .md-text-field--error.md-text-field--outlined {
+            border-color: var(--md-sys-color-error);
+        }
+
+        .md-text-field--error:focus-within .md-floating-label {
+            color: var(--md-sys-color-error);
+        }
+
+        .md-text-field--error ~ .md-text-field-helper-text {
+            color: var(--md-sys-color-error);
+        }
+
+        /* ========================================
+           M3 TEXT FIELD - DISABLED STATE
+           ======================================== */
+        .md-text-field--disabled {
+            pointer-events: none;
+            opacity: 0.38;
+        }
+
+        /* ========================================
+           M3 CHECKBOX
+           ======================================== */
+        .md-checkbox {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .md-checkbox__input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .md-checkbox__background {
+            position: relative;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 2px;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .md-checkbox__checkmark {
+            display: none;
+            width: 12px;
+            height: 12px;
+            stroke: var(--md-sys-color-on-primary);
+            stroke-width: 2px;
+        }
+
+        .md-checkbox__input:checked ~ .md-checkbox__background {
+            background-color: var(--md-sys-color-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-checkbox__input:checked ~ .md-checkbox__background .md-checkbox__checkmark {
+            display: block;
+        }
+
+        .md-checkbox:hover .md-checkbox__background::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-on-surface);
+            opacity: var(--md-sys-state-hover-opacity);
+        }
+
+        .md-checkbox__label {
+            margin-left: 12px;
+            color: var(--md-sys-color-on-surface);
+            user-select: none;
+        }
+
+        /* ========================================
+           M3 RADIO BUTTON
+           ======================================== */
+        .md-radio {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .md-radio__input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .md-radio__background {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 50%;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .md-radio__inner-circle {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-primary);
+            transform: scale(0);
+            transition: transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-radio__input:checked ~ .md-radio__background {
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-radio__input:checked ~ .md-radio__background .md-radio__inner-circle {
+            transform: scale(1);
+        }
+
+        .md-radio:hover .md-radio__background::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-on-surface);
+            opacity: var(--md-sys-state-hover-opacity);
+        }
+
+        .md-radio__label {
+            margin-left: 12px;
+            color: var(--md-sys-color-on-surface);
+            user-select: none;
+        }
+
+        /* ========================================
+           M3 SWITCH
+           ======================================== */
+        .md-switch {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            cursor: pointer;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .md-switch__input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .md-switch__track {
+            position: relative;
+            width: 52px;
+            height: 32px;
+            border: 2px solid var(--md-sys-color-outline);
+            border-radius: var(--md-sys-shape-corner-full);
+            background-color: var(--md-sys-color-surface-variant);
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-switch__thumb {
+            position: absolute;
+            top: 50%;
+            left: 4px;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--md-sys-color-outline);
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-switch__input:checked ~ .md-switch__track {
+            background-color: var(--md-sys-color-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-switch__input:checked ~ .md-switch__track .md-switch__thumb {
+            left: calc(100% - 20px);
+            width: 24px;
+            height: 24px;
+            background-color: var(--md-sys-color-on-primary);
+        }
+
+        .md-switch__label {
+            margin-left: 16px;
+            color: var(--md-sys-color-on-surface);
+            user-select: none;
+        }
+
+        /* ========================================
+           M3 SLIDER
+           ======================================== */
+        .md-slider {
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .md-slider__input {
+            width: 100%;
+            height: 4px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: transparent;
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Track */
+        .md-slider__input::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: var(--md-sys-color-primary-container);
+            border-radius: var(--md-sys-shape-corner-full);
+        }
+
+        .md-slider__input::-moz-range-track {
+            width: 100%;
+            height: 4px;
+            background: var(--md-sys-color-primary-container);
+            border-radius: var(--md-sys-shape-corner-full);
+        }
+
+        /* Thumb */
+        .md-slider__input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            background: var(--md-sys-color-primary);
+            border-radius: 50%;
+            cursor: pointer;
+            margin-top: -8px;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-slider__input::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            background: var(--md-sys-color-primary);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .md-slider__input:hover::-webkit-slider-thumb {
+            box-shadow: 0 0 0 8px rgba(26, 115, 232, 0.12);
+        }
+
+        .md-slider__input:hover::-moz-range-thumb {
+            box-shadow: 0 0 0 8px rgba(26, 115, 232, 0.12);
+        }
+
+        .md-slider__input:active::-webkit-slider-thumb {
+            box-shadow: 0 0 0 12px rgba(26, 115, 232, 0.12);
+        }
+
+        .md-slider__input:active::-moz-range-thumb {
+            box-shadow: 0 0 0 12px rgba(26, 115, 232, 0.12);
+        }
+
+        /* ========================================
+           DEMO SPECIFIC STYLES
+           ======================================== */
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .demo-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .color-swatch {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background-color: var(--md-sys-color-surface-variant);
+            border-radius: var(--md-sys-shape-corner-small);
+            margin-bottom: 8px;
+        }
+
+        .color-box {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--md-sys-shape-corner-extra-small);
+            border: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        .info-box {
+            background-color: var(--md-sys-color-primary-container);
+            color: var(--md-sys-color-on-primary-container);
+            padding: 16px;
+            border-radius: var(--md-sys-shape-corner-medium);
+            margin-bottom: 24px;
+            font-size: 14px;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ======================================== HEADER ======================================== -->
+    <h1>M3 Form Elements Test</h1>
+    <p class="subtitle">Material Design 3 - Pixel-Perfect Component Showcase</p>
+
+    <div class="info-box">
+        <strong>Referenz:</strong> Alle Komponenten sind nach den offiziellen Material Design 3 Guidelines implementiert.<br>
+        <strong>Specs:</strong> Container Height: 56px | Border Radius: 4px | Focus Indicator: 2px | Font: Roboto 16px
+    </div>
+
+    <!-- ======================================== SECTION: TEXT FIELDS ======================================== -->
+    <section class="section">
+        <h2 class="section-title">1. Text Fields</h2>
+
+        <!-- FILLED VARIANT -->
+        <div class="variant-group">
+            <h3 class="variant-title">Filled Text Fields</h3>
+
+            <div class="form-row">
+                <!-- Default State -->
+                <div class="demo-item">
+                    <span class="state-label">Default</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="text" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Vorname</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Geben Sie Ihren Vornamen ein</span>
+                </div>
+
+                <!-- With Value -->
+                <div class="demo-item">
+                    <span class="state-label">Filled</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="text" class="md-text-field__input" value="Max Mustermann" placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">Vollständiger Name</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Label ist geflogen</span>
+                </div>
+
+                <!-- Error State -->
+                <div class="demo-item">
+                    <span class="state-label">Error</span>
+                    <label class="md-text-field md-text-field--filled md-text-field--error">
+                        <input type="email" class="md-text-field__input" value="invalid-email" placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">Email</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Ungültige E-Mail-Adresse</span>
+                </div>
+
+                <!-- Disabled State -->
+                <div class="demo-item">
+                    <span class="state-label">Disabled</span>
+                    <label class="md-text-field md-text-field--filled md-text-field--disabled">
+                        <input type="text" class="md-text-field__input" value="Deaktiviert" disabled placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">Deaktiviertes Feld</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Dieses Feld ist deaktiviert</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- OUTLINED VARIANT -->
+        <div class="variant-group">
+            <h3 class="variant-title">Outlined Text Fields</h3>
+
+            <div class="form-row">
+                <!-- Default State -->
+                <div class="demo-item">
+                    <span class="state-label">Default</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <input type="text" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Nachname</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Geben Sie Ihren Nachnamen ein</span>
+                </div>
+
+                <!-- With Value -->
+                <div class="demo-item">
+                    <span class="state-label">Filled</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <input type="text" class="md-text-field__input" value="Musterstadt" placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">Stadt</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Label ist geflogen</span>
+                </div>
+
+                <!-- Error State -->
+                <div class="demo-item">
+                    <span class="state-label">Error</span>
+                    <label class="md-text-field md-text-field--outlined md-text-field--error">
+                        <input type="text" class="md-text-field__input" value="12" placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">PLZ</span>
+                    </label>
+                    <span class="md-text-field-helper-text">PLZ muss 5 Stellen haben</span>
+                </div>
+
+                <!-- Disabled State -->
+                <div class="demo-item">
+                    <span class="state-label">Disabled</span>
+                    <label class="md-text-field md-text-field--outlined md-text-field--disabled">
+                        <input type="text" class="md-text-field__input" value="Österreich" disabled placeholder=" ">
+                        <span class="md-floating-label md-floating-label--float">Land</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Dieses Feld ist deaktiviert</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TEXTAREA -->
+        <div class="variant-group">
+            <h3 class="variant-title">Textarea (Filled & Outlined)</h3>
+
+            <div class="form-row">
+                <!-- Filled Textarea -->
+                <div class="demo-item">
+                    <span class="state-label">Filled Textarea</span>
+                    <label class="md-text-field md-text-field--filled" style="height: 120px; align-items: flex-start;">
+                        <textarea class="md-text-field__input" placeholder=" " style="resize: vertical; padding-top: 24px; min-height: 80px;"></textarea>
+                        <span class="md-floating-label" style="top: 20px;">Nachricht</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Mehrzeiliges Textfeld</span>
+                </div>
+
+                <!-- Outlined Textarea -->
+                <div class="demo-item">
+                    <span class="state-label">Outlined Textarea</span>
+                    <label class="md-text-field md-text-field--outlined" style="height: 120px; align-items: flex-start; padding-top: 8px; padding-bottom: 8px;">
+                        <textarea class="md-text-field__input" placeholder=" " style="resize: vertical; min-height: 80px;"></textarea>
+                        <span class="md-floating-label">Kommentar</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Geben Sie Ihren Kommentar ein</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SELECT/DROPDOWN -->
+        <div class="variant-group">
+            <h3 class="variant-title">Select/Dropdown (Native HTML5)</h3>
+
+            <div class="form-row">
+                <!-- Filled Select -->
+                <div class="demo-item">
+                    <span class="state-label">Filled Select</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <select class="md-text-field__input" style="cursor: pointer;">
+                            <option value="" disabled selected hidden></option>
+                            <option value="at">Österreich</option>
+                            <option value="de">Deutschland</option>
+                            <option value="ch">Schweiz</option>
+                        </select>
+                        <span class="md-floating-label">Land auswählen</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Wählen Sie Ihr Land</span>
+                </div>
+
+                <!-- Outlined Select -->
+                <div class="demo-item">
+                    <span class="state-label">Outlined Select</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <select class="md-text-field__input" style="cursor: pointer;">
+                            <option value="" disabled selected hidden></option>
+                            <option value="herr">Herr</option>
+                            <option value="frau">Frau</option>
+                            <option value="divers">Divers</option>
+                        </select>
+                        <span class="md-floating-label">Anrede</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Ihre Anrede</span>
+                </div>
+
+                <!-- Select with Value -->
+                <div class="demo-item">
+                    <span class="state-label">Filled Select (Selected)</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <select class="md-text-field__input" style="cursor: pointer;">
+                            <option value="de" selected>Deutschland</option>
+                            <option value="at">Österreich</option>
+                            <option value="ch">Schweiz</option>
+                        </select>
+                        <span class="md-floating-label md-floating-label--float">Land</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Ausgewähltes Land</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SPECIALIZED INPUTS -->
+        <div class="variant-group">
+            <h3 class="variant-title">Specialized Inputs (Date, Time, Number, Color)</h3>
+
+            <div class="form-row">
+                <!-- Date Picker -->
+                <div class="demo-item">
+                    <span class="state-label">Date Picker (Filled)</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="date" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Geburtsdatum</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Wählen Sie ein Datum</span>
+                </div>
+
+                <!-- Time Picker -->
+                <div class="demo-item">
+                    <span class="state-label">Time Picker (Outlined)</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <input type="time" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Uhrzeit</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Wählen Sie eine Uhrzeit</span>
+                </div>
+
+                <!-- Number Input -->
+                <div class="demo-item">
+                    <span class="state-label">Number Input (Filled)</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="number" class="md-text-field__input" placeholder=" " min="0" max="100" value="50">
+                        <span class="md-floating-label md-floating-label--float">Anzahl</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Geben Sie eine Zahl ein (0-100)</span>
+                </div>
+
+                <!-- Color Picker -->
+                <div class="demo-item">
+                    <span class="state-label">Color Picker (Outlined)</span>
+                    <label class="md-text-field md-text-field--outlined" style="cursor: pointer;">
+                        <input type="color" class="md-text-field__input" value="#1a73e8" style="cursor: pointer; height: 40px; padding: 4px;">
+                        <span class="md-floating-label md-floating-label--float">Farbe wählen</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Aktuelle Farbe: #1a73e8</span>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <!-- Email Input -->
+                <div class="demo-item">
+                    <span class="state-label">Email Input (Filled)</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="email" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">E-Mail-Adresse</span>
+                    </label>
+                    <span class="md-text-field-helper-text">beispiel@email.com</span>
+                </div>
+
+                <!-- Tel Input -->
+                <div class="demo-item">
+                    <span class="state-label">Tel Input (Outlined)</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <input type="tel" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Telefonnummer</span>
+                    </label>
+                    <span class="md-text-field-helper-text">+43 xxx xxx xxxx</span>
+                </div>
+
+                <!-- URL Input -->
+                <div class="demo-item">
+                    <span class="state-label">URL Input (Filled)</span>
+                    <label class="md-text-field md-text-field--filled">
+                        <input type="url" class="md-text-field__input" placeholder=" ">
+                        <span class="md-floating-label">Website</span>
+                    </label>
+                    <span class="md-text-field-helper-text">https://example.com</span>
+                </div>
+
+                <!-- Password Input -->
+                <div class="demo-item">
+                    <span class="state-label">Password Input (Outlined)</span>
+                    <label class="md-text-field md-text-field--outlined">
+                        <input type="password" class="md-text-field__input" placeholder=" " value="geheim123">
+                        <span class="md-floating-label md-floating-label--float">Passwort</span>
+                    </label>
+                    <span class="md-text-field-helper-text">Mindestens 8 Zeichen</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== SECTION: SELECTION CONTROLS ======================================== -->
+    <section class="section">
+        <h2 class="section-title">2. Selection Controls</h2>
+
+        <!-- CHECKBOXES -->
+        <div class="variant-group">
+            <h3 class="variant-title">Checkboxes</h3>
+
+            <div class="state-showcase">
+                <label class="md-checkbox">
+                    <input type="checkbox" class="md-checkbox__input">
+                    <span class="md-checkbox__background">
+                        <svg class="md-checkbox__checkmark" viewBox="0 0 18 18">
+                            <path d="M 3 9 L 7 13 L 15 5" fill="none"/>
+                        </svg>
+                    </span>
+                    <span class="md-checkbox__label">Unchecked</span>
+                </label>
+
+                <label class="md-checkbox">
+                    <input type="checkbox" class="md-checkbox__input" checked>
+                    <span class="md-checkbox__background">
+                        <svg class="md-checkbox__checkmark" viewBox="0 0 18 18">
+                            <path d="M 3 9 L 7 13 L 15 5" fill="none"/>
+                        </svg>
+                    </span>
+                    <span class="md-checkbox__label">Checked</span>
+                </label>
+
+                <label class="md-checkbox" style="opacity: 0.38; pointer-events: none;">
+                    <input type="checkbox" class="md-checkbox__input" disabled>
+                    <span class="md-checkbox__background">
+                        <svg class="md-checkbox__checkmark" viewBox="0 0 18 18">
+                            <path d="M 3 9 L 7 13 L 15 5" fill="none"/>
+                        </svg>
+                    </span>
+                    <span class="md-checkbox__label">Disabled</span>
+                </label>
+            </div>
+
+            <div style="margin-top: 16px;">
+                <label class="md-checkbox" style="display: flex;">
+                    <input type="checkbox" class="md-checkbox__input" checked>
+                    <span class="md-checkbox__background">
+                        <svg class="md-checkbox__checkmark" viewBox="0 0 18 18">
+                            <path d="M 3 9 L 7 13 L 15 5" fill="none"/>
+                        </svg>
+                    </span>
+                    <span class="md-checkbox__label">Ich akzeptiere die Datenschutzerklärung und stimme den Nutzungsbedingungen zu</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- RADIO BUTTONS -->
+        <div class="variant-group">
+            <h3 class="variant-title">Radio Buttons</h3>
+
+            <div class="state-showcase">
+                <label class="md-radio">
+                    <input type="radio" name="radio-demo" class="md-radio__input">
+                    <span class="md-radio__background">
+                        <span class="md-radio__inner-circle"></span>
+                    </span>
+                    <span class="md-radio__label">Option 1</span>
+                </label>
+
+                <label class="md-radio">
+                    <input type="radio" name="radio-demo" class="md-radio__input" checked>
+                    <span class="md-radio__background">
+                        <span class="md-radio__inner-circle"></span>
+                    </span>
+                    <span class="md-radio__label">Option 2 (Selected)</span>
+                </label>
+
+                <label class="md-radio">
+                    <input type="radio" name="radio-demo" class="md-radio__input">
+                    <span class="md-radio__background">
+                        <span class="md-radio__inner-circle"></span>
+                    </span>
+                    <span class="md-radio__label">Option 3</span>
+                </label>
+
+                <label class="md-radio" style="opacity: 0.38; pointer-events: none;">
+                    <input type="radio" name="radio-disabled" class="md-radio__input" disabled>
+                    <span class="md-radio__background">
+                        <span class="md-radio__inner-circle"></span>
+                    </span>
+                    <span class="md-radio__label">Disabled</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- SWITCHES -->
+        <div class="variant-group">
+            <h3 class="variant-title">Switches</h3>
+
+            <div class="state-showcase">
+                <label class="md-switch">
+                    <input type="checkbox" class="md-switch__input">
+                    <span class="md-switch__track">
+                        <span class="md-switch__thumb"></span>
+                    </span>
+                    <span class="md-switch__label">Off</span>
+                </label>
+
+                <label class="md-switch">
+                    <input type="checkbox" class="md-switch__input" checked>
+                    <span class="md-switch__track">
+                        <span class="md-switch__thumb"></span>
+                    </span>
+                    <span class="md-switch__label">On</span>
+                </label>
+
+                <label class="md-switch" style="opacity: 0.38; pointer-events: none;">
+                    <input type="checkbox" class="md-switch__input" disabled>
+                    <span class="md-switch__track">
+                        <span class="md-switch__thumb"></span>
+                    </span>
+                    <span class="md-switch__label">Disabled</span>
+                </label>
+            </div>
+
+            <div style="margin-top: 24px;">
+                <label class="md-switch" style="display: flex;">
+                    <input type="checkbox" class="md-switch__input" checked>
+                    <span class="md-switch__track">
+                        <span class="md-switch__thumb"></span>
+                    </span>
+                    <span class="md-switch__label">Benachrichtigungen aktivieren</span>
+                </label>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== SECTION: SLIDERS ======================================== -->
+    <section class="section">
+        <h2 class="section-title">3. Sliders</h2>
+
+        <div class="variant-group">
+            <h3 class="variant-title">Range Slider</h3>
+
+            <div class="demo-item">
+                <span class="state-label">Default Slider (0-100)</span>
+                <div class="md-slider">
+                    <input type="range" class="md-slider__input" min="0" max="100" value="50">
+                </div>
+                <span class="md-text-field-helper-text">Aktueller Wert: 50</span>
+            </div>
+
+            <div class="demo-item" style="margin-top: 24px;">
+                <span class="state-label">Volume Control</span>
+                <div class="md-slider">
+                    <input type="range" class="md-slider__input" min="0" max="100" value="75">
+                </div>
+                <span class="md-text-field-helper-text">Lautstärke: 75%</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== SECTION: DESIGN TOKENS ======================================== -->
+    <section class="section">
+        <h2 class="section-title">4. Design Tokens Reference</h2>
+
+        <div class="variant-group">
+            <h3 class="variant-title">M3 Color Palette</h3>
+
+            <div class="demo-grid">
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: var(--md-sys-color-primary);"></div>
+                    <div>
+                        <div style="font-weight: 500;">Primary</div>
+                        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">#1a73e8</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: var(--md-sys-color-error);"></div>
+                    <div>
+                        <div style="font-weight: 500;">Error</div>
+                        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">#ea4335</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: var(--md-sys-color-surface-variant);"></div>
+                    <div>
+                        <div style="font-weight: 500;">Surface Variant</div>
+                        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">#e1e2ec</div>
+                    </div>
+                </div>
+
+                <div class="color-swatch">
+                    <div class="color-box" style="background-color: var(--md-sys-color-outline); border: none;"></div>
+                    <div>
+                        <div style="font-weight: 500;">Outline</div>
+                        <div style="font-size: 12px; color: var(--md-sys-color-on-surface-variant);">#74777f</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="variant-group">
+            <h3 class="variant-title">Typography Scale</h3>
+
+            <div>
+                <div style="font-size: 16px; font-weight: 400; margin-bottom: 8px;">Body Large: 16px / 400 / Roboto</div>
+                <div style="font-size: 12px; font-weight: 400; color: var(--md-sys-color-on-surface-variant);">Body Small: 12px / 400 / Roboto</div>
+            </div>
+        </div>
+
+        <div class="variant-group">
+            <h3 class="variant-title">Component Dimensions</h3>
+
+            <div>
+                <ul style="list-style: none; line-height: 2;">
+                    <li><strong>Text Field Height:</strong> 56px</li>
+                    <li><strong>Border Radius:</strong> 4px</li>
+                    <li><strong>Focus Indicator:</strong> 2px</li>
+                    <li><strong>Horizontal Padding:</strong> 16px</li>
+                    <li><strong>Checkbox Size:</strong> 18px × 18px</li>
+                    <li><strong>Radio Size:</strong> 20px × 20px</li>
+                    <li><strong>Switch Width:</strong> 52px</li>
+                    <li><strong>Switch Height:</strong> 32px</li>
+                    <li><strong>Slider Track Height:</strong> 4px</li>
+                    <li><strong>Slider Thumb Size:</strong> 20px × 20px</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ======================================== FOOTER ======================================== -->
+    <div style="margin-top: 60px; padding-top: 24px; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: center; color: var(--md-sys-color-on-surface-variant); font-size: 14px;">
+        <p><strong>SSI Builders</strong> · Material Design 3 Implementation</p>
+        <p style="margin-top: 8px;">Referenz: <a href="https://m3.material.io/components" target="_blank" style="color: var(--md-sys-color-primary);">Material Design 3 Components</a></p>
+    </div>
+
+    <script>
+        // Floating Label Logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const textFields = document.querySelectorAll('.md-text-field');
+
+            textFields.forEach(field => {
+                const input = field.querySelector('.md-text-field__input');
+                const label = field.querySelector('.md-floating-label');
+
+                if (!input || !label) return;
+
+                // Check if input has value on load
+                const checkValue = () => {
+                    if (input.value.trim() !== '') {
+                        label.classList.add('md-floating-label--float');
+                    } else {
+                        label.classList.remove('md-floating-label--float');
+                    }
+                };
+
+                // Initial check
+                checkValue();
+
+                // Listen for input changes
+                input.addEventListener('input', checkValue);
+                input.addEventListener('change', checkValue);
+            });
+
+            // Slider value display
+            const sliders = document.querySelectorAll('.md-slider__input');
+            sliders.forEach(slider => {
+                const helperText = slider.closest('.demo-item')?.querySelector('.md-text-field-helper-text');
+
+                if (helperText) {
+                    slider.addEventListener('input', (e) => {
+                        const originalText = helperText.textContent.split(':')[0];
+                        helperText.textContent = `${originalText}: ${e.target.value}${originalText.includes('%') ? '%' : ''}`;
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

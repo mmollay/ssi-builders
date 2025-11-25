@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TimeRangePicker - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/AnalyticsBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    <style>
+        .demo-box {
+            background: var(--analytics-bg-page, #f8f9fa);
+            padding: 24px;
+            border-radius: 8px;
+            border: 2px solid #e8eaed;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+
+        .output-panel {
+            background: white;
+            border: 1px solid #e8eaed;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .output-panel h4 {
+            margin: 0 0 12px 0;
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .output-panel pre {
+            background: #f1f3f4;
+            padding: 12px;
+            border-radius: 4px;
+            font-size: 13px;
+            overflow-x: auto;
+            margin: 0;
+        }
+
+        .range-display {
+            display: flex;
+            gap: 24px;
+            margin-top: 16px;
+        }
+
+        .range-display .date-info {
+            flex: 1;
+            background: white;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid #e8eaed;
+        }
+
+        .range-display .date-info label {
+            display: block;
+            font-size: 11px;
+            color: #5f6368;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .range-display .date-info span {
+            font-size: 14px;
+            font-weight: 500;
+            color: #202124;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <div id="sidebar-container"></div>
+
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <div class="page-header">
+                    <h1>TimeRangePicker</h1>
+                    <p>Time range selection component with presets, comparison toggle, and custom date range support</p>
+                </div>
+
+                <!-- Basic TimeRangePicker -->
+                <div class="demo-section">
+                    <h2>1. Basic TimeRangePicker <span class="badge new">NEW</span></h2>
+                    <p>Default time range picker with day, week, month, quarter, year presets</p>
+
+                    <div class="demo-box">
+                        <div id="picker-basic"></div>
+                        <div class="range-display">
+                            <div class="date-info">
+                                <label>Start Date</label>
+                                <span id="basic-start">-</span>
+                            </div>
+                            <div class="date-info">
+                                <label>End Date</label>
+                                <span id="basic-end">-</span>
+                            </div>
+                            <div class="date-info">
+                                <label>Selected Range</label>
+                                <span id="basic-range">-</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="code-basic" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- With Comparison -->
+                <div class="demo-section">
+                    <h2>2. With Comparison Toggle</h2>
+                    <p>Enable comparison with previous period for trend analysis</p>
+
+                    <div class="demo-box">
+                        <div id="picker-comparison"></div>
+                        <div class="output-panel">
+                            <h4>Current Period</h4>
+                            <pre id="comparison-current">{}</pre>
+                            <h4 style="margin-top: 16px;">Comparison Period</h4>
+                            <pre id="comparison-previous">{}</pre>
+                        </div>
+                    </div>
+
+                    <div id="code-comparison" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- Custom Date Range -->
+                <div class="demo-section">
+                    <h2>3. Custom Date Range</h2>
+                    <p>Allow users to select custom start and end dates</p>
+
+                    <div class="demo-box">
+                        <div id="picker-custom"></div>
+                        <div class="output-panel">
+                            <h4>Selected Range</h4>
+                            <pre id="custom-output">{}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Limited Presets -->
+                <div class="demo-section">
+                    <h2>4. Limited Presets</h2>
+                    <p>Show only specific time range options</p>
+
+                    <div class="demo-box">
+                        <div id="picker-limited"></div>
+                        <div class="range-display">
+                            <div class="date-info">
+                                <label>Selected</label>
+                                <span id="limited-range">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Variants -->
+                <div class="demo-section">
+                    <h2>5. Size Variants</h2>
+                    <p>Small, medium (default), and large sizes</p>
+
+                    <div class="demo-box">
+                        <div style="display: flex; flex-direction: column; gap: 16px;">
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-size: 12px; color: #5f6368;">Small</label>
+                                <div id="picker-small"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-size: 12px; color: #5f6368;">Medium (default)</label>
+                                <div id="picker-medium"></div>
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 8px; font-size: 12px; color: #5f6368;">Large</label>
+                                <div id="picker-large"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Programmatic Control -->
+                <div class="demo-section">
+                    <h2>6. Programmatic Control</h2>
+                    <p>Control the picker programmatically</p>
+
+                    <div class="demo-box">
+                        <div id="picker-programmatic"></div>
+                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
+                            <button id="btn-set-week" class="ssi-btn ssi-btn-secondary">Set Week</button>
+                            <button id="btn-set-month" class="ssi-btn ssi-btn-secondary">Set Month</button>
+                            <button id="btn-set-custom" class="ssi-btn ssi-btn-secondary">Set Custom Range</button>
+                            <button id="btn-toggle-comparison" class="ssi-btn ssi-btn-primary">Toggle Comparison</button>
+                            <button id="btn-get-sql" class="ssi-btn ssi-btn-secondary">Get SQL Date</button>
+                        </div>
+                        <div class="output-panel">
+                            <h4>Output</h4>
+                            <pre id="programmatic-output">{}</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Integration Example -->
+                <div class="demo-section">
+                    <h2>7. Integration with FilterBar</h2>
+                    <p>Combine TimeRangePicker with FilterBar for complete analytics filtering</p>
+
+                    <div class="demo-box">
+                        <div style="display: flex; gap: 16px; align-items: flex-start; flex-wrap: wrap;">
+                            <div id="picker-integrated"></div>
+                            <div id="filter-integrated" style="flex: 1; min-width: 300px;"></div>
+                        </div>
+                        <div class="output-panel">
+                            <h4>Combined Filter State</h4>
+                            <pre id="integrated-output">{}</pre>
+                        </div>
+                    </div>
+
+                    <div id="code-integration" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- API Reference -->
+                <div class="demo-section">
+                    <h2>Configuration Options</h2>
+
+                    <h3>TimeRangePicker Options</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>containerId</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Container element ID (required)</td>
+                            </tr>
+                            <tr>
+                                <td><code>defaultRange</code></td>
+                                <td>string</td>
+                                <td>'day'</td>
+                                <td>Default selected range</td>
+                            </tr>
+                            <tr>
+                                <td><code>ranges</code></td>
+                                <td>array</td>
+                                <td>['day', 'week', 'month', 'quarter', 'year']</td>
+                                <td>Which range presets to show</td>
+                            </tr>
+                            <tr>
+                                <td><code>showComparison</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Show comparison toggle</td>
+                            </tr>
+                            <tr>
+                                <td><code>comparisonLabel</code></td>
+                                <td>string</td>
+                                <td>'vs. Vorperiode'</td>
+                                <td>Label for comparison checkbox</td>
+                            </tr>
+                            <tr>
+                                <td><code>showCustom</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Show custom date range option</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>'medium'</td>
+                                <td>'small', 'medium', 'large'</td>
+                            </tr>
+                            <tr>
+                                <td><code>onChange</code></td>
+                                <td>function</td>
+                                <td>-</td>
+                                <td>Callback when range changes: (rangeData, comparisonData) => {}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Predefined Ranges</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Key</th>
+                                <th>Label</th>
+                                <th>Days</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>day</code></td>
+                                <td>Heute</td>
+                                <td>1</td>
+                            </tr>
+                            <tr>
+                                <td><code>week</code></td>
+                                <td>Woche</td>
+                                <td>7</td>
+                            </tr>
+                            <tr>
+                                <td><code>month</code></td>
+                                <td>Monat</td>
+                                <td>30</td>
+                            </tr>
+                            <tr>
+                                <td><code>quarter</code></td>
+                                <td>Quartal</td>
+                                <td>90</td>
+                            </tr>
+                            <tr>
+                                <td><code>year</code></td>
+                                <td>Jahr</td>
+                                <td>365</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Methods</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>getRange()</code></td>
+                                <td>-</td>
+                                <td>Get current range key</td>
+                            </tr>
+                            <tr>
+                                <td><code>getRangeData()</code></td>
+                                <td>-</td>
+                                <td>Get range data with start, end, label</td>
+                            </tr>
+                            <tr>
+                                <td><code>getComparisonData()</code></td>
+                                <td>-</td>
+                                <td>Get comparison period data</td>
+                            </tr>
+                            <tr>
+                                <td><code>setRange(range, trigger?)</code></td>
+                                <td>range: string, trigger?: boolean</td>
+                                <td>Set the active range</td>
+                            </tr>
+                            <tr>
+                                <td><code>setCustomRange(start, end)</code></td>
+                                <td>start: Date|string, end: Date|string</td>
+                                <td>Set a custom date range</td>
+                            </tr>
+                            <tr>
+                                <td><code>setComparison(enabled)</code></td>
+                                <td>enabled: boolean</td>
+                                <td>Enable/disable comparison</td>
+                            </tr>
+                            <tr>
+                                <td><code>isComparisonEnabled()</code></td>
+                                <td>-</td>
+                                <td>Check if comparison is enabled</td>
+                            </tr>
+                            <tr>
+                                <td><code>getSqlStartDate()</code></td>
+                                <td>-</td>
+                                <td>Get ISO date string for SQL queries</td>
+                            </tr>
+                            <tr>
+                                <td><code>destroy()</code></td>
+                                <td>-</td>
+                                <td>Remove picker from DOM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Static Methods</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>TimeRangePicker.getStartDate(range)</code></td>
+                                <td>range: string</td>
+                                <td>Get start date for a range key</td>
+                            </tr>
+                            <tr>
+                                <td><code>TimeRangePicker.getComparisonPeriod(range)</code></td>
+                                <td>range: string</td>
+                                <td>Get comparison period for a range</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { TimeRangePicker } from '../../src/TimeRangePicker.js';
+        import { FilterBar } from '../../src/FilterBar.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+
+        initializeDemoLayout('time-range-picker');
+        IconManager.setPreset('lucide');
+
+        // Helper to format dates
+        const formatDate = (date) => date ? date.toLocaleDateString('de-DE') : '-';
+
+        // 1. Basic TimeRangePicker
+        new TimeRangePicker({
+            containerId: 'picker-basic',
+            defaultRange: 'week',
+            onChange: (rangeData) => {
+                document.getElementById('basic-start').textContent = formatDate(rangeData.start);
+                document.getElementById('basic-end').textContent = formatDate(rangeData.end);
+                document.getElementById('basic-range').textContent = rangeData.label;
+            }
+        });
+
+        // Trigger initial display
+        document.getElementById('basic-range').textContent = 'Woche';
+
+        // 2. With Comparison
+        new TimeRangePicker({
+            containerId: 'picker-comparison',
+            defaultRange: 'week',
+            showComparison: true,
+            comparisonLabel: 'Compare with previous period',
+            onChange: (rangeData, comparisonData) => {
+                document.getElementById('comparison-current').textContent = JSON.stringify({
+                    key: rangeData.key,
+                    start: formatDate(rangeData.start),
+                    end: formatDate(rangeData.end),
+                    label: rangeData.label
+                }, null, 2);
+
+                document.getElementById('comparison-previous').textContent = comparisonData
+                    ? JSON.stringify({
+                        start: formatDate(comparisonData.start),
+                        end: formatDate(comparisonData.end),
+                        label: comparisonData.label
+                    }, null, 2)
+                    : 'Comparison disabled';
+            }
+        });
+
+        // 3. Custom Date Range
+        new TimeRangePicker({
+            containerId: 'picker-custom',
+            defaultRange: 'month',
+            showCustom: true,
+            onChange: (rangeData) => {
+                document.getElementById('custom-output').textContent = JSON.stringify({
+                    key: rangeData.key,
+                    start: formatDate(rangeData.start),
+                    end: formatDate(rangeData.end),
+                    days: rangeData.days || 'custom'
+                }, null, 2);
+            }
+        });
+
+        // 4. Limited Presets
+        new TimeRangePicker({
+            containerId: 'picker-limited',
+            defaultRange: 'day',
+            ranges: ['day', 'week', 'month'],
+            onChange: (rangeData) => {
+                document.getElementById('limited-range').textContent = `${rangeData.label} (${rangeData.days} days)`;
+            }
+        });
+
+        // 5. Size Variants
+        new TimeRangePicker({
+            containerId: 'picker-small',
+            size: 'small',
+            ranges: ['day', 'week', 'month']
+        });
+
+        new TimeRangePicker({
+            containerId: 'picker-medium',
+            size: 'medium',
+            ranges: ['day', 'week', 'month']
+        });
+
+        new TimeRangePicker({
+            containerId: 'picker-large',
+            size: 'large',
+            ranges: ['day', 'week', 'month']
+        });
+
+        // 6. Programmatic Control
+        const programmaticPicker = new TimeRangePicker({
+            containerId: 'picker-programmatic',
+            defaultRange: 'day',
+            showComparison: true,
+            showCustom: true,
+            onChange: (rangeData, comparisonData) => {
+                document.getElementById('programmatic-output').textContent = JSON.stringify({
+                    range: rangeData.key,
+                    start: rangeData.start?.toISOString(),
+                    end: rangeData.end?.toISOString(),
+                    comparison: comparisonData ? {
+                        start: comparisonData.start?.toISOString(),
+                        end: comparisonData.end?.toISOString()
+                    } : null
+                }, null, 2);
+            }
+        });
+
+        document.getElementById('btn-set-week').addEventListener('click', () => {
+            programmaticPicker.setRange('week');
+        });
+
+        document.getElementById('btn-set-month').addEventListener('click', () => {
+            programmaticPicker.setRange('month');
+        });
+
+        document.getElementById('btn-set-custom').addEventListener('click', () => {
+            const start = new Date();
+            start.setDate(start.getDate() - 14);
+            programmaticPicker.setCustomRange(start, new Date());
+        });
+
+        document.getElementById('btn-toggle-comparison').addEventListener('click', () => {
+            programmaticPicker.setComparison(!programmaticPicker.isComparisonEnabled());
+        });
+
+        document.getElementById('btn-get-sql').addEventListener('click', () => {
+            const sqlDate = programmaticPicker.getSqlStartDate();
+            alert(`SQL WHERE clause:\nWHERE created_at >= '${sqlDate}'`);
+        });
+
+        // 7. Integration Example
+        let integratedState = { timeRange: null, filters: {} };
+
+        const integratedPicker = new TimeRangePicker({
+            containerId: 'picker-integrated',
+            defaultRange: 'week',
+            showComparison: true,
+            onChange: (rangeData, comparisonData) => {
+                integratedState.timeRange = {
+                    key: rangeData.key,
+                    start: rangeData.start?.toISOString(),
+                    end: rangeData.end?.toISOString(),
+                    comparison: comparisonData
+                };
+                updateIntegratedOutput();
+            }
+        });
+
+        const integratedFilter = new FilterBar({
+            containerId: 'filter-integrated',
+            filters: [
+                {
+                    type: 'select',
+                    key: 'provider',
+                    label: 'Provider',
+                    options: [
+                        { value: 'gemini', label: 'Gemini' },
+                        { value: 'openai', label: 'OpenAI' }
+                    ]
+                },
+                {
+                    type: 'search',
+                    key: 'query',
+                    placeholder: 'Search...'
+                }
+            ],
+            showRefresh: true,
+            showReset: false,
+            onChange: (values) => {
+                integratedState.filters = values;
+                updateIntegratedOutput();
+            },
+            onRefresh: () => {
+                alert('Refreshing with current filters...');
+            }
+        });
+
+        function updateIntegratedOutput() {
+            document.getElementById('integrated-output').textContent = JSON.stringify(integratedState, null, 2);
+        }
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-basic',
+            code: `import { TimeRangePicker } from '/vendor/ssi-builders/src/TimeRangePicker.js';
+
+const picker = new TimeRangePicker({
+    containerId: 'time-picker',
+    defaultRange: 'week',
+    onChange: (rangeData) => {
+        console.log('Range:', rangeData.key);
+        console.log('Start:', rangeData.start);
+        console.log('End:', rangeData.end);
+
+        // Reload data with new range
+        loadData(rangeData.start, rangeData.end);
+    }
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-comparison',
+            code: `// With comparison for trend analysis
+const picker = new TimeRangePicker({
+    containerId: 'time-picker',
+    showComparison: true,
+    comparisonLabel: 'Compare with previous period',
+    onChange: (rangeData, comparisonData) => {
+        // Load current period data
+        const currentData = await loadData(rangeData.start, rangeData.end);
+
+        // Load comparison data if enabled
+        if (comparisonData) {
+            const previousData = await loadData(comparisonData.start, comparisonData.end);
+            showTrendAnalysis(currentData, previousData);
+        }
+    }
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-integration',
+            code: `// Combine TimeRangePicker with FilterBar
+const timePicker = new TimeRangePicker({
+    containerId: 'time-picker',
+    defaultRange: 'week',
+    showComparison: true,
+    onChange: (rangeData) => refreshData()
+});
+
+const filterBar = new FilterBar({
+    containerId: 'filters',
+    filters: [
+        { type: 'select', key: 'provider', options: [...] },
+        { type: 'search', key: 'query' }
+    ],
+    onChange: () => refreshData(),
+    onRefresh: () => refreshData()
+});
+
+async function refreshData() {
+    const range = timePicker.getRangeData();
+    const filters = filterBar.getValues();
+
+    const data = await fetchAnalytics({
+        startDate: range.start,
+        endDate: range.end,
+        ...filters
+    });
+
+    updateDashboard(data);
+}`,
+            language: 'javascript'
+        });
+
+        console.log('TimeRangePicker Demo initialized!');
+    </script>
+</body>
+</html>

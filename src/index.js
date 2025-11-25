@@ -2,7 +2,7 @@
  * SSI Builders - Professional UI Component Library
  * Material Design 3 | Production-Ready
  *
- * @version 2.2.0
+ * @version 2.3.0
  * @author SSI Solutions
  */
 
@@ -20,6 +20,10 @@ import { SiteBuilder } from './SiteBuilder.js';
 import { ToastBuilder } from './ToastBuilder.js';
 import { TooltipBuilder } from './TooltipBuilder.js';
 import { CodeSnippetBuilder } from './CodeSnippetBuilder.js';
+// Analytics Components (v2.3.0)
+import { AnalyticsCard, AnalyticsCardGrid } from './AnalyticsCard.js';
+import { FilterBar } from './FilterBar.js';
+import { TimeRangePicker } from './TimeRangePicker.js';
 
 export {
     ListBuilder,
@@ -36,7 +40,12 @@ export {
     SiteBuilder,
     ToastBuilder,
     TooltipBuilder,
-    CodeSnippetBuilder
+    CodeSnippetBuilder,
+    // Analytics Components (v2.3.0)
+    AnalyticsCard,
+    AnalyticsCardGrid,
+    FilterBar,
+    TimeRangePicker
 };
 
 // Default export for convenience
@@ -51,6 +60,10 @@ export default {
     ToastBuilder,
     TooltipBuilder,
     CodeSnippetBuilder,
+    AnalyticsCard,
+    AnalyticsCardGrid,
+    FilterBar,
+    TimeRangePicker,
     getVersion,
     createVersionBadge,
     IconManager,
@@ -59,5 +72,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '2.2.0';
+export const VERSION = '2.3.0';
 export const LIBRARY_NAME = 'SSI Builders';

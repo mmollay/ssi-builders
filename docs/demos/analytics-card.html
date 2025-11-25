@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnalyticsCard - SSI Builders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/AnalyticsBuilder.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    <style>
+        .demo-box {
+            background: var(--analytics-bg-page, #f8f9fa);
+            padding: 24px;
+            border-radius: 8px;
+            border: 2px solid #e8eaed;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        .config-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 16px 0;
+        }
+
+        .config-table th,
+        .config-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e8eaed;
+        }
+
+        .config-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .config-table code {
+            background: #f1f3f4;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <div id="sidebar-container"></div>
+
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <div class="page-header">
+                    <h1>AnalyticsCard</h1>
+                    <p>KPI Cards for Analytics Dashboards with trend indicators, multiple formats, and loading states</p>
+                </div>
+
+                <!-- Basic Cards -->
+                <div class="demo-section">
+                    <h2>1. Basic KPI Cards <span class="badge new">NEW</span></h2>
+                    <p>Simple KPI cards with different value formats</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                            <div id="card-basic-number"></div>
+                            <div id="card-basic-currency"></div>
+                            <div id="card-basic-percent"></div>
+                            <div id="card-basic-compact"></div>
+                        </div>
+                    </div>
+
+                    <div id="code-basic" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- Cards with Trends -->
+                <div class="demo-section">
+                    <h2>2. Cards with Trend Indicators</h2>
+                    <p>Show performance changes with up/down/neutral trends</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                            <div id="card-trend-up"></div>
+                            <div id="card-trend-down"></div>
+                            <div id="card-trend-neutral"></div>
+                        </div>
+                    </div>
+
+                    <div id="code-trends" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- Color Variants -->
+                <div class="demo-section">
+                    <h2>3. Color Variants</h2>
+                    <p>Different accent colors for visual categorization</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;">
+                            <div id="card-color-primary"></div>
+                            <div id="card-color-success"></div>
+                            <div id="card-color-warning"></div>
+                            <div id="card-color-error"></div>
+                            <div id="card-color-purple"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Size Variants -->
+                <div class="demo-section">
+                    <h2>4. Size Variants</h2>
+                    <p>Small, medium (default), and large card sizes</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; align-items: start;">
+                            <div id="card-size-small"></div>
+                            <div id="card-size-medium"></div>
+                            <div id="card-size-large"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div class="demo-section">
+                    <h2>5. Loading State</h2>
+                    <p>Skeleton loading animation while data is being fetched</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                            <div id="card-loading-1"></div>
+                            <div id="card-loading-2"></div>
+                            <div id="card-loading-3"></div>
+                        </div>
+                        <button id="btn-load-data" class="ssi-btn ssi-btn-primary" style="margin-top: 16px;">
+                            Simulate Data Load
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Clickable Cards -->
+                <div class="demo-section">
+                    <h2>6. Clickable Cards (Drill-Down)</h2>
+                    <p>Cards that navigate or trigger actions on click</p>
+
+                    <div class="demo-box">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;">
+                            <div id="card-clickable-1"></div>
+                            <div id="card-clickable-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AnalyticsCardGrid -->
+                <div class="demo-section">
+                    <h2>7. AnalyticsCardGrid <span class="badge new">NEW</span></h2>
+                    <p>Helper class to create multiple cards in a responsive grid</p>
+
+                    <div class="demo-box">
+                        <div id="card-grid-demo"></div>
+                    </div>
+
+                    <div id="code-grid" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- API Reference -->
+                <div class="demo-section">
+                    <h2>Configuration Options</h2>
+
+                    <h3>AnalyticsCard Options</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>containerId</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Container element ID (required)</td>
+                            </tr>
+                            <tr>
+                                <td><code>label</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>KPI label/title</td>
+                            </tr>
+                            <tr>
+                                <td><code>value</code></td>
+                                <td>number|string</td>
+                                <td>-</td>
+                                <td>KPI value</td>
+                            </tr>
+                            <tr>
+                                <td><code>format</code></td>
+                                <td>string</td>
+                                <td>'number'</td>
+                                <td>'number', 'currency', 'percent', 'time', 'compact'</td>
+                            </tr>
+                            <tr>
+                                <td><code>currencySymbol</code></td>
+                                <td>string</td>
+                                <td>'$'</td>
+                                <td>Currency symbol for currency format</td>
+                            </tr>
+                            <tr>
+                                <td><code>decimals</code></td>
+                                <td>number</td>
+                                <td>0 (2 for currency)</td>
+                                <td>Decimal places</td>
+                            </tr>
+                            <tr>
+                                <td><code>icon</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Icon name from IconManager</td>
+                            </tr>
+                            <tr>
+                                <td><code>subtext</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Secondary text below value</td>
+                            </tr>
+                            <tr>
+                                <td><code>trend</code></td>
+                                <td>object</td>
+                                <td>-</td>
+                                <td>{ direction: 'up'|'down'|'neutral', value: number, label?: string }</td>
+                            </tr>
+                            <tr>
+                                <td><code>color</code></td>
+                                <td>string</td>
+                                <td>'primary'</td>
+                                <td>'primary', 'success', 'warning', 'error', 'purple'</td>
+                            </tr>
+                            <tr>
+                                <td><code>size</code></td>
+                                <td>string</td>
+                                <td>'medium'</td>
+                                <td>'small', 'medium', 'large'</td>
+                            </tr>
+                            <tr>
+                                <td><code>loading</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Show loading skeleton</td>
+                            </tr>
+                            <tr>
+                                <td><code>onClick</code></td>
+                                <td>function</td>
+                                <td>-</td>
+                                <td>Click handler for drill-down</td>
+                            </tr>
+                            <tr>
+                                <td><code>href</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Link URL (renders as anchor tag)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3>Methods</h3>
+                    <table class="config-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Parameters</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>update(value, trend?)</code></td>
+                                <td>value: number|string, trend?: object</td>
+                                <td>Update the card value and optionally trend</td>
+                            </tr>
+                            <tr>
+                                <td><code>setLoading(loading)</code></td>
+                                <td>loading: boolean</td>
+                                <td>Set loading state</td>
+                            </tr>
+                            <tr>
+                                <td><code>destroy()</code></td>
+                                <td>-</td>
+                                <td>Remove the card from DOM</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { AnalyticsCard, AnalyticsCardGrid } from '../../src/AnalyticsCard.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+
+        initializeDemoLayout('analytics-card');
+        IconManager.setPreset('lucide');
+
+        // 1. Basic Cards
+        new AnalyticsCard({
+            containerId: 'card-basic-number',
+            label: 'Total Users',
+            value: 12458,
+            format: 'number',
+            icon: 'user'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-basic-currency',
+            label: 'Revenue',
+            value: 45890.50,
+            format: 'currency',
+            currencySymbol: '$',
+            icon: 'chart'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-basic-percent',
+            label: 'Conversion Rate',
+            value: 3.24,
+            format: 'percent',
+            decimals: 2,
+            icon: 'check'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-basic-compact',
+            label: 'Page Views',
+            value: 1250000,
+            format: 'compact',
+            icon: 'view',
+            subtext: 'Last 30 days'
+        });
+
+        // 2. Trend Cards
+        new AnalyticsCard({
+            containerId: 'card-trend-up',
+            label: 'Active Sessions',
+            value: 8547,
+            format: 'number',
+            icon: 'user',
+            trend: { direction: 'up', value: 12.5, label: 'vs. last week' },
+            color: 'success'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-trend-down',
+            label: 'Bounce Rate',
+            value: 42.3,
+            format: 'percent',
+            decimals: 1,
+            icon: 'warning',
+            trend: { direction: 'down', value: 8.2, label: 'vs. last month' },
+            color: 'error'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-trend-neutral',
+            label: 'Avg. Session',
+            value: 245,
+            format: 'time',
+            icon: 'clock',
+            trend: { direction: 'neutral', value: 0.5 },
+            color: 'primary'
+        });
+
+        // 3. Color Variants
+        new AnalyticsCard({
+            containerId: 'card-color-primary',
+            label: 'Primary',
+            value: 1234,
+            color: 'primary'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-color-success',
+            label: 'Success',
+            value: 98.5,
+            format: 'percent',
+            color: 'success'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-color-warning',
+            label: 'Warning',
+            value: 15,
+            color: 'warning'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-color-error',
+            label: 'Error',
+            value: 3,
+            color: 'error'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-color-purple',
+            label: 'Purple',
+            value: 567,
+            color: 'purple'
+        });
+
+        // 4. Size Variants
+        new AnalyticsCard({
+            containerId: 'card-size-small',
+            label: 'Small Card',
+            value: 123,
+            size: 'small',
+            color: 'primary'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-size-medium',
+            label: 'Medium Card',
+            value: 456,
+            size: 'medium',
+            color: 'success'
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-size-large',
+            label: 'Large Card',
+            value: 789,
+            size: 'large',
+            color: 'purple'
+        });
+
+        // 5. Loading State
+        const loadingCards = [
+            new AnalyticsCard({
+                containerId: 'card-loading-1',
+                label: 'Revenue',
+                value: 0,
+                loading: true,
+                color: 'primary'
+            }),
+            new AnalyticsCard({
+                containerId: 'card-loading-2',
+                label: 'Users',
+                value: 0,
+                loading: true,
+                color: 'success'
+            }),
+            new AnalyticsCard({
+                containerId: 'card-loading-3',
+                label: 'Orders',
+                value: 0,
+                loading: true,
+                color: 'warning'
+            })
+        ];
+
+        document.getElementById('btn-load-data').addEventListener('click', () => {
+            // Simulate API call
+            setTimeout(() => {
+                loadingCards[0].update(45890.50, { direction: 'up', value: 12 });
+                loadingCards[1].update(12458, { direction: 'up', value: 5.3 });
+                loadingCards[2].update(384, { direction: 'down', value: 2.1 });
+            }, 1500);
+        });
+
+        // 6. Clickable Cards
+        new AnalyticsCard({
+            containerId: 'card-clickable-1',
+            label: 'Click Me (onClick)',
+            value: 999,
+            icon: 'view',
+            color: 'primary',
+            onClick: () => alert('Card clicked!')
+        });
+
+        new AnalyticsCard({
+            containerId: 'card-clickable-2',
+            label: 'Link Card (href)',
+            value: 'Go',
+            icon: 'link',
+            color: 'success',
+            href: 'https://github.com',
+            subtext: 'Opens GitHub'
+        });
+
+        // 7. AnalyticsCardGrid
+        new AnalyticsCardGrid({
+            containerId: 'card-grid-demo',
+            columns: 4,
+            cards: [
+                { label: 'Searches', value: 1234, icon: 'search', format: 'number', color: 'primary', trend: { direction: 'up', value: 15 } },
+                { label: 'Costs', value: 12.50, icon: 'chart', format: 'currency', currencySymbol: '$', color: 'warning' },
+                { label: 'Avg Time', value: 245, icon: 'clock', format: 'time', color: 'success' },
+                { label: 'Error Rate', value: 0.5, icon: 'warning', format: 'percent', color: 'error', trend: { direction: 'down', value: 2 } }
+            ]
+        });
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-basic',
+            code: `import { AnalyticsCard } from '/vendor/ssi-builders/src/AnalyticsCard.js';
+
+// Basic number card
+new AnalyticsCard({
+    containerId: 'my-card',
+    label: 'Total Users',
+    value: 12458,
+    format: 'number',
+    icon: 'user'
+});
+
+// Currency card
+new AnalyticsCard({
+    containerId: 'revenue-card',
+    label: 'Revenue',
+    value: 45890.50,
+    format: 'currency',
+    currencySymbol: '$',
+    decimals: 2
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-trends',
+            code: `// Card with trend indicator
+new AnalyticsCard({
+    containerId: 'sessions-card',
+    label: 'Active Sessions',
+    value: 8547,
+    trend: {
+        direction: 'up',    // 'up', 'down', or 'neutral'
+        value: 12.5,        // Percentage change
+        label: 'vs. last week'
+    },
+    color: 'success'
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-grid',
+            code: `import { AnalyticsCardGrid } from '/vendor/ssi-builders/src/AnalyticsCard.js';
+
+// Create a grid of KPI cards
+const grid = new AnalyticsCardGrid({
+    containerId: 'kpi-grid',
+    columns: 4,  // Responsive: 4 -> 3 -> 2 -> 1 columns
+    cards: [
+        { label: 'Searches', value: 1234, icon: 'search', color: 'primary' },
+        { label: 'Costs', value: 12.50, format: 'currency', color: 'warning' },
+        { label: 'Avg Time', value: 245, format: 'time', color: 'success' },
+        { label: 'Errors', value: 0.5, format: 'percent', color: 'error' }
+    ]
+});
+
+// Update all cards at once
+grid.updateAll([
+    { value: 2000, trend: { direction: 'up', value: 10 } },
+    { value: 15.00 },
+    { value: 200 },
+    { value: 0.3 }
+]);`,
+            language: 'javascript'
+        });
+
+        console.log('AnalyticsCard Demo initialized!');
+    </script>
+</body>
+</html>

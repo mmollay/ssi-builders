@@ -9,6 +9,120 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.0] - 2025-11-25
+
+### New Analytics Components
+
+Three new components for building analytics dashboards:
+
+#### **AnalyticsCard** - KPI Card Component
+
+Professional KPI card component for analytics dashboards:
+
+- **Value Formats**: number, currency, percent, time, compact (1.2K, 1.5M)
+- **Trend Indicators**: Up/down/neutral with percentage change
+- **Colors**: 5 accent colors (primary, success, warning, error, purple)
+- **Sizes**: small, medium, large
+- **Loading State**: Skeleton animation while fetching data
+- **Clickable**: onClick handler or href for drill-down navigation
+- **AnalyticsCardGrid**: Helper class for responsive grid layouts
+
+```javascript
+import { AnalyticsCard, AnalyticsCardGrid } from '@ssi/builders';
+
+// Single card
+new AnalyticsCard({
+    containerId: 'kpi-revenue',
+    label: 'Revenue',
+    value: 45890.50,
+    format: 'currency',
+    trend: { direction: 'up', value: 12.5, label: 'vs. last week' },
+    color: 'success'
+});
+
+// Grid of cards
+new AnalyticsCardGrid({
+    containerId: 'kpi-grid',
+    columns: 4,
+    cards: [
+        { label: 'Searches', value: 1234, icon: 'search', color: 'primary' },
+        { label: 'Costs', value: 12.50, format: 'currency', color: 'warning' }
+    ]
+});
+```
+
+#### **FilterBar** - Global Filter Component
+
+Flexible filter bar for analytics dashboards:
+
+- **Filter Types**: select, search, date, checkbox
+- **Debounced Search**: Configurable delay (default: 300ms)
+- **Action Buttons**: Refresh, Reset, Export with callbacks
+- **Active Filter Badge**: Shows count of active filters
+- **Programmatic API**: getValues(), setValues(), reset(), updateOptions()
+
+```javascript
+import { FilterBar } from '@ssi/builders';
+
+new FilterBar({
+    containerId: 'filters',
+    filters: [
+        { type: 'select', key: 'category', label: 'Category', options: [...] },
+        { type: 'search', key: 'query', placeholder: 'Search...' },
+        { type: 'date', key: 'date', label: 'Date' },
+        { type: 'checkbox', key: 'active', label: 'Active only' }
+    ],
+    onChange: (values) => loadData(values),
+    onRefresh: () => refreshData(),
+    showExport: true
+});
+```
+
+#### **TimeRangePicker** - Time Range Selection
+
+Time range selector with presets and comparison:
+
+- **Presets**: day, week, month, quarter, year
+- **Comparison Toggle**: Compare with previous period
+- **Custom Range**: Date picker for custom start/end
+- **SQL Helper**: getSqlStartDate() for database queries
+- **Sizes**: small, medium, large
+
+```javascript
+import { TimeRangePicker } from '@ssi/builders';
+
+new TimeRangePicker({
+    containerId: 'time-picker',
+    defaultRange: 'week',
+    showComparison: true,
+    showCustom: true,
+    onChange: (rangeData, comparisonData) => {
+        loadData(rangeData.start, rangeData.end);
+        if (comparisonData) {
+            loadComparisonData(comparisonData.start, comparisonData.end);
+        }
+    }
+});
+```
+
+### New CSS
+
+- **AnalyticsBuilder.css**: Unified design system with CSS variables for all analytics components
+  - Analytics-specific color palette
+  - Responsive grid layouts
+  - Loading skeleton animations
+  - Dark mode support
+
+### Documentation
+
+- New demo pages:
+  - `/docs/demos/analytics-card.html`
+  - `/docs/demos/filter-bar.html`
+  - `/docs/demos/time-range-picker.html`
+- Updated index.html with new component cards
+
+---
+
 ## [2.2.0] - 2025-11-24
 
 ### 🎉 New Components

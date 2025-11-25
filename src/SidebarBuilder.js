@@ -314,8 +314,14 @@ export class SidebarBuilder {
                     e.preventDefault();
                     this.toggleGroup(itemKey);
                 } else {
-                    // Handle navigation - prevent default href="#" behavior
-                    e.preventDefault();
+                    // Handle navigation
+                    const href = link.getAttribute('href');
+
+                    // Only prevent default for anchor-only links (#)
+                    if (!href || href === '#' || href.startsWith('#')) {
+                        e.preventDefault();
+                    }
+
                     this.setActive(itemKey);
                     this.options.onNavigate?.(itemKey, this.findItemByKey(itemKey));
                 }
