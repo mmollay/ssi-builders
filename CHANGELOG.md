@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.4.2] - 2025-11-26
+
+### Fixed
+- **SidebarBuilder**: Added `topOffset` option for fixed header layouts - sidebar now correctly positions below fixed headers with `top: ${topOffset}px` and `height: calc(100vh - ${topOffset}px)`
+
+### Added
+- **SidebarBuilder**: New `topOffset` option (default: 0) - allows sidebar to start below a fixed header by specifying pixel offset
+
+---
+
 ## [2.4.1] - 2025-11-26
 
 ### Security
