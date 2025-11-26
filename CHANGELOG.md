@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.4.1] - 2025-11-26
+
+### Security
+- **M3DropdownMenu**: Fixed XSS vulnerability in option rendering by escaping HTML in labels, descriptions, and icons
+- **M3ColorPicker**: Fixed XSS vulnerability in label rendering
+- **ChangelogBuilder**: Fixed XSS vulnerability in search highlight by escaping HTML before applying highlights
+
+### Fixed
+- **M3DropdownMenu**: Fixed memory leak by properly removing document event listeners in destroy()
+- **M3ColorPicker**: Fixed memory leak by properly removing document event listeners in destroy()
+- **M3Slider**: Fixed memory leak by properly removing document event listeners in destroy()
+
+---
+
 ## [2.4.0] - 2025-11-26
 
 ### Added

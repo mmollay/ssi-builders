@@ -246,12 +246,12 @@ export class M3DropdownMenu {
             <div class="m3-dropdown__option ${index === this.selectedIndex ? 'm3-dropdown__option--selected' : ''}"
                  role="option"
                  data-index="${index}"
-                 data-value="${option.value}"
+                 data-value="${this.escapeHtml(String(option.value))}"
                  aria-selected="${index === this.selectedIndex}"
                  tabindex="-1">
-                ${option.icon ? `<span class="m3-dropdown__option-icon">${option.icon}</span>` : ''}
+                ${option.icon ? `<span class="m3-dropdown__option-icon">${this.escapeHtml(option.icon)}</span>` : ''}
                 <span class="m3-dropdown__option-label">${this.highlightMatch(option.label)}</span>
-                ${option.description ? `<span class="m3-dropdown__option-description">${option.description}</span>` : ''}
+                ${option.description ? `<span class="m3-dropdown__option-description">${this.escapeHtml(option.description)}</span>` : ''}
                 ${index === this.selectedIndex ? `
                     <span class="m3-dropdown__option-check" aria-hidden="true">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
@@ -265,10 +265,22 @@ export class M3DropdownMenu {
     }
 
     highlightMatch(text) {
-        if (!this.searchQuery || !this.config.searchable) return text;
+        // First escape HTML to prevent XSS
+        const escaped = this.escapeHtml(text);
+
+        if (!this.searchQuery || !this.config.searchable) return escaped;
 
         const regex = new RegExp(`(${this.escapeRegex(this.searchQuery)})`, 'gi');
-        return text.replace(regex, '<mark class="m3-dropdown__highlight">$1</mark>');
+        return escaped.replace(regex, '<mark class="m3-dropdown__highlight">$1</mark>');
+    }
+
+    escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     escapeRegex(string) {
@@ -315,20 +327,24 @@ export class M3DropdownMenu {
         // Option click handlers
         this.bindOptionEvents();
 
-        // Close on outside click
-        document.addEventListener('click', (e) => {
+        // Store bound handlers for cleanup (prevent memory leaks)
+        this.boundHandleOutsideClick = (e) => {
             if (!dropdown.contains(e.target) && this.isOpen) {
                 this.close();
             }
-        });
-
-        // Close on escape
-        document.addEventListener('keydown', (e) => {
+        };
+        this.boundHandleEscapeKey = (e) => {
             if (e.key === 'Escape' && this.isOpen) {
                 this.close();
                 this.dropdown.focus();
             }
-        });
+        };
+
+        // Close on outside click
+        document.addEventListener('click', this.boundHandleOutsideClick);
+
+        // Close on escape
+        document.addEventListener('keydown', this.boundHandleEscapeKey);
     }
 
     cacheOptionElements() {
@@ -835,6 +851,15 @@ export class M3DropdownMenu {
         if (this.debounceTimer) {
             clearTimeout(this.debounceTimer);
         }
+
+        // Remove document event listeners to prevent memory leaks
+        if (this.boundHandleOutsideClick) {
+            document.removeEventListener('click', this.boundHandleOutsideClick);
+        }
+        if (this.boundHandleEscapeKey) {
+            document.removeEventListener('keydown', this.boundHandleEscapeKey);
+        }
+
         if (this.container) {
             this.container.innerHTML = '';
         }

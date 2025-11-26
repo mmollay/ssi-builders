@@ -165,11 +165,15 @@ export class M3Slider {
         // Keyboard events
         slider.addEventListener('keydown', (e) => this.handleKeydown(e));
 
+        // Store bound handlers for cleanup (prevent memory leaks)
+        this.boundHandleDrag = (e) => this.handleDrag(e);
+        this.boundEndDrag = (e) => this.endDrag(e);
+
         // Global mouse/touch move and up
-        document.addEventListener('mousemove', (e) => this.handleDrag(e));
-        document.addEventListener('mouseup', (e) => this.endDrag(e));
-        document.addEventListener('touchmove', (e) => this.handleDrag(e), { passive: false });
-        document.addEventListener('touchend', (e) => this.endDrag(e));
+        document.addEventListener('mousemove', this.boundHandleDrag);
+        document.addEventListener('mouseup', this.boundEndDrag);
+        document.addEventListener('touchmove', this.boundHandleDrag, { passive: false });
+        document.addEventListener('touchend', this.boundEndDrag);
     }
 
     startDrag(e) {
@@ -353,6 +357,14 @@ export class M3Slider {
     }
 
     destroy() {
+        // Remove document event listeners to prevent memory leaks
+        if (this.boundHandleDrag) {
+            document.removeEventListener('mousemove', this.boundHandleDrag);
+            document.removeEventListener('mouseup', this.boundEndDrag);
+            document.removeEventListener('touchmove', this.boundHandleDrag);
+            document.removeEventListener('touchend', this.boundEndDrag);
+        }
+
         if (this.container) {
             this.container.innerHTML = '';
         }

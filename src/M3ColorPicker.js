@@ -163,7 +163,7 @@ export class M3ColorPicker {
             <div class="m3-color-picker ${disabledClass} ${errorClass}"
                  id="${this.instanceId}">
 
-                ${label ? `<div class="m3-color-picker__label">${label}</div>` : ''}
+                ${label ? `<div class="m3-color-picker__label">${this.escapeHtml(label)}</div>` : ''}
 
                 <div class="m3-color-picker__container">
                     <!-- Trigger Button -->
@@ -302,11 +302,20 @@ export class M3ColorPicker {
             this.alphaSlider.addEventListener('touchstart', (e) => this.startAlphaDrag(e), { passive: false });
         }
 
+        // Store bound handlers for cleanup (prevent memory leaks)
+        this.boundHandleDrag = (e) => this.handleDrag(e);
+        this.boundEndDrag = () => this.endDrag();
+        this.boundHandleOutsideClick = (e) => {
+            if (!picker.contains(e.target) && this.isOpen) {
+                this.close();
+            }
+        };
+
         // Global drag events
-        document.addEventListener('mousemove', (e) => this.handleDrag(e));
-        document.addEventListener('mouseup', () => this.endDrag());
-        document.addEventListener('touchmove', (e) => this.handleDrag(e), { passive: false });
-        document.addEventListener('touchend', () => this.endDrag());
+        document.addEventListener('mousemove', this.boundHandleDrag);
+        document.addEventListener('mouseup', this.boundEndDrag);
+        document.addEventListener('touchmove', this.boundHandleDrag, { passive: false });
+        document.addEventListener('touchend', this.boundEndDrag);
 
         // Hex input
         this.hexInput.addEventListener('change', (e) => this.handleHexInput(e.target.value));
@@ -324,11 +333,7 @@ export class M3ColorPicker {
         });
 
         // Close on outside click
-        document.addEventListener('click', (e) => {
-            if (!picker.contains(e.target) && this.isOpen) {
-                this.close();
-            }
-        });
+        document.addEventListener('click', this.boundHandleOutsideClick);
 
         // Keyboard handling
         this.trigger.addEventListener('keydown', (e) => {
@@ -553,7 +558,27 @@ export class M3ColorPicker {
         }
     }
 
+    escapeHtml(text) {
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
     destroy() {
+        // Remove document event listeners to prevent memory leaks
+        if (this.boundHandleDrag) {
+            document.removeEventListener('mousemove', this.boundHandleDrag);
+            document.removeEventListener('mouseup', this.boundEndDrag);
+            document.removeEventListener('touchmove', this.boundHandleDrag);
+            document.removeEventListener('touchend', this.boundEndDrag);
+        }
+        if (this.boundHandleOutsideClick) {
+            document.removeEventListener('click', this.boundHandleOutsideClick);
+        }
+
         if (this.container) {
             this.container.innerHTML = '';
         }

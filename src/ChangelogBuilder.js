@@ -358,10 +358,22 @@ export class ChangelogBuilder {
     }
 
     highlightSearch(text) {
-        if (!this.searchQuery) return text;
+        // First escape HTML to prevent XSS
+        const escaped = this.escapeHtml(text);
+
+        if (!this.searchQuery) return escaped;
 
         const regex = new RegExp(`(${this.escapeRegex(this.searchQuery)})`, 'gi');
-        return text.replace(regex, '<span class="changelog__item-highlight">$1</span>');
+        return escaped.replace(regex, '<span class="changelog__item-highlight">$1</span>');
+    }
+
+    escapeHtml(text) {
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
     }
 
     escapeRegex(string) {
