@@ -864,7 +864,7 @@ input[type="color"].form-input {
 .form-field-filled .form-textarea {
     width: 100%;
     height: 56px;
-    padding: 24px 16px 8px 16px !important;
+    padding: 16px !important;
     background: #F5F5F5;
     border: none;
     border-bottom: 1px solid #79747E;
@@ -878,10 +878,18 @@ input[type="color"].form-input {
     box-sizing: border-box;
 }
 
+/* Textarea needs flexible height */
+.form-field-filled .form-textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+}
+
 .form-field-filled .form-label {
     position: absolute;
     left: 16px;
-    top: 16px;
+    top: 50%;
+    transform: translateY(-50%);
     font-size: 16px;
     line-height: 24px;
     font-weight: 400;
@@ -895,30 +903,33 @@ input[type="color"].form-input {
     margin: 0 !important;
 }
 
-/* Floating Label State */
+/* Floating Label State - Float up when focused or has value */
 .form-field-filled .form-input:focus ~ .form-label,
 .form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
 .form-field-filled .form-select:focus ~ .form-label,
+.form-field-filled .form-select:not([value=""]) ~ .form-label,
 .form-field-filled .form-textarea:focus ~ .form-label,
-.form-field-filled .form-textarea:not(:placeholder-shown) ~ .form-label {
-    top: 4px;
+.form-field-filled .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled .form-label-float {
+    top: 8px;
+    transform: translateY(0);
     font-size: 12px;
     line-height: 16px;
     font-weight: 500;
     color: #1a73e8;
 }
 
-/* Adjust input text position when label is floating */
+/* Adjust input padding when label is floating */
 .form-field-filled .form-input:focus,
-.form-field-filled .form-input:not(:placeholder-shown) {
-    padding-top: 32px !important;
-    padding-bottom: 8px !important;  /* Base padding */
-}
-
+.form-field-filled .form-input:not(:placeholder-shown),
 .form-field-filled .form-select:focus,
+.form-field-filled .form-select:not([value=""]),
 .form-field-filled .form-textarea:focus,
-.form-field-filled .form-textarea:not(:placeholder-shown) {
-    padding-top: 32px !important;
+.form-field-filled .form-textarea:not(:placeholder-shown),
+.form-field-filled .form-label-float ~ .form-input,
+.form-field-filled .form-label-float ~ .form-select,
+.form-field-filled .form-label-float ~ .form-textarea {
+    padding-top: 24px !important;
     padding-bottom: 8px !important;
 }
 
@@ -969,6 +980,15 @@ input[type="color"].form-input {
     box-sizing: border-box;
 }
 
+/* Textarea needs flexible height */
+.form-field-outlined .form-textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+}
+
 .form-field-outlined .form-label {
     position: absolute;
     left: 16px;
@@ -991,7 +1011,8 @@ input[type="color"].form-input {
 .form-field-outlined .form-input:not(:placeholder-shown) ~ .form-label,
 .form-field-outlined .form-select:focus ~ .form-label,
 .form-field-outlined .form-textarea:focus ~ .form-label,
-.form-field-outlined .form-textarea:not(:placeholder-shown) ~ .form-label {
+.form-field-outlined .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined .form-label-float {
     top: 0;
     transform: translateY(-50%);
     font-size: 12px;

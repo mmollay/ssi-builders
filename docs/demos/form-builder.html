@@ -536,7 +536,9 @@
                 const f = {...field};
                 if ((fieldLayout === 'filled' || fieldLayout === 'outlined') &&
                     (field.type === 'text' || field.type === 'email' || field.type === 'password' ||
-                     field.type === 'tel' || field.type === 'number' || field.type === 'textarea')) {
+                     field.type === 'tel' || field.type === 'number' || field.type === 'textarea' ||
+                     field.type === 'date' || field.type === 'time' || field.type === 'datetime-local' ||
+                     field.type === 'month' || field.type === 'week' || field.type === 'color')) {
                     f.placeholder = ' ';  // Space required for floating label
                 }
                 return f;

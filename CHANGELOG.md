@@ -9,6 +9,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.4.0] - 2025-11-26
+
+### Added
+- **FormBuilder**: `showIf` now supports both function and object format for conditional field visibility
+- **VERSION file**: Added root VERSION file for easier version tracking
+
+### Fixed
+- **FormBuilder**: Replaced emoji checkmark with `IconManager.getIcon('check')` in success message (adheres to project standards)
+- **SidebarBuilder**: Consistent 44px height for sidebar items (expanded and collapsed states)
+
+### Changed
+- **CLAUDE.md**: Streamlined documentation with clearer structure
+
+---
+
 ## [2.3.0] - 2025-11-25
 
 ### New Analytics Components

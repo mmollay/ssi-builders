@@ -149,6 +149,11 @@ export class FormBuilder extends BaseBuilder {
     isFieldVisible(field) {
         if (!field.showIf) return true;
 
+        // Support both function and object format
+        if (typeof field.showIf === 'function') {
+            return field.showIf(this.values);
+        }
+
         const { field: dependentField, value: expectedValue } = field.showIf;
         return this.values[dependentField] === expectedValue;
     }
@@ -256,9 +261,13 @@ export class FormBuilder extends BaseBuilder {
                 `);
 
             case 'select':
+                // For M3 filled/outlined, use hidden empty option
+                const isM3Variant = fieldLayout === 'filled' || fieldLayout === 'outlined';
                 return wrapInputGroup(`
                     <select class="form-input form-select ${sizeClass}" ${commonAttrs}>
-                        <option value="">-- Bitte wählen --</option>
+                        ${isM3Variant
+                            ? '<option value="" disabled selected hidden></option>'
+                            : '<option value="">-- Bitte wählen --</option>'}
                         ${field.options?.map(opt => `
                             <option value="${opt.value}" ${value === opt.value ? 'selected' : ''}>
                                 ${opt.label}
@@ -609,6 +618,71 @@ export class FormBuilder extends BaseBuilder {
 
         const prevBtn = document.getElementById(`${this.containerId}_prevStep`);
         prevBtn?.addEventListener('click', () => this.prevStep());
+
+        // M3 Floating Label Logic
+        this.attachFloatingLabels();
+    }
+
+    /**
+     * Attach floating label logic for M3 filled/outlined variants
+     */
+    attachFloatingLabels() {
+        // Find all filled and outlined form fields
+        const m3Fields = this.container.querySelectorAll('.form-field-filled, .form-field-outlined');
+
+        m3Fields.forEach(fieldDiv => {
+            const input = fieldDiv.querySelector('.form-input, .form-select, .form-textarea');
+            const label = fieldDiv.querySelector('.form-label');
+
+            if (!input || !label) return;
+
+            // Get input type
+            const inputType = input.getAttribute('type');
+
+            // Function to check if label should float
+            const checkLabelFloat = () => {
+                let shouldFloat = false;
+
+                // For select, check if value is not empty
+                if (input.tagName === 'SELECT') {
+                    shouldFloat = input.value && input.value !== '';
+                }
+                // For date/time/color inputs - only float if truly has value or focused
+                else if (['date', 'time', 'datetime-local', 'month', 'week', 'color'].includes(inputType)) {
+                    // These inputs always have a value, so check if user has actually selected something
+                    // Date: empty = "" or placeholder state
+                    // Color: empty = "#000000" (default)
+                    const isEmpty = !input.value ||
+                                  (inputType === 'color' && input.value === '#000000') ||
+                                  input.value === '';
+                    shouldFloat = !isEmpty || document.activeElement === input;
+                }
+                // For number inputs with stepper wrapper
+                else if (inputType === 'number') {
+                    // Check if has actual value (not just min/max)
+                    shouldFloat = input.value !== '' && input.value !== null;
+                }
+                // For other inputs (text, email, password, etc.)
+                else {
+                    shouldFloat = (input.value && input.value.trim() !== '') || document.activeElement === input;
+                }
+
+                if (shouldFloat) {
+                    label.classList.add('form-label-float');
+                } else {
+                    label.classList.remove('form-label-float');
+                }
+            };
+
+            // Initial check on render
+            checkLabelFloat();
+
+            // Listen for input changes
+            input.addEventListener('input', checkLabelFloat);
+            input.addEventListener('change', checkLabelFloat);
+            input.addEventListener('blur', checkLabelFloat);
+            input.addEventListener('focus', checkLabelFloat);
+        });
     }
 
     /**
@@ -869,7 +943,7 @@ export class FormBuilder extends BaseBuilder {
     showSuccess() {
         const successDiv = document.createElement('div');
         successDiv.className = 'form-success-message';
-        successDiv.textContent = this.options.successMessage || '✓ Erfolgreich gespeichert!';
+        successDiv.innerHTML = this.options.successMessage || `${IconManager.getIcon('check')} Erfolgreich gespeichert!`;
         this.container.insertBefore(successDiv, this.container.firstChild);
 
         setTimeout(() => successDiv.remove(), 3000);
