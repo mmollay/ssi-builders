@@ -4,7 +4,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const DEMO_URL = 'http://localhost:5179/docs/demos/toast-builder.html';
+const DEMO_URL = 'http://localhost:5177/docs/demos/toast-builder.html';
 
 test.describe('ToastBuilder', () => {
     test.beforeEach(async ({ page }) => {
