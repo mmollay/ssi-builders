@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M3 Components - SSI Builders</title>
+
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- M3 Design System -->
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
+    <link rel="stylesheet" href="../../src/m3-form-styles.css">
+
+    <!-- SSI Builders Layout -->
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="layout.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--m3-font-family);
+            background: var(--m3-surface);
+            color: var(--m3-on-surface);
+            line-height: 1.6;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--m3-surface-container);
+            border-right: 1px solid var(--m3-outline-variant);
+            z-index: 1000;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--m3-outline-variant);
+        }
+
+        .page-header h1 {
+            font-size: var(--m3-headline-large-size);
+            font-weight: var(--m3-headline-large-weight);
+            line-height: var(--m3-headline-large-line-height);
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: var(--m3-body-large-size);
+            color: var(--m3-on-surface-variant);
+        }
+
+        .demo-section {
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-medium);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .demo-section h2 {
+            font-size: var(--m3-title-large-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .demo-section > p {
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 24px;
+            font-size: var(--m3-body-medium-size);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            padding: 4px 12px;
+            border-radius: var(--m3-shape-full);
+            font-size: var(--m3-label-small-size);
+            font-weight: 500;
+        }
+
+        .badge.m3 {
+            background: var(--m3-tertiary-container);
+            color: var(--m3-on-tertiary-container);
+        }
+
+        .component-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .component-card {
+            background: var(--m3-surface);
+            border-radius: var(--m3-shape-medium);
+            padding: 24px;
+            box-shadow: var(--m3-elevation-1);
+        }
+
+        .component-card h3 {
+            font-size: var(--m3-title-medium-size);
+            font-weight: var(--m3-title-medium-weight);
+            margin-bottom: 16px;
+            color: var(--m3-on-surface);
+        }
+
+        .button-showcase {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .text-field-showcase {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dropdown-showcase {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--m3-outline-variant);
+            margin: 24px 0;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: var(--m3-surface-container);
+            border-radius: var(--m3-shape-large);
+            padding: 24px 32px;
+            margin-bottom: 48px;
+        }
+
+        .toc h2 {
+            font-size: var(--m3-title-medium-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 16px;
+        }
+
+        .toc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 8px 24px;
+        }
+
+        .toc-category {
+            margin-bottom: 16px;
+        }
+
+        .toc-category-title {
+            font-size: var(--m3-label-large-size);
+            font-weight: 500;
+            color: var(--m3-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .toc-links {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .toc-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--m3-on-surface);
+            text-decoration: none;
+            font-size: var(--m3-label-large-size);
+            font-weight: 500;
+            padding: 10px 16px;
+            border-radius: var(--m3-shape-small);
+            background: var(--m3-surface-container-highest);
+            border: 1px solid var(--m3-outline-variant);
+            transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+        }
+
+        .toc-link:hover {
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            border-color: var(--m3-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--m3-elevation-1);
+        }
+
+        .toc-link:active {
+            transform: translateY(0);
+            box-shadow: none;
+        }
+
+        /* Section Category Divider */
+        .section-category {
+            margin-top: 48px;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--m3-primary);
+        }
+
+        .section-category h2 {
+            font-size: var(--m3-headline-small-size);
+            font-weight: 400;
+            color: var(--m3-primary);
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .section-category-icon {
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--m3-primary-container);
+            border-radius: var(--m3-shape-small);
+            color: var(--m3-on-primary-container);
+        }
+
+        /* Scroll margin for anchor links */
+        .demo-section[id] {
+            scroll-margin-top: 24px;
+        }
+
+        @media (max-width: 768px) {
+            #sidebar-container {
+                width: 0;
+                overflow: hidden;
+            }
+            .demo-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+            .dropdown-showcase {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>Material Design 3 Components</h1>
+                <p>Pure CSS/JS implementation of M3 form components for SSI Builders v2.4.0</p>
+            </div>
+
+            <!-- Table of Contents -->
+            <nav class="toc">
+                <h2>Components Overview</h2>
+                <div class="toc-grid">
+                    <div class="toc-category">
+                        <div class="toc-category-title">Actions</div>
+                        <div class="toc-links">
+                            <a href="#buttons" class="toc-link">Buttons</a>
+                        </div>
+                    </div>
+                    <div class="toc-category">
+                        <div class="toc-category-title">Inputs</div>
+                        <div class="toc-links">
+                            <a href="#text-fields" class="toc-link">Text Fields</a>
+                            <a href="#dropdown" class="toc-link">Dropdown Menu</a>
+                            <a href="#searchable-dropdown" class="toc-link">Searchable Dropdown</a>
+                        </div>
+                    </div>
+                    <div class="toc-category">
+                        <div class="toc-category-title">Selection</div>
+                        <div class="toc-links">
+                            <a href="#selection-controls" class="toc-link">Checkboxes, Radios, Switches</a>
+                            <a href="#slider" class="toc-link">Slider</a>
+                            <a href="#color-picker" class="toc-link">Color Picker</a>
+                        </div>
+                    </div>
+                    <div class="toc-category">
+                        <div class="toc-category-title">Examples</div>
+                        <div class="toc-links">
+                            <a href="#complete-form" class="toc-link">Complete Form</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Theme Toggle -->
+            <div class="theme-toggle">
+                <button class="m3-button m3-button--tonal" onclick="toggleTheme()">
+                    <span class="m3-button__icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                        </svg>
+                    </span>
+                    Theme
+                </button>
+            </div>
+
+            <!-- Buttons Section -->
+            <div class="demo-section" id="buttons">
+                <h2>M3 Buttons <span class="badge m3">M3</span></h2>
+                <p>All five button types from Material Design 3: Filled, Outlined, Text, Elevated, and Tonal.</p>
+
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Filled Button</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--filled">Filled</button>
+                            <button class="m3-button m3-button--filled" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Outlined Button</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--outlined">Outlined</button>
+                            <button class="m3-button m3-button--outlined" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Text Button</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--text">Text</button>
+                            <button class="m3-button m3-button--text" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Elevated Button</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--elevated">Elevated</button>
+                            <button class="m3-button m3-button--elevated" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Tonal Button</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--tonal">Tonal</button>
+                            <button class="m3-button m3-button--tonal" disabled>Disabled</button>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Button with Icon</h3>
+                        <div class="button-showcase">
+                            <button class="m3-button m3-button--filled">
+                                <span class="m3-button__icon">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                        <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
+                                    </svg>
+                                </span>
+                                Add Item
+                            </button>
+                            <button class="m3-button m3-button--outlined">
+                                <span class="m3-button__icon">
+                                    <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                        <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+                                    </svg>
+                                </span>
+                                Edit
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="code-buttons"></div>
+            </div>
+
+            <!-- Text Fields Section -->
+            <div class="demo-section" id="text-fields">
+                <h2>M3 Text Fields <span class="badge m3">M3</span></h2>
+                <p>All three text field variants: Standard (label above), Filled (with background), and Outlined (with border).</p>
+
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Standard Text Field</h3>
+                        <p style="font-size: 12px; color: var(--m3-on-surface-variant); margin-bottom: 16px;">Classic layout: Label above input with border</p>
+                        <div class="text-field-showcase">
+                            <div class="m3-text-field m3-text-field--standard">
+                                <div class="m3-text-field__container">
+                                    <label class="m3-text-field__label" for="standard-name">Full Name</label>
+                                    <input type="text" class="m3-text-field__input" placeholder="Enter name..." id="standard-name">
+                                </div>
+                                <div class="m3-text-field__supporting-text">Enter your full name</div>
+                            </div>
+
+                            <div class="m3-text-field m3-text-field--standard m3-text-field--error">
+                                <div class="m3-text-field__container">
+                                    <label class="m3-text-field__label" for="standard-email">Email</label>
+                                    <input type="email" class="m3-text-field__input" placeholder="Enter email..." id="standard-email" value="invalid-email">
+                                </div>
+                                <div class="m3-text-field__supporting-text">Please enter a valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Filled Text Field</h3>
+                        <p style="font-size: 12px; color: var(--m3-on-surface-variant); margin-bottom: 16px;">Background container, floating label</p>
+                        <div class="text-field-showcase">
+                            <div class="m3-text-field m3-text-field--filled">
+                                <div class="m3-text-field__container">
+                                    <input type="text" class="m3-text-field__input" placeholder=" " id="filled-name">
+                                    <label class="m3-text-field__label" for="filled-name">Full Name</label>
+                                    <div class="m3-text-field__active-indicator"></div>
+                                </div>
+                                <div class="m3-text-field__supporting-text">Enter your full name</div>
+                            </div>
+
+                            <div class="m3-text-field m3-text-field--filled m3-text-field--error">
+                                <div class="m3-text-field__container">
+                                    <input type="email" class="m3-text-field__input" placeholder=" " id="filled-email" value="invalid-email">
+                                    <label class="m3-text-field__label" for="filled-email">Email</label>
+                                    <div class="m3-text-field__active-indicator"></div>
+                                </div>
+                                <div class="m3-text-field__supporting-text">Please enter a valid email address</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Outlined Text Field</h3>
+                        <p style="font-size: 12px; color: var(--m3-on-surface-variant); margin-bottom: 16px;">Border container, floating label</p>
+                        <div class="text-field-showcase">
+                            <div class="m3-text-field m3-text-field--outlined">
+                                <div class="m3-text-field__container">
+                                    <input type="text" class="m3-text-field__input" placeholder=" " id="outlined-name">
+                                    <label class="m3-text-field__label" for="outlined-name">Full Name</label>
+                                </div>
+                                <div class="m3-text-field__supporting-text">Enter your full name</div>
+                            </div>
+
+                            <div class="m3-text-field m3-text-field--outlined m3-text-field--error">
+                                <div class="m3-text-field__container">
+                                    <input type="password" class="m3-text-field__input" placeholder=" " id="outlined-password" value="123">
+                                    <label class="m3-text-field__label" for="outlined-password">Password</label>
+                                </div>
+                                <div class="m3-text-field__supporting-text">Password must be at least 8 characters</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="code-textfields"></div>
+            </div>
+
+            <!-- Dropdown Menu Section -->
+            <div class="demo-section" id="dropdown">
+                <h2>M3 Exposed Dropdown Menu <span class="badge m3">M3</span></h2>
+                <p>Custom dropdown component with keyboard navigation, type-ahead search, and ARIA support.</p>
+
+                <div class="dropdown-showcase">
+                    <div class="component-card">
+                        <h3>Filled Variant</h3>
+                        <div id="dropdown-filled"></div>
+                        <div style="margin-top: 16px;">
+                            <span class="m3-label-small" style="color: var(--m3-on-surface-variant);">Selected: </span>
+                            <span id="filled-value" class="m3-body-medium">None</span>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Outlined Variant</h3>
+                        <div id="dropdown-outlined"></div>
+                        <div style="margin-top: 16px;">
+                            <span class="m3-label-small" style="color: var(--m3-on-surface-variant);">Selected: </span>
+                            <span id="outlined-value" class="m3-body-medium">None</span>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>With Error State</h3>
+                        <div id="dropdown-error"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Disabled State</h3>
+                        <div id="dropdown-disabled"></div>
+                    </div>
+                </div>
+
+                <div id="code-dropdown"></div>
+            </div>
+
+            <!-- Searchable Dropdown Section -->
+            <div class="demo-section" id="searchable-dropdown">
+                <h2>M3 Searchable Dropdown <span class="badge m3">NEW</span></h2>
+                <p>Dropdown with search/filter functionality and async data loading support.</p>
+
+                <div class="dropdown-showcase">
+                    <div class="component-card">
+                        <h3>Searchable (Local Filter)</h3>
+                        <div id="dropdown-searchable"></div>
+                        <div style="margin-top: 16px;">
+                            <span class="m3-label-small" style="color: var(--m3-on-surface-variant);">Selected: </span>
+                            <span id="searchable-value" class="m3-body-medium">None</span>
+                        </div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Async Data Loading</h3>
+                        <div id="dropdown-async"></div>
+                        <div style="margin-top: 16px;">
+                            <span class="m3-label-small" style="color: var(--m3-on-surface-variant);">Selected: </span>
+                            <span id="async-value" class="m3-body-medium">None</span>
+                        </div>
+                        <p class="m3-body-small" style="color: var(--m3-on-surface-variant); margin-top: 8px;">
+                            Type at least 2 characters to search
+                        </p>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>With Descriptions</h3>
+                        <div id="dropdown-descriptions"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Outlined Searchable</h3>
+                        <div id="dropdown-searchable-outlined"></div>
+                    </div>
+                </div>
+
+                <div id="code-searchable"></div>
+            </div>
+
+            <!-- Checkbox & Switch Section -->
+            <div class="demo-section" id="selection-controls">
+                <h2>M3 Selection Controls <span class="badge m3">M3</span></h2>
+                <p>Checkbox, Radio Button and Switch components following M3 specifications with state layers and animations.</p>
+
+                <div class="component-grid">
+                    <!-- Checkbox Card -->
+                    <div class="component-card">
+                        <h3>Checkbox</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label class="m3-checkbox">
+                                <input type="checkbox" class="m3-checkbox__input">
+                                <span class="m3-checkbox__label">Unchecked</span>
+                            </label>
+                            <label class="m3-checkbox">
+                                <input type="checkbox" class="m3-checkbox__input" checked>
+                                <span class="m3-checkbox__label">Checked</span>
+                            </label>
+                            <label class="m3-checkbox">
+                                <input type="checkbox" class="m3-checkbox__input" id="checkbox-indeterminate">
+                                <span class="m3-checkbox__label">Indeterminate</span>
+                            </label>
+                            <label class="m3-checkbox">
+                                <input type="checkbox" class="m3-checkbox__input" disabled>
+                                <span class="m3-checkbox__label">Disabled</span>
+                            </label>
+                            <label class="m3-checkbox">
+                                <input type="checkbox" class="m3-checkbox__input" checked disabled>
+                                <span class="m3-checkbox__label">Checked Disabled</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Radio Button Card -->
+                    <div class="component-card">
+                        <h3>Radio Button</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label class="m3-radio">
+                                <input type="radio" name="demo-radio" class="m3-radio__input" checked>
+                                <span class="m3-radio__label">Option 1 (Selected)</span>
+                            </label>
+                            <label class="m3-radio">
+                                <input type="radio" name="demo-radio" class="m3-radio__input">
+                                <span class="m3-radio__label">Option 2</span>
+                            </label>
+                            <label class="m3-radio">
+                                <input type="radio" name="demo-radio" class="m3-radio__input">
+                                <span class="m3-radio__label">Option 3</span>
+                            </label>
+                            <label class="m3-radio">
+                                <input type="radio" name="demo-radio-disabled" class="m3-radio__input" disabled>
+                                <span class="m3-radio__label">Disabled</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Switch Card -->
+                    <div class="component-card">
+                        <h3>Switch</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label class="m3-switch">
+                                <input type="checkbox" class="m3-switch__input">
+                                <span class="m3-switch__track">
+                                    <span class="m3-switch__thumb"></span>
+                                </span>
+                                <span class="m3-switch__label">Off State</span>
+                            </label>
+                            <label class="m3-switch">
+                                <input type="checkbox" class="m3-switch__input" checked>
+                                <span class="m3-switch__track">
+                                    <span class="m3-switch__thumb"></span>
+                                </span>
+                                <span class="m3-switch__label">On State</span>
+                            </label>
+                            <label class="m3-switch">
+                                <input type="checkbox" class="m3-switch__input" disabled>
+                                <span class="m3-switch__track">
+                                    <span class="m3-switch__thumb"></span>
+                                </span>
+                                <span class="m3-switch__label">Disabled Off</span>
+                            </label>
+                            <label class="m3-switch">
+                                <input type="checkbox" class="m3-switch__input" checked disabled>
+                                <span class="m3-switch__track">
+                                    <span class="m3-switch__thumb"></span>
+                                </span>
+                                <span class="m3-switch__label">Disabled On</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Error States Card -->
+                    <div class="component-card">
+                        <h3>Error States</h3>
+                        <div style="display: flex; flex-direction: column; gap: 8px;">
+                            <label class="m3-checkbox m3-checkbox--error">
+                                <input type="checkbox" class="m3-checkbox__input">
+                                <span class="m3-checkbox__label">Checkbox Error</span>
+                            </label>
+                            <label class="m3-radio m3-radio--error">
+                                <input type="radio" name="demo-radio-error" class="m3-radio__input">
+                                <span class="m3-radio__label">Radio Error</span>
+                            </label>
+                            <label class="m3-switch m3-switch--error">
+                                <input type="checkbox" class="m3-switch__input">
+                                <span class="m3-switch__track">
+                                    <span class="m3-switch__thumb"></span>
+                                </span>
+                                <span class="m3-switch__label">Switch Error</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="code-selection"></div>
+            </div>
+
+            <!-- Slider Section -->
+            <div class="demo-section" id="slider">
+                <h2>M3 Slider <span class="badge m3">M3</span></h2>
+                <p>Continuous and discrete slider variants following M3 specifications.</p>
+
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Continuous Slider</h3>
+                        <div id="slider-continuous"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Discrete Slider with Ticks</h3>
+                        <div id="slider-discrete"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Volume Control</h3>
+                        <div id="slider-volume"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Disabled State</h3>
+                        <div id="slider-disabled"></div>
+                    </div>
+                </div>
+
+                <div id="code-slider"></div>
+            </div>
+
+            <!-- Color Picker Section -->
+            <div class="demo-section" id="color-picker">
+                <h2>M3 Color Picker <span class="badge m3">M3</span></h2>
+                <p>Full-featured color picker with HSV area, hue slider, and preset colors.</p>
+
+                <div class="component-grid">
+                    <div class="component-card">
+                        <h3>Basic Color Picker</h3>
+                        <div id="colorpicker-basic"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>With Alpha Channel</h3>
+                        <div id="colorpicker-alpha"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Custom Presets</h3>
+                        <div id="colorpicker-presets"></div>
+                    </div>
+
+                    <div class="component-card">
+                        <h3>Disabled State</h3>
+                        <div id="colorpicker-disabled"></div>
+                    </div>
+                </div>
+
+                <div id="code-colorpicker"></div>
+            </div>
+
+            <!-- Complete Form Example -->
+            <div class="demo-section" id="complete-form">
+                <h2>Complete Form Example <span class="badge">All Inputs</span></h2>
+                <p>Comprehensive form showcasing all available M3 input types.</p>
+
+                <div class="component-card" style="max-width: 900px;">
+                    <h3 style="margin-bottom: 24px;">User Profile Form</h3>
+
+                    <form class="m3-form" onsubmit="handleFormSubmit(event)" style="display: flex; flex-direction: column; gap: 24px;">
+
+                        <!-- Section: Personal Information -->
+                        <div style="border-bottom: 1px solid var(--m3-outline-variant); padding-bottom: 16px; margin-bottom: 8px;">
+                            <h4 style="font-size: 14px; font-weight: 500; color: var(--m3-on-surface-variant); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Personal Information</h4>
+
+                            <div class="m3-form__row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <!-- Text Field: First Name -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="text" class="m3-text-field__input" placeholder=" " id="form-firstname" required>
+                                        <label class="m3-text-field__label" for="form-firstname">First Name *</label>
+                                    </div>
+                                </div>
+                                <!-- Text Field: Last Name -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="text" class="m3-text-field__input" placeholder=" " id="form-lastname" required>
+                                        <label class="m3-text-field__label" for="form-lastname">Last Name *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m3-form__row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                                <!-- Email Field -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="email" class="m3-text-field__input" placeholder=" " id="form-email" required>
+                                        <label class="m3-text-field__label" for="form-email">Email *</label>
+                                    </div>
+                                    <div class="m3-text-field__supporting-text">We'll never share your email</div>
+                                </div>
+                                <!-- Phone Field -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="tel" class="m3-text-field__input" placeholder=" " id="form-phone">
+                                        <label class="m3-text-field__label" for="form-phone">Phone Number</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m3-form__row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                                <!-- Date Field -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="date" class="m3-text-field__input" placeholder=" " id="form-birthdate">
+                                        <label class="m3-text-field__label" for="form-birthdate">Birth Date</label>
+                                    </div>
+                                </div>
+                                <!-- Number Field -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="number" class="m3-text-field__input" placeholder=" " id="form-age" min="0" max="150">
+                                        <label class="m3-text-field__label" for="form-age">Age</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- URL Field -->
+                            <div class="m3-text-field m3-text-field--outlined" style="margin-top: 16px;">
+                                <div class="m3-text-field__container">
+                                    <input type="url" class="m3-text-field__input" placeholder=" " id="form-website">
+                                    <label class="m3-text-field__label" for="form-website">Website URL</label>
+                                </div>
+                                <div class="m3-text-field__supporting-text">e.g. https://example.com</div>
+                            </div>
+                        </div>
+
+                        <!-- Section: Account Settings -->
+                        <div style="border-bottom: 1px solid var(--m3-outline-variant); padding-bottom: 16px; margin-bottom: 8px;">
+                            <h4 style="font-size: 14px; font-weight: 500; color: var(--m3-on-surface-variant); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Account Settings</h4>
+
+                            <div class="m3-form__row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                                <!-- Password Field -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="password" class="m3-text-field__input" placeholder=" " id="form-password" required>
+                                        <label class="m3-text-field__label" for="form-password">Password *</label>
+                                    </div>
+                                    <div class="m3-text-field__supporting-text">Min. 8 characters</div>
+                                </div>
+                                <!-- Confirm Password -->
+                                <div class="m3-text-field m3-text-field--outlined">
+                                    <div class="m3-text-field__container">
+                                        <input type="password" class="m3-text-field__input" placeholder=" " id="form-password-confirm" required>
+                                        <label class="m3-text-field__label" for="form-password-confirm">Confirm Password *</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m3-form__row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+                                <!-- Dropdown: Country -->
+                                <div id="form-country"></div>
+                                <!-- Dropdown: Language -->
+                                <div id="form-language"></div>
+                            </div>
+                        </div>
+
+                        <!-- Section: Preferences -->
+                        <div style="border-bottom: 1px solid var(--m3-outline-variant); padding-bottom: 16px; margin-bottom: 8px;">
+                            <h4 style="font-size: 14px; font-weight: 500; color: var(--m3-on-surface-variant); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Preferences</h4>
+
+                            <!-- Radio Buttons: Plan Selection -->
+                            <div style="margin-bottom: 20px;">
+                                <p style="font-size: 14px; color: var(--m3-on-surface); margin-bottom: 12px;">Select your plan:</p>
+                                <div style="display: flex; flex-direction: column; gap: 8px;">
+                                    <label class="m3-radio">
+                                        <input type="radio" name="plan" value="free" class="m3-radio__input" checked>
+                                        <span class="m3-radio__label">Free - Basic features</span>
+                                    </label>
+                                    <label class="m3-radio">
+                                        <input type="radio" name="plan" value="pro" class="m3-radio__input">
+                                        <span class="m3-radio__label">Pro - €9.99/month</span>
+                                    </label>
+                                    <label class="m3-radio">
+                                        <input type="radio" name="plan" value="enterprise" class="m3-radio__input">
+                                        <span class="m3-radio__label">Enterprise - Custom pricing</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <!-- Slider: Notification Frequency -->
+                            <div style="margin-bottom: 20px;">
+                                <div id="form-slider"></div>
+                            </div>
+
+                            <!-- Color Picker: Theme Color -->
+                            <div style="margin-bottom: 20px;">
+                                <div id="form-color"></div>
+                            </div>
+
+                            <!-- Switches -->
+                            <div style="display: flex; flex-direction: column; gap: 12px;">
+                                <label class="m3-switch">
+                                    <input type="checkbox" class="m3-switch__input" checked>
+                                    <span class="m3-switch__track">
+                                        <span class="m3-switch__thumb"></span>
+                                    </span>
+                                    <span class="m3-switch__label">Email Notifications</span>
+                                </label>
+                                <label class="m3-switch">
+                                    <input type="checkbox" class="m3-switch__input">
+                                    <span class="m3-switch__track">
+                                        <span class="m3-switch__thumb"></span>
+                                    </span>
+                                    <span class="m3-switch__label">SMS Notifications</span>
+                                </label>
+                                <label class="m3-switch">
+                                    <input type="checkbox" class="m3-switch__input" checked>
+                                    <span class="m3-switch__track">
+                                        <span class="m3-switch__thumb"></span>
+                                    </span>
+                                    <span class="m3-switch__label">Marketing Emails</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Section: Additional Information -->
+                        <div style="margin-bottom: 8px;">
+                            <h4 style="font-size: 14px; font-weight: 500; color: var(--m3-on-surface-variant); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;">Additional Information</h4>
+
+                            <!-- Textarea: Bio -->
+                            <div class="m3-text-field m3-text-field--outlined">
+                                <div class="m3-text-field__container" style="min-height: 120px;">
+                                    <textarea class="m3-text-field__input" placeholder=" " id="form-bio" rows="4" style="resize: vertical;"></textarea>
+                                    <label class="m3-text-field__label" for="form-bio">Bio / About Me</label>
+                                </div>
+                                <div class="m3-text-field__supporting-text">Tell us about yourself (max. 500 characters)</div>
+                            </div>
+
+                            <!-- Checkboxes: Interests -->
+                            <div style="margin-top: 20px;">
+                                <p style="font-size: 14px; color: var(--m3-on-surface); margin-bottom: 12px;">Interests (select all that apply):</p>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Technology</span>
+                                    </label>
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Sports</span>
+                                    </label>
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Music</span>
+                                    </label>
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Travel</span>
+                                    </label>
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Food & Cooking</span>
+                                    </label>
+                                    <label class="m3-checkbox">
+                                        <input type="checkbox" class="m3-checkbox__input">
+                                        <span class="m3-checkbox__label">Gaming</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms Agreement -->
+                        <label class="m3-checkbox">
+                            <input type="checkbox" class="m3-checkbox__input" required>
+                            <span class="m3-checkbox__label">I agree to the Terms of Service and Privacy Policy *</span>
+                        </label>
+
+                        <!-- Form Actions -->
+                        <div class="m3-form__actions" style="display: flex; justify-content: flex-end; gap: 12px; padding-top: 16px; border-top: 1px solid var(--m3-outline-variant);">
+                            <button type="button" class="m3-button m3-button--text">Cancel</button>
+                            <button type="button" class="m3-button m3-button--outlined">Save Draft</button>
+                            <button type="submit" class="m3-button m3-button--filled">Create Account</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+        import { initializeLayout } from './layout.js';
+        import { M3DropdownMenu } from '../../src/M3DropdownMenu.js';
+        import { M3Slider } from '../../src/M3Slider.js';
+        import { M3ColorPicker } from '../../src/M3ColorPicker.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+
+        // Initialize Sidebar
+        initializeLayout('m3-components');
+
+        // Country options
+        const countries = [
+            { value: 'at', label: 'Austria' },
+            { value: 'de', label: 'Germany' },
+            { value: 'ch', label: 'Switzerland' },
+            { value: 'fr', label: 'France' },
+            { value: 'it', label: 'Italy' },
+            { value: 'es', label: 'Spain' },
+            { value: 'uk', label: 'United Kingdom' },
+            { value: 'us', label: 'United States' }
+        ];
+
+        // Filled Dropdown
+        new M3DropdownMenu({
+            containerId: 'dropdown-filled',
+            label: 'Country',
+            variant: 'filled',
+            options: countries,
+            supportingText: 'Select your country',
+            onChange: (value, label) => {
+                document.getElementById('filled-value').textContent = label;
+            }
+        });
+
+        // Outlined Dropdown
+        new M3DropdownMenu({
+            containerId: 'dropdown-outlined',
+            label: 'Country',
+            variant: 'outlined',
+            options: countries,
+            value: 'at',
+            onChange: (value, label) => {
+                document.getElementById('outlined-value').textContent = label;
+            }
+        });
+
+        // Error state dropdown
+        new M3DropdownMenu({
+            containerId: 'dropdown-error',
+            label: 'Required Field',
+            variant: 'outlined',
+            options: countries,
+            required: true,
+            error: 'This field is required'
+        });
+
+        // Disabled dropdown
+        new M3DropdownMenu({
+            containerId: 'dropdown-disabled',
+            label: 'Country',
+            variant: 'filled',
+            options: countries,
+            value: 'de',
+            disabled: true
+        });
+
+        // Form country dropdown
+        new M3DropdownMenu({
+            containerId: 'form-country',
+            label: 'Country',
+            variant: 'outlined',
+            options: countries,
+            required: true,
+            searchable: true,
+            searchPlaceholder: 'Search country...'
+        });
+
+        // Form language dropdown
+        new M3DropdownMenu({
+            containerId: 'form-language',
+            label: 'Language',
+            variant: 'outlined',
+            options: [
+                { value: 'de', label: 'Deutsch' },
+                { value: 'en', label: 'English' },
+                { value: 'fr', label: 'Français' },
+                { value: 'it', label: 'Italiano' },
+                { value: 'es', label: 'Español' }
+            ],
+            value: 'de'
+        });
+
+        // Form slider (notification frequency)
+        new M3Slider({
+            containerId: 'form-slider',
+            label: 'Notification Frequency',
+            min: 1,
+            max: 7,
+            value: 3,
+            step: 1,
+            discrete: true,
+            showTicks: true,
+            formatLabel: (v) => ['Never', 'Daily', '2x Week', '3x Week', '4x Week', '5x Week', 'Daily'][v-1] || v
+        });
+
+        // Form color picker (theme color)
+        new M3ColorPicker({
+            containerId: 'form-color',
+            label: 'Theme Color',
+            value: '#1a73e8',
+            presets: ['#1a73e8', '#34a853', '#ea4335', '#fbbc04', '#9c27b0', '#ff5722']
+        });
+
+        // === Searchable Dropdowns ===
+
+        // Searchable with local filtering
+        new M3DropdownMenu({
+            containerId: 'dropdown-searchable',
+            label: 'Country',
+            variant: 'filled',
+            searchable: true,
+            searchPlaceholder: 'Type to filter...',
+            options: countries,
+            onChange: (value, label) => {
+                document.getElementById('searchable-value').textContent = label;
+            }
+        });
+
+        // Async data loading (simulated API)
+        new M3DropdownMenu({
+            containerId: 'dropdown-async',
+            label: 'Search User',
+            variant: 'filled',
+            searchable: true,
+            searchPlaceholder: 'Type username...',
+            minSearchLength: 2,
+            emptyText: 'Type at least 2 characters to search',
+            dataSource: async (query) => {
+                // Simulate API delay
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                // Simulated user data
+                const users = [
+                    { value: '1', label: 'Anna Mueller', description: 'anna@example.com' },
+                    { value: '2', label: 'Max Mustermann', description: 'max@example.com' },
+                    { value: '3', label: 'Maria Schmidt', description: 'maria@example.com' },
+                    { value: '4', label: 'Hans Weber', description: 'hans@example.com' },
+                    { value: '5', label: 'Lisa Fischer', description: 'lisa@example.com' },
+                    { value: '6', label: 'Peter Wagner', description: 'peter@example.com' },
+                    { value: '7', label: 'Sarah Bauer', description: 'sarah@example.com' },
+                    { value: '8', label: 'Thomas Becker', description: 'thomas@example.com' }
+                ];
+
+                // Filter by query
+                return users.filter(u =>
+                    u.label.toLowerCase().includes(query.toLowerCase()) ||
+                    u.description.toLowerCase().includes(query.toLowerCase())
+                );
+            },
+            onChange: (value, label) => {
+                document.getElementById('async-value').textContent = label;
+            }
+        });
+
+        // With descriptions
+        new M3DropdownMenu({
+            containerId: 'dropdown-descriptions',
+            label: 'Select Role',
+            variant: 'outlined',
+            searchable: true,
+            options: [
+                { value: 'admin', label: 'Administrator', description: 'Full system access' },
+                { value: 'editor', label: 'Editor', description: 'Can edit content' },
+                { value: 'viewer', label: 'Viewer', description: 'Read-only access' },
+                { value: 'moderator', label: 'Moderator', description: 'Can moderate comments' }
+            ]
+        });
+
+        // Outlined searchable
+        new M3DropdownMenu({
+            containerId: 'dropdown-searchable-outlined',
+            label: 'Select City',
+            variant: 'outlined',
+            searchable: true,
+            searchPlaceholder: 'Search city...',
+            options: [
+                { value: 'vienna', label: 'Vienna' },
+                { value: 'berlin', label: 'Berlin' },
+                { value: 'zurich', label: 'Zurich' },
+                { value: 'munich', label: 'Munich' },
+                { value: 'salzburg', label: 'Salzburg' },
+                { value: 'innsbruck', label: 'Innsbruck' },
+                { value: 'graz', label: 'Graz' },
+                { value: 'linz', label: 'Linz' }
+            ]
+        });
+
+        // Initialize Sliders
+        new M3Slider({
+            containerId: 'slider-continuous',
+            label: 'Brightness',
+            min: 0,
+            max: 100,
+            value: 75,
+            onChange: (value) => console.log('Brightness:', value)
+        });
+
+        new M3Slider({
+            containerId: 'slider-discrete',
+            label: 'Rating',
+            min: 1,
+            max: 5,
+            value: 3,
+            step: 1,
+            discrete: true,
+            showTicks: true,
+            onChange: (value) => console.log('Rating:', value)
+        });
+
+        new M3Slider({
+            containerId: 'slider-volume',
+            label: 'Volume',
+            min: 0,
+            max: 100,
+            value: 50,
+            onChange: (value) => console.log('Volume:', value)
+        });
+
+        new M3Slider({
+            containerId: 'slider-disabled',
+            label: 'Disabled Slider',
+            min: 0,
+            max: 100,
+            value: 30,
+            disabled: true
+        });
+
+        // Initialize Color Pickers
+        new M3ColorPicker({
+            containerId: 'colorpicker-basic',
+            label: 'Primary Color',
+            value: '#1a73e8',
+            onChange: (color) => console.log('Basic color:', color.hex)
+        });
+
+        new M3ColorPicker({
+            containerId: 'colorpicker-alpha',
+            label: 'Background Color',
+            value: '#9c27b0',
+            showAlpha: true,
+            onChange: (color) => console.log('Alpha color:', color)
+        });
+
+        new M3ColorPicker({
+            containerId: 'colorpicker-presets',
+            label: 'Brand Color',
+            value: '#ff5722',
+            presets: ['#ff5722', '#ff9800', '#ffc107', '#ffeb3b', '#8bc34a', '#4caf50', '#009688', '#00bcd4'],
+            onChange: (color) => console.log('Preset color:', color.hex)
+        });
+
+        new M3ColorPicker({
+            containerId: 'colorpicker-disabled',
+            label: 'Locked Color',
+            value: '#607d8b',
+            disabled: true
+        });
+
+        // Theme toggle
+        window.toggleTheme = function() {
+            document.documentElement.classList.toggle('m3-dark');
+        };
+
+        // Form submit handler
+        window.handleFormSubmit = function(e) {
+            e.preventDefault();
+            alert('Form submitted successfully!');
+        };
+
+        // Set initial outlined value
+        document.getElementById('outlined-value').textContent = 'Austria';
+
+        // === Initialize CodeSnippetBuilders ===
+
+        // Buttons code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-buttons',
+            language: 'html',
+            theme: 'dark',
+            code: `<button class="m3-button m3-button--filled">Filled</button>
+<button class="m3-button m3-button--outlined">Outlined</button>
+<button class="m3-button m3-button--text">Text</button>
+<button class="m3-button m3-button--elevated">Elevated</button>
+<button class="m3-button m3-button--tonal">Tonal</button>`
+        });
+
+        // Text Fields code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-textfields',
+            language: 'html',
+            theme: 'dark',
+            code: `<!-- Standard Text Field (Label above, full border) -->
+<div class="m3-text-field m3-text-field--standard">
+    <div class="m3-text-field__container">
+        <label class="m3-text-field__label" for="name">Full Name</label>
+        <input type="text" class="m3-text-field__input" placeholder="Enter name..." id="name">
+    </div>
+    <div class="m3-text-field__supporting-text">Helper text</div>
+</div>
+
+<!-- Filled Text Field (Floating label, background) -->
+<div class="m3-text-field m3-text-field--filled">
+    <div class="m3-text-field__container">
+        <input type="text" class="m3-text-field__input" placeholder=" " id="name">
+        <label class="m3-text-field__label" for="name">Full Name</label>
+        <div class="m3-text-field__active-indicator"></div>
+    </div>
+</div>
+
+<!-- Outlined Text Field (Floating label, outline border) -->
+<div class="m3-text-field m3-text-field--outlined">
+    <div class="m3-text-field__container">
+        <input type="text" class="m3-text-field__input" placeholder=" " id="name">
+        <label class="m3-text-field__label" for="name">Full Name</label>
+    </div>
+</div>
+
+<!-- Error State: add m3-text-field--error class -->
+<div class="m3-text-field m3-text-field--standard m3-text-field--error">
+    ...
+</div>`
+        });
+
+        // Dropdown code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-dropdown',
+            language: 'javascript',
+            theme: 'dark',
+            code: `import { M3DropdownMenu } from '../../src/M3DropdownMenu.js';
+
+new M3DropdownMenu({
+    containerId: 'dropdown-filled',
+    label: 'Country',
+    variant: 'filled',
+    options: [
+        { value: 'at', label: 'Austria' },
+        { value: 'de', label: 'Germany' },
+        { value: 'ch', label: 'Switzerland' }
+    ],
+    onChange: (value, label) => console.log(value, label)
+});`
+        });
+
+        // Searchable dropdown code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-searchable',
+            language: 'javascript',
+            theme: 'dark',
+            code: `// Searchable with local filtering
+new M3DropdownMenu({
+    containerId: 'dropdown-searchable',
+    label: 'Search Country',
+    searchable: true,
+    searchPlaceholder: 'Type to filter...',
+    options: countries,
+    onChange: (value, label) => console.log(value, label)
+});
+
+// Async data loading
+new M3DropdownMenu({
+    containerId: 'dropdown-async',
+    label: 'Search User',
+    searchable: true,
+    minSearchLength: 2,
+    dataSource: async (query) => {
+        const response = await fetch(\`/api/users?q=\${query}\`);
+        return response.json();
+    }
+});`
+        });
+
+        // Slider code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-slider',
+            language: 'javascript',
+            theme: 'dark',
+            code: `import { M3Slider } from '../../src/M3Slider.js';
+
+new M3Slider({
+    containerId: 'slider-volume',
+    label: 'Volume',
+    min: 0,
+    max: 100,
+    value: 50,
+    onChange: (value) => console.log('Volume:', value)
+});`
+        });
+
+        // ColorPicker code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-colorpicker',
+            language: 'javascript',
+            theme: 'dark',
+            code: `import { M3ColorPicker } from '../../src/M3ColorPicker.js';
+
+new M3ColorPicker({
+    containerId: 'colorpicker-basic',
+    label: 'Primary Color',
+    value: '#1a73e8',
+    onChange: (color) => console.log('Color:', color.hex)
+});`
+        });
+
+        // Selection Controls code snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-selection',
+            language: 'html',
+            theme: 'dark',
+            code: `<!-- M3 Checkbox -->
+<label class="m3-checkbox">
+    <input type="checkbox" class="m3-checkbox__input">
+    <span class="m3-checkbox__label">Accept terms</span>
+</label>
+
+<!-- M3 Checkbox (checked) -->
+<label class="m3-checkbox">
+    <input type="checkbox" class="m3-checkbox__input" checked>
+    <span class="m3-checkbox__label">Newsletter</span>
+</label>
+
+<!-- M3 Radio Button -->
+<label class="m3-radio">
+    <input type="radio" name="plan" class="m3-radio__input" checked>
+    <span class="m3-radio__label">Free Plan</span>
+</label>
+<label class="m3-radio">
+    <input type="radio" name="plan" class="m3-radio__input">
+    <span class="m3-radio__label">Pro Plan</span>
+</label>
+
+<!-- M3 Switch -->
+<label class="m3-switch">
+    <input type="checkbox" class="m3-switch__input">
+    <span class="m3-switch__track">
+        <span class="m3-switch__thumb"></span>
+    </span>
+    <span class="m3-switch__label">Dark Mode</span>
+</label>
+
+<!-- Error States: add class m3-checkbox--error, m3-radio--error, m3-switch--error -->
+<label class="m3-checkbox m3-checkbox--error">
+    <input type="checkbox" class="m3-checkbox__input">
+    <span class="m3-checkbox__label">Required field</span>
+</label>`
+        });
+
+        // Set indeterminate state for demo checkbox
+        const indeterminateCheckbox = document.getElementById('checkbox-indeterminate');
+        if (indeterminateCheckbox) {
+            indeterminateCheckbox.indeterminate = true;
+        }
+
+        console.log('M3 Components Demo loaded');
+    </script>
+</body>
+</html>

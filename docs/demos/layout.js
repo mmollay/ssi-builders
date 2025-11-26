@@ -22,7 +22,7 @@ export function initializeDemoLayout(activePage) {
   const sidebar = new SidebarBuilder({
     containerId: 'sidebar-container',
     title: 'SSI Builders',
-    version: '2.3.0',
+    version: '2.4.0',
     logo: {
       text: 'SSI',
       background: '#1a73e8'
@@ -52,22 +52,19 @@ export function initializeDemoLayout(activePage) {
         label: 'AnalyticsCard',
         icon: IconManager.getIcon('chart'),
         key: 'analytics-card',
-        href: '/docs/demos/analytics-card.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/analytics-card.html'
       },
       {
         label: 'FilterBar',
         icon: IconManager.getIcon('filter'),
         key: 'filter-bar',
-        href: '/docs/demos/filter-bar.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/filter-bar.html'
       },
       {
         label: 'TimeRangePicker',
         icon: IconManager.getIcon('clock'),
         key: 'time-range-picker',
-        href: '/docs/demos/time-range-picker.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/time-range-picker.html'
       },
       {
         type: 'heading',
@@ -133,15 +130,30 @@ export function initializeDemoLayout(activePage) {
         label: 'TooltipBuilder',
         icon: IconManager.getIcon('info'),
         key: 'tooltip-builder',
-        href: '/docs/demos/tooltip-builder.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/tooltip-builder.html'
       },
       {
         label: 'CodeSnippetBuilder',
         icon: IconManager.getIcon('copy'),
         key: 'code-snippet-builder',
-        href: '/docs/demos/code-snippet-builder.html',
+        href: '/docs/demos/code-snippet-builder.html'
+      },
+      {
+        label: 'ChangelogBuilder',
+        icon: IconManager.getIcon('history'),
+        key: 'changelog-builder',
+        href: '/docs/demos/changelog-builder.html',
         badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
+        type: 'heading',
+        label: 'Design System'
+      },
+      {
+        label: 'M3 Components',
+        icon: IconManager.getIcon('layout'),
+        key: 'm3-components',
+        href: '/docs/demos/m3-components.html'
       },
       {
         type: 'heading',

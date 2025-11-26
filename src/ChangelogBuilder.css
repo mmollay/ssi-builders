@@ -1,0 +1,664 @@
+/**
+ * ChangelogBuilder Styles
+ * SSI Builders v2.4.0
+ * Material Design 3 - Elegant & Minimal
+ */
+
+/* ============================================
+   Design Tokens
+   ============================================ */
+
+.changelog {
+    /* M3 Color System - Monochromatic */
+    --cl-primary: var(--ssi-primary, #1a73e8);
+    --cl-surface: var(--ssi-surface, #ffffff);
+    --cl-surface-variant: #f5f5f5;
+    --cl-on-surface: var(--ssi-on-surface, #1f1f1f);
+    --cl-on-surface-variant: #49454f;
+    --cl-outline: #cac4d0;
+    --cl-outline-variant: #e7e0ec;
+
+    /* Subtle category colors - muted tones */
+    --cl-added: #1b5e20;
+    --cl-added-bg: #e8f5e9;
+    --cl-changed: #1565c0;
+    --cl-changed-bg: #e3f2fd;
+    --cl-fixed: #e65100;
+    --cl-fixed-bg: #fff3e0;
+    --cl-removed: #b71c1c;
+    --cl-removed-bg: #ffebee;
+    --cl-deprecated: #616161;
+    --cl-deprecated-bg: #f5f5f5;
+    --cl-security: #6a1b9a;
+    --cl-security-bg: #f3e5f5;
+
+    /* Spacing */
+    --cl-spacing-xs: 4px;
+    --cl-spacing-sm: 8px;
+    --cl-spacing-md: 16px;
+    --cl-spacing-lg: 24px;
+    --cl-spacing-xl: 32px;
+
+    /* Typography */
+    --cl-font: var(--ssi-font-family, 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif);
+
+    /* Radius */
+    --cl-radius-sm: 8px;
+    --cl-radius-md: 12px;
+    --cl-radius-lg: 16px;
+
+    font-family: var(--cl-font);
+    color: var(--cl-on-surface);
+    max-width: 800px;
+    line-height: 1.5;
+}
+
+.changelog--full-width {
+    max-width: none;
+}
+
+/* ============================================
+   Header
+   ============================================ */
+
+.changelog__header {
+    margin-bottom: var(--cl-spacing-lg);
+}
+
+.changelog__title {
+    font-size: 28px;
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    margin: 0 0 var(--cl-spacing-md);
+    color: var(--cl-on-surface);
+    display: flex;
+    align-items: center;
+    gap: var(--cl-spacing-sm);
+}
+
+.changelog__title-icon {
+    width: 24px;
+    height: 24px;
+    opacity: 0.7;
+}
+
+/* ============================================
+   Search - M3 Search Bar
+   ============================================ */
+
+.changelog__search {
+    position: relative;
+    margin-bottom: var(--cl-spacing-md);
+}
+
+.changelog__search-input {
+    width: 100%;
+    padding: 14px 16px 14px 48px;
+    border: none;
+    border-radius: 28px;
+    background: var(--cl-surface-variant);
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--cl-on-surface);
+    outline: none;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+
+.changelog__search-input::placeholder {
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__search-input:focus {
+    background: var(--cl-surface);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
+}
+
+.changelog__search-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+/* ============================================
+   Filter - M3 Filter Chips
+   ============================================ */
+
+.changelog__filter {
+    display: flex;
+    gap: var(--cl-spacing-sm);
+    flex-wrap: wrap;
+    margin-bottom: var(--cl-spacing-lg);
+}
+
+.changelog__filter-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--cl-outline);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--cl-on-surface-variant);
+    font-size: 14px;
+    font-family: inherit;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.changelog__filter-btn:hover {
+    background: var(--cl-surface-variant);
+}
+
+.changelog__filter-btn--active {
+    background: var(--cl-on-surface);
+    color: var(--cl-surface);
+    border-color: var(--cl-on-surface);
+}
+
+.changelog__filter-btn--active:hover {
+    background: var(--cl-on-surface);
+    opacity: 0.9;
+}
+
+.changelog__filter-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.changelog__filter-dot--added { background: var(--cl-added); }
+.changelog__filter-dot--changed { background: var(--cl-changed); }
+.changelog__filter-dot--fixed { background: var(--cl-fixed); }
+.changelog__filter-dot--removed { background: var(--cl-removed); }
+.changelog__filter-dot--deprecated { background: var(--cl-deprecated); }
+.changelog__filter-dot--security { background: var(--cl-security); }
+
+/* ============================================
+   Timeline Variant
+   ============================================ */
+
+.changelog--timeline .changelog__versions {
+    position: relative;
+    padding-left: 24px;
+}
+
+.changelog--timeline .changelog__versions::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 8px;
+    bottom: 8px;
+    width: 1px;
+    background: var(--cl-outline-variant);
+}
+
+.changelog--timeline .changelog__version {
+    position: relative;
+    margin-bottom: var(--cl-spacing-xl);
+}
+
+.changelog--timeline .changelog__version::before {
+    content: '';
+    position: absolute;
+    left: -24px;
+    top: 8px;
+    width: 7px;
+    height: 7px;
+    background: var(--cl-outline);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.changelog--timeline .changelog__version--highlight::before {
+    background: var(--cl-primary);
+    box-shadow: 0 0 0 4px rgba(26, 115, 232, 0.15);
+}
+
+.changelog--timeline .changelog__version:last-child {
+    margin-bottom: 0;
+}
+
+/* ============================================
+   List Variant
+   ============================================ */
+
+.changelog--list .changelog__versions {
+    display: flex;
+    flex-direction: column;
+    gap: var(--cl-spacing-md);
+}
+
+.changelog--list .changelog__version {
+    background: var(--cl-surface);
+    border: 1px solid var(--cl-outline-variant);
+    border-radius: var(--cl-radius-md);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+}
+
+.changelog--list .changelog__version:hover {
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* ============================================
+   Compact Variant
+   ============================================ */
+
+.changelog--compact .changelog__versions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--cl-spacing-sm);
+}
+
+.changelog--compact .changelog__version {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--cl-spacing-sm);
+    padding: var(--cl-spacing-sm) var(--cl-spacing-md);
+    background: var(--cl-surface);
+    border: 1px solid var(--cl-outline-variant);
+    border-radius: var(--cl-radius-lg);
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.changelog--compact .changelog__version:hover {
+    background: var(--cl-surface-variant);
+    border-color: var(--cl-outline);
+}
+
+.changelog--compact .changelog__version--highlight {
+    border-color: var(--cl-primary);
+}
+
+.changelog--compact .changelog__version-header {
+    display: contents;
+}
+
+.changelog--compact .changelog__changes {
+    display: none;
+}
+
+/* ============================================
+   Version Header
+   ============================================ */
+
+.changelog__version-header {
+    display: flex;
+    align-items: center;
+    gap: var(--cl-spacing-md);
+    padding: var(--cl-spacing-md);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+}
+
+.changelog__version-header:hover {
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.changelog--timeline .changelog__version-header {
+    padding: 0 0 var(--cl-spacing-sm) 0;
+}
+
+.changelog--timeline .changelog__version-header:hover {
+    background: transparent;
+}
+
+.changelog__version-badge {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--cl-on-surface);
+    white-space: nowrap;
+}
+
+.changelog__version--highlight .changelog__version-badge {
+    color: var(--cl-primary);
+}
+
+.changelog__version-date {
+    font-size: 14px;
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__version-summary {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.changelog__version-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 6px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    background: var(--cl-surface-variant);
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__version-count--added { background: var(--cl-added-bg); color: var(--cl-added); }
+.changelog__version-count--changed { background: var(--cl-changed-bg); color: var(--cl-changed); }
+.changelog__version-count--fixed { background: var(--cl-fixed-bg); color: var(--cl-fixed); }
+.changelog__version-count--removed { background: var(--cl-removed-bg); color: var(--cl-removed); }
+.changelog__version-count--deprecated { background: var(--cl-deprecated-bg); color: var(--cl-deprecated); }
+.changelog__version-count--security { background: var(--cl-security-bg); color: var(--cl-security); }
+
+.changelog__version-toggle {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.changelog__version-header:hover .changelog__version-toggle {
+    opacity: 0.7;
+}
+
+.changelog__version--expanded .changelog__version-toggle {
+    transform: rotate(180deg);
+}
+
+/* ============================================
+   Changes List
+   ============================================ */
+
+.changelog__changes {
+    padding: 0 var(--cl-spacing-md) var(--cl-spacing-md);
+    overflow: hidden;
+    transition: all 0.25s ease;
+}
+
+.changelog--timeline .changelog__changes {
+    padding: 0;
+}
+
+.changelog__version--collapsed .changelog__changes {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    opacity: 0;
+}
+
+.changelog__version--expanded .changelog__changes {
+    opacity: 1;
+}
+
+.changelog__category {
+    margin-bottom: var(--cl-spacing-md);
+}
+
+.changelog__category:last-child {
+    margin-bottom: 0;
+}
+
+.changelog__category-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin-bottom: var(--cl-spacing-xs);
+    padding: 0;
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__category-title::before {
+    content: '';
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.changelog__category-title--added::before { background: var(--cl-added); }
+.changelog__category-title--changed::before { background: var(--cl-changed); }
+.changelog__category-title--fixed::before { background: var(--cl-fixed); }
+.changelog__category-title--removed::before { background: var(--cl-removed); }
+.changelog__category-title--deprecated::before { background: var(--cl-deprecated); }
+.changelog__category-title--security::before { background: var(--cl-security); }
+
+.changelog__category-icon {
+    display: none;
+}
+
+.changelog__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.changelog__item {
+    position: relative;
+    padding: 6px 0 6px 20px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__item::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 14px;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--cl-outline);
+}
+
+.changelog__item--added::before { background: var(--cl-added); }
+.changelog__item--changed::before { background: var(--cl-changed); }
+.changelog__item--fixed::before { background: var(--cl-fixed); }
+.changelog__item--removed::before { background: var(--cl-removed); }
+.changelog__item--deprecated::before { background: var(--cl-deprecated); }
+.changelog__item--security::before { background: var(--cl-security); }
+
+.changelog__item-highlight {
+    background: rgba(255, 235, 59, 0.25);
+    padding: 1px 3px;
+    border-radius: 2px;
+}
+
+/* ============================================
+   Show More
+   ============================================ */
+
+.changelog__show-more {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--cl-spacing-lg);
+}
+
+.changelog__show-more-btn {
+    padding: 10px 24px;
+    border: 1px solid var(--cl-outline);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--cl-on-surface-variant);
+    font-size: 14px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: var(--cl-spacing-sm);
+}
+
+.changelog__show-more-btn:hover {
+    background: var(--cl-surface-variant);
+    border-color: var(--cl-outline);
+    color: var(--cl-on-surface);
+}
+
+/* ============================================
+   NEW Badge - Subtle
+   ============================================ */
+
+.changelog__new-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    background: var(--cl-primary);
+    color: white;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   Empty State
+   ============================================ */
+
+.changelog__empty {
+    text-align: center;
+    padding: 48px var(--cl-spacing-lg);
+    color: var(--cl-on-surface-variant);
+}
+
+.changelog__empty-icon {
+    width: 48px;
+    height: 48px;
+    margin-bottom: var(--cl-spacing-md);
+    opacity: 0.4;
+}
+
+.changelog__empty-text {
+    font-size: 16px;
+    margin: 0;
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+
+.m3-dark .changelog,
+[data-theme="dark"] .changelog {
+    --cl-surface: #1c1b1f;
+    --cl-surface-variant: #2b2930;
+    --cl-on-surface: #e6e1e5;
+    --cl-on-surface-variant: #cac4d0;
+    --cl-outline: #49454f;
+    --cl-outline-variant: #3b383e;
+
+    --cl-added-bg: rgba(27, 94, 32, 0.2);
+    --cl-changed-bg: rgba(21, 101, 192, 0.2);
+    --cl-fixed-bg: rgba(230, 81, 0, 0.2);
+    --cl-removed-bg: rgba(183, 28, 28, 0.2);
+    --cl-deprecated-bg: rgba(97, 97, 97, 0.2);
+    --cl-security-bg: rgba(106, 27, 154, 0.2);
+}
+
+.m3-dark .changelog__search-input,
+[data-theme="dark"] .changelog__search-input {
+    background: var(--cl-surface-variant);
+    color: var(--cl-on-surface);
+}
+
+.m3-dark .changelog__search-input:focus,
+[data-theme="dark"] .changelog__search-input:focus {
+    background: #38353d;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+.m3-dark .changelog__version-header:hover,
+[data-theme="dark"] .changelog__version-header:hover {
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.m3-dark .changelog__filter-btn:hover,
+[data-theme="dark"] .changelog__filter-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.m3-dark .changelog__filter-btn--active,
+[data-theme="dark"] .changelog__filter-btn--active {
+    background: var(--cl-on-surface);
+    color: var(--cl-surface);
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+@media (max-width: 768px) {
+    .changelog__header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .changelog__title {
+        font-size: 24px;
+    }
+
+    .changelog__filter {
+        gap: 6px;
+    }
+
+    .changelog__filter-btn {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+
+    .changelog__version-header {
+        flex-wrap: wrap;
+        gap: var(--cl-spacing-sm);
+    }
+
+    .changelog__version-summary {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 4px;
+    }
+
+    .changelog--timeline .changelog__versions {
+        padding-left: 20px;
+    }
+
+    .changelog--timeline .changelog__version::before {
+        left: -20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .changelog {
+        font-size: 14px;
+    }
+
+    .changelog__title {
+        font-size: 22px;
+    }
+
+    .changelog__version-badge {
+        font-size: 15px;
+    }
+
+    .changelog__filter-btn {
+        padding: 5px 10px;
+        font-size: 12px;
+    }
+
+    .changelog__search-input {
+        padding: 12px 14px 12px 44px;
+        font-size: 15px;
+    }
+}

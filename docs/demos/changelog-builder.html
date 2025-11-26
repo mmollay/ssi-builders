@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChangelogBuilder Demo - SSI Builders</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- SSI Builders Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/ChangelogBuilder.css">
+    <link rel="stylesheet" href="layout.css">
+
+    <style>
+        .demo-header {
+            max-width: 900px;
+            margin: 0 auto 32px;
+            text-align: center;
+        }
+
+        .demo-header h1 {
+            font-size: 32px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--ssi-text-primary, #1f1f1f);
+        }
+
+        .demo-header p {
+            color: var(--ssi-text-secondary, #666);
+            font-size: 16px;
+        }
+
+        .demo-section {
+            max-width: 900px;
+            margin: 0 auto 48px;
+            background: var(--ssi-surface, white);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: var(--ssi-shadow-sm, 0 2px 8px rgba(0,0,0,0.08));
+        }
+
+        .demo-section h2 {
+            font-size: 20px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--ssi-text-primary, #1f1f1f);
+        }
+
+        .demo-section .description {
+            color: var(--ssi-text-secondary, #666);
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .demo-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            border: 1px solid var(--ssi-border, #ddd);
+            border-radius: 24px;
+            background: var(--ssi-surface, white);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            color: var(--ssi-text-primary, #333);
+        }
+
+        .demo-btn:hover {
+            border-color: var(--ssi-primary, #1a73e8);
+            color: var(--ssi-primary, #1a73e8);
+        }
+
+        .demo-btn--primary {
+            background: var(--ssi-primary, #1a73e8);
+            color: white;
+            border-color: var(--ssi-primary, #1a73e8);
+        }
+
+        .demo-btn--primary:hover {
+            background: var(--ssi-primary-dark, #1557b0);
+        }
+
+        .variant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .variant-card {
+            border: 1px solid var(--ssi-border, #e0e0e0);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .variant-card h3 {
+            font-size: 16px;
+            margin-bottom: 16px;
+            color: var(--ssi-text-primary, #333);
+        }
+
+        /* Dark mode toggle */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <button class="demo-btn theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
+
+                <div class="demo-header">
+                    <h1>ChangelogBuilder Demo</h1>
+                    <p>SSI Builders v2.4.0 - Material Design 3 Changelog Component</p>
+                </div>
+
+                <!-- Timeline Variant -->
+                <div class="demo-section">
+                    <h2>Timeline Variant (Default)</h2>
+                    <p class="description">Classic timeline layout with collapsible versions, search, and category filters.</p>
+
+                    <div class="demo-controls">
+                        <button class="demo-btn" onclick="timelineChangelog.expandAll()">Expand All</button>
+                        <button class="demo-btn" onclick="timelineChangelog.collapseAll()">Collapse All</button>
+                    </div>
+
+                    <div id="changelog-timeline"></div>
+                </div>
+
+                <!-- List Variant -->
+                <div class="demo-section">
+                    <h2>List Variant</h2>
+                    <p class="description">Card-based layout with bordered sections for each version.</p>
+
+                    <div id="changelog-list"></div>
+                </div>
+
+                <!-- Compact Variant -->
+                <div class="demo-section">
+                    <h2>Compact Variant</h2>
+                    <p class="description">Badge-only view perfect for sidebars or quick version overview.</p>
+
+                    <div id="changelog-compact"></div>
+                </div>
+
+                <!-- Minimal Configuration -->
+                <div class="demo-section">
+                    <h2>Minimal Configuration</h2>
+                    <p class="description">Simple setup with just data - no filters, no search, just the changelog.</p>
+
+                    <div id="changelog-minimal"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from './layout.js';
+        import { ChangelogBuilder } from '../../src/ChangelogBuilder.js';
+        import { IconManager } from '../../src/IconManager.js';
+
+        // Configure Icon System
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('changelog-builder');
+
+        // Sample changelog data
+        const changelogData = [
+            {
+                version: '2.4.0',
+                date: '2025-11-26',
+                highlight: true,
+                changes: [
+                    { type: 'added', text: 'M3 ColorPicker component with HSV color model' },
+                    { type: 'added', text: 'M3 Slider component with discrete/continuous modes' },
+                    { type: 'added', text: 'ChangelogBuilder for version history display' },
+                    { type: 'changed', text: 'Improved M3 Dropdown keyboard navigation' },
+                    { type: 'fixed', text: 'Dropdown label positioning in outlined variant' },
+                    { type: 'fixed', text: 'ColorPicker alpha slider rendering' }
+                ]
+            },
+            {
+                version: '2.3.0',
+                date: '2025-11-20',
+                changes: [
+                    { type: 'added', text: 'AnalyticsCard component for KPI dashboards' },
+                    { type: 'added', text: 'FilterBar with debounced search' },
+                    { type: 'added', text: 'TimeRangePicker with comparison mode' },
+                    { type: 'changed', text: 'Updated design tokens for better consistency' },
+                    { type: 'security', text: 'Fixed XSS vulnerability in tooltip content' }
+                ]
+            },
+            {
+                version: '2.2.0',
+                date: '2025-11-10',
+                changes: [
+                    { type: 'added', text: 'SidebarBuilder push mode' },
+                    { type: 'added', text: 'FormBuilder password toggle' },
+                    { type: 'added', text: 'Multi-step form wizard' },
+                    { type: 'fixed', text: 'Navigation bug in SidebarBuilder' },
+                    { type: 'deprecated', text: 'Old MenuBuilder API (use new options format)' }
+                ]
+            },
+            {
+                version: '2.1.0',
+                date: '2025-10-28',
+                changes: [
+                    { type: 'added', text: 'CodeSnippetBuilder with syntax highlighting' },
+                    { type: 'added', text: 'TooltipBuilder with multiple positions' },
+                    { type: 'changed', text: 'Improved responsive breakpoints' },
+                    { type: 'removed', text: 'Legacy IE11 polyfills' }
+                ]
+            },
+            {
+                version: '2.0.0',
+                date: '2025-10-15',
+                changes: [
+                    { type: 'added', text: 'Complete Material Design 3 redesign' },
+                    { type: 'added', text: 'IconManager with 5 icon presets' },
+                    { type: 'added', text: 'GlobalConfig singleton for centralized settings' },
+                    { type: 'changed', text: 'CSS custom properties for all design tokens' },
+                    { type: 'changed', text: 'New builder configuration API' },
+                    { type: 'removed', text: 'jQuery dependency' },
+                    { type: 'security', text: 'Updated all dependencies to latest versions' }
+                ]
+            },
+            {
+                version: '1.5.0',
+                date: '2025-09-20',
+                changes: [
+                    { type: 'added', text: 'ChartBuilder with Chart.js integration' },
+                    { type: 'fixed', text: 'Memory leak in ListBuilder' }
+                ]
+            },
+            {
+                version: '1.4.0',
+                date: '2025-09-01',
+                changes: [
+                    { type: 'added', text: 'TabBuilder component' },
+                    { type: 'added', text: 'Toast notifications' }
+                ]
+            }
+        ];
+
+        // Timeline Variant (Default)
+        window.timelineChangelog = new ChangelogBuilder({
+            containerId: 'changelog-timeline',
+            title: 'Release History',
+            data: changelogData,
+            options: {
+                variant: 'timeline',
+                collapsible: true,
+                showFilter: true,
+                showSearch: true,
+                showSummary: true,
+                maxVisible: 5,
+                expandFirst: true
+            },
+            onVersionClick: (version) => console.log('Clicked version:', version),
+            onFilterChange: (filter) => console.log('Filter changed:', filter)
+        });
+
+        // List Variant
+        new ChangelogBuilder({
+            containerId: 'changelog-list',
+            title: 'Version History',
+            data: changelogData.slice(0, 3),
+            options: {
+                variant: 'list',
+                collapsible: true,
+                showFilter: false,
+                showSearch: false,
+                showSummary: true,
+                maxVisible: 10
+            }
+        });
+
+        // Compact Variant
+        new ChangelogBuilder({
+            containerId: 'changelog-compact',
+            showTitle: false,
+            data: changelogData,
+            options: {
+                variant: 'compact',
+                showFilter: false,
+                showSearch: false
+            },
+            onVersionClick: (version) => alert(`Selected version: v${version}`)
+        });
+
+        // Minimal Configuration
+        new ChangelogBuilder({
+            containerId: 'changelog-minimal',
+            title: 'Updates',
+            data: changelogData.slice(0, 2),
+            options: {
+                variant: 'timeline',
+                collapsible: false,
+                showFilter: false,
+                showSearch: false,
+                showSummary: false
+            }
+        });
+
+        // Theme toggle
+        window.toggleTheme = function() {
+            document.documentElement.classList.toggle('m3-dark');
+        };
+    </script>
+</body>
+</html>

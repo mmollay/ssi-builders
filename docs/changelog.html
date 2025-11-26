@@ -10,72 +10,95 @@
     <!-- SSI Builders Styles -->
     <link rel="stylesheet" href="/src/shared.css">
     <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/src/ChangelogBuilder.css">
     <link rel="stylesheet" href="/docs/demos/layout.css">
 
-    <!-- Marked Library for Markdown Rendering -->
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <style>
-        .changelog-content {
-            background: white;
-            padding: 48px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-            max-width: 1000px;
+        .changelog-container {
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .changelog-content h1 {
+        /* M3 Elegant Header */
+        .page-intro {
+            padding: 48px 24px 32px;
+            margin-bottom: 32px;
+            text-align: center;
+            border-bottom: 1px solid #e7e0ec;
+        }
+
+        .page-intro h1 {
             font-size: 36px;
-            color: #1a73e8;
-            margin-bottom: 24px;
-            border-bottom: 2px solid #e0e0e0;
-            padding-bottom: 16px;
+            font-weight: 400;
+            letter-spacing: -0.5px;
+            color: #1f1f1f;
+            margin: 0 0 8px;
         }
 
-        .changelog-content h2 {
-            font-size: 24px;
-            color: #202124;
-            margin-top: 40px;
-            margin-bottom: 16px;
-            font-weight: 500;
+        .page-intro p {
+            color: #49454f;
+            font-size: 16px;
+            margin: 0;
         }
 
-        .changelog-content h3 {
-            font-size: 18px;
-            color: #5f6368;
-            margin-top: 24px;
-            margin-bottom: 12px;
-            font-weight: 500;
+        /* M3 Card Segment */
+        .changelog-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e7e0ec;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
         }
 
-        .changelog-content ul {
-            padding-left: 24px;
-            margin-bottom: 16px;
+        .m3-dark .changelog-card {
+            background: #1c1b1f;
+            border-color: #49454f;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        .changelog-content li {
-            margin-bottom: 8px;
-            color: #3c4043;
-            line-height: 1.6;
+        /* M3 Elegant Footer */
+        .page-footer {
+            max-width: 900px;
+            margin: 48px auto 0;
+            padding: 24px;
+            text-align: center;
         }
 
-        .changelog-content code {
-            background: #f1f3f4;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-family: 'Roboto Mono', monospace;
-            font-size: 0.9em;
-            color: #d93025;
+        .page-footer p {
+            margin: 0;
+            font-size: 13px;
+            color: #79747e;
+            line-height: 1.8;
         }
 
-        .changelog-content a {
-            color: #1a73e8;
-            text-decoration: none;
+        .page-footer .copyright {
+            font-size: 12px;
+            color: #aea9b4;
         }
 
-        .changelog-content a:hover {
-            text-decoration: underline;
+        /* Dark mode support */
+        .m3-dark .page-intro {
+            border-bottom-color: #49454f;
+        }
+
+        .m3-dark .page-intro h1 {
+            color: #e6e1e5;
+        }
+
+        .m3-dark .page-intro p {
+            color: #cac4d0;
+        }
+
+        .m3-dark .page-footer {
+            border-top-color: #49454f;
+        }
+
+        .m3-dark .page-footer p {
+            color: #938f99;
+        }
+
+        .m3-dark .page-footer .copyright {
+            color: #6b6773;
         }
     </style>
 </head>
@@ -87,16 +110,22 @@
         <!-- Main Content -->
         <main class="demo-content">
             <div class="demo-content-inner">
-                <div class="changelog-content" id="changelog-render-area">
-                    <div style="text-align: center; padding: 40px; color: #5f6368;">
-                        Lade Changelog...
+                <div class="changelog-container">
+                    <!-- Intro -->
+                    <div class="page-intro">
+                        <h1>SSI Builders Changelog</h1>
+                        <p>Alle Releases und Updates auf einen Blick</p>
+                    </div>
+
+                    <!-- Changelog Component -->
+                    <div class="changelog-card">
+                        <div id="changelog-render-area"></div>
                     </div>
                 </div>
 
                 <!-- Footer -->
                 <div class="page-footer">
-                    <p>Made with ❤️ by SSI Solutions</p>
-                    <p class="copyright">© 2025 SSI Builders</p>
+                    <p>Built with SSI Builders · © 2025 · v2.4.0</p>
                 </div>
             </div>
         </main>
@@ -105,6 +134,7 @@
     <script type="module">
         import { initializeDemoLayout } from '/docs/demos/layout.js';
         import { IconManager } from '/src/IconManager.js';
+        import { ChangelogBuilder } from '/src/ChangelogBuilder.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
@@ -113,29 +143,152 @@
         // Initialize layout with sidebar (activePage: 'changelog')
         initializeDemoLayout('changelog');
 
-        // Fetch and Render Changelog
-        async function loadChangelog() {
-            try {
-                const response = await fetch('/CHANGELOG.md');
-                if (!response.ok) throw new Error('Changelog could not be loaded');
-                
-                const markdown = await response.text();
-                const html = marked.parse(markdown);
-                
-                document.getElementById('changelog-render-area').innerHTML = html;
-            } catch (error) {
-                console.error('Error loading changelog:', error);
-                document.getElementById('changelog-render-area').innerHTML = `
-                    <div style="text-align: center; color: #d93025; padding: 40px;">
-                        <h3>Fehler beim Laden des Changelogs</h3>
-                        <p>${error.message}</p>
-                        <p>Bitte stellen Sie sicher, dass CHANGELOG.md im Root-Verzeichnis existiert.</p>
-                    </div>
-                `;
+        // Changelog data from CHANGELOG.md
+        const changelogData = [
+            {
+                version: '2.4.0',
+                date: '2025-11-26',
+                highlight: true,
+                changes: [
+                    { type: 'added', text: 'M3 ColorPicker component with HSV color model, alpha support, and preset colors' },
+                    { type: 'added', text: 'M3 Slider component with continuous and discrete modes' },
+                    { type: 'added', text: 'M3 DropdownMenu component with filled/outlined variants and keyboard navigation' },
+                    { type: 'added', text: 'ChangelogBuilder for version history display with timeline/list/compact variants' },
+                    { type: 'added', text: 'FormBuilder: showIf now supports both function and object format for conditional field visibility' },
+                    { type: 'added', text: 'VERSION file: Added root VERSION file for easier version tracking' },
+                    { type: 'fixed', text: 'FormBuilder: Replaced emoji checkmark with IconManager.getIcon(\'check\') in success message' },
+                    { type: 'fixed', text: 'SidebarBuilder: Consistent 44px height for sidebar items (expanded and collapsed states)' },
+                    { type: 'changed', text: 'CLAUDE.md: Streamlined documentation with clearer structure' }
+                ]
+            },
+            {
+                version: '2.3.0',
+                date: '2025-11-25',
+                changes: [
+                    { type: 'added', text: 'AnalyticsCard: KPI card component with value formats (number, currency, percent, time, compact)' },
+                    { type: 'added', text: 'AnalyticsCard: Trend indicators (up/down/neutral) with percentage change' },
+                    { type: 'added', text: 'AnalyticsCard: 5 color variants, loading skeleton, clickable cards' },
+                    { type: 'added', text: 'AnalyticsCardGrid: Helper class for responsive grid layouts' },
+                    { type: 'added', text: 'FilterBar: Global filter component with select, search, date, checkbox types' },
+                    { type: 'added', text: 'FilterBar: Debounced search, active filter badge, refresh/reset/export buttons' },
+                    { type: 'added', text: 'TimeRangePicker: Time range selection with day/week/month/quarter/year presets' },
+                    { type: 'added', text: 'TimeRangePicker: Comparison mode, custom date range, SQL helper methods' },
+                    { type: 'added', text: 'AnalyticsBuilder.css: Unified design system with CSS variables for all analytics components' }
+                ]
+            },
+            {
+                version: '2.2.0',
+                date: '2025-11-24',
+                changes: [
+                    { type: 'added', text: 'ToastBuilder: Professional toast notification system with M3 design' },
+                    { type: 'added', text: 'ToastBuilder: Success, Error, Warning, Info notifications with auto-dismiss' },
+                    { type: 'added', text: 'TooltipBuilder: Advanced tooltip system with rich content support' },
+                    { type: 'added', text: 'TooltipBuilder: Smart positioning, HTML support, multiple triggers (hover, click, focus)' },
+                    { type: 'added', text: 'CodeSnippetBuilder: Syntax highlighting for JS, HTML, CSS, JSON, Python, etc.' },
+                    { type: 'added', text: 'CodeSnippetBuilder: Copy button, line numbers, dark/light themes' },
+                    { type: 'added', text: 'FormBuilder: Password toggle with eye/eye-off icons' },
+                    { type: 'added', text: 'FormBuilder: Number stepper buttons with increment/decrement' },
+                    { type: 'added', text: 'IconManager: New eye and eye-off icons for password fields' },
+                    { type: 'added', text: 'GlobalConfig: New tooltips and codeSnippets configuration sections' },
+                    { type: 'changed', text: 'FormBuilder: M3-Enhanced checkbox, radio, and toggle switch components' },
+                    { type: 'fixed', text: 'SidebarBuilder: Replaced emoji search icon with IconManager.getIcon(\'search\')' }
+                ]
+            },
+            {
+                version: '2.1.0',
+                date: '2025-01-23',
+                changes: [
+                    { type: 'added', text: 'ChartBuilder: Percentage labels on Pie/Donut charts (shown if > 3%)' },
+                    { type: 'added', text: 'ChartBuilder: Formatted total value in donut center' },
+                    { type: 'added', text: 'ChartBuilder: XSS protection with sanitizeHTML() and sanitizeAttr() methods' },
+                    { type: 'changed', text: 'ChartBuilder: Design Token integration with CSS Custom Properties' },
+                    { type: 'fixed', text: 'ChartBuilder: Legend value display logic (undefined vs null check)' },
+                    { type: 'fixed', text: 'ChartBuilder: Legend rendering for datasets format in Pie/Donut charts' }
+                ]
+            },
+            {
+                version: '2.0.0',
+                date: '2025-01-21',
+                changes: [
+                    { type: 'added', text: 'SSI-Ökosystem Vision: Central UI library for ALL SSI projects' },
+                    { type: 'added', text: 'Design Token System v2.0: New CSS Custom Properties (--ssi-*)' },
+                    { type: 'added', text: 'Lucide Icons: Professional SVG icons replacing all emojis' },
+                    { type: 'added', text: 'IconManager: 5 icon presets with 3 weights (thin, regular, bold)' },
+                    { type: 'added', text: 'Google M3 color palette, shadows, spacing, typography' },
+                    { type: 'changed', text: 'All 7 builders updated to v2.0 with IconManager integration' },
+                    { type: 'changed', text: 'ListBuilder: emoji icons replaced with Lucide SVG icons' },
+                    { type: 'deprecated', text: 'Old CSS variables (--primary-color, etc.) - use --ssi-* instead' },
+                    { type: 'removed', text: 'All emoji usage in production code' }
+                ]
+            },
+            {
+                version: '1.2.1',
+                date: '2025-11-21',
+                changes: [
+                    { type: 'changed', text: 'SidebarBuilder: Toggle button redesign (28x28px, better position)' },
+                    { type: 'changed', text: 'SidebarBuilder: Flat navigation structure (removed collapsible sections)' },
+                    { type: 'fixed', text: 'SidebarBuilder: Removed duplicate mobile menu toggle button' },
+                    { type: 'fixed', text: 'Layout.js: updateContentMargin() for smooth transitions' }
+                ]
+            },
+            {
+                version: '1.2.0',
+                date: '2025-11-20',
+                changes: [
+                    { type: 'added', text: 'SiteBuilder: Complete layout system with Header, Sidebar, Footer' },
+                    { type: 'added', text: 'SiteBuilder: 4 templates (admin, website, dashboard, landing)' },
+                    { type: 'added', text: 'GlobalConfig: Central configuration for all builders' },
+                    { type: 'added', text: 'IconManager: Centralized icon management with 5 presets' },
+                    { type: 'added', text: 'Icon Weights: thin (1.5), regular (2.0), bold (2.5)' },
+                    { type: 'added', text: 'Unified SSI Button System (.ssi-btn) with M3 specifications' },
+                    { type: 'added', text: 'ListBuilder: Configurable button display types (icon, emoji, button, button-icon)' },
+                    { type: 'added', text: 'Interactive demo pages in /docs/demos/' },
+                    { type: 'fixed', text: 'ModalBuilder: Side drawer positioning (side-left, side-right)' },
+                    { type: 'fixed', text: 'ModalBuilder: Bottom sheet positioning and animations' }
+                ]
+            },
+            {
+                version: '1.1.0',
+                date: '2025-11-20',
+                changes: [
+                    { type: 'added', text: 'Version Badge System: Automatic version display in all builders' },
+                    { type: 'added', text: 'version.js: getVersion() and createVersionBadge() functions' },
+                    { type: 'added', text: '.ssi-version-badge CSS class with hover effect' }
+                ]
+            },
+            {
+                version: '1.0.0',
+                date: '2025-11-20',
+                changes: [
+                    { type: 'added', text: 'ListBuilder: Data tables with search, sort, filter, pagination, export' },
+                    { type: 'added', text: 'FormBuilder: Dynamic forms with validation, multi-step, auto-save' },
+                    { type: 'added', text: 'ModalBuilder: 9 sizes/layouts including fullscreen and side drawers' },
+                    { type: 'added', text: 'ChartBuilder: Bar, Line, Pie, Donut charts (no dependencies)' },
+                    { type: 'added', text: 'TabBuilder: Multiple styles, keyboard navigation, URL hash support' },
+                    { type: 'added', text: 'MenuBuilder: Dropdown and context menus with nested submenus' },
+                    { type: 'added', text: 'SidebarBuilder: Collapsible navigation with search and badges' },
+                    { type: 'added', text: 'Material Design 3 compliance with CSS Custom Properties' },
+                    { type: 'added', text: 'Full Playwright test coverage' }
+                ]
             }
-        }
+        ];
 
-        loadChangelog();
+        // Initialize ChangelogBuilder
+        new ChangelogBuilder({
+            containerId: 'changelog-render-area',
+            showTitle: false,  // We have our own header
+            data: changelogData,
+            options: {
+                variant: 'timeline',
+                collapsible: true,
+                showFilter: true,
+                showSearch: true,
+                showSummary: true,
+                maxVisible: 10,
+                expandFirst: true,
+                dateFormat: 'long'
+            }
+        });
     </script>
 </body>
 </html>

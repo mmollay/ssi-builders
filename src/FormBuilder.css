@@ -866,9 +866,9 @@ input[type="color"].form-input {
     height: 56px;
     padding: 16px !important;
     background: #F5F5F5;
-    border: none;
-    border-bottom: 1px solid #79747E;
-    border-radius: 4px 4px 0 0;
+    border: none !important;
+    border-bottom: 1px solid #79747E !important;
+    border-radius: 4px 4px 0 0 !important;
     font-family: inherit;
     font-size: 16px;
     line-height: 24px;
@@ -938,7 +938,8 @@ input[type="color"].form-input {
 .form-field-filled .form-select:focus,
 .form-field-filled .form-textarea:focus {
     background: #EEEEEE;
-    border-bottom: 2px solid #1a73e8;
+    border-bottom: 2px solid #1a73e8 !important;
+    box-shadow: none !important;
     padding-bottom: 7px !important;  /* Adjust for 2px border */
 }
 
@@ -948,6 +949,33 @@ input[type="color"].form-input {
 .form-field-filled:hover .form-textarea:not(:focus) {
     background: #EEEEEE;
     border-bottom-color: #5F6368;
+}
+
+/* Select always has floating label in filled variant */
+.form-field-filled .form-select {
+    padding-top: 24px !important;
+    padding-bottom: 8px !important;
+    color: #1C1B1F;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px !important;
+}
+
+.form-field-filled .form-select ~ .form-label {
+    top: 8px;
+    transform: translateY(0);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #5F6368;
+}
+
+.form-field-filled .form-select:focus ~ .form-label {
+    color: #1a73e8;
 }
 
 /* === OUTLINED VARIANT - M3 Exact Spec === */
@@ -1036,6 +1064,35 @@ input[type="color"].form-input {
     border-color: #1C1B1F;
 }
 
+/* Select always has floating label in outlined variant */
+.form-field-outlined .form-select {
+    padding-top: 16px !important;
+    color: #1C1B1F;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-color: transparent;
+    padding-right: 40px !important;
+}
+
+.form-field-outlined .form-select ~ .form-label {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #49454F;
+    background: white;
+    padding: 0 4px;
+}
+
+.form-field-outlined .form-select:focus ~ .form-label {
+    color: #1a73e8;
+}
+
 /* Supporting text (descriptions) for M3 */
 .form-field-filled .form-description,
 .form-field-outlined .form-description,
@@ -1118,4 +1175,205 @@ input[type="color"].form-input {
 .form-field-filled.form-field-error .form-label,
 .form-field-outlined.form-field-error .form-label {
     color: #B3261E;
+}
+
+/* ========================================
+   M3 Size Variants - FILLED
+   sm: 40px, md: 56px (default), lg: 64px
+   ======================================== */
+
+/* FILLED - Small Size */
+.form-field-filled.form-field-size-sm .form-input,
+.form-field-filled.form-field-size-sm .form-select,
+.form-field-filled.form-field-size-sm .form-textarea {
+    height: 40px;
+    padding: 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-filled.form-field-size-sm .form-textarea {
+    height: auto;
+    min-height: 80px;
+}
+
+.form-field-filled.form-field-size-sm .form-label {
+    left: 12px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-filled.form-field-size-sm .form-input:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-sm .form-select:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-textarea:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-sm .form-label-float {
+    top: 4px;
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.form-field-filled.form-field-size-sm .form-input:focus,
+.form-field-filled.form-field-size-sm .form-input:not(:placeholder-shown),
+.form-field-filled.form-field-size-sm .form-select:focus,
+.form-field-filled.form-field-size-sm .form-textarea:focus,
+.form-field-filled.form-field-size-sm .form-textarea:not(:placeholder-shown) {
+    padding-top: 18px !important;
+    padding-bottom: 4px !important;
+}
+
+/* FILLED - Large Size */
+.form-field-filled.form-field-size-lg .form-input,
+.form-field-filled.form-field-size-lg .form-select,
+.form-field-filled.form-field-size-lg .form-textarea {
+    height: 64px;
+    padding: 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-filled.form-field-size-lg .form-textarea {
+    height: auto;
+    min-height: 140px;
+}
+
+.form-field-filled.form-field-size-lg .form-label {
+    left: 20px;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-filled.form-field-size-lg .form-input:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-lg .form-select:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-textarea:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-lg .form-label-float {
+    top: 10px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.form-field-filled.form-field-size-lg .form-input:focus,
+.form-field-filled.form-field-size-lg .form-input:not(:placeholder-shown),
+.form-field-filled.form-field-size-lg .form-select:focus,
+.form-field-filled.form-field-size-lg .form-textarea:focus,
+.form-field-filled.form-field-size-lg .form-textarea:not(:placeholder-shown) {
+    padding-top: 28px !important;
+    padding-bottom: 8px !important;
+}
+
+/* ========================================
+   M3 Size Variants - OUTLINED
+   sm: 40px, md: 56px (default), lg: 64px
+   ======================================== */
+
+/* OUTLINED - Small Size */
+.form-field-outlined.form-field-size-sm .form-input,
+.form-field-outlined.form-field-size-sm .form-select,
+.form-field-outlined.form-field-size-sm .form-textarea {
+    height: 40px;
+    padding: 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-outlined.form-field-size-sm .form-textarea {
+    height: auto;
+    min-height: 80px;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+}
+
+.form-field-outlined.form-field-size-sm .form-label {
+    left: 12px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-outlined.form-field-size-sm .form-input:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-select:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-textarea:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-label-float {
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.form-field-outlined.form-field-size-sm .form-input:focus,
+.form-field-outlined.form-field-size-sm .form-select:focus,
+.form-field-outlined.form-field-size-sm .form-textarea:focus {
+    padding: 11px !important;
+}
+
+/* OUTLINED - Large Size */
+.form-field-outlined.form-field-size-lg .form-input,
+.form-field-outlined.form-field-size-lg .form-select,
+.form-field-outlined.form-field-size-lg .form-textarea {
+    height: 64px;
+    padding: 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-outlined.form-field-size-lg .form-textarea {
+    height: auto;
+    min-height: 140px;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+}
+
+.form-field-outlined.form-field-size-lg .form-label {
+    left: 20px;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-outlined.form-field-size-lg .form-input:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-select:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-textarea:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-label-float {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.form-field-outlined.form-field-size-lg .form-input:focus,
+.form-field-outlined.form-field-size-lg .form-select:focus,
+.form-field-outlined.form-field-size-lg .form-textarea:focus {
+    padding: 19px !important;
+}
+
+/* ========================================
+   M3 Size Variants - STANDARD
+   sm: 36px, md: 44px (default), lg: 52px
+   ======================================== */
+
+/* STANDARD - Small Size */
+.form-field-standard.form-field-size-sm .form-input,
+.form-field-standard.form-field-size-sm .form-select,
+.form-field-standard.form-field-size-sm .form-textarea {
+    padding: 8px 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-standard.form-field-size-sm .form-textarea {
+    min-height: 60px;
+}
+
+/* STANDARD - Large Size */
+.form-field-standard.form-field-size-lg .form-input,
+.form-field-standard.form-field-size-lg .form-select,
+.form-field-standard.form-field-size-lg .form-textarea {
+    padding: 16px 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-standard.form-field-size-lg .form-textarea {
+    min-height: 100px;
 }

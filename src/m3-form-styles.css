@@ -1,0 +1,2110 @@
+/**
+ * Material Design 3 - Form Component Styles
+ * SSI Builders v2.4.0
+ *
+ * Includes:
+ * - M3 Dropdown Menu (Exposed Dropdown)
+ * - M3 Text Fields (Standard, Filled & Outlined)
+ * - M3 Buttons (Filled, Outlined, Text, Elevated, Tonal)
+ *
+ * Requires: m3-tokens.css
+ */
+
+/* =========================================
+   M3 DROPDOWN MENU
+   Exposed Dropdown following M3 spec
+   ========================================= */
+
+.m3-dropdown {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--m3-font-family);
+    outline: none;
+}
+
+/* === Field Container === */
+.m3-dropdown__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: var(--m3-text-field-height);
+    cursor: pointer;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+/* === Filled Variant === */
+.m3-dropdown--filled .m3-dropdown__field {
+    background: var(--m3-surface-container-highest);
+    border-radius: var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0;
+    padding: 6px 12px;
+    min-height: var(--m3-text-field-height);
+}
+
+.m3-dropdown--filled .m3-dropdown__active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--m3-on-surface-variant);
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown--filled:hover .m3-dropdown__active-indicator {
+    background: var(--m3-on-surface);
+}
+
+.m3-dropdown--filled:focus .m3-dropdown__active-indicator,
+.m3-dropdown--filled.m3-dropdown--open .m3-dropdown__active-indicator {
+    height: 2px;
+    background: var(--m3-primary);
+}
+
+/* === Outlined Variant === */
+.m3-dropdown--outlined .m3-dropdown__field {
+    position: relative; /* Damit Label sich hierauf bezieht */
+    background: transparent;
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-extra-small);
+    padding: 6px 12px;
+    min-height: var(--m3-text-field-height); /* Gleiche Höhe wie Filled */
+}
+
+.m3-dropdown--outlined:hover .m3-dropdown__field {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-dropdown--outlined:focus .m3-dropdown__field,
+.m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__field {
+    border-color: var(--m3-primary);
+    /* Border bleibt 1px, stattdessen box-shadow für Focus-Effekt */
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+/* === Content Area === */
+.m3-dropdown__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    min-height: 32px;
+    position: relative;
+    padding-top: 6px;
+}
+
+/* Outlined Content: Label relativ zum Field, nicht zum Content */
+.m3-dropdown--outlined .m3-dropdown__content {
+    position: static; /* Label bezieht sich jetzt auf Field */
+    justify-content: center;
+    padding-top: 0;
+    min-height: 20px;
+}
+
+/* === Label === */
+.m3-dropdown__label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface-variant);
+    pointer-events: none;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+    transform-origin: left center;
+}
+
+/* Floating label state - GRAU wenn nicht fokussiert */
+.m3-dropdown__label--float {
+    top: 4px;
+    transform: translateY(0);
+    font-size: var(--m3-body-small-size);
+    line-height: 1;
+    color: var(--m3-on-surface-variant); /* Grau im Normalzustand */
+}
+
+/* Label wird Primary NUR bei Focus/Open - nur für FILLED */
+.m3-dropdown--filled:focus .m3-dropdown__label,
+.m3-dropdown--filled.m3-dropdown--open .m3-dropdown__label {
+    top: 4px;
+    transform: translateY(0);
+    font-size: var(--m3-body-small-size);
+    line-height: 1;
+    color: var(--m3-primary); /* Primary nur bei Focus */
+}
+
+.m3-dropdown--filled .m3-dropdown__label--float {
+    top: 4px;
+}
+
+/* Outlined Label: bezieht sich auf Field (position: relative) */
+.m3-dropdown--outlined .m3-dropdown__label {
+    /* Label startet zentriert */
+    top: 50%;
+    transform: translateY(-50%);
+    left: 12px; /* Links-Abstand vom Border */
+}
+
+.m3-dropdown--outlined .m3-dropdown__label--float {
+    top: 0;
+    transform: translateY(-50%); /* Zentriert auf dem Border */
+    background: var(--m3-surface);
+    padding: 0 4px;
+    z-index: 1;
+    font-size: var(--m3-body-small-size);
+    line-height: 1;
+    color: var(--m3-on-surface-variant);
+}
+
+/* Bei Focus/Open auch auf dem Border */
+.m3-dropdown--outlined:focus .m3-dropdown__label,
+.m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__label {
+    top: 0;
+    transform: translateY(-50%);
+    background: var(--m3-surface);
+    padding: 0 4px;
+    z-index: 1;
+    font-size: var(--m3-body-small-size);
+    line-height: 1;
+    color: var(--m3-primary);
+}
+
+/* === Value Display === */
+.m3-dropdown__value {
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+    min-height: 24px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.m3-dropdown--outlined .m3-dropdown__value {
+    /* Outlined value stays centered */
+}
+
+/* === Icons === */
+.m3-dropdown__leading-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 16px;
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-dropdown__trailing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 16px;
+    color: var(--m3-on-surface-variant);
+    transition: transform var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown--open .m3-dropdown__trailing-icon {
+    transform: rotate(180deg);
+}
+
+/* === State Layer === */
+.m3-dropdown__state-layer {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    pointer-events: none;
+    transition: background var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown:hover .m3-dropdown__state-layer {
+    background: rgba(var(--m3-on-surface), var(--m3-state-hover));
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-dropdown:focus .m3-dropdown__state-layer {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+}
+
+/* === Menu === */
+.m3-dropdown__menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    min-width: var(--m3-menu-min-width);
+    max-height: 0;
+    overflow: hidden;
+    background: var(--m3-surface-container);
+    border-radius: var(--m3-shape-extra-small);
+    box-shadow: var(--m3-elevation-2);
+    z-index: 1000;
+    opacity: 0;
+    transform: scaleY(0.8);
+    transform-origin: top;
+    transition: all var(--m3-duration-short4) var(--m3-easing-emphasized-accelerate);
+}
+
+.m3-dropdown--open .m3-dropdown__menu {
+    max-height: 320px;
+    overflow-y: auto;
+    opacity: 1;
+    transform: scaleY(1);
+    padding: var(--m3-menu-padding) 0;
+    transition: all var(--m3-duration-medium2) var(--m3-easing-emphasized-decelerate);
+}
+
+.m3-dropdown__menu--above {
+    top: auto;
+    bottom: 100%;
+    transform-origin: bottom;
+}
+
+/* === Option === */
+.m3-dropdown__option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: var(--m3-menu-item-height);
+    padding: 0 12px 0 16px;
+    cursor: pointer;
+    transition: background var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown__option-label {
+    flex: 1;
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+}
+
+.m3-dropdown__option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-dropdown__option-check {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin-left: 12px;
+    color: var(--m3-primary);
+}
+
+.m3-dropdown__option-state-layer {
+    position: absolute;
+    inset: 0;
+    background: transparent;
+    pointer-events: none;
+    transition: background var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown__option:hover .m3-dropdown__option-state-layer,
+.m3-dropdown__option--focused .m3-dropdown__option-state-layer {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-dropdown__option--selected {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* === Supporting Text === */
+.m3-dropdown__supporting-text {
+    padding: 4px 16px 0;
+    font-size: var(--m3-body-small-size);
+    line-height: var(--m3-body-small-line-height);
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-dropdown__supporting-text--error {
+    color: var(--m3-error);
+}
+
+/* === Error State === */
+.m3-dropdown--error .m3-dropdown__label {
+    color: var(--m3-error);
+}
+
+.m3-dropdown--error.m3-dropdown--filled .m3-dropdown__active-indicator {
+    background: var(--m3-error);
+}
+
+.m3-dropdown--error.m3-dropdown--outlined .m3-dropdown__field {
+    border-color: var(--m3-error);
+}
+
+/* === Disabled State === */
+.m3-dropdown--disabled {
+    pointer-events: none;
+}
+
+.m3-dropdown--disabled .m3-dropdown__field {
+    opacity: 0.38;
+}
+
+.m3-dropdown--disabled .m3-dropdown__label,
+.m3-dropdown--disabled .m3-dropdown__value {
+    color: var(--m3-on-surface);
+}
+
+/* === Size Variants === */
+.m3-dropdown--sm .m3-dropdown__field {
+    min-height: var(--m3-text-field-height-sm);
+}
+
+.m3-dropdown--lg .m3-dropdown__field {
+    min-height: var(--m3-text-field-height-lg);
+}
+
+/* === Search Input (Searchable Dropdown) === */
+.m3-dropdown__search {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--m3-outline-variant);
+    background: var(--m3-surface-container);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.m3-dropdown__search-icon {
+    flex-shrink: 0;
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-dropdown__search-input {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+    outline: none;
+    font-family: inherit;
+}
+
+.m3-dropdown__search-input::placeholder {
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-dropdown__search-clear {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--m3-on-surface-variant);
+    cursor: pointer;
+    border-radius: var(--m3-shape-full);
+    transition: background var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-dropdown__search-clear:hover {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+/* === Options Container === */
+.m3-dropdown__options-container {
+    overflow-y: auto;
+    max-height: 240px;
+}
+
+.m3-dropdown--searchable.m3-dropdown--open .m3-dropdown__menu {
+    max-height: 360px;
+}
+
+/* === Option Description === */
+.m3-dropdown__option-description {
+    font-size: var(--m3-body-small-size);
+    color: var(--m3-on-surface-variant);
+    margin-left: auto;
+    padding-left: 12px;
+}
+
+/* === Loading State === */
+.m3-dropdown__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 32px 16px;
+    color: var(--m3-on-surface-variant);
+    font-size: var(--m3-body-medium-size);
+}
+
+.m3-dropdown__spinner {
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--m3-outline-variant);
+    border-top-color: var(--m3-primary);
+    border-radius: 50%;
+    animation: m3-dropdown-spin 0.8s linear infinite;
+}
+
+@keyframes m3-dropdown-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* === Empty State === */
+.m3-dropdown__empty {
+    padding: 32px 16px;
+    text-align: center;
+    color: var(--m3-on-surface-variant);
+    font-size: var(--m3-body-medium-size);
+}
+
+/* === Search Highlight === */
+.m3-dropdown__highlight {
+    background: color-mix(in srgb, var(--m3-primary) 24%, transparent);
+    color: inherit;
+    border-radius: 2px;
+    padding: 0 2px;
+}
+
+
+/* =========================================
+   M3 TEXT FIELD
+   Standard, Filled, and Outlined variants
+   ========================================= */
+
+.m3-text-field {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: var(--m3-font-family);
+}
+
+.m3-text-field__container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* === Filled Text Field === */
+.m3-text-field--filled .m3-text-field__container {
+    background: var(--m3-surface-container-highest);
+    border-radius: var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0;
+    min-height: var(--m3-text-field-height);
+}
+
+.m3-text-field--filled .m3-text-field__input {
+    width: 100%;
+    height: 100%;
+    padding: 20px 16px 6px;
+    background: transparent;
+    border: none;
+    outline: none;
+    font-family: inherit;
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+    caret-color: var(--m3-primary);
+}
+
+.m3-text-field--filled .m3-text-field__input::placeholder {
+    color: transparent;
+}
+
+.m3-text-field--filled .m3-text-field__input:focus::placeholder {
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-text-field--filled .m3-text-field__label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface-variant);
+    pointer-events: none;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--filled .m3-text-field__input:focus ~ .m3-text-field__label,
+.m3-text-field--filled .m3-text-field__input:not(:placeholder-shown) ~ .m3-text-field__label {
+    top: 8px;
+    transform: translateY(0);
+    font-size: var(--m3-body-small-size);
+    color: var(--m3-primary);
+}
+
+.m3-text-field--filled .m3-text-field__active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--m3-on-surface-variant);
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--filled:hover .m3-text-field__active-indicator {
+    background: var(--m3-on-surface);
+}
+
+.m3-text-field--filled .m3-text-field__input:focus ~ .m3-text-field__active-indicator {
+    height: 2px;
+    background: var(--m3-primary);
+}
+
+/* === Outlined Text Field === */
+.m3-text-field--outlined .m3-text-field__container {
+    min-height: var(--m3-text-field-height);
+}
+
+.m3-text-field--outlined .m3-text-field__input {
+    width: 100%;
+    height: 100%;
+    padding: 12px 16px;
+    background: transparent;
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-extra-small);
+    outline: none;
+    font-family: inherit;
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+    caret-color: var(--m3-primary);
+    transition: border var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--outlined .m3-text-field__input::placeholder {
+    color: transparent;
+}
+
+.m3-text-field--outlined .m3-text-field__input:focus::placeholder {
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-text-field--outlined:hover .m3-text-field__input {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-text-field--outlined .m3-text-field__input:focus {
+    border-color: var(--m3-primary);
+    border-width: 2px;
+    padding: 11px 15px;
+}
+
+.m3-text-field--outlined .m3-text-field__label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface-variant);
+    pointer-events: none;
+    background: var(--m3-surface);
+    padding: 0 4px;
+    margin-left: -4px;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--outlined .m3-text-field__input:focus ~ .m3-text-field__label,
+.m3-text-field--outlined .m3-text-field__input:not(:placeholder-shown) ~ .m3-text-field__label {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: var(--m3-body-small-size);
+    color: var(--m3-primary);
+}
+
+/* === Text Field Icons === */
+.m3-text-field__leading-icon,
+.m3-text-field__trailing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--m3-on-surface-variant);
+}
+
+.m3-text-field__leading-icon {
+    margin-left: 12px;
+}
+
+.m3-text-field__trailing-icon {
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* === Text Field Supporting Text === */
+.m3-text-field__supporting-text {
+    padding: 4px 16px 0;
+    font-size: var(--m3-body-small-size);
+    line-height: var(--m3-body-small-line-height);
+    color: var(--m3-on-surface-variant);
+}
+
+/* === Text Field Error State === */
+.m3-text-field--error .m3-text-field__label {
+    color: var(--m3-error) !important;
+}
+
+.m3-text-field--error.m3-text-field--filled .m3-text-field__active-indicator {
+    background: var(--m3-error) !important;
+}
+
+.m3-text-field--error.m3-text-field--outlined .m3-text-field__input {
+    border-color: var(--m3-error) !important;
+}
+
+.m3-text-field--error .m3-text-field__supporting-text {
+    color: var(--m3-error);
+}
+
+/* === Text Field Disabled State === */
+.m3-text-field--disabled .m3-text-field__container {
+    opacity: 0.38;
+    pointer-events: none;
+}
+
+/* === Standard Text Field === */
+/* Classic layout: Label above input, full border (like FormBuilder standard) */
+.m3-text-field--standard .m3-text-field__container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+}
+
+.m3-text-field--standard .m3-text-field__label {
+    position: relative;
+    left: auto;
+    top: auto;
+    transform: none;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--m3-on-surface);
+    pointer-events: auto;
+    transition: color var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--standard .m3-text-field__input {
+    width: 100%;
+    padding: 10px 12px;
+    background: var(--m3-surface);
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-extra-small);
+    outline: none;
+    font-family: inherit;
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    color: var(--m3-on-surface);
+    caret-color: var(--m3-primary);
+    transition: border-color var(--m3-duration-short4) var(--m3-easing-standard),
+                box-shadow var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-text-field--standard .m3-text-field__input::placeholder {
+    color: var(--m3-on-surface-variant);
+    opacity: 0.7;
+}
+
+.m3-text-field--standard:hover .m3-text-field__input {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-text-field--standard .m3-text-field__input:focus {
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+.m3-text-field--standard:focus-within .m3-text-field__label {
+    color: var(--m3-primary);
+}
+
+/* Standard Text Field Error State */
+.m3-text-field--standard.m3-text-field--error .m3-text-field__label {
+    color: var(--m3-error) !important;
+}
+
+.m3-text-field--standard.m3-text-field--error .m3-text-field__input {
+    border-color: var(--m3-error) !important;
+}
+
+.m3-text-field--standard.m3-text-field--error .m3-text-field__input:focus {
+    box-shadow: 0 0 0 1px var(--m3-error);
+}
+
+/* === Textarea Specific Styles === */
+.m3-text-field__input[rows],
+textarea.m3-text-field__input {
+    resize: vertical;
+    min-height: 120px;
+    padding-top: 24px;
+    line-height: 1.5;
+    vertical-align: top;
+}
+
+/* Textarea label should stay at top */
+.m3-text-field--outlined .m3-text-field__container:has(textarea) .m3-text-field__label,
+.m3-text-field--outlined .m3-text-field__container:has([rows]) .m3-text-field__label {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: var(--m3-body-small-size);
+    background: var(--m3-surface);
+    padding: 0 4px;
+}
+
+.m3-text-field--filled .m3-text-field__container:has(textarea) .m3-text-field__label,
+.m3-text-field--filled .m3-text-field__container:has([rows]) .m3-text-field__label {
+    top: 8px;
+    transform: translateY(0);
+    font-size: var(--m3-body-small-size);
+}
+
+/* Textarea container alignment */
+.m3-text-field__container:has(textarea),
+.m3-text-field__container:has([rows]) {
+    align-items: flex-start;
+}
+
+
+/* =========================================
+   M3 BUTTONS
+   All button variants following M3 spec
+   ========================================= */
+
+.m3-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 64px;
+    height: var(--m3-button-height);
+    padding: 0 24px;
+    border: none;
+    border-radius: var(--m3-shape-full);
+    font-family: var(--m3-font-family);
+    font-size: var(--m3-label-large-size);
+    font-weight: var(--m3-label-large-weight);
+    line-height: var(--m3-label-large-line-height);
+    letter-spacing: var(--m3-label-large-tracking);
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.m3-button:focus-visible {
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+/* State Layer */
+.m3-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    transition: background var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+/* === Filled Button === */
+.m3-button--filled {
+    background: var(--m3-primary);
+    color: var(--m3-on-primary);
+}
+
+.m3-button--filled:hover::before {
+    background: color-mix(in srgb, var(--m3-on-primary) 8%, transparent);
+}
+
+.m3-button--filled:active::before {
+    background: color-mix(in srgb, var(--m3-on-primary) 12%, transparent);
+}
+
+.m3-button--filled:hover {
+    box-shadow: var(--m3-elevation-1);
+}
+
+/* === Outlined Button === */
+.m3-button--outlined {
+    background: transparent;
+    color: var(--m3-primary);
+    border: 1px solid var(--m3-outline);
+}
+
+.m3-button--outlined:hover::before {
+    background: color-mix(in srgb, var(--m3-primary) 8%, transparent);
+}
+
+.m3-button--outlined:active::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* === Text Button === */
+.m3-button--text {
+    background: transparent;
+    color: var(--m3-primary);
+    padding: 0 12px;
+    min-width: auto;
+}
+
+.m3-button--text:hover::before {
+    background: color-mix(in srgb, var(--m3-primary) 8%, transparent);
+}
+
+.m3-button--text:active::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* === Elevated Button === */
+.m3-button--elevated {
+    background: var(--m3-surface-container-low);
+    color: var(--m3-primary);
+    box-shadow: var(--m3-elevation-1);
+}
+
+.m3-button--elevated:hover {
+    box-shadow: var(--m3-elevation-2);
+}
+
+.m3-button--elevated:hover::before {
+    background: color-mix(in srgb, var(--m3-primary) 8%, transparent);
+}
+
+.m3-button--elevated:active::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* === Tonal Button === */
+.m3-button--tonal {
+    background: var(--m3-secondary-container);
+    color: var(--m3-on-secondary-container);
+}
+
+.m3-button--tonal:hover::before {
+    background: color-mix(in srgb, var(--m3-on-secondary-container) 8%, transparent);
+}
+
+.m3-button--tonal:hover {
+    box-shadow: var(--m3-elevation-1);
+}
+
+.m3-button--tonal:active::before {
+    background: color-mix(in srgb, var(--m3-on-secondary-container) 12%, transparent);
+}
+
+/* === Button with Icon === */
+.m3-button__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+}
+
+.m3-button--icon-only {
+    min-width: var(--m3-button-height);
+    padding: 0;
+    border-radius: var(--m3-shape-full);
+}
+
+/* === Button Sizes === */
+.m3-button--sm {
+    height: var(--m3-button-height-sm);
+    padding: 0 16px;
+    font-size: var(--m3-label-medium-size);
+}
+
+.m3-button--lg {
+    height: var(--m3-button-height-lg);
+    padding: 0 32px;
+}
+
+/* === Disabled State === */
+.m3-button:disabled,
+.m3-button--disabled {
+    pointer-events: none;
+    opacity: 0.38;
+    box-shadow: none;
+}
+
+.m3-button--filled:disabled {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+    color: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+}
+
+.m3-button--outlined:disabled {
+    border-color: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+    color: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+}
+
+/* === Full Width Button === */
+.m3-button--full-width {
+    width: 100%;
+}
+
+
+/* =========================================
+   M3 CHECKBOX - Enhanced Material Design 3
+   ========================================= */
+
+.m3-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-family: var(--m3-font-family);
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-checkbox__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-checkbox__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Hover State Layer */
+.m3-checkbox:hover .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-checkbox:hover .m3-checkbox__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-checkbox__input:checked {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checkmark Icon */
+.m3-checkbox__input:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 6px;
+    height: 11px;
+    border: solid var(--m3-on-primary);
+    border-width: 0 2.5px 2.5px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    animation: m3-checkbox-check 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes m3-checkbox-check {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Focus State */
+.m3-checkbox__input:focus-visible {
+    outline: none;
+}
+
+.m3-checkbox__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-checkbox:active .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Disabled State */
+.m3-checkbox__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-checkbox__input:disabled:checked {
+    background: var(--m3-on-surface);
+    border-color: transparent;
+}
+
+.m3-checkbox:has(.m3-checkbox__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Indeterminate State */
+.m3-checkbox__input:indeterminate {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+.m3-checkbox__input:indeterminate::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 2.5px;
+    background: var(--m3-on-primary);
+    transform: translate(-50%, -50%);
+    border: none;
+}
+
+/* Label Styling */
+.m3-checkbox__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+.m3-checkbox:hover .m3-checkbox__label {
+    color: var(--m3-on-surface);
+}
+
+/* Error State */
+.m3-checkbox--error .m3-checkbox__input {
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__input:checked {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__label {
+    color: var(--m3-error);
+}
+
+
+/* =========================================
+   M3 RADIO - Enhanced Material Design 3
+   ========================================= */
+
+.m3-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-family: var(--m3-font-family);
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-radio__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-radio__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Inner Dot */
+.m3-radio__input::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--m3-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover State Layer */
+.m3-radio:hover .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-radio:hover .m3-radio__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-radio__input:checked {
+    border-color: var(--m3-primary);
+}
+
+.m3-radio__input:checked::after {
+    width: 10px;
+    height: 10px;
+}
+
+/* Focus State */
+.m3-radio__input:focus-visible {
+    outline: none;
+}
+
+.m3-radio__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-radio:active .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.m3-radio:active .m3-radio__input:checked::after {
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Disabled State */
+.m3-radio__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked::after {
+    background: var(--m3-on-surface);
+}
+
+.m3-radio:has(.m3-radio__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Label Styling */
+.m3-radio__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+/* Error State */
+.m3-radio--error .m3-radio__input {
+    border-color: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__input:checked::after {
+    background: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__label {
+    color: var(--m3-error);
+}
+
+/* Radio Group */
+.m3-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.m3-radio-group--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.m3-radio-group__label {
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+
+/* =========================================
+   M3 SWITCH - Enhanced Material Design 3
+   ========================================= */
+
+.m3-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-family: var(--m3-font-family);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    background: var(--m3-surface-container-highest);
+    border: 2px solid var(--m3-outline);
+    border-radius: 16px;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+/* Track Hover Effect */
+.m3-switch:hover .m3-switch__track {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-switch__thumb {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--m3-outline);
+    border-radius: 50%;
+    transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Thumb State Layer (Ripple) */
+.m3-switch__thumb::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 150ms ease;
+}
+
+/* Hover State Layer */
+.m3-switch:hover .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Checked Track */
+.m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checked Thumb */
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 28px);
+    width: 24px;
+    height: 24px;
+    background: var(--m3-on-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Checked Hover State Layer */
+.m3-switch:hover .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checkmark Icon in Thumb (when checked) */
+.m3-switch__thumb::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a73e8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Focus State */
+.m3-switch__input:focus-visible + .m3-switch__track {
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+.m3-switch__input:focus-visible + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-switch:active .m3-switch__thumb {
+    width: 28px;
+}
+
+.m3-switch:active .m3-switch__input:not(:checked) + .m3-switch__track .m3-switch__thumb {
+    left: 2px;
+}
+
+.m3-switch:active .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 30px);
+}
+
+/* Disabled State */
+.m3-switch:has(.m3-switch__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.m3-switch__input:disabled + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-surface-container-highest) 50%, transparent);
+    border-color: color-mix(in srgb, var(--m3-outline) 38%, transparent);
+}
+
+.m3-switch__input:disabled + .m3-switch__track .m3-switch__thumb {
+    background: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+    box-shadow: none;
+}
+
+.m3-switch__input:disabled:checked + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+    border-color: transparent;
+}
+
+.m3-switch__label {
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    line-height: 1.5;
+    transition: color 150ms ease;
+}
+
+.m3-switch:hover .m3-switch__label {
+    color: var(--m3-on-surface);
+}
+
+/* Error State */
+.m3-switch--error .m3-switch__track {
+    border-color: var(--m3-error);
+}
+
+.m3-switch--error .m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+
+/* =========================================
+   M3 SLIDER - Enhanced Material Design 3
+   Continuous and Discrete variants
+   ========================================= */
+
+.m3-slider {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    font-family: var(--m3-font-family);
+    padding: 8px 0;
+}
+
+.m3-slider__label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    font-weight: 500;
+}
+
+.m3-slider__value {
+    font-weight: 600;
+    color: var(--m3-primary);
+    min-width: 48px;
+    text-align: right;
+    font-size: var(--m3-label-large-size);
+    background: var(--m3-primary-container);
+    padding: 4px 12px;
+    border-radius: var(--m3-shape-full);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-slider:hover .m3-slider__value {
+    background: color-mix(in srgb, var(--m3-primary-container) 80%, var(--m3-primary));
+}
+
+.m3-slider__track-container {
+    position: relative;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+}
+
+.m3-slider__track {
+    position: relative;
+    width: 100%;
+    height: 6px;
+    background: var(--m3-surface-container-highest);
+    border-radius: 3px;
+    overflow: visible;
+    transition: height 150ms ease;
+}
+
+/* Track hover effect */
+.m3-slider:hover .m3-slider__track {
+    height: 8px;
+    border-radius: 4px;
+}
+
+.m3-slider__track-active {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--m3-primary), color-mix(in srgb, var(--m3-primary) 85%, var(--m3-tertiary)));
+    border-radius: inherit;
+    transition: width 0.05s linear;
+    box-shadow: 0 0 8px color-mix(in srgb, var(--m3-primary) 30%, transparent);
+}
+
+.m3-slider__thumb {
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 24px;
+    height: 24px;
+    background: var(--m3-primary);
+    border-radius: 50%;
+    cursor: grab;
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 2;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), 0 4px 16px color-mix(in srgb, var(--m3-primary) 25%, transparent);
+}
+
+/* Thumb State Layer (Ripple) */
+.m3-slider__thumb::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease, transform 200ms ease;
+    pointer-events: none;
+}
+
+.m3-slider__thumb:hover {
+    transform: translate(-50%, -50%) scale(1.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25), 0 6px 20px color-mix(in srgb, var(--m3-primary) 35%, transparent);
+}
+
+.m3-slider__thumb:hover::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+.m3-slider__thumb:active {
+    cursor: grabbing;
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+.m3-slider__thumb:active::before {
+    background: color-mix(in srgb, var(--m3-primary) 24%, transparent);
+    transform: translate(-50%, -50%) scale(1.2);
+}
+
+/* Value Indicator (Tooltip) - Enhanced */
+.m3-slider__indicator {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    margin-bottom: 12px;
+    padding: 8px 14px;
+    background: var(--m3-inverse-surface);
+    color: var(--m3-inverse-on-surface);
+    border-radius: var(--m3-shape-small);
+    font-size: var(--m3-label-medium-size);
+    font-weight: 600;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.m3-slider__indicator::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 8px solid transparent;
+    border-top-color: var(--m3-inverse-surface);
+}
+
+.m3-slider__thumb:hover .m3-slider__indicator,
+.m3-slider__thumb:active .m3-slider__indicator,
+.m3-slider--dragging .m3-slider__indicator {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Hidden Input */
+.m3-slider__input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    margin: 0;
+}
+
+/* Tick Marks (Discrete Slider) - Enhanced */
+.m3-slider__ticks {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    pointer-events: none;
+    padding: 0;
+}
+
+.m3-slider__tick {
+    width: 4px;
+    height: 4px;
+    background: var(--m3-on-surface-variant);
+    border-radius: 50%;
+    transition: all 150ms ease;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.m3-slider__tick--active {
+    background: var(--m3-on-primary);
+    box-shadow: 0 0 4px color-mix(in srgb, var(--m3-primary) 50%, transparent);
+}
+
+/* Range Labels */
+.m3-slider__range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--m3-label-small-size);
+    color: var(--m3-on-surface-variant);
+    padding: 0 10px;
+    margin-top: -4px;
+}
+
+/* Disabled State */
+.m3-slider--disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+.m3-slider--disabled .m3-slider__track {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+}
+
+.m3-slider--disabled .m3-slider__track-active {
+    background: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+    box-shadow: none;
+}
+
+.m3-slider--disabled .m3-slider__thumb {
+    background: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+    box-shadow: none;
+    transform: translate(-50%, -50%);
+}
+
+.m3-slider--disabled .m3-slider__value {
+    background: var(--m3-surface-container);
+    color: var(--m3-on-surface-variant);
+}
+
+/* Size Variants */
+.m3-slider--sm .m3-slider__track {
+    height: 4px;
+}
+
+.m3-slider--sm .m3-slider__thumb {
+    width: 18px;
+    height: 18px;
+}
+
+.m3-slider--sm .m3-slider__value {
+    padding: 2px 8px;
+    font-size: var(--m3-label-small-size);
+}
+
+.m3-slider--lg .m3-slider__track {
+    height: 8px;
+}
+
+.m3-slider--lg .m3-slider__thumb {
+    width: 28px;
+    height: 28px;
+}
+
+/* Color Variants */
+.m3-slider--secondary .m3-slider__track-active {
+    background: linear-gradient(90deg, var(--m3-secondary), color-mix(in srgb, var(--m3-secondary) 85%, var(--m3-tertiary)));
+}
+
+.m3-slider--secondary .m3-slider__thumb {
+    background: var(--m3-secondary);
+}
+
+.m3-slider--secondary .m3-slider__value {
+    background: var(--m3-secondary-container);
+    color: var(--m3-on-secondary-container);
+}
+
+.m3-slider--tertiary .m3-slider__track-active {
+    background: linear-gradient(90deg, var(--m3-tertiary), color-mix(in srgb, var(--m3-tertiary) 85%, var(--m3-primary)));
+}
+
+.m3-slider--tertiary .m3-slider__thumb {
+    background: var(--m3-tertiary);
+}
+
+.m3-slider--tertiary .m3-slider__value {
+    background: var(--m3-tertiary-container);
+    color: var(--m3-on-tertiary-container);
+}
+
+
+/* =========================================
+   M3 FORM LAYOUT UTILITIES
+   ========================================= */
+
+.m3-form {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.m3-form__row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+}
+
+.m3-form__actions {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 8px;
+}
+
+
+/* =========================================
+   M3 COLOR PICKER
+   Material Design 3 compliant color picker
+   ========================================= */
+
+.m3-color-picker {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--m3-font-family);
+    width: 100%;
+}
+
+.m3-color-picker__label {
+    font-size: var(--m3-body-medium-size);
+    color: var(--m3-on-surface);
+    margin-bottom: 4px;
+}
+
+/* Trigger Button */
+.m3-color-picker__trigger {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--m3-surface-container-low);
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-small);
+    cursor: pointer;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+    min-height: var(--m3-text-field-height);
+}
+
+.m3-color-picker__trigger:hover {
+    background: var(--m3-surface-container);
+    border-color: var(--m3-on-surface);
+}
+
+.m3-color-picker__trigger:focus {
+    outline: none;
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+.m3-color-picker--open .m3-color-picker__trigger {
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+/* Color Preview Swatch */
+.m3-color-picker__swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--m3-shape-extra-small);
+    border: 1px solid var(--m3-outline-variant);
+    flex-shrink: 0;
+    background-image: linear-gradient(45deg, #ddd 25%, transparent 25%),
+                      linear-gradient(-45deg, #ddd 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #ddd 75%),
+                      linear-gradient(-45deg, transparent 75%, #ddd 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+
+.m3-color-picker__swatch-color {
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+}
+
+.m3-color-picker__value {
+    flex: 1;
+    font-size: var(--m3-body-large-size);
+    color: var(--m3-on-surface);
+    font-family: 'Roboto Mono', monospace;
+    text-transform: uppercase;
+}
+
+.m3-color-picker__icon {
+    color: var(--m3-on-surface-variant);
+    transition: transform var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-color-picker--open .m3-color-picker__icon {
+    transform: rotate(180deg);
+}
+
+/* Dropdown Panel */
+.m3-color-picker__panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background: var(--m3-surface-container);
+    border-radius: var(--m3-shape-medium);
+    box-shadow: var(--m3-elevation-2);
+    padding: 16px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-color-picker--open .m3-color-picker__panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.m3-color-picker__container {
+    position: relative;
+}
+
+/* Color Area (Saturation/Brightness) */
+.m3-color-picker__area {
+    position: relative;
+    width: 100%;
+    height: 160px;
+    border-radius: var(--m3-shape-small);
+    cursor: crosshair;
+    overflow: hidden;
+    margin-bottom: 16px;
+}
+
+.m3-color-picker__area-gradient {
+    position: absolute;
+    inset: 0;
+}
+
+.m3-color-picker__area-gradient--white {
+    background: linear-gradient(to right, #fff, transparent);
+}
+
+.m3-color-picker__area-gradient--black {
+    background: linear-gradient(to top, #000, transparent);
+}
+
+.m3-color-picker__area-handle {
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 2px rgba(0,0,0,0.6), inset 0 0 2px rgba(0,0,0,0.3);
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+
+.m3-color-picker__area-handle:active {
+    cursor: grabbing;
+}
+
+/* Hue Slider */
+.m3-color-picker__hue {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    background: linear-gradient(to right,
+        #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000);
+    cursor: pointer;
+    margin-bottom: 12px;
+}
+
+.m3-color-picker__hue-handle {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+
+.m3-color-picker__hue-handle:active {
+    cursor: grabbing;
+}
+
+/* Alpha Slider */
+.m3-color-picker__alpha {
+    position: relative;
+    width: 100%;
+    height: 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-bottom: 16px;
+    background-image: linear-gradient(45deg, #ddd 25%, transparent 25%),
+                      linear-gradient(-45deg, #ddd 25%, transparent 25%),
+                      linear-gradient(45deg, transparent 75%, #ddd 75%),
+                      linear-gradient(-45deg, transparent 75%, #ddd 75%);
+    background-size: 8px 8px;
+    background-position: 0 0, 0 4px, 4px -4px, -4px 0px;
+}
+
+.m3-color-picker__alpha-gradient {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+}
+
+.m3-color-picker__alpha-handle {
+    position: absolute;
+    top: 50%;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+    transform: translate(-50%, -50%);
+    cursor: grab;
+}
+
+.m3-color-picker__alpha-handle:active {
+    cursor: grabbing;
+}
+
+/* Input Fields */
+.m3-color-picker__inputs {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.m3-color-picker__input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.m3-color-picker__input-label {
+    font-size: var(--m3-label-small-size);
+    color: var(--m3-on-surface-variant);
+    text-align: center;
+}
+
+.m3-color-picker__input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-extra-small);
+    background: var(--m3-surface);
+    color: var(--m3-on-surface);
+    font-size: var(--m3-body-small-size);
+    text-align: center;
+    font-family: 'Roboto Mono', monospace;
+}
+
+.m3-color-picker__input:focus {
+    outline: none;
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+/* Hex Input (full width) */
+.m3-color-picker__hex-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.m3-color-picker__hex-input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid var(--m3-outline);
+    border-radius: var(--m3-shape-extra-small);
+    background: var(--m3-surface);
+    color: var(--m3-on-surface);
+    font-size: var(--m3-body-medium-size);
+    font-family: 'Roboto Mono', monospace;
+    text-transform: uppercase;
+}
+
+.m3-color-picker__hex-input:focus {
+    outline: none;
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 1px var(--m3-primary);
+}
+
+/* Preset Colors */
+.m3-color-picker__presets {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.m3-color-picker__preset {
+    width: 28px;
+    height: 28px;
+    border-radius: var(--m3-shape-extra-small);
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all var(--m3-duration-short4) var(--m3-easing-standard);
+}
+
+.m3-color-picker__preset:hover {
+    transform: scale(1.1);
+}
+
+.m3-color-picker__preset--selected {
+    border-color: var(--m3-primary);
+    box-shadow: 0 0 0 2px var(--m3-surface), 0 0 0 4px var(--m3-primary);
+}
+
+/* Supporting Text */
+.m3-color-picker__supporting-text {
+    font-size: var(--m3-body-small-size);
+    color: var(--m3-on-surface-variant);
+    margin-top: 4px;
+}
+
+/* Disabled State */
+.m3-color-picker--disabled {
+    pointer-events: none;
+}
+
+.m3-color-picker--disabled .m3-color-picker__trigger {
+    opacity: 0.38;
+    background: var(--m3-surface-container-lowest);
+}
+
+/* Error State */
+.m3-color-picker--error .m3-color-picker__trigger {
+    border-color: var(--m3-error);
+}
+
+.m3-color-picker--error .m3-color-picker__supporting-text {
+    color: var(--m3-error);
+}

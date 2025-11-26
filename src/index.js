@@ -2,7 +2,7 @@
  * SSI Builders - Professional UI Component Library
  * Material Design 3 | Production-Ready
  *
- * @version 2.3.0
+ * @version 2.4.0
  * @author SSI Solutions
  */
 
@@ -24,6 +24,11 @@ import { CodeSnippetBuilder } from './CodeSnippetBuilder.js';
 import { AnalyticsCard, AnalyticsCardGrid } from './AnalyticsCard.js';
 import { FilterBar } from './FilterBar.js';
 import { TimeRangePicker } from './TimeRangePicker.js';
+// M3 Components (v2.4.0)
+import { M3DropdownMenu } from './M3DropdownMenu.js';
+import { M3Slider } from './M3Slider.js';
+import { M3ColorPicker } from './M3ColorPicker.js';
+import { ChangelogBuilder } from './ChangelogBuilder.js';
 
 export {
     ListBuilder,
@@ -45,7 +50,12 @@ export {
     AnalyticsCard,
     AnalyticsCardGrid,
     FilterBar,
-    TimeRangePicker
+    TimeRangePicker,
+    // M3 Components (v2.4.0)
+    M3DropdownMenu,
+    M3Slider,
+    M3ColorPicker,
+    ChangelogBuilder
 };
 
 // Default export for convenience
@@ -64,6 +74,10 @@ export default {
     AnalyticsCardGrid,
     FilterBar,
     TimeRangePicker,
+    M3DropdownMenu,
+    M3Slider,
+    M3ColorPicker,
+    ChangelogBuilder,
     getVersion,
     createVersionBadge,
     IconManager,
@@ -72,5 +86,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '2.3.0';
+export const VERSION = '2.4.0';
 export const LIBRARY_NAME = 'SSI Builders';

@@ -1,0 +1,426 @@
+/**
+ * Material Design 3 - Design Tokens
+ * SSI Builders v2.4.0
+ *
+ * Complete M3 Token System following Google's Material Design 3 specifications
+ * https://m3.material.io/styles
+ */
+
+:root {
+    /* =========================================
+       M3 COLOR SYSTEM
+       Based on Google's Material Design 3 color scheme
+       ========================================= */
+
+    /* === Primary Colors === */
+    --m3-primary: #1a73e8;
+    --m3-on-primary: #ffffff;
+    --m3-primary-container: #d3e3fd;
+    --m3-on-primary-container: #041e49;
+
+    /* === Secondary Colors === */
+    --m3-secondary: #5f6368;
+    --m3-on-secondary: #ffffff;
+    --m3-secondary-container: #e8eaed;
+    --m3-on-secondary-container: #1f1f1f;
+
+    /* === Tertiary Colors === */
+    --m3-tertiary: #7c43bd;
+    --m3-on-tertiary: #ffffff;
+    --m3-tertiary-container: #f2daff;
+    --m3-on-tertiary-container: #2d004f;
+
+    /* === Error Colors === */
+    --m3-error: #b3261e;
+    --m3-on-error: #ffffff;
+    --m3-error-container: #f9dedc;
+    --m3-on-error-container: #410e0b;
+
+    /* === Surface Colors (Light Theme) === */
+    --m3-surface: #fef7ff;
+    --m3-surface-dim: #ded8e1;
+    --m3-surface-bright: #fef7ff;
+    --m3-surface-container-lowest: #ffffff;
+    --m3-surface-container-low: #f7f2fa;
+    --m3-surface-container: #f3edf7;
+    --m3-surface-container-high: #ece6f0;
+    --m3-surface-container-highest: #e6e0e9;
+
+    /* === On-Surface Colors === */
+    --m3-on-surface: #1c1b1f;
+    --m3-on-surface-variant: #49454f;
+
+    /* === Outline Colors === */
+    --m3-outline: #79747e;
+    --m3-outline-variant: #cac4d0;
+
+    /* === Background === */
+    --m3-background: #fef7ff;
+    --m3-on-background: #1c1b1f;
+
+    /* === Inverse Colors === */
+    --m3-inverse-surface: #313033;
+    --m3-inverse-on-surface: #f4eff4;
+    --m3-inverse-primary: #a8c7fa;
+
+    /* === Scrim & Shadow === */
+    --m3-scrim: rgba(0, 0, 0, 0.32);
+    --m3-shadow: rgba(0, 0, 0, 0.15);
+
+    /* === State Layers === */
+    --m3-state-hover: 0.08;
+    --m3-state-focus: 0.12;
+    --m3-state-pressed: 0.12;
+    --m3-state-dragged: 0.16;
+
+    /* =========================================
+       M3 TYPOGRAPHY SYSTEM
+       ========================================= */
+
+    /* Font Family */
+    --m3-font-family: 'Roboto', 'Google Sans', system-ui, -apple-system, sans-serif;
+    --m3-font-family-brand: 'Google Sans', 'Roboto', sans-serif;
+
+    /* === Display === */
+    --m3-display-large-size: 57px;
+    --m3-display-large-line-height: 64px;
+    --m3-display-large-weight: 400;
+    --m3-display-large-tracking: -0.25px;
+
+    --m3-display-medium-size: 45px;
+    --m3-display-medium-line-height: 52px;
+    --m3-display-medium-weight: 400;
+    --m3-display-medium-tracking: 0px;
+
+    --m3-display-small-size: 36px;
+    --m3-display-small-line-height: 44px;
+    --m3-display-small-weight: 400;
+    --m3-display-small-tracking: 0px;
+
+    /* === Headline === */
+    --m3-headline-large-size: 32px;
+    --m3-headline-large-line-height: 40px;
+    --m3-headline-large-weight: 400;
+    --m3-headline-large-tracking: 0px;
+
+    --m3-headline-medium-size: 28px;
+    --m3-headline-medium-line-height: 36px;
+    --m3-headline-medium-weight: 400;
+    --m3-headline-medium-tracking: 0px;
+
+    --m3-headline-small-size: 24px;
+    --m3-headline-small-line-height: 32px;
+    --m3-headline-small-weight: 400;
+    --m3-headline-small-tracking: 0px;
+
+    /* === Title === */
+    --m3-title-large-size: 22px;
+    --m3-title-large-line-height: 28px;
+    --m3-title-large-weight: 400;
+    --m3-title-large-tracking: 0px;
+
+    --m3-title-medium-size: 16px;
+    --m3-title-medium-line-height: 24px;
+    --m3-title-medium-weight: 500;
+    --m3-title-medium-tracking: 0.15px;
+
+    --m3-title-small-size: 14px;
+    --m3-title-small-line-height: 20px;
+    --m3-title-small-weight: 500;
+    --m3-title-small-tracking: 0.1px;
+
+    /* === Body === */
+    --m3-body-large-size: 16px;
+    --m3-body-large-line-height: 24px;
+    --m3-body-large-weight: 400;
+    --m3-body-large-tracking: 0.5px;
+
+    --m3-body-medium-size: 14px;
+    --m3-body-medium-line-height: 20px;
+    --m3-body-medium-weight: 400;
+    --m3-body-medium-tracking: 0.25px;
+
+    --m3-body-small-size: 12px;
+    --m3-body-small-line-height: 16px;
+    --m3-body-small-weight: 400;
+    --m3-body-small-tracking: 0.4px;
+
+    /* === Label === */
+    --m3-label-large-size: 14px;
+    --m3-label-large-line-height: 20px;
+    --m3-label-large-weight: 500;
+    --m3-label-large-tracking: 0.1px;
+
+    --m3-label-medium-size: 12px;
+    --m3-label-medium-line-height: 16px;
+    --m3-label-medium-weight: 500;
+    --m3-label-medium-tracking: 0.5px;
+
+    --m3-label-small-size: 11px;
+    --m3-label-small-line-height: 16px;
+    --m3-label-small-weight: 500;
+    --m3-label-small-tracking: 0.5px;
+
+    /* =========================================
+       M3 ELEVATION SYSTEM
+       ========================================= */
+
+    /* Level 0 - Flat */
+    --m3-elevation-0: none;
+
+    /* Level 1 - Slight elevation */
+    --m3-elevation-1: 0px 1px 2px rgba(0, 0, 0, 0.3),
+                      0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+
+    /* Level 2 - Cards, Sheets */
+    --m3-elevation-2: 0px 1px 2px rgba(0, 0, 0, 0.3),
+                      0px 2px 6px 2px rgba(0, 0, 0, 0.15);
+
+    /* Level 3 - FAB, Menus */
+    --m3-elevation-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15),
+                      0px 1px 3px rgba(0, 0, 0, 0.3);
+
+    /* Level 4 - Navigation drawer */
+    --m3-elevation-4: 0px 6px 10px 4px rgba(0, 0, 0, 0.15),
+                      0px 2px 3px rgba(0, 0, 0, 0.3);
+
+    /* Level 5 - Modal dialogs */
+    --m3-elevation-5: 0px 8px 12px 6px rgba(0, 0, 0, 0.15),
+                      0px 4px 4px rgba(0, 0, 0, 0.3);
+
+    /* =========================================
+       M3 SHAPE SYSTEM
+       ========================================= */
+
+    /* Corner Radii */
+    --m3-shape-none: 0px;
+    --m3-shape-extra-small: 4px;
+    --m3-shape-small: 8px;
+    --m3-shape-medium: 12px;
+    --m3-shape-large: 16px;
+    --m3-shape-extra-large: 28px;
+    --m3-shape-full: 9999px;
+
+    /* =========================================
+       M3 MOTION / ANIMATION
+       ========================================= */
+
+    /* Duration */
+    --m3-duration-short1: 50ms;
+    --m3-duration-short2: 100ms;
+    --m3-duration-short3: 150ms;
+    --m3-duration-short4: 200ms;
+    --m3-duration-medium1: 250ms;
+    --m3-duration-medium2: 300ms;
+    --m3-duration-medium3: 350ms;
+    --m3-duration-medium4: 400ms;
+    --m3-duration-long1: 450ms;
+    --m3-duration-long2: 500ms;
+    --m3-duration-long3: 550ms;
+    --m3-duration-long4: 600ms;
+    --m3-duration-extra-long1: 700ms;
+    --m3-duration-extra-long2: 800ms;
+    --m3-duration-extra-long3: 900ms;
+    --m3-duration-extra-long4: 1000ms;
+
+    /* Easing */
+    --m3-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+    --m3-easing-standard-decelerate: cubic-bezier(0, 0, 0, 1);
+    --m3-easing-standard-accelerate: cubic-bezier(0.3, 0, 1, 1);
+    --m3-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+    --m3-easing-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+    --m3-easing-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+    /* =========================================
+       M3 COMPONENT SPECIFIC TOKENS
+       ========================================= */
+
+    /* Text Field Heights */
+    --m3-text-field-height: 48px;
+    --m3-text-field-height-sm: 36px;
+    --m3-text-field-height-lg: 56px;
+
+    /* Button Heights */
+    --m3-button-height: 40px;
+    --m3-button-height-sm: 32px;
+    --m3-button-height-lg: 48px;
+
+    /* Icon Sizes */
+    --m3-icon-size-sm: 18px;
+    --m3-icon-size-md: 24px;
+    --m3-icon-size-lg: 40px;
+
+    /* Menu */
+    --m3-menu-item-height: 48px;
+    --m3-menu-padding: 8px;
+    --m3-menu-min-width: 112px;
+    --m3-menu-max-width: 280px;
+}
+
+/* =========================================
+   M3 DARK THEME
+   ========================================= */
+[data-theme="dark"],
+.m3-dark {
+    --m3-primary: #a8c7fa;
+    --m3-on-primary: #062e6f;
+    --m3-primary-container: #17458d;
+    --m3-on-primary-container: #d3e3fd;
+
+    --m3-secondary: #bec6dc;
+    --m3-on-secondary: #283141;
+    --m3-secondary-container: #3e4758;
+    --m3-on-secondary-container: #dae2f9;
+
+    --m3-tertiary: #e2bbff;
+    --m3-on-tertiary: #45217e;
+    --m3-tertiary-container: #5d3896;
+    --m3-on-tertiary-container: #f2daff;
+
+    --m3-error: #f2b8b5;
+    --m3-on-error: #601410;
+    --m3-error-container: #8c1d18;
+    --m3-on-error-container: #f9dedc;
+
+    --m3-surface: #141218;
+    --m3-surface-dim: #141218;
+    --m3-surface-bright: #3b383e;
+    --m3-surface-container-lowest: #0f0d13;
+    --m3-surface-container-low: #1d1b20;
+    --m3-surface-container: #211f26;
+    --m3-surface-container-high: #2b2930;
+    --m3-surface-container-highest: #36343b;
+
+    --m3-on-surface: #e6e0e9;
+    --m3-on-surface-variant: #cac4d0;
+
+    --m3-outline: #938f99;
+    --m3-outline-variant: #49454f;
+
+    --m3-background: #141218;
+    --m3-on-background: #e6e0e9;
+
+    --m3-inverse-surface: #e6e0e9;
+    --m3-inverse-on-surface: #313033;
+    --m3-inverse-primary: #1a73e8;
+}
+
+/* =========================================
+   TYPOGRAPHY UTILITY CLASSES
+   ========================================= */
+
+.m3-display-large {
+    font-size: var(--m3-display-large-size);
+    line-height: var(--m3-display-large-line-height);
+    font-weight: var(--m3-display-large-weight);
+    letter-spacing: var(--m3-display-large-tracking);
+}
+
+.m3-display-medium {
+    font-size: var(--m3-display-medium-size);
+    line-height: var(--m3-display-medium-line-height);
+    font-weight: var(--m3-display-medium-weight);
+    letter-spacing: var(--m3-display-medium-tracking);
+}
+
+.m3-display-small {
+    font-size: var(--m3-display-small-size);
+    line-height: var(--m3-display-small-line-height);
+    font-weight: var(--m3-display-small-weight);
+    letter-spacing: var(--m3-display-small-tracking);
+}
+
+.m3-headline-large {
+    font-size: var(--m3-headline-large-size);
+    line-height: var(--m3-headline-large-line-height);
+    font-weight: var(--m3-headline-large-weight);
+    letter-spacing: var(--m3-headline-large-tracking);
+}
+
+.m3-headline-medium {
+    font-size: var(--m3-headline-medium-size);
+    line-height: var(--m3-headline-medium-line-height);
+    font-weight: var(--m3-headline-medium-weight);
+    letter-spacing: var(--m3-headline-medium-tracking);
+}
+
+.m3-headline-small {
+    font-size: var(--m3-headline-small-size);
+    line-height: var(--m3-headline-small-line-height);
+    font-weight: var(--m3-headline-small-weight);
+    letter-spacing: var(--m3-headline-small-tracking);
+}
+
+.m3-title-large {
+    font-size: var(--m3-title-large-size);
+    line-height: var(--m3-title-large-line-height);
+    font-weight: var(--m3-title-large-weight);
+    letter-spacing: var(--m3-title-large-tracking);
+}
+
+.m3-title-medium {
+    font-size: var(--m3-title-medium-size);
+    line-height: var(--m3-title-medium-line-height);
+    font-weight: var(--m3-title-medium-weight);
+    letter-spacing: var(--m3-title-medium-tracking);
+}
+
+.m3-title-small {
+    font-size: var(--m3-title-small-size);
+    line-height: var(--m3-title-small-line-height);
+    font-weight: var(--m3-title-small-weight);
+    letter-spacing: var(--m3-title-small-tracking);
+}
+
+.m3-body-large {
+    font-size: var(--m3-body-large-size);
+    line-height: var(--m3-body-large-line-height);
+    font-weight: var(--m3-body-large-weight);
+    letter-spacing: var(--m3-body-large-tracking);
+}
+
+.m3-body-medium {
+    font-size: var(--m3-body-medium-size);
+    line-height: var(--m3-body-medium-line-height);
+    font-weight: var(--m3-body-medium-weight);
+    letter-spacing: var(--m3-body-medium-tracking);
+}
+
+.m3-body-small {
+    font-size: var(--m3-body-small-size);
+    line-height: var(--m3-body-small-line-height);
+    font-weight: var(--m3-body-small-weight);
+    letter-spacing: var(--m3-body-small-tracking);
+}
+
+.m3-label-large {
+    font-size: var(--m3-label-large-size);
+    line-height: var(--m3-label-large-line-height);
+    font-weight: var(--m3-label-large-weight);
+    letter-spacing: var(--m3-label-large-tracking);
+}
+
+.m3-label-medium {
+    font-size: var(--m3-label-medium-size);
+    line-height: var(--m3-label-medium-line-height);
+    font-weight: var(--m3-label-medium-weight);
+    letter-spacing: var(--m3-label-medium-tracking);
+}
+
+.m3-label-small {
+    font-size: var(--m3-label-small-size);
+    line-height: var(--m3-label-small-line-height);
+    font-weight: var(--m3-label-small-weight);
+    letter-spacing: var(--m3-label-small-tracking);
+}
+
+/* =========================================
+   ELEVATION UTILITY CLASSES
+   ========================================= */
+
+.m3-elevation-0 { box-shadow: var(--m3-elevation-0); }
+.m3-elevation-1 { box-shadow: var(--m3-elevation-1); }
+.m3-elevation-2 { box-shadow: var(--m3-elevation-2); }
+.m3-elevation-3 { box-shadow: var(--m3-elevation-3); }
+.m3-elevation-4 { box-shadow: var(--m3-elevation-4); }
+.m3-elevation-5 { box-shadow: var(--m3-elevation-5); }

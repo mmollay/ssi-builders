@@ -268,11 +268,12 @@ export class FormBuilder extends BaseBuilder {
                         ${isM3Variant
                             ? '<option value="" disabled selected hidden></option>'
                             : '<option value="">-- Bitte wählen --</option>'}
-                        ${field.options?.map(opt => `
-                            <option value="${opt.value}" ${value === opt.value ? 'selected' : ''}>
-                                ${opt.label}
-                            </option>
-                        `).join('')}
+                        ${field.options?.map(opt => {
+                            // Support both string options and object options {value, label}
+                            const optValue = typeof opt === 'string' ? opt : opt.value;
+                            const optLabel = typeof opt === 'string' ? opt : opt.label;
+                            return `<option value="${optValue}" ${value === optValue ? 'selected' : ''}>${optLabel}</option>`;
+                        }).join('')}
                     </select>
                 `);
 
@@ -293,19 +294,23 @@ export class FormBuilder extends BaseBuilder {
                 const radioLayout = field.radioLayout || 'vertical'; // vertical, horizontal, grid-2, grid-3
                 return `
                     <div class="form-radio-group form-radio-${radioLayout}">
-                        ${field.options?.map(opt => `
+                        ${field.options?.map(opt => {
+                            // Support both string options and object options {value, label}
+                            const optValue = typeof opt === 'string' ? opt : opt.value;
+                            const optLabel = typeof opt === 'string' ? opt : opt.label;
+                            return `
                             <label class="form-radio-label">
                                 <input
                                     type="radio"
                                     class="form-radio"
                                     name="${field.key}"
-                                    value="${opt.value}"
-                                    ${value === opt.value ? 'checked' : ''}
+                                    value="${optValue}"
+                                    ${value === optValue ? 'checked' : ''}
                                     ${field.disabled ? 'disabled' : ''}
                                 />
-                                <span>${opt.label}</span>
+                                <span>${optLabel}</span>
                             </label>
-                        `).join('')}
+                        `}).join('')}
                     </div>
                 `;
 
