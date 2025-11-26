@@ -14,8 +14,9 @@
  * - User profile section
  * - Footer actions
  * - Push Mode (v2.2.0): Content shifts instead of being overlaid
+ * - Top Offset (v2.4.2): Support for fixed headers with topOffset option
  *
- * @version 2.3.0
+ * @version 2.4.2
  */
 
 import { createVersionBadge } from './version.js';
@@ -49,6 +50,7 @@ export class SidebarBuilder {
             onNavigate: config.options?.onNavigate || null,
             mode: config.options?.mode || 'overlay', // 'overlay' | 'push'
             mainContentSelector: config.options?.mainContentSelector || null, // Required for push mode
+            topOffset: config.options?.topOffset || 0, // v2.4.2: Offset from top (e.g., for fixed header)
             ...config.options
         };
 
@@ -75,9 +77,10 @@ export class SidebarBuilder {
 
         const width = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
         const isPushMode = this.options.mode === 'push';
+        const topOffset = this.options.topOffset;
 
         const html = `
-            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''} ${isPushMode ? 'sidebar-push-mode' : ''}" id="${this.id}" style="width: ${width}px;">
+            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''} ${isPushMode ? 'sidebar-push-mode' : ''}" id="${this.id}" style="width: ${width}px; top: ${topOffset}px; height: calc(100vh - ${topOffset}px);">
                 ${this.options.header ? this.renderHeader() : ''}
                 ${this.options.searchable ? this.renderSearch() : ''}
                 ${this.renderNav()}
