@@ -61,6 +61,28 @@ const deleteHandler = async (row) => {
 
 ---
 
+## [2.5.0] - 2025-11-27
+
+### Added
+- **FormBuilder**: New `useOfficialMD3` option for official Material Design 3 MCP component styles
+- **FormBuilder**: `renderMD3Textfield()` - Official MD3 text field with filled/outlined variants
+- **FormBuilder**: `renderMD3Checkbox()` - Official MD3 checkbox with animated checkmark
+- **FormBuilder**: `renderMD3Switch()` - Official MD3 switch/toggle component
+- **FormBuilder**: `renderMD3RadioGroup()` - Official MD3 radio button group
+- **shared.css**: Added official `--md-sys-color-*` tokens for MD3 system colors
+- **m3-form-styles.css**: Enhanced dropdown animations with staggered entry effects
+- **Demo**: New `form-builder-m3.html` demo page showcasing all M3 components
+
+### Security
+- **FormBuilder**: Added `escapeHtml()` method for XSS protection in MD3 render methods
+- **FormBuilder**: All user-provided values (labels, placeholders, descriptions, option labels) are now sanitized
+
+### Fixed
+- **FormBuilder.css**: Added missing `.md-textfield--medium` class for consistent sizing
+- **FormBuilder.css**: Improved M3 textfield focus states and animations
+
+---
+
 ## [2.4.1] - 2025-11-26
 
 ### Security

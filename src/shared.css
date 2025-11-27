@@ -18,6 +18,36 @@
        Google Material Design 3 inspired
        =================================== */
 
+    /* ===================================
+       Official Material Design 3 System Tokens
+       From MD3 MCP Server
+       =================================== */
+    --md-sys-color-primary: #1a73e8;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #d3e3fd;
+    --md-sys-color-on-primary-container: #041e49;
+
+    --md-sys-color-secondary: #5f6368;
+    --md-sys-color-on-secondary: #ffffff;
+    --md-sys-color-secondary-container: #e8eaed;
+    --md-sys-color-on-secondary-container: #1c1b1f;
+
+    --md-sys-color-surface: #ffffff;
+    --md-sys-color-on-surface: #1c1b1f;
+    --md-sys-color-surface-variant: #e7e0ec;
+    --md-sys-color-on-surface-variant: #49454f;
+    --md-sys-color-surface-container: #f3edf7;
+    --md-sys-color-surface-container-high: #ece6f0;
+    --md-sys-color-surface-container-highest: #e6e1e5;
+
+    --md-sys-color-outline: #79747e;
+    --md-sys-color-outline-variant: #cac4d0;
+
+    --md-sys-color-error: #b3261e;
+    --md-sys-color-on-error: #ffffff;
+    --md-sys-color-error-container: #f9dedc;
+    --md-sys-color-on-error-container: #410e0b;
+
     /* === Colors - Google M3 Palette === */
     --ssi-primary: #1a73e8;         /* Google Blue */
     --ssi-primary-hover: #1557b0;   /* Darker blue for hover */

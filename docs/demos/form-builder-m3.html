@@ -331,6 +331,28 @@
                     <div id="selection-controls-form"></div>
                 </section>
 
+                <!-- Official MD3 MCP Section -->
+                <section class="demo-section">
+                    <h2>Official MD3 MCP <span class="m3-badge new-badge">MCP</span></h2>
+                    <p>Offizielle Material Design 3 Komponenten generiert vom MD3 MCP Server. Aktiviere mit <code>useOfficialMD3: true</code>.</p>
+
+                    <div class="demo-grid">
+                        <div class="demo-card">
+                            <h3>MD3 Filled Textfields</h3>
+                            <div id="md3-mcp-filled-form"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>MD3 Outlined Textfields</h3>
+                            <div id="md3-mcp-outlined-form"></div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top: 24px;">
+                        <h3 style="margin-bottom: 16px;">MD3 MCP Selection Controls</h3>
+                        <div id="md3-mcp-selection-form"></div>
+                    </div>
+                </section>
+
                 <!-- Code Example -->
                 <section class="demo-section">
                     <h2>Usage</h2>
@@ -742,6 +764,77 @@
                 { key: 'toggle1', type: 'toggle', toggleLabel: 'WiFi aktivieren', defaultValue: true, width: 4 },
                 { key: 'toggle2', type: 'toggle', toggleLabel: 'Bluetooth aktivieren', width: 4 },
                 { key: 'toggle3', type: 'toggle', toggleLabel: 'Flugmodus (disabled)', disabled: true, width: 4 }
+            ]
+        });
+
+        // ========================================
+        // Official MD3 MCP Forms
+        // ========================================
+
+        // MD3 MCP Filled Form
+        new FormBuilder({
+            containerId: 'md3-mcp-filled-form',
+            fieldLayout: 'filled',
+            options: {
+                useOfficialMD3: true,  // Official MD3 MCP Styles!
+                showResetButton: false
+            },
+            fields: [
+                { key: 'name', type: 'text', label: 'Vollständiger Name', required: true, description: 'Vorname und Nachname' },
+                { key: 'email', type: 'email', label: 'E-Mail Adresse', required: true },
+                { key: 'password', type: 'password', label: 'Passwort' }
+            ]
+        });
+
+        // MD3 MCP Outlined Form
+        new FormBuilder({
+            containerId: 'md3-mcp-outlined-form',
+            fieldLayout: 'outlined',
+            options: {
+                useOfficialMD3: true,  // Official MD3 MCP Styles!
+                showResetButton: false
+            },
+            fields: [
+                { key: 'company', type: 'text', label: 'Unternehmen', required: true },
+                { key: 'website', type: 'text', label: 'Website', description: 'z.B. https://example.com' },
+                { key: 'apiKey', type: 'password', label: 'API Key' }
+            ]
+        });
+
+        // MD3 MCP Selection Controls
+        new FormBuilder({
+            containerId: 'md3-mcp-selection-form',
+            layout: 'grid',
+            gridColumns: 3,
+            options: {
+                useOfficialMD3: true,  // Official MD3 MCP Styles!
+                showResetButton: false
+            },
+            fields: [
+                // MD3 MCP Checkboxes
+                { key: 'md3check1', type: 'checkbox', checkboxLabel: 'MD3 Checkbox Active', defaultValue: true, width: 4 },
+                { key: 'md3check2', type: 'checkbox', checkboxLabel: 'MD3 Checkbox', width: 4 },
+                { key: 'md3check3', type: 'checkbox', checkboxLabel: 'MD3 Disabled', disabled: true, width: 4 },
+
+                // MD3 MCP Radio
+                {
+                    key: 'md3radio',
+                    type: 'radio',
+                    label: 'MD3 Radio Buttons',
+                    radioLayout: 'horizontal',
+                    width: 12,
+                    options: [
+                        { value: 'small', label: 'Small' },
+                        { value: 'medium', label: 'Medium' },
+                        { value: 'large', label: 'Large' }
+                    ],
+                    defaultValue: 'medium'
+                },
+
+                // MD3 MCP Switch
+                { key: 'md3toggle1', type: 'toggle', toggleLabel: 'MD3 Switch On', defaultValue: true, width: 4 },
+                { key: 'md3toggle2', type: 'toggle', toggleLabel: 'MD3 Switch Off', width: 4 },
+                { key: 'md3toggle3', type: 'toggle', toggleLabel: 'MD3 Disabled', disabled: true, width: 4 }
             ]
         });
 

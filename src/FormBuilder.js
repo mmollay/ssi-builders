@@ -55,6 +55,7 @@ export class FormBuilder extends BaseBuilder {
             initialValues: {},
             // M3 Component Integration
             useM3Components: true,     // Enable M3 Slider, ColorPicker, Dropdown
+            useOfficialMD3: false,     // Enable Official MD3 MCP Styles (textfield, checkbox, switch, radio)
             m3SliderOptions: {},       // Default options for M3Slider
             m3ColorPickerOptions: {},  // Default options for M3ColorPicker
             m3DropdownOptions: {}      // Default options for M3DropdownMenu
@@ -319,6 +320,21 @@ export class FormBuilder extends BaseBuilder {
     }
 
     /**
+     * Escape HTML to prevent XSS attacks
+     * @param {string} text - Text to escape
+     * @returns {string} Escaped text safe for HTML insertion
+     */
+    escapeHtml(text) {
+        if (text === null || text === undefined) return '';
+        return String(text)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#039;');
+    }
+
+    /**
      * Check if field type has its own label (M3 components or selection controls)
      * These fields handle their own label rendering, so FormBuilder should NOT render a label
      */
@@ -410,16 +426,165 @@ export class FormBuilder extends BaseBuilder {
     }
 
     /**
+     * Render Official MD3 MCP Textfield
+     * Uses styles from Material Design 3 MCP Server
+     */
+    renderMD3Textfield(field, value, variant = 'filled', size = 'medium') {
+        const sizeClass = size === 'small' ? 'md-textfield--small' :
+                         size === 'large' ? 'md-textfield--large' : 'md-textfield--medium';
+        const variantClass = variant === 'outlined' ? 'md-textfield--outlined' : 'md-textfield--filled';
+        const errorClass = this.errors[field.key] && this.touched[field.key] ? 'md-textfield--error' : '';
+        const disabledClass = field.disabled ? 'md-textfield--disabled' : '';
+
+        // XSS Protection: Escape all user-provided values
+        const escapedValue = this.escapeHtml(value);
+        const escapedLabel = this.escapeHtml(field.label);
+        const escapedPlaceholder = this.escapeHtml(field.placeholder);
+        const escapedDescription = this.escapeHtml(field.description);
+        const escapedError = this.escapeHtml(this.errors[field.key]);
+
+        return `
+            <div class="md-textfield ${variantClass} ${sizeClass} ${errorClass} ${disabledClass}">
+                ${escapedLabel ? `<label class="md-textfield__label" for="${this.containerId}_${field.key}">${escapedLabel}${field.required ? ' <span class="required">*</span>' : ''}</label>` : ''}
+                <div class="md-textfield__field">
+                    ${field.leadingIcon ? `<span class="md-textfield__leading-icon">${IconManager.getIcon(field.leadingIcon)}</span>` : ''}
+                    <input
+                        type="${field.type === 'email' ? 'email' : field.type === 'password' ? 'password' : 'text'}"
+                        id="${this.containerId}_${field.key}"
+                        name="${field.key}"
+                        class="md-textfield__input"
+                        value="${escapedValue}"
+                        placeholder="${escapedPlaceholder}"
+                        ${field.required ? 'required' : ''}
+                        ${field.disabled ? 'disabled' : ''}
+                        ${field.readonly ? 'readonly' : ''}
+                    />
+                    ${field.trailingIcon ? `<span class="md-textfield__trailing-icon">${IconManager.getIcon(field.trailingIcon)}</span>` : ''}
+                </div>
+                ${escapedDescription || escapedError ? `
+                    <div class="md-textfield__supporting-text">
+                        ${this.errors[field.key] && this.touched[field.key]
+                            ? `<span class="md-textfield__error-text">${escapedError}</span>`
+                            : escapedDescription
+                                ? `<span class="md-textfield__supporting">${escapedDescription}</span>`
+                                : ''}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    /**
+     * Render Official MD3 MCP Checkbox
+     */
+    renderMD3Checkbox(field, value) {
+        // XSS Protection: Escape label
+        const escapedLabel = this.escapeHtml(field.checkboxLabel || field.label);
+
+        return `
+            <div class="md3-checkbox-with-label">
+                <div class="md3-checkbox ${field.disabled ? 'md3-checkbox--disabled' : ''}">
+                    <input
+                        type="checkbox"
+                        class="input"
+                        id="${this.containerId}_${field.key}"
+                        name="${field.key}"
+                        ${value ? 'checked' : ''}
+                        ${field.disabled ? 'disabled' : ''}
+                    />
+                    <div class="container">
+                        <div class="outline"></div>
+                        <div class="background"></div>
+                        <div class="icon">
+                            <svg viewBox="0 0 18 18">
+                                <path class="mark checkmark" d="M6,9 L8,11 L12,7"></path>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <label for="${this.containerId}_${field.key}" class="label">${escapedLabel}</label>
+            </div>
+        `;
+    }
+
+    /**
+     * Render Official MD3 MCP Switch
+     */
+    renderMD3Switch(field, value) {
+        // XSS Protection: Escape label
+        const escapedLabel = this.escapeHtml(field.toggleLabel || field.label);
+
+        return `
+            <label class="md-switch-container">
+                <div class="md-switch ${field.disabled ? 'md-switch--disabled' : ''}">
+                    <input
+                        type="checkbox"
+                        role="switch"
+                        id="${this.containerId}_${field.key}"
+                        name="${field.key}"
+                        class="md-switch__input"
+                        ${value ? 'checked' : ''}
+                        ${field.disabled ? 'disabled' : ''}
+                    />
+                    <div class="md-switch__track">
+                        <div class="md-switch__handle"></div>
+                    </div>
+                </div>
+                <span class="md-switch__label">${escapedLabel}</span>
+            </label>
+        `;
+    }
+
+    /**
+     * Render Official MD3 MCP Radio Group
+     */
+    renderMD3RadioGroup(field, value) {
+        const isInline = field.radioLayout === 'horizontal';
+        // XSS Protection: Escape aria-label
+        const escapedAriaLabel = this.escapeHtml(field.label);
+
+        return `
+            <div class="md-radio-group ${isInline ? 'md-radio-group--inline' : ''}" role="radiogroup" aria-label="${escapedAriaLabel}">
+                ${(field.options || []).map((opt, index) => {
+                    const optValue = typeof opt === 'string' ? opt : opt.value;
+                    const optLabel = typeof opt === 'string' ? opt : opt.label;
+                    // XSS Protection: Escape option values and labels
+                    const escapedOptValue = this.escapeHtml(optValue);
+                    const escapedOptLabel = this.escapeHtml(optLabel);
+                    return `
+                        <label class="md-radio ${field.disabled ? 'md-radio--disabled' : ''}" for="${this.containerId}_${field.key}_${index}">
+                            <input
+                                type="radio"
+                                name="${field.key}"
+                                value="${escapedOptValue}"
+                                id="${this.containerId}_${field.key}_${index}"
+                                class="md-radio__input"
+                                ${value === optValue ? 'checked' : ''}
+                                ${field.disabled ? 'disabled' : ''}
+                            />
+                            <div class="md-radio__background">
+                                <div class="md-radio__outer-circle"></div>
+                                <div class="md-radio__inner-circle"></div>
+                            </div>
+                            <span class="md-radio__label">${escapedOptLabel}</span>
+                        </label>
+                    `;
+                }).join('')}
+            </div>
+        `;
+    }
+
+    /**
      * Render field input based on type
      */
     renderFieldInput(field, value, fieldSize = 'md') {
         const sizeClass = `ssi-input-${fieldSize}`;
-        
+
         // For M3 floating labels, we MUST have a placeholder (even if just a space)
         const fieldLayout = field.layout || this.options.fieldLayout;
-        const placeholder = field.placeholder !== undefined ? field.placeholder : 
+        const placeholder = field.placeholder !== undefined ? field.placeholder :
                           (fieldLayout === 'filled' || fieldLayout === 'outlined' || fieldLayout === 'floating' ? ' ' : '');
-        
+
         const commonAttrs = `
             id="${this.containerId}_${field.key}"
             name="${field.key}"
@@ -428,6 +593,25 @@ export class FormBuilder extends BaseBuilder {
             ${field.readonly ? 'readonly' : ''}
             ${placeholder ? `placeholder="${placeholder}"` : ''}
         `.trim();
+
+        // Use Official MD3 MCP styles if enabled
+        if (this.options.useOfficialMD3) {
+            const variant = fieldLayout === 'outlined' ? 'outlined' : 'filled';
+            const size = fieldSize === 'sm' ? 'small' : fieldSize === 'lg' ? 'large' : 'medium';
+
+            switch (field.type) {
+                case 'text':
+                case 'email':
+                case 'password':
+                    return this.renderMD3Textfield(field, value, variant, size);
+                case 'checkbox':
+                    return this.renderMD3Checkbox(field, value);
+                case 'toggle':
+                    return this.renderMD3Switch(field, value);
+                case 'radio':
+                    return this.renderMD3RadioGroup(field, value);
+            }
+        }
 
         // Helper for input groups with prefix/suffix
         const wrapInputGroup = (input) => {

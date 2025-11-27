@@ -2308,3 +2308,571 @@ input[type="color"].form-input {
 .form-m3-datepicker-container {
     width: 100%;
 }
+
+/* =========================================
+   OFFICIAL MD3 MCP TEXTFIELD STYLES
+   Generated from Material Design 3 MCP Server
+   ========================================= */
+
+/* Material Design 3 Text Field */
+.md-textfield {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Roboto', system-ui, sans-serif;
+}
+
+.md-textfield__label {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.md-textfield__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.md-textfield__input {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.md-textfield__input::placeholder {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    opacity: 1;
+}
+
+/* Filled variant */
+.md-textfield--filled .md-textfield__field {
+    background: var(--md-sys-color-surface-container-highest, #e6e1e5);
+    border-bottom: 1px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 4px 4px 0 0;
+}
+
+.md-textfield--filled .md-textfield__field:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 4%, var(--md-sys-color-surface-container-highest, #e6e1e5));
+}
+
+.md-textfield--filled .md-textfield__input:focus {
+    border-bottom: 2px solid var(--md-sys-color-primary, #1a73e8);
+}
+
+/* Outlined variant */
+.md-textfield--outlined .md-textfield__field {
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline, #79747e);
+    border-radius: 4px;
+}
+
+.md-textfield--outlined .md-textfield__field:hover {
+    border-color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.md-textfield--outlined .md-textfield__input:focus {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: -2px;
+}
+
+/* Size variants */
+.md-textfield--small .md-textfield__field {
+    min-height: 48px;
+}
+
+.md-textfield--small .md-textfield__input {
+    padding: 12px;
+    font-size: 14px;
+}
+
+.md-textfield--large .md-textfield__field {
+    min-height: 64px;
+}
+
+.md-textfield--large .md-textfield__input {
+    padding: 20px;
+    font-size: 18px;
+}
+
+/* Icons */
+.md-textfield__leading-icon,
+.md-textfield__trailing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 12px;
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    flex-shrink: 0;
+}
+
+.md-textfield__icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* Supporting text */
+.md-textfield__supporting-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 4px;
+    padding: 0 16px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.md-textfield__supporting,
+.md-textfield__character-count {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.md-textfield__error-text {
+    color: var(--md-sys-color-error, #b3261e);
+}
+
+/* Error state */
+.md-textfield--error .md-textfield__label {
+    color: var(--md-sys-color-error, #b3261e);
+}
+
+.md-textfield--error.md-textfield--filled .md-textfield__field {
+    border-bottom-color: var(--md-sys-color-error, #b3261e);
+}
+
+.md-textfield--error.md-textfield--outlined .md-textfield__field {
+    border-color: var(--md-sys-color-error, #b3261e);
+}
+
+/* Disabled state */
+.md-textfield--disabled {
+    opacity: 0.38;
+    pointer-events: none;
+}
+
+/* Focus states */
+.md-textfield__input:focus + .md-textfield__label {
+    color: var(--md-sys-color-primary, #1a73e8);
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP SELECT STYLES
+   ========================================= */
+
+.md-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Roboto', system-ui, sans-serif;
+}
+
+.md-select__label {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.md-select__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.md-select__input {
+    flex: 1;
+    padding: 16px;
+    padding-right: 48px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.md-select__dropdown-icon {
+    position: absolute;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.md-select__dropdown-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+/* Filled variant */
+.md-select--filled .md-select__field {
+    background: var(--md-sys-color-surface-container-highest, #e6e1e5);
+    border-bottom: 1px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 4px 4px 0 0;
+}
+
+.md-select--filled .md-select__field:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 4%, var(--md-sys-color-surface-container-highest, #e6e1e5));
+}
+
+/* Outlined variant */
+.md-select--outlined .md-select__field {
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline, #79747e);
+    border-radius: 4px;
+}
+
+.md-select--outlined .md-select__field:hover {
+    border-color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.md-select--outlined .md-select__input:focus {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: -2px;
+}
+
+/* Focus states */
+.md-select__input:focus + .md-select__dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP CHECKBOX STYLES
+   ========================================= */
+
+.md3-checkbox-with-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    user-select: none;
+    padding: 8px 0;
+}
+
+.md3-checkbox {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.md3-checkbox .input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    margin: 0;
+}
+
+.md3-checkbox .container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.md3-checkbox .outline {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 3px;
+    transition: all 200ms ease;
+}
+
+.md3-checkbox .background {
+    position: absolute;
+    inset: 0;
+    background: var(--md-sys-color-primary, #1a73e8);
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+.md3-checkbox .icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.md3-checkbox .icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--md-sys-color-on-primary, #ffffff);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.md3-checkbox .mark {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    transition: stroke-dashoffset 200ms ease;
+}
+
+/* Checked state */
+.md3-checkbox .input:checked ~ .container .outline {
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md3-checkbox .input:checked ~ .container .background {
+    opacity: 1;
+}
+
+.md3-checkbox .input:checked ~ .container .mark {
+    stroke-dashoffset: 0;
+}
+
+/* State layers */
+.md3-checkbox::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+.md3-checkbox-with-label:hover .md3-checkbox::before {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+}
+
+.md3-checkbox .input:focus-visible ~ .container {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP SWITCH STYLES
+   ========================================= */
+
+.md-switch-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.md-switch {
+    position: relative;
+    display: inline-block;
+    transition: opacity 0.2s ease;
+}
+
+.md-switch--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+.md-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.md-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    border-radius: 16px;
+    background: var(--md-sys-color-surface-variant, #e7e0ec);
+    border: 2px solid var(--md-sys-color-outline, #79747e);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.md-switch__handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--md-sys-color-outline, #79747e);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(0);
+}
+
+.md-switch__label {
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* Checked state */
+.md-switch__input:checked + .md-switch__track {
+    background: var(--md-sys-color-primary, #1a73e8);
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md-switch__input:checked + .md-switch__track .md-switch__handle {
+    background: var(--md-sys-color-on-primary, #ffffff);
+    transform: translateX(20px);
+}
+
+/* Focus state */
+.md-switch__input:focus + .md-switch__track {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* Hover state */
+.md-switch:hover:not(.md-switch--disabled) .md-switch__track::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+    transition: opacity 0.2s ease;
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP RADIO STYLES
+   ========================================= */
+
+.md-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.md-radio-group--inline {
+    flex-direction: row;
+    gap: 24px;
+}
+
+.md-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+    min-height: 48px;
+    padding: 12px 0;
+    user-select: none;
+    transition: opacity 0.2s ease;
+}
+
+.md-radio--disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+}
+
+.md-radio__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.md-radio__background {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.md-radio__outer-circle {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.md-radio__inner-circle {
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: var(--md-sys-color-primary, #1a73e8);
+    transform: scale(0);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.md-radio__label {
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* States */
+.md-radio__input:checked + .md-radio__background .md-radio__outer-circle {
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md-radio__input:checked + .md-radio__background .md-radio__inner-circle {
+    transform: scale(1);
+}
+
+.md-radio__input:focus + .md-radio__background {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* Hover state layer */
+.md-radio:hover:not(.md-radio--disabled) .md-radio__background::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+    transition: opacity 0.2s ease;
+}
