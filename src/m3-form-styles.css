@@ -38,15 +38,16 @@
 }
 
 /* === Filled Variant - M3 SPEC: 4px top corners, flat bottom === */
+/* Use darker gray for better contrast on light gray containers */
 .m3-dropdown--filled .m3-dropdown__field {
-    background: var(--m3-surface-container-highest);
+    background: #EBEBEB;
     border-radius: var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0;
     padding: 8px 16px;
     min-height: var(--m3-text-field-height);
 }
 
-.m3-dropdown--filled:hover .m3-dropdown__field {
-    background: color-mix(in srgb, var(--m3-surface-container-highest) 85%, var(--m3-on-surface));
+.m3-dropdown--filled .m3-dropdown__field:hover {
+    background: #E0E0E0;
 }
 
 .m3-dropdown--filled .m3-dropdown__active-indicator {
@@ -59,7 +60,8 @@
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.m3-dropdown--filled:hover .m3-dropdown__active-indicator {
+.m3-dropdown--filled .m3-dropdown__field:hover + .m3-dropdown__active-indicator,
+.m3-dropdown--filled .m3-dropdown__field:hover ~ .m3-dropdown__active-indicator {
     height: 2px;
     background: var(--m3-on-surface);
 }
@@ -71,18 +73,19 @@
 }
 
 /* === Outlined Variant - M3 SPEC: 4px corners, 1px border === */
+/* Match FormBuilder textfield colors for consistency */
 .m3-dropdown--outlined .m3-dropdown__field {
     position: relative;
-    background: var(--m3-surface);
-    border: 1px solid var(--m3-outline);
+    background: white;
+    border: 1px solid #dadce0;
     border-radius: var(--m3-shape-extra-small);
     padding: 8px 16px;
     min-height: var(--m3-text-field-height);
 }
 
-.m3-dropdown--outlined:hover .m3-dropdown__field {
+.m3-dropdown--outlined .m3-dropdown__field:hover {
     border-color: var(--m3-on-surface);
-    background: color-mix(in srgb, var(--m3-surface) 97%, var(--m3-on-surface));
+    background: #FAFAFA;
 }
 
 .m3-dropdown--outlined:focus .m3-dropdown__field,
@@ -141,7 +144,8 @@
     font-size: 12px;
     line-height: 1;
     color: var(--m3-on-surface-variant);
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 0.4px;
 }
 
 /* Label wird Primary bei Focus/Open */
@@ -211,9 +215,9 @@
 /* Selected value is more prominent */
 .m3-dropdown--has-value .m3-dropdown__value {
     color: var(--m3-on-surface);
-    font-weight: 600;
+    font-weight: 400;
     font-size: 16px;
-    letter-spacing: 0.01em;
+    letter-spacing: 0;
 }
 
 /* Outlined value centered */
@@ -534,8 +538,37 @@
 }
 
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__field {
-    padding-top: 20px;
-    min-height: auto;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    min-height: var(--m3-text-field-height);
+}
+
+/* Float label when multiselect has selected values */
+.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__label {
+    top: 4px;
+    transform: translateY(0);
+    font-size: 12px;
+    line-height: 1;
+    color: var(--m3-on-surface-variant);
+    font-weight: 400;
+    letter-spacing: 0.4px;
+}
+
+/* Push chips down to make room for floating label */
+.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
+    margin-top: 12px;
+}
+
+/* Compact chips in multiselect to fit 56px field height */
+.m3-dropdown--multiselect .m3-dropdown__chip {
+    height: 24px;
+    padding: 2px 8px;
+    font-size: 12px;
+    border-radius: 6px;
+    background: #D0D0D0;
+    color: #1D1B20;
+    font-weight: 500;
+    border: 1px solid #B0B0B0;
 }
 
 /* Keep menu open hint for multiselect */

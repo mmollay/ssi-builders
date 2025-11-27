@@ -874,7 +874,7 @@ input[type="color"].form-input {
     width: 100%;
     height: 56px;
     padding: 16px !important;
-    background: #F5F5F5;
+    background: #EBEBEB;
     border: none !important;
     border-bottom: 1px solid #79747E !important;
     border-radius: 4px 4px 0 0 !important;
@@ -924,7 +924,8 @@ input[type="color"].form-input {
     transform: translateY(0);
     font-size: 12px;
     line-height: 16px;
-    font-weight: 500;
+    font-weight: 400;
+    letter-spacing: 0.4px;
     color: #1a73e8;
 }
 
@@ -1054,8 +1055,9 @@ input[type="color"].form-input {
     transform: translateY(-50%);
     font-size: 12px;
     line-height: 16px;
-    font-weight: 500;
-    color: #1a73e8;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: #49454F;
 }
 
 /* Focus State */
@@ -1073,29 +1075,39 @@ input[type="color"].form-input {
     border-color: #1C1B1F;
 }
 
-/* Select always has floating label in outlined variant */
+/* Select always has floating label in outlined variant - M3 Filled Style */
 .form-field-outlined .form-select {
-    padding-top: 16px !important;
+    height: 56px !important;
+    min-height: 56px !important;
+    box-sizing: border-box !important;
+    padding: 24px 40px 8px 16px !important;
     color: #1C1B1F;
+    font-size: 16px;
+    font-weight: 400;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
-    background-color: transparent;
-    padding-right: 40px !important;
+    background-color: #EBEBEB !important;
+    border: none !important;
+    border-bottom: 1px solid #79747E !important;
+    border-radius: 4px 4px 0 0 !important;
 }
 
-.form-field-outlined .form-select ~ .form-label {
-    top: 0;
-    transform: translateY(-50%);
-    font-size: 12px;
+.form-field-outlined .form-select ~ .form-label,
+.form-field-outlined .form-label-float {
+    top: 8px !important;
+    transform: translateY(0) !important;
+    font-size: 12px !important;
     line-height: 16px;
-    font-weight: 500;
-    color: #49454F;
-    background: white;
-    padding: 0 4px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: #49454F !important;
+    background: transparent !important;
+    padding: 0;
+    left: 16px;
 }
 
 .form-field-outlined .form-select:focus ~ .form-label {

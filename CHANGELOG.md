@@ -7,9 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Documentation
-- **ListBuilder**: Added documentation for bulk delete pattern using `selectable: true`, `getSelectedRows()`, and `clearSelection()`
-- **ListBuilder**: Added example for optimistic UI delete with CSS fade-out animation
+---
+
+## [2.5.1] - 2025-11-28
+
+### Fixed
+- **M3DropdownMenu**: Fixed hover area extending beyond visible dropdown field - now only triggers on direct field hover
+- **M3DropdownMenu**: Fixed selected value font-weight (was 600, now 400) for consistent typography
+- **M3DropdownMenu**: Fixed floating label font-weight and added letter-spacing for elegant appearance
+- **M3DropdownMenu Multiselect**: Fixed label overlap with chips by adjusting margin-top
+- **M3DropdownMenu Multiselect**: Fixed field height to match regular dropdown (56px)
+- **M3DropdownMenu Multiselect**: Improved chip styling with better contrast (background, border, font-weight)
+- **FormBuilder Native Select**: Fixed native fallback dropdown to match M3 filled style:
+  - Gray background (#EBEBEB) instead of transparent
+  - Label positioned inside field (top: 8px) instead of floating above
+  - Gray label color (#49454F) instead of blue
+  - Height: 56px to match M3 dropdowns
+  - Border-radius: 4px 4px 0 0 (rounded top corners only)
+  - Bottom border only (1px solid #79747E)
+
+### Changed
+- **m3-form-styles.css**: Hover state selectors changed from parent-based to direct field hover for precise interaction areas
 
 ---
 
