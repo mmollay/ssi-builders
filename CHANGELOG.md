@@ -7,6 +7,48 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Documentation
+- **ListBuilder**: Added documentation for bulk delete pattern using `selectable: true`, `getSelectedRows()`, and `clearSelection()`
+- **ListBuilder**: Added example for optimistic UI delete with CSS fade-out animation
+
+---
+
+## [2.4.4] - 2025-11-27
+
+### Added
+- **ListBuilder**: Bulk selection pattern for admin pages:
+  - Enable row selection with `options: { selectable: true }`
+  - Get selected data with `listBuilder.getSelectedRows()`
+  - Clear selection after operation with `listBuilder.clearSelection()`
+  - Built-in selection checkbox in first column
+  - Toolbar actions can use `getSelectedRows()` for bulk operations (see demo)
+- **What's New System** (`src/whats-new.js`): Track which components have been updated since last release
+  - `isNew(componentName)` - Check if component has updates
+  - `getNewBadge(componentName)` - Get HTML badge for "NEU" indicator
+  - `updatedComponents` array - Clear this when releasing new version
+  - Sidebar automatically shows "NEU v2.4.4" badges for updated components
+
+### Security
+- **whats-new.js**: Added HTML escaping in `getNewBadge()` to prevent XSS attacks
+
+### Documentation
+- **ListBuilder Demo**: Added "Bulk Actions" section showing multi-select delete pattern
+- **Best Practice**: Optimistic UI delete pattern (remove DOM elements with animation before server response)
+
+```javascript
+// Example: Optimistic UI delete with animation
+const deleteHandler = async (row) => {
+    const rowEl = document.querySelector(`tr[data-row-id="${row.id}"]`);
+    const { error } = await supabase.from('table').delete().eq('id', row.id);
+    if (!error && rowEl) {
+        rowEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        rowEl.style.opacity = '0';
+        rowEl.style.transform = 'translateX(-20px)';
+        setTimeout(() => rowEl.remove(), 300);
+    }
+};
+```
+
 ---
 
 ## [2.4.2] - 2025-11-26

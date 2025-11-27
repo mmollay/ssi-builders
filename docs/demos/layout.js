@@ -5,6 +5,17 @@
 
 import { SidebarBuilder } from '../../src/SidebarBuilder.js';
 import { IconManager } from '../../src/IconManager.js';
+import { isNew, currentVersion } from '../../src/whats-new.js';
+
+/**
+ * Get badge for a component (NEW if updated, or custom badge)
+ */
+function getComponentBadge(componentName, defaultBadge = null) {
+  if (isNew(componentName)) {
+    return { text: `NEU v${currentVersion}`, color: '#2e7d32' };
+  }
+  return defaultBadge;
+}
 
 /**
  * Initialize the page layout with sidebar navigation
@@ -22,7 +33,7 @@ export function initializeDemoLayout(activePage) {
   const sidebar = new SidebarBuilder({
     containerId: 'sidebar-container',
     title: 'SSI Builders',
-    version: '2.4.0',
+    version: currentVersion,
     logo: {
       text: 'SSI',
       background: '#1a73e8'
@@ -75,7 +86,7 @@ export function initializeDemoLayout(activePage) {
         icon: IconManager.getIcon('list'),
         key: 'list-builder',
         href: '/docs/demos/list-builder.html',
-        badge: { text: 'Popular', color: '#34a853' }
+        badge: getComponentBadge('ListBuilder', { text: 'Popular', color: '#34a853' })
       },
       {
         label: 'FormBuilder',

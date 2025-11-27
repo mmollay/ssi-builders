@@ -125,7 +125,7 @@
 
                 <!-- Footer -->
                 <div class="page-footer">
-                    <p>Built with SSI Builders · © 2025 · v2.4.0</p>
+                    <p>Built with SSI Builders · © 2025 · v2.4.4</p>
                 </div>
             </div>
         </main>
@@ -146,9 +146,42 @@
         // Changelog data from CHANGELOG.md
         const changelogData = [
             {
+                version: '2.4.4',
+                date: '2025-11-27',
+                highlight: true,
+                changes: [
+                    { type: 'added', text: 'ListBuilder: Bulk selection and delete pattern for admin pages' },
+                    { type: 'added', text: 'ListBuilder: getSelectedRows() returns array of selected row data' },
+                    { type: 'added', text: 'ListBuilder: clearSelection() clears all selected rows' },
+                    { type: 'added', text: 'What\'s New System: Track component updates with isNew() and getNewBadge()' },
+                    { type: 'added', text: 'Sidebar: Automatic "NEU v2.4.4" badges for updated components' },
+                    { type: 'added', text: 'ListBuilder Demo: New "Bulk Actions" section showing multi-select delete pattern' },
+                    { type: 'added', text: 'Best Practice: Optimistic UI delete pattern with CSS fade-out animation' }
+                ]
+            },
+            {
+                version: '2.4.2',
+                date: '2025-11-26',
+                changes: [
+                    { type: 'added', text: 'SidebarBuilder: New topOffset option for fixed header layouts' },
+                    { type: 'fixed', text: 'SidebarBuilder: Sidebar now correctly positions below fixed headers' }
+                ]
+            },
+            {
+                version: '2.4.1',
+                date: '2025-11-26',
+                changes: [
+                    { type: 'security', text: 'M3DropdownMenu: Fixed XSS vulnerability in option rendering' },
+                    { type: 'security', text: 'M3ColorPicker: Fixed XSS vulnerability in label rendering' },
+                    { type: 'security', text: 'ChangelogBuilder: Fixed XSS vulnerability in search highlight' },
+                    { type: 'fixed', text: 'M3DropdownMenu: Fixed memory leak by properly removing event listeners' },
+                    { type: 'fixed', text: 'M3ColorPicker: Fixed memory leak by properly removing event listeners' },
+                    { type: 'fixed', text: 'M3Slider: Fixed memory leak by properly removing event listeners' }
+                ]
+            },
+            {
                 version: '2.4.0',
                 date: '2025-11-26',
-                highlight: true,
                 changes: [
                     { type: 'added', text: 'M3 ColorPicker component with HSV color model, alpha support, and preset colors' },
                     { type: 'added', text: 'M3 Slider component with continuous and discrete modes' },

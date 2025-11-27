@@ -2,7 +2,7 @@
  * SSI Builders - Professional UI Component Library
  * Material Design 3 | Production-Ready
  *
- * @version 2.4.0
+ * @version 2.4.4
  * @author SSI Solutions
  */
 
@@ -29,6 +29,8 @@ import { M3DropdownMenu } from './M3DropdownMenu.js';
 import { M3Slider } from './M3Slider.js';
 import { M3ColorPicker } from './M3ColorPicker.js';
 import { ChangelogBuilder } from './ChangelogBuilder.js';
+// What's New System (v2.4.4)
+import WhatsNew, { isNew, getNewBadge, currentVersion as whatsNewVersion } from './whats-new.js';
 
 export {
     ListBuilder,
@@ -55,7 +57,12 @@ export {
     M3DropdownMenu,
     M3Slider,
     M3ColorPicker,
-    ChangelogBuilder
+    ChangelogBuilder,
+    // What's New System (v2.4.4)
+    WhatsNew,
+    isNew,
+    getNewBadge,
+    whatsNewVersion
 };
 
 // Default export for convenience
@@ -86,5 +93,5 @@ export default {
 };
 
 // Version info
-export const VERSION = '2.4.0';
+export const VERSION = '2.4.4';
 export const LIBRARY_NAME = 'SSI Builders';

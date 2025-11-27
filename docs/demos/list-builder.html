@@ -91,10 +91,22 @@
                 <div class="demo-section">
                     <h2>4. Mit Filtern <span class="badge">Verfügbar</span></h2>
                     <p>Select-Dropdowns für Filterung nach Status, Kategorie, etc.</p>
-                    
+
                     <div class="demo-box">
                         <div id="tableWithFilters"></div>
                     </div>
+                </div>
+
+                <!-- Bulk Actions -->
+                <div class="demo-section">
+                    <h2>5. Bulk Actions mit Multi-Select <span class="badge new">NEU v2.4.4</span></h2>
+                    <p>Waehle mehrere Zeilen aus und fuehre Bulk-Aktionen aus (z.B. Multi-Delete)</p>
+
+                    <div class="demo-box">
+                        <div id="tableBulkActions"></div>
+                    </div>
+
+                    <div id="code-bulk" style="margin-top: 16px;"></div>
                 </div>
 
                 <!-- Combined Example -->
@@ -385,7 +397,132 @@
             }
         });
 
+        // 7. Bulk Actions mit Multi-Select
+        let bulkActionUsers = generateUsers(20);
+        const bulkActionsTable = new ListBuilder({
+            containerId: 'tableBulkActions',
+            columns: [
+                { key: 'id', label: 'ID', width: '60px' },
+                { key: 'name', label: 'Name' },
+                { key: 'email', label: 'E-Mail' },
+                { key: 'status', label: 'Status', type: 'badge', badgeClass: (v) => ({
+                    'Aktiv': 'success',
+                    'Inaktiv': 'default',
+                    'Ausstehend': 'warning'
+                })[v] }
+            ],
+            dataSource: async () => bulkActionUsers,
+            actions: {
+                toolbar: [
+                    {
+                        key: 'delete-selected',
+                        label: 'Ausgewaehlte loeschen',
+                        icon: IconManager.getIcon('delete'),
+                        type: 'danger',
+                        handler: async () => {
+                            const selectedRows = bulkActionsTable.getSelectedRows();
+                            if (!selectedRows?.length) {
+                                alert('Bitte waehle mindestens eine Zeile aus!');
+                                return;
+                            }
+
+                            if (confirm(`${selectedRows.length} Eintraege wirklich loeschen?`)) {
+                                const selectedIds = selectedRows.map(r => r.id);
+
+                                // Optimistic UI - Zeilen ausblenden
+                                selectedIds.forEach(id => {
+                                    const rowEl = document.querySelector(`#tableBulkActions tr[data-row-id="${id}"]`);
+                                    if (rowEl) {
+                                        rowEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                        rowEl.style.opacity = '0';
+                                        rowEl.style.transform = 'translateX(-20px)';
+                                        setTimeout(() => rowEl.remove(), 300);
+                                    }
+                                });
+
+                                // Daten aktualisieren
+                                bulkActionUsers = bulkActionUsers.filter(u => !selectedIds.includes(u.id));
+                                bulkActionsTable.clearSelection();
+
+                                console.log(`✅ ${selectedIds.length} Eintraege geloescht!`);
+                            }
+                        }
+                    }
+                ],
+                row: [
+                    {
+                        key: 'delete',
+                        icon: IconManager.getIcon('delete'),
+                        label: 'Loeschen',
+                        displayType: 'icon',
+                        type: 'danger',
+                        handler: (row) => {
+                            if (confirm(`"${row.name}" wirklich loeschen?`)) {
+                                const rowEl = document.querySelector(`#tableBulkActions tr[data-row-id="${row.id}"]`);
+                                if (rowEl) {
+                                    rowEl.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                                    rowEl.style.opacity = '0';
+                                    rowEl.style.transform = 'translateX(-20px)';
+                                    setTimeout(() => rowEl.remove(), 300);
+                                }
+                                bulkActionUsers = bulkActionUsers.filter(u => u.id !== row.id);
+                            }
+                        }
+                    }
+                ]
+            },
+            options: {
+                pageSize: 10,
+                selectable: true,  // Multi-Select aktivieren!
+                searchable: true,
+                tableStyle: {
+                    striped: true,
+                    hoverable: true
+                }
+            }
+        });
+
         // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-bulk',
+            code: `// Multi-Select aktivieren
+options: {
+    selectable: true  // Checkboxen in jeder Zeile
+}
+
+// Bulk-Delete Button in Toolbar
+actions: {
+    toolbar: [{
+        key: 'delete-selected',
+        label: 'Ausgewaehlte loeschen',
+        icon: IconManager.getIcon('delete'),
+        type: 'danger',
+        handler: async () => {
+            const selectedRows = listBuilder.getSelectedRows();
+            if (!selectedRows?.length) return;
+
+            const ids = selectedRows.map(r => r.id);
+
+            // Optimistic UI - Zeilen animiert entfernen
+            ids.forEach(id => {
+                const row = document.querySelector(\`tr[data-row-id="\${id}"]\`);
+                if (row) {
+                    row.style.transition = 'opacity 0.3s, transform 0.3s';
+                    row.style.opacity = '0';
+                    row.style.transform = 'translateX(-20px)';
+                    setTimeout(() => row.remove(), 300);
+                }
+            });
+
+            // API Call
+            await supabase.from('table').delete().in('id', ids);
+            listBuilder.clearSelection();
+        }
+    }]
+}`,
+            language: 'javascript'
+        });
+
         new CodeSnippetBuilder({
             containerId: 'code-ajax',
             code: `dataSource: async () => {

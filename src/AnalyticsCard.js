@@ -199,10 +199,13 @@ export class AnalyticsCard {
      * @param {number|string} newValue - New value
      * @param {Object} [newTrend] - New trend object
      */
-    update(newValue, newTrend) {
+    update(newValue, newTrend, newSubtext) {
         this.value = newValue;
         if (newTrend !== undefined) {
             this.trend = newTrend;
+        }
+        if (newSubtext !== undefined) {
+            this.subtext = newSubtext;
         }
         this.loading = false;
         this.render();
@@ -295,12 +298,12 @@ export class AnalyticsCardGrid {
 
     /**
      * Update all cards
-     * @param {Array} data - Array of { value, trend } objects
+     * @param {Array} data - Array of { value, trend, subtext } objects
      */
     updateAll(data) {
         data.forEach((item, index) => {
             if (this.cardInstances[index]) {
-                this.cardInstances[index].update(item.value, item.trend);
+                this.cardInstances[index].update(item.value, item.trend, item.subtext);
             }
         });
     }

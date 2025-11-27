@@ -480,7 +480,9 @@ export class ListBuilder extends BaseBuilder {
      * Render pagination
      */
     renderPagination() {
-        const totalPages = Math.ceil(this.filteredData.length / this.options.pageSize);
+        // Use totalCount for server-side, filteredData.length for client-side
+        const totalItems = this.options.serverSide ? this.totalCount : this.filteredData.length;
+        const totalPages = Math.ceil(totalItems / this.options.pageSize);
         if (totalPages <= 1) return '';
 
         const pages = this.getPaginationPages(totalPages);
@@ -489,8 +491,8 @@ export class ListBuilder extends BaseBuilder {
             <div class="list-pagination">
                 <div class="list-pagination-info">
                     Zeige ${(this.currentPage - 1) * this.options.pageSize + 1}
-                    - ${Math.min(this.currentPage * this.options.pageSize, this.filteredData.length)}
-                    von ${this.filteredData.length}
+                    - ${Math.min(this.currentPage * this.options.pageSize, totalItems)}
+                    von ${totalItems}
                 </div>
                 <div class="list-pagination-controls">
                     <button
@@ -749,45 +751,61 @@ export class ListBuilder extends BaseBuilder {
      */
     handleSearch(value) {
         clearTimeout(this.searchDebounce);
-        this.searchDebounce = setTimeout(() => {
+        this.searchDebounce = setTimeout(async () => {
             this.searchTerm = value;
-            this.applyFilters();
-            this.updateTableContent();
+            this.currentPage = 1; // Reset to first page on search
+            if (this.options.serverSide) {
+                await this.loadData();
+            } else {
+                this.applyFilters();
+                this.updateTableContent();
+            }
         }, 300);
     }
 
     /**
      * Handle filter change
      */
-    handleFilterChange(key, value) {
+    async handleFilterChange(key, value) {
         if (value) {
             this.activeFilters[key] = value;
         } else {
             delete this.activeFilters[key];
         }
-        this.applyFilters();
-        this.render();
+        this.currentPage = 1; // Reset to first page on filter
+        if (this.options.serverSide) {
+            await this.loadData();
+        } else {
+            this.applyFilters();
+            this.render();
+        }
     }
 
     /**
      * Handle sort
      */
-    handleSort(columnKey) {
+    async handleSort(columnKey) {
         if (this.sortColumn === columnKey) {
             this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
         } else {
             this.sortColumn = columnKey;
             this.sortDirection = 'asc';
         }
-        this.applyFilters();
-        this.updateTableContent();
+        if (this.options.serverSide) {
+            await this.loadData();
+        } else {
+            this.applyFilters();
+            this.updateTableContent();
+        }
     }
 
     /**
      * Handle page change
      */
-    handlePageChange(page) {
-        const totalPages = Math.ceil(this.filteredData.length / this.options.pageSize);
+    async handlePageChange(page) {
+        // Use totalCount for server-side, filteredData.length for client-side
+        const totalItems = this.options.serverSide ? this.totalCount : this.filteredData.length;
+        const totalPages = Math.ceil(totalItems / this.options.pageSize);
 
         if (page === 'prev') {
             this.currentPage = Math.max(1, this.currentPage - 1);
@@ -797,7 +815,11 @@ export class ListBuilder extends BaseBuilder {
             this.currentPage = parseInt(page);
         }
 
-        this.updateTableContent();
+        if (this.options.serverSide) {
+            await this.loadData();
+        } else {
+            this.updateTableContent();
+        }
         this.container.querySelector('.list-table-wrapper')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 

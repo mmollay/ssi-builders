@@ -80,7 +80,30 @@ test('myNewFeature works correctly', async ({ page }) => {
 });
 ```
 
-### 3. Dokumentation updaten
+### 3. What's New System aktualisieren
+
+**WICHTIG:** Bei jedem neuen Feature muss `src/whats-new.js` aktualisiert werden!
+
+```javascript
+// src/whats-new.js
+export const updatedComponents = [
+    {
+        name: 'ModalBuilder',           // Component-Name (exakt!)
+        feature: 'Neues Feature XYZ',   // Kurzbeschreibung
+        description: 'Details...',      // Längere Beschreibung
+        date: '2025-11-27'              // Datum
+    }
+];
+```
+
+Dies bewirkt automatisch:
+- Sidebar zeigt "NEU v2.4.x" Badge neben dem Builder
+- `isNew('ModalBuilder')` gibt `true` zurück
+- Demo-Seiten können das Feature hervorheben
+
+**Bei neuem Release:** `updatedComponents` Array leeren!
+
+### 4. Dokumentation updaten
 
 **README.md:**
 ```markdown
@@ -98,7 +121,25 @@ test('myNewFeature works correctly', async ({ page }) => {
 - ModalBuilder: `myNewFeature` option for XYZ functionality
 ```
 
-### 4. Version erhöhen
+**docs/changelog.html:** (WICHTIG!)
+```javascript
+// Neuen Eintrag in changelogData Array hinzufügen
+const changelogData = [
+    {
+        version: '2.4.5',
+        date: '2025-11-27',
+        highlight: true,  // Für wichtige Releases
+        changes: [
+            { type: 'added', text: 'ModalBuilder: myNewFeature für XYZ' },
+            { type: 'fixed', text: 'Bug fix description' },
+            { type: 'security', text: 'Security fix description' }
+        ]
+    },
+    // ... bestehende Einträge
+];
+```
+
+### 5. Version erhöhen
 
 ```bash
 # Patch für Bug fixes
@@ -111,7 +152,7 @@ npm version minor  # 1.0.0 → 1.1.0
 npm version major  # 1.0.0 → 2.0.0
 ```
 
-### 5. Zu GitHub pushen
+### 6. Zu GitHub pushen
 
 ```bash
 git push && git push --tags
@@ -403,8 +444,44 @@ git push --force
 - ✅ No hardcoded secrets
 - ✅ Safe DOM manipulation
 
+## Release Checklist
+
+Bei jedem Release diese Schritte ausführen:
+
+```bash
+# 1. What's New updaten
+# src/whats-new.js → updatedComponents Array aktualisieren
+
+# 2. CHANGELOG.md updaten
+# Neue Version hinzufügen mit allen Changes
+
+# 3. changelog.html updaten (WICHTIG!)
+# docs/changelog.html → changelogData Array aktualisieren
+
+# 4. Tests ausführen
+npm test
+
+# 5. Version erhöhen
+npm version minor  # oder patch/major
+
+# 6. Pushen
+git push && git push --tags
+
+# 7. Bei NEUEM Major Release:
+# src/whats-new.js → updatedComponents = [] leeren
+```
+
+## Important Files
+
+| Datei | Zweck |
+|-------|-------|
+| `src/whats-new.js` | Tracking welche Components Updates haben |
+| `docs/changelog.html` | Visuelle Changelog-Seite (manuell updaten!) |
+| `CHANGELOG.md` | Textbasierter Changelog |
+| `docs/demos/layout.js` | Sidebar mit automatischen "NEU" Badges |
+
 ---
 
-**Version:** 1.0.0
-**Last Updated:** 2025-11-20
+**Version:** 2.0.0
+**Last Updated:** 2025-11-27
 **Maintainer:** SSI Solutions
