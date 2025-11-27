@@ -2,57 +2,56 @@ import { test, expect } from '@playwright/test';
 
 test.describe('GlobalConfig Playground', () => {
     test.beforeEach(async ({ page }) => {
-        await page.goto('http://localhost:5177/docs/demos/global-config-playground.html');
+        // Server runs on port 5177 or 5178 depending on availability
+        const baseUrl = process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:5178';
+        await page.goto(`${baseUrl}/docs/demos/global-config-playground.html`);
         await page.waitForLoadState('networkidle');
+        // Wait for M3DropdownMenu components to initialize
+        await page.waitForTimeout(500);
     });
 
     test('should render all control sections', async ({ page }) => {
-        // Check all section headers exist
-        await expect(page.locator('h3:has-text("🎨 Theme & Appearance")')).toBeVisible();
-        await expect(page.locator('h3:has-text("🎨 Theme Colors")')).toBeVisible();
-        await expect(page.locator('h3:has-text("📋 List Settings")')).toBeVisible();
-        await expect(page.locator('h3:has-text("🔘 Button Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("🪟 Modal Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("📝 Form Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("📊 Chart Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("📑 Tab Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("🗂️ Sidebar Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("🍞 Toast Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("💬 Tooltip Defaults")')).toBeVisible();
-        await expect(page.locator('h3:has-text("💻 CodeSnippet Defaults")')).toBeVisible();
+        // Check all section headers exist (now using IconManager icons, not emojis)
+        await expect(page.locator('h3:has-text("Icon System")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Theme Colors")')).toBeVisible();
+        await expect(page.locator('h3:has-text("List Settings")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Button Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Modal Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Form Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Toast Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Sidebar Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("Chart Defaults")')).toBeVisible();
+        await expect(page.locator('h3:has-text("CodeSnippet Defaults")')).toBeVisible();
     });
 
     test('should render icon preview', async ({ page }) => {
         const iconPreview = page.locator('#iconPreview');
         await expect(iconPreview).toBeVisible();
 
-        // Check that icons are rendered
+        // Check that icons are rendered (8 icons shown)
         const iconItems = page.locator('.icon-item');
         const count = await iconItems.count();
-        expect(count).toBeGreaterThan(10); // Should have multiple icons
+        expect(count).toBe(8);
     });
 
     test('should render button preview', async ({ page }) => {
         const buttonPreview = page.locator('#buttonPreview');
         await expect(buttonPreview).toBeVisible();
 
-        // Check that buttons are rendered
+        // Check that buttons are rendered (3 button variants)
         const buttons = buttonPreview.locator('button');
         const count = await buttons.count();
-        expect(count).toBeGreaterThanOrEqual(4); // Primary, Success, Danger, Secondary
+        expect(count).toBe(3);
     });
 
-    test('should render list preview', async ({ page }) => {
-        const listPreview = page.locator('#listPreview');
-        await expect(listPreview).toBeVisible();
+    test('should render color preview', async ({ page }) => {
+        const colorPreview = page.locator('#colorPreview');
+        await expect(colorPreview).toBeVisible();
 
-        // Wait a bit for ListBuilder to render
-        await page.waitForTimeout(1000);
-
-        // Check that list items exist
-        const listItems = listPreview.locator('table tbody tr');
-        const count = await listItems.count();
-        expect(count).toBeGreaterThan(0);
+        // Check that color swatches are rendered (4 colors)
+        const swatches = colorPreview.locator('.color-swatch');
+        const count = await swatches.count();
+        expect(count).toBe(4);
     });
 
     test('should generate complete config code', async ({ page }) => {
@@ -64,30 +63,39 @@ test.describe('GlobalConfig Playground', () => {
 
         const codeText = await page.locator('#generatedCode code').textContent();
 
-        // Check that all new v2.2+ config sections are present
+        // Check that all config sections are present
+        expect(codeText).toContain('iconPreset:');
+        expect(codeText).toContain('iconWeight:');
+        expect(codeText).toContain('theme:');
         expect(codeText).toContain('buttons:');
         expect(codeText).toContain('modals:');
         expect(codeText).toContain('forms:');
+        expect(codeText).toContain('lists:');
         expect(codeText).toContain('charts:');
-        expect(codeText).toContain('tabs:');
         expect(codeText).toContain('sidebar:');
         expect(codeText).toContain('toasts:');
-        expect(codeText).toContain('tooltips:');
         expect(codeText).toContain('codeSnippets:');
     });
 
-    test('should update config when changing icon preset', async ({ page }) => {
-        // Change icon preset
-        await page.selectOption('#iconPreset', 'emoji');
+    test('should update config when changing icon preset via M3DropdownMenu', async ({ page }) => {
+        // M3DropdownMenu - click the field to open
+        const iconPresetDropdown = page.locator('#dropdown-iconPreset .m3-dropdown__field');
+        await iconPresetDropdown.click();
 
-        // Wait for update (CodeSnippetBuilder needs time to re-render)
-        await page.waitForTimeout(1000);
+        // Wait for menu to open
+        await page.waitForTimeout(200);
+
+        // Select "Emoji (Colored)" option specifically from the icon preset dropdown
+        await page.locator('#dropdown-iconPreset .m3-dropdown__option:has-text("Emoji (Colored)")').click();
+
+        // Wait for update
+        await page.waitForTimeout(500);
 
         // Check that current preset label updated
         const currentPreset = await page.locator('#currentIconPreset').textContent();
         expect(currentPreset).toBe('Emoji');
 
-        // Check generated code updated (look inside code element)
+        // Check generated code updated
         const codeText = await page.locator('#generatedCode code').textContent();
         expect(codeText).toContain("iconPreset: 'emoji'");
     });
@@ -96,8 +104,11 @@ test.describe('GlobalConfig Playground', () => {
         // Change primary color
         await page.fill('#primaryColor', '#ff0000');
 
+        // Trigger input event
+        await page.dispatchEvent('#primaryColor', 'input');
+
         // Wait for update
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500);
 
         // Check generated code updated
         const codeText = await page.locator('#generatedCode code').textContent();
@@ -105,31 +116,36 @@ test.describe('GlobalConfig Playground', () => {
     });
 
     test('should update config when toggling checkboxes', async ({ page }) => {
-        // Toggle form auto-save (click the label since checkbox is hidden)
-        await page.locator('label:has(#formAutoSave)').click();
+        // Expand Forms section first (it's collapsed by default)
+        await page.click('#section-forms .config-section-header');
+        await page.waitForTimeout(200);
+
+        // Toggle form auto-save (M3 switch style - click the track, not the hidden checkbox)
+        const autoSaveSwitch = page.locator('label:has(#formAutoSave) .m3-switch-track');
+        await autoSaveSwitch.click();
 
         // Wait for update
-        await page.waitForTimeout(1000);
+        await page.waitForTimeout(500);
 
         // Check generated code updated
         const codeText = await page.locator('#generatedCode code').textContent();
         expect(codeText).toContain('autoSave: true');
     });
 
-    test('should have dark mode toggle', async ({ page }) => {
-        // Dark mode toggle is hidden in toggle-switch, click the label
-        const toggleLabel = page.locator('label:has(#darkModeToggle)');
-        await expect(toggleLabel).toBeVisible();
+    test('should have collapsible sections', async ({ page }) => {
+        // Modal section starts collapsed
+        const modalSection = page.locator('#section-modals');
+        await expect(modalSection).toHaveClass(/collapsed/);
 
-        // Toggle dark mode by clicking the label
-        await toggleLabel.click();
+        // Click to expand
+        await page.click('#section-modals .config-section-header');
+        await page.waitForTimeout(200);
 
-        // Wait for transition
-        await page.waitForTimeout(300);
+        // Should no longer be collapsed
+        await expect(modalSection).not.toHaveClass(/collapsed/);
 
-        // Check body has dark-mode class
-        const bodyClass = await page.locator('body').getAttribute('class');
-        expect(bodyClass).toContain('dark-mode');
+        // Content should be visible
+        await expect(page.locator('#dropdown-modalSize')).toBeVisible();
     });
 
     test('should not have horizontal overflow', async ({ page }) => {
@@ -137,10 +153,24 @@ test.describe('GlobalConfig Playground', () => {
         const viewportWidth = await page.evaluate(() => window.innerWidth);
         const documentWidth = await page.evaluate(() => document.documentElement.scrollWidth);
 
-        console.log(`Viewport width: ${viewportWidth}px`);
-        console.log(`Document scroll width: ${documentWidth}px`);
-
         // Document width should not exceed viewport width (allowing 1px tolerance)
         expect(documentWidth).toBeLessThanOrEqual(viewportWidth + 1);
+    });
+
+    test('should have M3DropdownMenu components for all dropdowns', async ({ page }) => {
+        // Verify all dropdowns are M3DropdownMenu instances
+        const dropdownContainers = [
+            '#dropdown-iconPreset',
+            '#dropdown-iconWeight',
+            '#dropdown-listActionDisplay',
+            '#dropdown-itemsPerPage',
+            '#dropdown-buttonSize',
+            '#dropdown-buttonType'
+        ];
+
+        for (const container of dropdownContainers) {
+            const dropdown = page.locator(`${container} .m3-dropdown`);
+            await expect(dropdown).toBeVisible();
+        }
     });
 });

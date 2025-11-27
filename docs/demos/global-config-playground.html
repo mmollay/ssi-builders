@@ -3,216 +3,519 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GlobalConfig Playground - Live Demo</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>GlobalConfig Playground - SSI Builders</title>
 
-    <!-- SSI Builders Styles -->
-    <link rel="stylesheet" href="/src/shared.css">
-    <link rel="stylesheet" href="/src/ListBuilder.css">
-    <link rel="stylesheet" href="/src/FormBuilder.css">
-    <link rel="stylesheet" href="/src/SidebarBuilder.css">
-    <link rel="stylesheet" href="/src/CodeSnippetBuilder.css">
-    <link rel="stylesheet" href="./layout.css">
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- M3 Design System -->
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
+    <link rel="stylesheet" href="../../src/m3-form-styles.css">
+
+    <!-- SSI Builders -->
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/ListBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="layout.css">
 
     <style>
-        body.dark-mode {
-            background: #1e1e1e;
-            color: #e0e0e0;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        /* Control Panel */
-        .control-panel {
-            background: white;
-            padding: 32px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        body {
+            font-family: var(--m3-font-family);
+            background: var(--m3-surface);
+            color: var(--m3-on-surface);
+            line-height: 1.6;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--m3-surface-container);
+            border-right: 1px solid var(--m3-outline-variant);
+            z-index: 1000;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1400px;
+        }
+
+        .page-header {
             margin-bottom: 32px;
-            transition: background-color 0.3s;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--m3-outline-variant);
         }
 
-        body.dark-mode .control-panel {
-            background: #2d2d2d;
+        .page-header h1 {
+            font-size: var(--m3-headline-large-size);
+            font-weight: var(--m3-headline-large-weight);
+            line-height: var(--m3-headline-large-line-height);
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .control-section {
-            margin-bottom: 32px;
+        .page-header p {
+            font-size: var(--m3-body-large-size);
+            color: var(--m3-on-surface-variant);
         }
 
-        .control-section h3 {
-            font-size: 20px;
-            margin-bottom: 16px;
-            color: #1a73e8;
-        }
-
-        body.dark-mode .control-section h3 {
-            color: #64b5f6;
-        }
-
-        .control-row {
+        /* Two Column Layout */
+        .playground-layout {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px;
-            margin-bottom: 16px;
+            grid-template-columns: 1fr 400px;
+            gap: 32px;
         }
 
-        .control-item {
+        @media (max-width: 1200px) {
+            .playground-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Config Panel */
+        .config-panel {
             display: flex;
             flex-direction: column;
+            gap: 24px;
         }
 
-        .control-item label {
-            font-size: 14px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: #5f6368;
-        }
-
-        body.dark-mode .control-item label {
-            color: #b0b0b0;
-        }
-
-        .control-item select,
-        .control-item input[type="color"],
-        .control-item input[type="text"],
-        .control-item input[type="number"] {
-            padding: 10px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 14px;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        body.dark-mode .control-item select,
-        body.dark-mode .control-item input[type="color"],
-        body.dark-mode .control-item input[type="text"],
-        body.dark-mode .control-item input[type="number"] {
-            background: #3d3d3d;
-            color: #e0e0e0;
-            border-color: #555;
-        }
-
-        .control-item input[type="color"] {
-            height: 44px;
-            cursor: pointer;
-        }
-
-        .toggle-switch {
+        .config-section {
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-large);
+            overflow: visible;
             position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
         }
 
-        .toggle-switch input {
+        .config-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 24px;
+            cursor: pointer;
+            user-select: none;
+            border-bottom: 1px solid var(--m3-outline-variant);
+            transition: background 0.2s ease;
+            border-radius: var(--m3-shape-large) var(--m3-shape-large) 0 0;
+        }
+
+        .config-section-header:hover {
+            background: var(--m3-surface-container);
+        }
+
+        .config-section-header h3 {
+            font-size: var(--m3-title-medium-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .config-section-header h3 svg {
+            width: 20px;
+            height: 20px;
+            color: var(--m3-primary);
+        }
+
+        .section-toggle {
+            width: 24px;
+            height: 24px;
+            color: var(--m3-on-surface-variant);
+            transition: transform 0.2s ease;
+        }
+
+        .config-section.collapsed .section-toggle {
+            transform: rotate(-90deg);
+        }
+
+        .config-section.collapsed .config-section-content {
+            display: none;
+        }
+
+        .config-section-content {
+            padding: 24px;
+            border-radius: 0 0 var(--m3-shape-large) var(--m3-shape-large);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        @media (max-width: 900px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* M3 Switch styling */
+        .m3-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--m3-outline-variant);
+        }
+
+        .m3-toggle-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .m3-toggle-row:first-child {
+            padding-top: 0;
+        }
+
+        .m3-toggle-label {
+            font-size: var(--m3-body-large-size);
+            color: var(--m3-on-surface);
+        }
+
+        .m3-switch {
+            position: relative;
+            width: 52px;
+            height: 32px;
+            flex-shrink: 0;
+        }
+
+        .m3-switch input {
             opacity: 0;
             width: 0;
             height: 0;
         }
 
-        .toggle-slider {
+        .m3-switch-track {
             position: absolute;
             cursor: pointer;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: #ccc;
-            transition: .4s;
-            border-radius: 34px;
+            background: var(--m3-surface-container-highest);
+            border: 2px solid var(--m3-outline);
+            transition: all 0.2s ease;
+            border-radius: 16px;
         }
 
-        .toggle-slider:before {
+        .m3-switch-track::before {
             position: absolute;
             content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
+            height: 16px;
+            width: 16px;
+            left: 6px;
+            bottom: 6px;
+            background: var(--m3-outline);
+            transition: all 0.2s ease;
             border-radius: 50%;
         }
 
-        input:checked + .toggle-slider {
-            background-color: #1a73e8;
+        .m3-switch input:checked + .m3-switch-track {
+            background: var(--m3-primary);
+            border-color: var(--m3-primary);
         }
 
-        input:checked + .toggle-slider:before {
-            transform: translateX(26px);
+        .m3-switch input:checked + .m3-switch-track::before {
+            transform: translateX(20px);
+            background: var(--m3-on-primary);
+            width: 24px;
+            height: 24px;
+            bottom: 2px;
+            left: 2px;
         }
 
-        /* Preview Sections */
-        .preview-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+        /* Preview Panel */
+        .preview-panel {
+            position: sticky;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
             gap: 24px;
-            margin-bottom: 32px;
         }
 
         .preview-card {
-            background: white;
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-large);
             padding: 24px;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        body.dark-mode .preview-card {
-            background: #2d2d2d;
         }
 
         .preview-card h4 {
-            font-size: 18px;
+            font-size: var(--m3-title-medium-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
             margin-bottom: 16px;
-            color: #1a73e8;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
-        body.dark-mode .preview-card h4 {
-            color: #64b5f6;
+        .preview-card h4 svg {
+            width: 20px;
+            height: 20px;
+            color: var(--m3-primary);
         }
 
         /* Icon Grid */
         .icon-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 16px;
-            margin-top: 16px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
         }
 
         .icon-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            transition: background-color 0.3s;
+            padding: 12px 8px;
+            background: var(--m3-surface);
+            border-radius: var(--m3-shape-small);
+            transition: background 0.2s ease;
         }
 
-        body.dark-mode .icon-item {
-            background: #3d3d3d;
+        .icon-item:hover {
+            background: var(--m3-surface-container-high);
         }
 
         .icon-item svg,
         .icon-item .emoji {
-            width: 32px;
-            height: 32px;
-            margin-bottom: 8px;
+            width: 24px;
+            height: 24px;
+            margin-bottom: 6px;
+            color: var(--m3-on-surface);
         }
 
         .icon-item .emoji {
-            font-size: 32px;
-            line-height: 32px;
+            font-size: 24px;
+            line-height: 24px;
         }
 
         .icon-item span {
-            font-size: 11px;
-            color: #5f6368;
+            font-size: 10px;
+            color: var(--m3-on-surface-variant);
             text-align: center;
         }
 
-        body.dark-mode .icon-item span {
-            color: #b0b0b0;
+        /* Color Preview */
+        .color-swatches {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--m3-shape-medium);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            box-shadow: var(--m3-elevation-1);
+        }
+
+        /* Button Preview */
+        .button-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .m3-preview-btn {
+            padding: 10px 24px;
+            border-radius: 100px;
+            font-family: var(--m3-font-family);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        /* Generated Code Section */
+        .code-section {
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-large);
+            padding: 24px;
+            margin-top: 32px;
+        }
+
+        .code-section h3 {
+            font-size: var(--m3-title-large-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .code-section h3 svg {
+            width: 24px;
+            height: 24px;
+            color: var(--m3-primary);
+        }
+
+        .code-section > p {
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 16px;
+            font-size: var(--m3-body-medium-size);
+        }
+
+        /* Current values display */
+        .current-info {
+            font-size: var(--m3-label-large-size);
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 16px;
+        }
+
+        .current-info strong {
+            color: var(--m3-primary);
+        }
+
+        /* Mobile Menu Toggle */
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1001;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--m3-shape-full);
+            background: var(--m3-primary);
+            color: var(--m3-on-primary);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--m3-elevation-2);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            #sidebar-container {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            #sidebar-container.open {
+                transform: translateX(0);
+            }
+
+            .demo-content {
+                margin-left: 0;
+                padding: 80px 16px 24px;
+            }
+        }
+
+        /* M3 Text Input */
+        .m3-text-field {
+            position: relative;
+            width: 100%;
+        }
+
+        .m3-text-field input {
+            width: 100%;
+            height: 56px;
+            padding: 24px 16px 8px;
+            border: 1px solid var(--m3-outline);
+            border-radius: var(--m3-shape-extra-small);
+            background: transparent;
+            color: var(--m3-on-surface);
+            font-family: var(--m3-font-family);
+            font-size: var(--m3-body-large-size);
+            transition: border-color 0.2s ease;
+        }
+
+        .m3-text-field input:hover {
+            border-color: var(--m3-on-surface);
+        }
+
+        .m3-text-field input:focus {
+            outline: none;
+            border-color: var(--m3-primary);
+            border-width: 2px;
+        }
+
+        .m3-text-field label {
+            position: absolute;
+            left: 16px;
+            top: 8px;
+            font-size: var(--m3-label-small-size);
+            color: var(--m3-on-surface-variant);
+            pointer-events: none;
+        }
+
+        .m3-text-field input:focus + label {
+            color: var(--m3-primary);
+        }
+
+        /* M3 Color Input */
+        .m3-color-field {
+            position: relative;
+            width: 100%;
+        }
+
+        .m3-color-field input[type="color"] {
+            width: 100%;
+            height: 56px;
+            padding: 24px 8px 8px;
+            border: 1px solid var(--m3-outline);
+            border-radius: var(--m3-shape-extra-small);
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .m3-color-field input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .m3-color-field input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: var(--m3-shape-extra-small);
+        }
+
+        .m3-color-field label {
+            position: absolute;
+            left: 16px;
+            top: 8px;
+            font-size: var(--m3-label-small-size);
+            color: var(--m3-on-surface-variant);
+            pointer-events: none;
+        }
+
+        .m3-color-field input:focus {
+            outline: none;
+            border-color: var(--m3-primary);
+            border-width: 2px;
+        }
+
+        .m3-color-field input:focus + label {
+            color: var(--m3-primary);
         }
     </style>
 </head>
@@ -223,7 +526,11 @@
 
         <!-- Mobile Menu Toggle -->
         <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
-            ☰
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
         </button>
 
         <!-- Main Content -->
@@ -231,352 +538,323 @@
             <div class="demo-content-inner">
                 <!-- Page Header -->
                 <div class="page-header">
-                    <h1>⚙️ GlobalConfig Playground</h1>
-                    <p>Live-Demo: Konfiguration in Echtzeit sehen</p>
+                    <h1>
+                        <span id="header-icon"></span>
+                        GlobalConfig Playground
+                    </h1>
+                    <p>Konfiguriere SSI Builders zentral und sieh die Anderungen in Echtzeit</p>
                 </div>
 
-                <!-- Control Panel -->
-        <div class="control-panel">
-            <div class="control-section">
-                <h3>🎨 Theme & Appearance</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Dark Mode</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="darkModeToggle">
-                            <span class="toggle-slider"></span>
-                        </label>
+                <!-- Two Column Layout -->
+                <div class="playground-layout">
+                    <!-- Left: Config Panel -->
+                    <div class="config-panel">
+                        <!-- Icons Section -->
+                        <div class="config-section" id="section-icons">
+                            <div class="config-section-header" onclick="toggleSection('section-icons')">
+                                <h3>
+                                    <span id="icon-palette"></span>
+                                    Icon System
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid">
+                                    <div id="dropdown-iconPreset"></div>
+                                    <div id="dropdown-iconWeight"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Theme Colors Section -->
+                        <div class="config-section" id="section-colors">
+                            <div class="config-section-header" onclick="toggleSection('section-colors')">
+                                <h3>
+                                    <span id="icon-colors"></span>
+                                    Theme Colors
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid">
+                                    <div class="m3-color-field">
+                                        <input type="color" id="primaryColor" value="#1a73e8">
+                                        <label>Primary</label>
+                                    </div>
+                                    <div class="m3-color-field">
+                                        <input type="color" id="successColor" value="#34a853">
+                                        <label>Success</label>
+                                    </div>
+                                    <div class="m3-color-field">
+                                        <input type="color" id="dangerColor" value="#ea4335">
+                                        <label>Danger</label>
+                                    </div>
+                                    <div class="m3-color-field">
+                                        <input type="color" id="secondaryColor" value="#5f6368">
+                                        <label>Secondary</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- List Settings Section -->
+                        <div class="config-section" id="section-lists">
+                            <div class="config-section-header" onclick="toggleSection('section-lists')">
+                                <h3>
+                                    <span id="icon-list"></span>
+                                    List Settings
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid">
+                                    <div id="dropdown-listActionDisplay"></div>
+                                    <div id="dropdown-itemsPerPage"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Button Settings Section -->
+                        <div class="config-section" id="section-buttons">
+                            <div class="config-section-header" onclick="toggleSection('section-buttons')">
+                                <h3>
+                                    <span id="icon-button"></span>
+                                    Button Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid">
+                                    <div id="dropdown-buttonSize"></div>
+                                    <div id="dropdown-buttonType"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modal Settings Section -->
+                        <div class="config-section collapsed" id="section-modals">
+                            <div class="config-section-header" onclick="toggleSection('section-modals')">
+                                <h3>
+                                    <span id="icon-modal"></span>
+                                    Modal Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div id="dropdown-modalSize" style="margin-bottom: 20px;"></div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Close on Backdrop Click</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="modalCloseOnBackdrop" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Close on ESC Key</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="modalCloseOnEsc" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Settings Section -->
+                        <div class="config-section collapsed" id="section-forms">
+                            <div class="config-section-header" onclick="toggleSection('section-forms')">
+                                <h3>
+                                    <span id="icon-form"></span>
+                                    Form Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="m3-text-field" style="margin-bottom: 20px;">
+                                    <input type="text" id="formSubmitLabel" value="Speichern">
+                                    <label>Submit Button Label</label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Auto-Save to LocalStorage</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="formAutoSave">
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Show Cancel Button</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="formShowCancel">
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Toast Settings Section -->
+                        <div class="config-section collapsed" id="section-toasts">
+                            <div class="config-section-header" onclick="toggleSection('section-toasts')">
+                                <h3>
+                                    <span id="icon-toast"></span>
+                                    Toast Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid">
+                                    <div class="m3-text-field">
+                                        <input type="number" id="toastDuration" value="3000" min="1000" max="10000" step="500">
+                                        <label>Duration (ms)</label>
+                                    </div>
+                                    <div id="dropdown-toastPosition"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Sidebar Settings Section -->
+                        <div class="config-section collapsed" id="section-sidebar">
+                            <div class="config-section-header" onclick="toggleSection('section-sidebar')">
+                                <h3>
+                                    <span id="icon-sidebar"></span>
+                                    Sidebar Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="m3-text-field" style="margin-bottom: 20px;">
+                                    <input type="number" id="sidebarWidth" value="280" min="200" max="400">
+                                    <label>Width (px)</label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Collapsible</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="sidebarCollapsible" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Chart Settings Section -->
+                        <div class="config-section collapsed" id="section-charts">
+                            <div class="config-section-header" onclick="toggleSection('section-charts')">
+                                <h3>
+                                    <span id="icon-chart"></span>
+                                    Chart Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Responsive</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="chartResponsive" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Show Legend</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="chartShowLegend" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- CodeSnippet Settings Section -->
+                        <div class="config-section collapsed" id="section-code">
+                            <div class="config-section-header" onclick="toggleSection('section-code')">
+                                <h3>
+                                    <span id="icon-code"></span>
+                                    CodeSnippet Defaults
+                                </h3>
+                                <svg class="section-toggle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <polyline points="6 9 12 15 18 9"/>
+                                </svg>
+                            </div>
+                            <div class="config-section-content">
+                                <div class="config-grid" style="margin-bottom: 20px;">
+                                    <div id="dropdown-codeTheme"></div>
+                                    <div id="dropdown-codeSize"></div>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Show Line Numbers</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="codeSnippetLineNumbers">
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                                <div class="m3-toggle-row">
+                                    <span class="m3-toggle-label">Show Copy Button</span>
+                                    <label class="m3-switch">
+                                        <input type="checkbox" id="codeSnippetCopyButton" checked>
+                                        <span class="m3-switch-track"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="control-item">
-                        <label>Icon Preset</label>
-                        <select id="iconPreset">
-                            <option value="emoji">Emoji (Colored)</option>
-                            <option value="lucide" selected>Lucide (Monochrome)</option>
-                            <option value="heroicons">Heroicons</option>
-                            <option value="material">Material Icons</option>
-                            <option value="fontawesome">Font Awesome</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Icon Weight</label>
-                        <select id="iconWeight">
-                            <option value="thin">Thin (1.5)</option>
-                            <option value="regular" selected>Regular (2.0)</option>
-                            <option value="bold">Bold (2.5)</option>
-                        </select>
+
+                    <!-- Right: Preview Panel -->
+                    <div class="preview-panel">
+                        <!-- Icon Preview -->
+                        <div class="preview-card">
+                            <h4>
+                                <span id="preview-icon-eye"></span>
+                                Icon Preview
+                            </h4>
+                            <p class="current-info">
+                                <strong id="currentIconPreset">Lucide</strong> / <span id="currentIconWeight">Regular</span>
+                            </p>
+                            <div class="icon-grid" id="iconPreview"></div>
+                        </div>
+
+                        <!-- Color Preview -->
+                        <div class="preview-card">
+                            <h4>
+                                <span id="preview-icon-palette"></span>
+                                Color Preview
+                            </h4>
+                            <div class="color-swatches" id="colorPreview"></div>
+                        </div>
+
+                        <!-- Button Preview -->
+                        <div class="preview-card">
+                            <h4>
+                                <span id="preview-icon-button"></span>
+                                Button Preview
+                            </h4>
+                            <div class="button-preview" id="buttonPreview"></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="control-section">
-                <h3>🎨 Theme Colors</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Primary Color</label>
-                        <input type="color" id="primaryColor" value="#1a73e8">
-                    </div>
-                    <div class="control-item">
-                        <label>Success Color</label>
-                        <input type="color" id="successColor" value="#34a853">
-                    </div>
-                    <div class="control-item">
-                        <label>Danger Color</label>
-                        <input type="color" id="dangerColor" value="#ea4335">
-                    </div>
-                    <div class="control-item">
-                        <label>Secondary Color</label>
-                        <input type="color" id="secondaryColor" value="#5f6368">
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>📋 List Settings</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Action Display Type</label>
-                        <select id="listActionDisplay">
-                            <option value="icon" selected>Icon Only</option>
-                            <option value="emoji">Emoji Only</option>
-                            <option value="button">Button</option>
-                            <option value="button-icon">Button + Icon</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Items Per Page</label>
-                        <select id="itemsPerPage">
-                            <option value="10">10</option>
-                            <option value="20" selected>20</option>
-                            <option value="50">50</option>
-                            <option value="100">100</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>🔘 Button Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Default Size</label>
-                        <select id="buttonDefaultSize">
-                            <option value="sm">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="lg">Large</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Default Type</label>
-                        <select id="buttonDefaultType">
-                            <option value="primary">Primary</option>
-                            <option value="outlined" selected>Outlined</option>
-                            <option value="text">Text</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>🪟 Modal Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Default Size</label>
-                        <select id="modalDefaultSize">
-                            <option value="xs">Extra Small</option>
-                            <option value="small">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="large">Large</option>
-                            <option value="xl">Extra Large</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Close on Backdrop</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="modalCloseOnBackdrop" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="control-item">
-                        <label>Close on ESC</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="modalCloseOnEsc" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>📝 Form Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Auto-Save</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="formAutoSave">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="control-item">
-                        <label>Submit Label</label>
-                        <input type="text" id="formSubmitLabel" value="Speichern" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                    <div class="control-item">
-                        <label>Show Cancel Button</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="formShowCancel">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>📊 Chart Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Responsive</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="chartResponsive" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="control-item">
-                        <label>Show Legend</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="chartShowLegend" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>📑 Tab Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Style</label>
-                        <select id="tabStyle">
-                            <option value="underline" selected>Underline</option>
-                            <option value="pill">Pill</option>
-                            <option value="contained">Contained</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Orientation</label>
-                        <select id="tabOrientation">
-                            <option value="horizontal" selected>Horizontal</option>
-                            <option value="vertical">Vertical</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>🗂️ Sidebar Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Width (px)</label>
-                        <input type="number" id="sidebarWidth" value="280" min="200" max="400" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                    <div class="control-item">
-                        <label>Collapsible</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="sidebarCollapsible" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>🍞 Toast Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Duration (ms)</label>
-                        <input type="number" id="toastDuration" value="3000" min="1000" max="10000" step="500" style="padding: 10px; border: 1px solid #e0e0e0; border-radius: 8px;">
-                    </div>
-                    <div class="control-item">
-                        <label>Position</label>
-                        <select id="toastPosition">
-                            <option value="top-right" selected>Top Right</option>
-                            <option value="top-left">Top Left</option>
-                            <option value="bottom-right">Bottom Right</option>
-                            <option value="bottom-left">Bottom Left</option>
-                            <option value="top-center">Top Center</option>
-                            <option value="bottom-center">Bottom Center</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>💬 Tooltip Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Position</label>
-                        <select id="tooltipPosition">
-                            <option value="top" selected>Top</option>
-                            <option value="bottom">Bottom</option>
-                            <option value="left">Left</option>
-                            <option value="right">Right</option>
-                            <option value="auto">Auto</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Trigger</label>
-                        <select id="tooltipTrigger">
-                            <option value="hover" selected>Hover</option>
-                            <option value="click">Click</option>
-                            <option value="manual">Manual</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Show Arrow</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="tooltipArrow" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-
-            <div class="control-section">
-                <h3>💻 CodeSnippet Defaults</h3>
-                <div class="control-row">
-                    <div class="control-item">
-                        <label>Theme</label>
-                        <select id="codeSnippetTheme">
-                            <option value="dark" selected>Dark</option>
-                            <option value="light">Light</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Size</label>
-                        <select id="codeSnippetSize">
-                            <option value="small">Small</option>
-                            <option value="medium" selected>Medium</option>
-                            <option value="large">Large</option>
-                        </select>
-                    </div>
-                    <div class="control-item">
-                        <label>Show Line Numbers</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="codeSnippetLineNumbers">
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                    <div class="control-item">
-                        <label>Copy Button</label>
-                        <label class="toggle-switch">
-                            <input type="checkbox" id="codeSnippetCopyButton" checked>
-                            <span class="toggle-slider"></span>
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Preview Grid -->
-        <div class="preview-grid">
-            <!-- Icon Preview -->
-            <div class="preview-card">
-                <h4>Icon Preview</h4>
-                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
-                    Current: <strong id="currentIconPreset">Lucide</strong> (<span id="currentIconWeight">Regular</span>)
-                </p>
-                <div class="icon-grid" id="iconPreview">
-                    <!-- Icons will be rendered here -->
-                </div>
-            </div>
-
-            <!-- Button Styles Preview -->
-            <div class="preview-card">
-                <h4>Button Styles</h4>
-                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
-                    Mit aktuellen Theme-Farben
-                </p>
-                <div id="buttonPreview" style="display: flex; flex-direction: column; gap: 12px;">
-                    <!-- Buttons will be rendered here -->
-                </div>
-            </div>
-
-            <!-- List Preview -->
-            <div class="preview-card" style="grid-column: 1 / -1;">
-                <h4>ListBuilder Preview</h4>
-                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
-                    Action Display: <strong id="currentActionDisplay">Icon</strong>
-                </p>
-                <div id="listPreview"></div>
-            </div>
-
-            <!-- Generated Code -->
-            <div class="preview-card" style="grid-column: 1 / -1;">
-                <h4>📝 Generated Code</h4>
-                <p style="font-size: 14px; color: #5f6368; margin-bottom: 16px;">
-                    Kopiere diesen Code in deine App:
-                </p>
-                <div id="generatedCode">
-                    <!-- Code will be generated here -->
+                <!-- Generated Code -->
+                <div class="code-section">
+                    <h3>
+                        <span id="icon-copy"></span>
+                        Generated Code
+                    </h3>
+                    <p>Kopiere diesen Code in deine App (main.js oder App.tsx):</p>
+                    <div id="generatedCode"></div>
                 </div>
             </div>
         </main>
@@ -587,16 +865,16 @@
         import { initializeDemoLayout } from './layout.js';
         import { GlobalConfig } from '/src/GlobalConfig.js';
         import { IconManager } from '/src/IconManager.js';
-        import { ListBuilder } from '/src/ListBuilder.js';
+        import { M3DropdownMenu } from '/src/M3DropdownMenu.js';
         import { CodeSnippetBuilder } from '/src/CodeSnippetBuilder.js';
 
         // Initialize layout with sidebar
         initializeDemoLayout('global-config');
 
-        // CodeSnippetBuilder instance for generated code
-        let codeSnippetBuilder = null;
+        // Store dropdown instances
+        const dropdowns = {};
 
-        // Initialize with defaults
+        // Initialize GlobalConfig
         GlobalConfig.configure({
             iconPreset: 'lucide',
             iconWeight: 'regular',
@@ -605,20 +883,182 @@
                 success: '#34a853',
                 danger: '#ea4335',
                 secondary: '#5f6368'
-            },
-            lists: {
-                itemsPerPage: 20,
-                actionDisplayType: 'icon'
             }
         });
 
-        const iconNames = ['home', 'user', 'settings', 'heart', 'star', 'search', 'edit', 'delete', 'check', 'close', 'menu', 'bell'];
+        // Initialize icons in headers
+        function initIcons() {
+            document.getElementById('header-icon').innerHTML = IconManager.getIcon('settings');
+            document.getElementById('icon-palette').innerHTML = IconManager.getIcon('star');
+            document.getElementById('icon-colors').innerHTML = IconManager.getIcon('star');
+            document.getElementById('icon-list').innerHTML = IconManager.getIcon('list');
+            document.getElementById('icon-button').innerHTML = IconManager.getIcon('check');
+            document.getElementById('icon-modal').innerHTML = IconManager.getIcon('layout');
+            document.getElementById('icon-form').innerHTML = IconManager.getIcon('edit');
+            document.getElementById('icon-toast').innerHTML = IconManager.getIcon('bell');
+            document.getElementById('icon-sidebar').innerHTML = IconManager.getIcon('sidebar');
+            document.getElementById('icon-chart').innerHTML = IconManager.getIcon('chart');
+            document.getElementById('icon-code').innerHTML = IconManager.getIcon('copy');
+            document.getElementById('icon-copy').innerHTML = IconManager.getIcon('copy');
+            document.getElementById('preview-icon-eye').innerHTML = IconManager.getIcon('eye');
+            document.getElementById('preview-icon-palette').innerHTML = IconManager.getIcon('star');
+            document.getElementById('preview-icon-button').innerHTML = IconManager.getIcon('check');
+        }
+
+        // Toggle section collapse
+        window.toggleSection = function(sectionId) {
+            const section = document.getElementById(sectionId);
+            section.classList.toggle('collapsed');
+        };
+
+        // Initialize all M3 Dropdowns
+        function initDropdowns() {
+            dropdowns.iconPreset = new M3DropdownMenu({
+                containerId: 'dropdown-iconPreset',
+                label: 'Icon Preset',
+                variant: 'outlined',
+                value: 'lucide',
+                options: [
+                    { value: 'emoji', label: 'Emoji (Colored)' },
+                    { value: 'lucide', label: 'Lucide (Monochrome)' },
+                    { value: 'heroicons', label: 'Heroicons' },
+                    { value: 'material', label: 'Material Icons' },
+                    { value: 'fontawesome', label: 'Font Awesome' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.iconWeight = new M3DropdownMenu({
+                containerId: 'dropdown-iconWeight',
+                label: 'Icon Weight',
+                variant: 'outlined',
+                value: 'regular',
+                options: [
+                    { value: 'thin', label: 'Thin (1.5)' },
+                    { value: 'regular', label: 'Regular (2.0)' },
+                    { value: 'bold', label: 'Bold (2.5)' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.listActionDisplay = new M3DropdownMenu({
+                containerId: 'dropdown-listActionDisplay',
+                label: 'Action Display',
+                variant: 'outlined',
+                value: 'icon',
+                options: [
+                    { value: 'icon', label: 'Icon Only' },
+                    { value: 'emoji', label: 'Emoji Only' },
+                    { value: 'button', label: 'Button' },
+                    { value: 'button-icon', label: 'Button + Icon' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.itemsPerPage = new M3DropdownMenu({
+                containerId: 'dropdown-itemsPerPage',
+                label: 'Items Per Page',
+                variant: 'outlined',
+                value: '20',
+                options: [
+                    { value: '10', label: '10' },
+                    { value: '20', label: '20' },
+                    { value: '50', label: '50' },
+                    { value: '100', label: '100' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.buttonSize = new M3DropdownMenu({
+                containerId: 'dropdown-buttonSize',
+                label: 'Default Size',
+                variant: 'outlined',
+                value: 'medium',
+                options: [
+                    { value: 'sm', label: 'Small' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'lg', label: 'Large' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.buttonType = new M3DropdownMenu({
+                containerId: 'dropdown-buttonType',
+                label: 'Default Type',
+                variant: 'outlined',
+                value: 'outlined',
+                options: [
+                    { value: 'primary', label: 'Primary (Filled)' },
+                    { value: 'outlined', label: 'Outlined' },
+                    { value: 'text', label: 'Text' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.modalSize = new M3DropdownMenu({
+                containerId: 'dropdown-modalSize',
+                label: 'Default Size',
+                variant: 'outlined',
+                value: 'medium',
+                options: [
+                    { value: 'xs', label: 'Extra Small' },
+                    { value: 'small', label: 'Small' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'large', label: 'Large' },
+                    { value: 'xl', label: 'Extra Large' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.toastPosition = new M3DropdownMenu({
+                containerId: 'dropdown-toastPosition',
+                label: 'Position',
+                variant: 'outlined',
+                value: 'top-right',
+                options: [
+                    { value: 'top-right', label: 'Top Right' },
+                    { value: 'top-left', label: 'Top Left' },
+                    { value: 'bottom-right', label: 'Bottom Right' },
+                    { value: 'bottom-left', label: 'Bottom Left' },
+                    { value: 'top-center', label: 'Top Center' },
+                    { value: 'bottom-center', label: 'Bottom Center' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.codeTheme = new M3DropdownMenu({
+                containerId: 'dropdown-codeTheme',
+                label: 'Theme',
+                variant: 'outlined',
+                value: 'dark',
+                options: [
+                    { value: 'dark', label: 'Dark' },
+                    { value: 'light', label: 'Light' }
+                ],
+                onChange: applyConfig
+            });
+
+            dropdowns.codeSize = new M3DropdownMenu({
+                containerId: 'dropdown-codeSize',
+                label: 'Size',
+                variant: 'outlined',
+                value: 'medium',
+                options: [
+                    { value: 'small', label: 'Small' },
+                    { value: 'medium', label: 'Medium' },
+                    { value: 'large', label: 'Large' }
+                ],
+                onChange: applyConfig
+            });
+        }
+
+        const iconNames = ['home', 'settings', 'search', 'edit', 'delete', 'check', 'close', 'bell'];
 
         // Update Icon Preview
         function updateIconPreview() {
             const container = document.getElementById('iconPreview');
-            const preset = document.getElementById('iconPreset').value;
-            const weight = document.getElementById('iconWeight').value;
+            const preset = dropdowns.iconPreset.getValue();
+            const weight = dropdowns.iconWeight.getValue();
 
             document.getElementById('currentIconPreset').textContent =
                 preset.charAt(0).toUpperCase() + preset.slice(1);
@@ -649,96 +1089,53 @@
             });
         }
 
-        // Update Button Preview
-        function updateButtonPreview() {
-            const container = document.getElementById('buttonPreview');
-            const primary = document.getElementById('primaryColor').value;
-            const success = document.getElementById('successColor').value;
-            const danger = document.getElementById('dangerColor').value;
-
-            container.innerHTML = `
-                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${primary}; color: white;">
-                    Primary Button
-                </button>
-                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${success}; color: white;">
-                    Success Button
-                </button>
-                <button style="padding: 12px 24px; border: none; border-radius: 8px; font-size: 14px; cursor: pointer; background: ${danger}; color: white;">
-                    Danger Button
-                </button>
-                <button style="padding: 12px 24px; border: 1px solid #e0e0e0; background: white; border-radius: 8px; font-size: 14px; cursor: pointer;">
-                    Secondary Button
-                </button>
-            `;
-        }
-
-        // Update List Preview
-        function updateListPreview() {
-            const container = document.getElementById('listPreview');
-            const actionDisplay = document.getElementById('listActionDisplay').value;
-
-            document.getElementById('currentActionDisplay').textContent =
-                actionDisplay.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' + ');
-
-            container.innerHTML = '';
-
-            new ListBuilder({
-                containerId: 'listPreview',
-                columns: [
-                    { key: 'name', label: 'Name' },
-                    { key: 'email', label: 'E-Mail' },
-                    { key: 'status', label: 'Status' }
-                ],
-                dataSource: async () => [
-                    { id: 1, name: 'Max Mustermann', email: 'max@example.com', status: 'Aktiv' },
-                    { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', status: 'Aktiv' },
-                    { id: 3, name: 'Tom Weber', email: 'tom@example.com', status: 'Inaktiv' }
-                ],
-                actions: {
-                    row: [
-                        {
-                            key: 'view',
-                            icon: IconManager.getIcon('eye'),
-                            label: 'Ansehen',
-                            displayType: actionDisplay,
-                            handler: (row) => alert(`View: ${row.name}`)
-                        },
-                        {
-                            key: 'edit',
-                            icon: IconManager.getIcon('edit'),
-                            label: 'Bearbeiten',
-                            displayType: actionDisplay,
-                            buttonType: 'primary',
-                            handler: (row) => alert(`Edit: ${row.name}`)
-                        },
-                        {
-                            key: 'delete',
-                            icon: IconManager.getIcon('delete'),
-                            label: 'Löschen',
-                            displayType: actionDisplay,
-                            buttonType: 'danger',
-                            handler: (row) => confirm(`Delete ${row.name}?`)
-                        }
-                    ]
-                }
-            }).render();
-        }
-
-        // Update Generated Code
-        function updateGeneratedCode() {
-            const preset = document.getElementById('iconPreset').value;
-            const weight = document.getElementById('iconWeight').value;
+        // Update Color Preview
+        function updateColorPreview() {
+            const container = document.getElementById('colorPreview');
             const primary = document.getElementById('primaryColor').value;
             const success = document.getElementById('successColor').value;
             const danger = document.getElementById('dangerColor').value;
             const secondary = document.getElementById('secondaryColor').value;
-            const actionDisplay = document.getElementById('listActionDisplay').value;
-            const itemsPerPage = document.getElementById('itemsPerPage').value;
 
-            // New v2.2+ options
-            const buttonSize = document.getElementById('buttonDefaultSize').value;
-            const buttonType = document.getElementById('buttonDefaultType').value;
-            const modalSize = document.getElementById('modalDefaultSize').value;
+            container.innerHTML = `
+                <div class="color-swatch" style="background: ${primary}">Pri</div>
+                <div class="color-swatch" style="background: ${success}">Suc</div>
+                <div class="color-swatch" style="background: ${danger}">Dan</div>
+                <div class="color-swatch" style="background: ${secondary}">Sec</div>
+            `;
+        }
+
+        // Update Button Preview
+        function updateButtonPreview() {
+            const container = document.getElementById('buttonPreview');
+            const primary = document.getElementById('primaryColor').value;
+
+            container.innerHTML = `
+                <button class="m3-preview-btn" style="background: ${primary}; color: white; border: none;">
+                    Primary Filled
+                </button>
+                <button class="m3-preview-btn" style="background: transparent; color: ${primary}; border: 1px solid ${primary};">
+                    Primary Outlined
+                </button>
+                <button class="m3-preview-btn" style="background: transparent; color: ${primary}; border: none;">
+                    Text Button
+                </button>
+            `;
+        }
+
+        // Update Generated Code
+        function updateGeneratedCode() {
+            const preset = dropdowns.iconPreset.getValue();
+            const weight = dropdowns.iconWeight.getValue();
+            const primary = document.getElementById('primaryColor').value;
+            const success = document.getElementById('successColor').value;
+            const danger = document.getElementById('dangerColor').value;
+            const secondary = document.getElementById('secondaryColor').value;
+            const actionDisplay = dropdowns.listActionDisplay.getValue();
+            const itemsPerPage = dropdowns.itemsPerPage.getValue();
+            const buttonSize = dropdowns.buttonSize.getValue();
+            const buttonType = dropdowns.buttonType.getValue();
+            const modalSize = dropdowns.modalSize.getValue();
             const modalBackdrop = document.getElementById('modalCloseOnBackdrop').checked;
             const modalEsc = document.getElementById('modalCloseOnEsc').checked;
             const formAutoSave = document.getElementById('formAutoSave').checked;
@@ -746,17 +1143,12 @@
             const formShowCancel = document.getElementById('formShowCancel').checked;
             const chartResponsive = document.getElementById('chartResponsive').checked;
             const chartLegend = document.getElementById('chartShowLegend').checked;
-            const tabStyle = document.getElementById('tabStyle').value;
-            const tabOrientation = document.getElementById('tabOrientation').value;
             const sidebarWidth = document.getElementById('sidebarWidth').value;
             const sidebarCollapsible = document.getElementById('sidebarCollapsible').checked;
             const toastDuration = document.getElementById('toastDuration').value;
-            const toastPosition = document.getElementById('toastPosition').value;
-            const tooltipPosition = document.getElementById('tooltipPosition').value;
-            const tooltipTrigger = document.getElementById('tooltipTrigger').value;
-            const tooltipArrow = document.getElementById('tooltipArrow').checked;
-            const codeTheme = document.getElementById('codeSnippetTheme').value;
-            const codeSize = document.getElementById('codeSnippetSize').value;
+            const toastPosition = dropdowns.toastPosition.getValue();
+            const codeTheme = dropdowns.codeTheme.getValue();
+            const codeSize = dropdowns.codeSize.getValue();
             const codeLineNumbers = document.getElementById('codeSnippetLineNumbers').checked;
             const codeCopyButton = document.getElementById('codeSnippetCopyButton').checked;
 
@@ -808,12 +1200,6 @@ GlobalConfig.configure({
         showLegend: ${chartLegend}
     },
 
-    // Tab Defaults
-    tabs: {
-        style: '${tabStyle}',
-        orientation: '${tabOrientation}'
-    },
-
     // Sidebar Defaults
     sidebar: {
         width: ${sidebarWidth},
@@ -824,13 +1210,6 @@ GlobalConfig.configure({
     toasts: {
         duration: ${toastDuration},
         position: '${toastPosition}'
-    },
-
-    // Tooltip Defaults
-    tooltips: {
-        position: '${tooltipPosition}',
-        trigger: '${tooltipTrigger}',
-        arrow: ${tooltipArrow}
     },
 
     // CodeSnippet Defaults
@@ -844,11 +1223,10 @@ GlobalConfig.configure({
 
 // Jetzt nutzen alle Builder automatisch diese Einstellungen!`;
 
-            // Clear and recreate CodeSnippetBuilder
             const container = document.getElementById('generatedCode');
-            container.innerHTML = '';  // Clear previous content
+            container.innerHTML = '';
 
-            codeSnippetBuilder = new CodeSnippetBuilder({
+            new CodeSnippetBuilder({
                 containerId: 'generatedCode',
                 code: code,
                 language: 'javascript',
@@ -859,129 +1237,59 @@ GlobalConfig.configure({
         // Apply all updates
         function applyConfig() {
             const config = {
-                iconPreset: document.getElementById('iconPreset').value,
-                iconWeight: document.getElementById('iconWeight').value,
+                iconPreset: dropdowns.iconPreset?.getValue() || 'lucide',
+                iconWeight: dropdowns.iconWeight?.getValue() || 'regular',
                 theme: {
                     primary: document.getElementById('primaryColor').value,
                     success: document.getElementById('successColor').value,
                     danger: document.getElementById('dangerColor').value,
                     secondary: document.getElementById('secondaryColor').value
-                },
-                buttons: {
-                    defaultSize: document.getElementById('buttonDefaultSize').value,
-                    defaultType: document.getElementById('buttonDefaultType').value
-                },
-                modals: {
-                    defaultSize: document.getElementById('modalDefaultSize').value,
-                    closeOnBackdrop: document.getElementById('modalCloseOnBackdrop').checked,
-                    closeOnEsc: document.getElementById('modalCloseOnEsc').checked
-                },
-                forms: {
-                    autoSave: document.getElementById('formAutoSave').checked,
-                    submitLabel: document.getElementById('formSubmitLabel').value,
-                    showCancelButton: document.getElementById('formShowCancel').checked
-                },
-                lists: {
-                    itemsPerPage: parseInt(document.getElementById('itemsPerPage').value),
-                    actionDisplayType: document.getElementById('listActionDisplay').value
-                },
-                charts: {
-                    responsive: document.getElementById('chartResponsive').checked,
-                    showLegend: document.getElementById('chartShowLegend').checked
-                },
-                tabs: {
-                    style: document.getElementById('tabStyle').value,
-                    orientation: document.getElementById('tabOrientation').value
-                },
-                sidebar: {
-                    width: parseInt(document.getElementById('sidebarWidth').value),
-                    collapsible: document.getElementById('sidebarCollapsible').checked
-                },
-                toasts: {
-                    duration: parseInt(document.getElementById('toastDuration').value),
-                    position: document.getElementById('toastPosition').value
-                },
-                tooltips: {
-                    position: document.getElementById('tooltipPosition').value,
-                    trigger: document.getElementById('tooltipTrigger').value,
-                    arrow: document.getElementById('tooltipArrow').checked
-                },
-                codeSnippets: {
-                    theme: document.getElementById('codeSnippetTheme').value,
-                    size: document.getElementById('codeSnippetSize').value,
-                    showLineNumbers: document.getElementById('codeSnippetLineNumbers').checked,
-                    copyButton: document.getElementById('codeSnippetCopyButton').checked
                 }
             };
 
             GlobalConfig.configure(config);
 
+            // Re-initialize icons with new preset
+            initIcons();
             updateIconPreview();
+            updateColorPreview();
             updateButtonPreview();
-            updateListPreview();
             updateGeneratedCode();
         }
 
-        // Event Listeners
-        document.getElementById('darkModeToggle').addEventListener('change', (e) => {
-            document.body.classList.toggle('dark-mode', e.target.checked);
+        // Add event listeners to non-dropdown inputs
+        const inputIds = [
+            'primaryColor', 'successColor', 'dangerColor', 'secondaryColor',
+            'modalCloseOnBackdrop', 'modalCloseOnEsc',
+            'formAutoSave', 'formSubmitLabel', 'formShowCancel',
+            'chartResponsive', 'chartShowLegend',
+            'sidebarWidth', 'sidebarCollapsible',
+            'toastDuration',
+            'codeSnippetLineNumbers', 'codeSnippetCopyButton'
+        ];
+
+        inputIds.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                const eventType = el.type === 'checkbox' ? 'change' :
+                                  el.type === 'color' ? 'input' : 'input';
+                el.addEventListener(eventType, applyConfig);
+            }
         });
 
-        // Icon & Theme
-        document.getElementById('iconPreset').addEventListener('change', applyConfig);
-        document.getElementById('iconWeight').addEventListener('change', applyConfig);
-        document.getElementById('primaryColor').addEventListener('input', applyConfig);
-        document.getElementById('successColor').addEventListener('input', applyConfig);
-        document.getElementById('dangerColor').addEventListener('input', applyConfig);
-        document.getElementById('secondaryColor').addEventListener('input', applyConfig);
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.getElementById('sidebar-container').classList.toggle('open');
+        });
 
-        // List
-        document.getElementById('listActionDisplay').addEventListener('change', applyConfig);
-        document.getElementById('itemsPerPage').addEventListener('change', applyConfig);
+        // Initialize
+        initIcons();
+        initDropdowns();
 
-        // Buttons
-        document.getElementById('buttonDefaultSize').addEventListener('change', applyConfig);
-        document.getElementById('buttonDefaultType').addEventListener('change', applyConfig);
-
-        // Modals
-        document.getElementById('modalDefaultSize').addEventListener('change', applyConfig);
-        document.getElementById('modalCloseOnBackdrop').addEventListener('change', applyConfig);
-        document.getElementById('modalCloseOnEsc').addEventListener('change', applyConfig);
-
-        // Forms
-        document.getElementById('formAutoSave').addEventListener('change', applyConfig);
-        document.getElementById('formSubmitLabel').addEventListener('input', applyConfig);
-        document.getElementById('formShowCancel').addEventListener('change', applyConfig);
-
-        // Charts
-        document.getElementById('chartResponsive').addEventListener('change', applyConfig);
-        document.getElementById('chartShowLegend').addEventListener('change', applyConfig);
-
-        // Tabs
-        document.getElementById('tabStyle').addEventListener('change', applyConfig);
-        document.getElementById('tabOrientation').addEventListener('change', applyConfig);
-
-        // Sidebar
-        document.getElementById('sidebarWidth').addEventListener('input', applyConfig);
-        document.getElementById('sidebarCollapsible').addEventListener('change', applyConfig);
-
-        // Toasts
-        document.getElementById('toastDuration').addEventListener('input', applyConfig);
-        document.getElementById('toastPosition').addEventListener('change', applyConfig);
-
-        // Tooltips
-        document.getElementById('tooltipPosition').addEventListener('change', applyConfig);
-        document.getElementById('tooltipTrigger').addEventListener('change', applyConfig);
-        document.getElementById('tooltipArrow').addEventListener('change', applyConfig);
-
-        // CodeSnippets
-        document.getElementById('codeSnippetTheme').addEventListener('change', applyConfig);
-        document.getElementById('codeSnippetSize').addEventListener('change', applyConfig);
-        document.getElementById('codeSnippetLineNumbers').addEventListener('change', applyConfig);
-        document.getElementById('codeSnippetCopyButton').addEventListener('change', applyConfig);
-
-        // Initial render
-        applyConfig();
+        // Small delay to ensure dropdowns are initialized
+        setTimeout(() => {
+            applyConfig();
+        }, 100);
     </script>
 </body>
 </html>

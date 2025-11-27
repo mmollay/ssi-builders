@@ -127,7 +127,7 @@
 
                 <div class="demo-header">
                     <h1>ChangelogBuilder Demo</h1>
-                    <p>SSI Builders v2.4.0 - Material Design 3 Changelog Component</p>
+                    <p id="version-text">Loading...</p>
                 </div>
 
                 <!-- Timeline Variant -->
@@ -174,10 +174,14 @@
         import { initializeDemoLayout } from './layout.js';
         import { ChangelogBuilder } from '../../src/ChangelogBuilder.js';
         import { IconManager } from '../../src/IconManager.js';
+        import { getVersion } from '../../src/version.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
         IconManager.setIconWeight('regular');
+
+        // Set dynamic version
+        document.getElementById('version-text').textContent = `SSI Builders v${getVersion()} - Material Design 3 Changelog Component`;
 
         // Initialize layout with sidebar
         initializeDemoLayout('changelog-builder');

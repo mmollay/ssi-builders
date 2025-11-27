@@ -12,12 +12,16 @@
  * - Error handling & success states
  * - Async submit with loading states
  * - Mobile-responsive
+ * - M3 Component Integration (Slider, ColorPicker, Dropdown)
  *
- * @version 2.3.0
+ * @version 2.5.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
 import { IconManager } from './IconManager.js';
+import { M3Slider } from './M3Slider.js';
+import { M3ColorPicker } from './M3ColorPicker.js';
+import { M3DropdownMenu } from './M3DropdownMenu.js';
 
 export class FormBuilder extends BaseBuilder {
     /**
@@ -48,7 +52,12 @@ export class FormBuilder extends BaseBuilder {
             fieldSize: fieldSize,      // 'sm' | 'md' | 'lg' - default size for all fields
             fieldLayout: fieldLayout,  // 'standard' | 'floating' | 'filled' | 'outlined'
             onCancel: null,
-            initialValues: {}
+            initialValues: {},
+            // M3 Component Integration
+            useM3Components: true,     // Enable M3 Slider, ColorPicker, Dropdown
+            m3SliderOptions: {},       // Default options for M3Slider
+            m3ColorPickerOptions: {},  // Default options for M3ColorPicker
+            m3DropdownOptions: {}      // Default options for M3DropdownMenu
         });
 
         this.fields = config.fields || [];
@@ -61,6 +70,13 @@ export class FormBuilder extends BaseBuilder {
         this.isSubmitting = false;
         this.currentStep = 0;
         this.autoSaveTimeout = null;
+
+        // M3 Component instances (for cleanup)
+        this.m3Components = {
+            sliders: {},
+            colorPickers: {},
+            dropdowns: {}
+        };
 
         // Load from localStorage if enabled
         if (this.options.localStorageKey) {
@@ -85,8 +101,11 @@ export class FormBuilder extends BaseBuilder {
      * Main render function
      */
     render() {
+        // Destroy existing M3 components before re-render
+        this.destroyM3Components();
+
         this.container.innerHTML = `
-            <div class="form-builder">
+            <div class="form-builder form-builder-m3">
                 ${this.options.multiStep ? this.renderSteps() : ''}
                 <form class="form-builder-form" id="${this.containerId}_form">
                     ${this.renderFields()}
@@ -97,6 +116,147 @@ export class FormBuilder extends BaseBuilder {
         `;
 
         this.attachEventListeners();
+
+        // Initialize M3 components after DOM is ready
+        if (this.options.useM3Components) {
+            this.initM3Components();
+        }
+    }
+
+    /**
+     * Destroy all M3 component instances
+     */
+    destroyM3Components() {
+        // Destroy sliders
+        Object.values(this.m3Components.sliders).forEach(slider => {
+            if (slider && typeof slider.destroy === 'function') {
+                slider.destroy();
+            }
+        });
+        this.m3Components.sliders = {};
+
+        // Destroy color pickers
+        Object.values(this.m3Components.colorPickers).forEach(picker => {
+            if (picker && typeof picker.destroy === 'function') {
+                picker.destroy();
+            }
+        });
+        this.m3Components.colorPickers = {};
+
+        // Destroy dropdowns
+        Object.values(this.m3Components.dropdowns).forEach(dropdown => {
+            if (dropdown && typeof dropdown.destroy === 'function') {
+                dropdown.destroy();
+            }
+        });
+        this.m3Components.dropdowns = {};
+    }
+
+    /**
+     * Initialize M3 components for special field types
+     */
+    initM3Components() {
+        this.fields.forEach(field => {
+            if (!this.isFieldVisible(field)) return;
+
+            const containerId = `${this.containerId}_${field.key}_m3`;
+
+            // M3 Slider for range/slider fields
+            if ((field.type === 'range' || field.type === 'slider') && this.options.useM3Components) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const value = this.values[field.key] ?? field.defaultValue ?? field.min ?? 0;
+                    this.m3Components.sliders[field.key] = new M3Slider({
+                        containerId: containerId,
+                        label: '', // Label is handled by FormBuilder
+                        min: field.min ?? 0,
+                        max: field.max ?? 100,
+                        step: field.step ?? 1,
+                        value: value,
+                        unit: field.unit || '',
+                        discrete: field.discrete ?? false,
+                        showTicks: field.showTicks ?? false,
+                        disabled: field.disabled ?? false,
+                        size: field.sliderSize || 'md',
+                        color: field.sliderColor || 'primary',
+                        ...this.options.m3SliderOptions,
+                        ...field.m3Options,
+                        onChange: (newValue) => {
+                            this.values[field.key] = newValue;
+                            this.validateField(field);
+                            if (this.options.autoSave) {
+                                this.triggerAutoSave();
+                            }
+                        }
+                    });
+                }
+            }
+
+            // M3 ColorPicker for color fields
+            if (field.type === 'color' && this.options.useM3Components) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const value = this.values[field.key] ?? field.defaultValue ?? '#1a73e8';
+                    this.m3Components.colorPickers[field.key] = new M3ColorPicker({
+                        containerId: containerId,
+                        label: '', // Label is handled by FormBuilder
+                        value: value,
+                        showAlpha: field.showAlpha ?? false,
+                        presets: field.colorPresets || null,
+                        disabled: field.disabled ?? false,
+                        ...this.options.m3ColorPickerOptions,
+                        ...field.m3Options,
+                        onChange: (colorObj) => {
+                            this.values[field.key] = colorObj.hex;
+                            this.validateField(field);
+                            if (this.options.autoSave) {
+                                this.triggerAutoSave();
+                            }
+                        }
+                    });
+                }
+            }
+
+            // M3 Dropdown for select fields
+            if (field.type === 'select' && this.options.useM3Components && field.useM3Dropdown !== false) {
+                const container = document.getElementById(containerId);
+                if (container) {
+                    const value = this.values[field.key] ?? field.defaultValue ?? null;
+                    const fieldLayout = field.layout || this.options.fieldLayout;
+                    const variant = fieldLayout === 'outlined' ? 'outlined' : 'filled';
+
+                    // Normalize options to { value, label } format
+                    const options = (field.options || []).map(opt =>
+                        typeof opt === 'string' ? { value: opt, label: opt } : opt
+                    );
+
+                    this.m3Components.dropdowns[field.key] = new M3DropdownMenu({
+                        containerId: containerId,
+                        label: field.label || 'Select',
+                        placeholder: field.placeholder || 'Bitte wählen',
+                        options: options,
+                        value: value,
+                        variant: variant,
+                        required: field.required ?? false,
+                        disabled: field.disabled ?? false,
+                        searchable: field.searchable ?? false,
+                        searchPlaceholder: field.searchPlaceholder || 'Suchen...',
+                        supportingText: field.description || field.hint || null,
+                        ...this.options.m3DropdownOptions,
+                        ...field.m3Options,
+                        onChange: (newValue, label, option) => {
+                            this.values[field.key] = newValue;
+                            this.touched[field.key] = true;
+                            this.validateField(field);
+                            this.updateFieldError(field);
+                            if (this.options.autoSave) {
+                                this.triggerAutoSave();
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     /**
@@ -159,6 +319,33 @@ export class FormBuilder extends BaseBuilder {
     }
 
     /**
+     * Check if field type has its own label (M3 components or selection controls)
+     * These fields handle their own label rendering, so FormBuilder should NOT render a label
+     */
+    fieldHasOwnLabel(field) {
+        const type = field.type;
+
+        // Selection controls always have their own labels
+        if (['checkbox', 'radio', 'toggle'].includes(type)) {
+            return true;
+        }
+
+        // M3 components have their own labels when useM3Components is enabled
+        if (this.options.useM3Components) {
+            // M3Slider, M3ColorPicker, M3DropdownMenu all render their own labels
+            if (['slider', 'range', 'color'].includes(type)) {
+                return true;
+            }
+            // M3DropdownMenu for select (unless explicitly disabled)
+            if (type === 'select' && field.useM3Dropdown !== false) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Render single field
      */
     renderField(field) {
@@ -167,7 +354,10 @@ export class FormBuilder extends BaseBuilder {
         const touched = this.touched[field.key];
         const fieldSize = field.size || this.options.fieldSize;
         const fieldLayout = field.layout || this.options.fieldLayout;
-        
+
+        // Check if field handles its own label
+        const hasOwnLabel = this.fieldHasOwnLabel(field);
+
         // Build field classes
         const widthClass = field.width && field.width >= 1 && field.width <= 12
             ? `form-field-width-${field.width}`
@@ -179,7 +369,8 @@ export class FormBuilder extends BaseBuilder {
             `form-field-size-${fieldSize}`,
             widthClass,
             error && touched ? 'form-field-error' : '',
-            field.fullWidth ? 'form-field-full' : ''
+            field.fullWidth ? 'form-field-full' : '',
+            hasOwnLabel ? 'form-field-has-own-label' : ''
         ].filter(Boolean).join(' ');
 
         // For M3 filled and outlined, input comes BEFORE label (for ~ CSS selector)
@@ -189,7 +380,7 @@ export class FormBuilder extends BaseBuilder {
                 <div class="${fieldClasses}" data-field-key="${field.key}">
                     <div class="input-wrapper">
                         ${this.renderFieldInput(field, value, fieldSize)}
-                        ${field.label ? `
+                        ${field.label && !hasOwnLabel ? `
                             <label class="form-label ssi-label-${fieldSize}" for="${this.containerId}_${field.key}">
                                 ${field.label}${field.required ? '<span class="form-required">*</span>' : ''}
                             </label>
@@ -205,7 +396,7 @@ export class FormBuilder extends BaseBuilder {
         // Standard layout - label before input
         return `
             <div class="${fieldClasses}" data-field-key="${field.key}">
-                ${field.label ? `
+                ${field.label && !hasOwnLabel ? `
                     <label class="form-label ssi-label-${fieldSize}" for="${this.containerId}_${field.key}">
                         ${field.label}${field.required ? '<span class="form-required">*</span>' : ''}
                     </label>
@@ -261,7 +452,11 @@ export class FormBuilder extends BaseBuilder {
                 `);
 
             case 'select':
-                // For M3 filled/outlined, use hidden empty option
+                // Use M3DropdownMenu if enabled
+                if (this.options.useM3Components && field.useM3Dropdown !== false) {
+                    return `<div id="${this.containerId}_${field.key}_m3" class="form-m3-dropdown-container"></div>`;
+                }
+                // Fallback to native select
                 const isM3Variant = fieldLayout === 'filled' || fieldLayout === 'outlined';
                 return wrapInputGroup(`
                     <select class="form-input form-select ${sizeClass}" ${commonAttrs}>
@@ -279,36 +474,37 @@ export class FormBuilder extends BaseBuilder {
 
             case 'checkbox':
                 return `
-                    <label class="form-checkbox-label">
+                    <label class="m3-checkbox ${field.disabled ? 'm3-checkbox--disabled' : ''}">
                         <input
                             type="checkbox"
-                            class="form-checkbox"
+                            class="m3-checkbox__input"
                             ${commonAttrs}
                             ${value ? 'checked' : ''}
                         />
-                        <span>${field.checkboxLabel || field.label}</span>
+                        <span class="m3-checkbox__label">${field.checkboxLabel || field.label || ''}</span>
                     </label>
                 `;
 
             case 'radio':
                 const radioLayout = field.radioLayout || 'vertical'; // vertical, horizontal, grid-2, grid-3
+                const radioGroupClass = radioLayout === 'horizontal' ? 'm3-radio-group--horizontal' : '';
                 return `
-                    <div class="form-radio-group form-radio-${radioLayout}">
+                    <div class="m3-radio-group ${radioGroupClass}">
                         ${field.options?.map(opt => {
                             // Support both string options and object options {value, label}
                             const optValue = typeof opt === 'string' ? opt : opt.value;
                             const optLabel = typeof opt === 'string' ? opt : opt.label;
                             return `
-                            <label class="form-radio-label">
+                            <label class="m3-radio ${field.disabled ? 'm3-radio--disabled' : ''}">
                                 <input
                                     type="radio"
-                                    class="form-radio"
+                                    class="m3-radio__input"
                                     name="${field.key}"
                                     value="${optValue}"
                                     ${value === optValue ? 'checked' : ''}
                                     ${field.disabled ? 'disabled' : ''}
                                 />
-                                <span>${optLabel}</span>
+                                <span class="m3-radio__label">${optLabel}</span>
                             </label>
                         `}).join('')}
                     </div>
@@ -413,6 +609,11 @@ export class FormBuilder extends BaseBuilder {
                 `;
 
             case 'color':
+                // Use M3ColorPicker if enabled
+                if (this.options.useM3Components) {
+                    return `<div id="${this.containerId}_${field.key}_m3" class="form-m3-colorpicker-container"></div>`;
+                }
+                // Fallback to native color input
                 return `
                     <input
                         type="color"
@@ -445,6 +646,11 @@ export class FormBuilder extends BaseBuilder {
 
             case 'range':
             case 'slider':
+                // Use M3Slider if enabled
+                if (this.options.useM3Components) {
+                    return `<div id="${this.containerId}_${field.key}_m3" class="form-m3-slider-container"></div>`;
+                }
+                // Fallback to native range input
                 return `
                     <div class="form-range-wrapper">
                         <input
@@ -462,15 +668,17 @@ export class FormBuilder extends BaseBuilder {
 
             case 'toggle':
                 return `
-                    <label class="form-toggle-label">
+                    <label class="m3-switch ${field.disabled ? 'm3-switch--disabled' : ''}">
                         <input
                             type="checkbox"
-                            class="form-toggle-input"
+                            class="m3-switch__input"
                             ${commonAttrs}
                             ${value ? 'checked' : ''}
                         />
-                        <span class="form-toggle-slider"></span>
-                        <span class="form-toggle-text">${field.toggleLabel || field.label || ''}</span>
+                        <span class="m3-switch__track">
+                            <span class="m3-switch__thumb"></span>
+                        </span>
+                        <span class="m3-switch__label">${field.toggleLabel || field.label || ''}</span>
                     </label>
                 `;
 

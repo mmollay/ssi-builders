@@ -5,7 +5,7 @@
 
 import { test, expect } from '@playwright/test';
 
-const DEMO_URL = 'http://localhost:5178/docs/demos/m3-components.html';
+const DEMO_URL = 'http://localhost:5177/docs/demos/m3-components.html';
 
 test.describe('M3 Components', () => {
     test.beforeEach(async ({ page }) => {
@@ -153,8 +153,8 @@ test.describe('M3 Components', () => {
         await page.locator('#form-country .m3-dropdown').click();
         await page.click('#form-country .m3-dropdown__option[data-value="at"]');
 
-        // Accept terms
-        await page.locator('form .m3-checkbox__input').click();
+        // Accept terms (click the "agree" checkbox specifically)
+        await page.getByRole('checkbox', { name: 'I agree to the Terms of' }).click();
 
         // Verify all fields are filled
         await expect(page.locator('#form-firstname')).toHaveValue('Max');

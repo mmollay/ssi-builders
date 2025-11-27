@@ -235,10 +235,10 @@
        M3 COMPONENT SPECIFIC TOKENS
        ========================================= */
 
-    /* Text Field Heights */
-    --m3-text-field-height: 48px;
-    --m3-text-field-height-sm: 36px;
-    --m3-text-field-height-lg: 56px;
+    /* Text Field Heights - M3 Spec: 56px standard */
+    --m3-text-field-height: 56px;
+    --m3-text-field-height-sm: 48px;
+    --m3-text-field-height-lg: 64px;
 
     /* Button Heights */
     --m3-button-height: 40px;

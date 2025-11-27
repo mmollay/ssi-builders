@@ -125,7 +125,7 @@
 
                 <!-- Footer -->
                 <div class="page-footer">
-                    <p>Built with SSI Builders · © 2025 · v2.4.4</p>
+                    <p id="footer-version">Built with SSI Builders · © 2025</p>
                 </div>
             </div>
         </main>
@@ -135,10 +135,14 @@
         import { initializeDemoLayout } from '/docs/demos/layout.js';
         import { IconManager } from '/src/IconManager.js';
         import { ChangelogBuilder } from '/src/ChangelogBuilder.js';
+        import { getVersion } from '/src/version.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
         IconManager.setIconWeight('regular');
+
+        // Set dynamic version in footer
+        document.getElementById('footer-version').textContent = `Built with SSI Builders · © 2025 · v${getVersion()}`;
 
         // Initialize layout with sidebar (activePage: 'changelog')
         initializeDemoLayout('changelog');

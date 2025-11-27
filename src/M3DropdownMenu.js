@@ -1,6 +1,6 @@
 /**
  * M3DropdownMenu - Material Design 3 Exposed Dropdown Menu
- * SSI Builders v2.4.0
+ * SSI Builders v2.5.0
  *
  * Framework-agnostic, Vanilla JavaScript implementation
  * Following M3 spec: https://m3.material.io/components/menus/overview
@@ -11,6 +11,7 @@
  * - Async data loading via dataSource callback
  * - Keyboard navigation
  * - Loading and empty states
+ * - Multiselect support with chips
  *
  * @example
  * // Basic usage
@@ -22,6 +23,20 @@
  *         { value: 'de', label: 'Germany' }
  *     ],
  *     onChange: (value, label) => console.log(value, label)
+ * });
+ *
+ * @example
+ * // Multiselect dropdown
+ * const multiDropdown = new M3DropdownMenu({
+ *     containerId: 'tags-dropdown',
+ *     label: 'Tags',
+ *     multiselect: true,
+ *     options: [
+ *         { value: 'js', label: 'JavaScript' },
+ *         { value: 'ts', label: 'TypeScript' },
+ *         { value: 'py', label: 'Python' }
+ *     ],
+ *     onChange: (values, labels) => console.log(values, labels)
  * });
  *
  * @example
@@ -59,16 +74,19 @@ export class M3DropdownMenu {
             size: 'md', // 'sm', 'md', 'lg'
             leadingIcon: null,
             onChange: null,
-            // NEW: Searchable options
+            // Searchable options
             searchable: false,
             searchPlaceholder: 'Search...',
             minSearchLength: 0,
             debounceMs: 300,
-            // NEW: Async data source
+            // Async data source
             dataSource: null, // async (query) => [{ value, label }]
-            // NEW: Empty/Loading states
+            // Empty/Loading states
             emptyText: 'No results found',
             loadingText: 'Loading...',
+            // Multiselect support
+            multiselect: false,
+            maxChips: 3, // Max chips to show before "+X more"
             ...config
         };
 
@@ -76,6 +94,7 @@ export class M3DropdownMenu {
         this.isOpen = false;
         this.focusedIndex = -1;
         this.selectedIndex = -1;
+        this.selectedIndices = []; // For multiselect
         this.searchQuery = '';
         this.isLoading = false;
         this.debounceTimer = null;
@@ -87,8 +106,12 @@ export class M3DropdownMenu {
         // Normalize options to always have { value, label } format
         this.setOptions(this.config.options);
 
-        // Find initial selected index
-        if (this.config.value !== null) {
+        // Find initial selected index/indices
+        if (this.config.multiselect && Array.isArray(this.config.value)) {
+            this.selectedIndices = this.config.value
+                .map(val => this.options.findIndex(opt => opt.value === val))
+                .filter(idx => idx >= 0);
+        } else if (this.config.value !== null) {
             this.selectedIndex = this.options.findIndex(opt => opt.value === this.config.value);
         }
 
@@ -116,10 +139,21 @@ export class M3DropdownMenu {
     }
 
     render() {
-        const { label, placeholder, disabled, required, error, supportingText, variant, size, leadingIcon, searchable } = this.config;
-        const selectedOption = this.selectedIndex >= 0 ? this.options[this.selectedIndex] : null;
-        const displayValue = selectedOption ? selectedOption.label : '';
-        const hasValue = displayValue.length > 0;
+        const { label, placeholder, disabled, required, error, supportingText, variant, size, leadingIcon, searchable, multiselect } = this.config;
+
+        let displayValue = '';
+        let hasValue = false;
+        let hiddenValue = '';
+
+        if (multiselect) {
+            hasValue = this.selectedIndices.length > 0;
+            hiddenValue = this.selectedIndices.map(i => this.originalOptions[i]?.value).filter(Boolean).join(',');
+        } else {
+            const selectedOption = this.selectedIndex >= 0 ? this.options[this.selectedIndex] : null;
+            displayValue = selectedOption ? selectedOption.label : '';
+            hasValue = displayValue.length > 0;
+            hiddenValue = selectedOption?.value || '';
+        }
 
         const sizeClass = `m3-dropdown--${size}`;
         const variantClass = `m3-dropdown--${variant}`;
@@ -127,7 +161,8 @@ export class M3DropdownMenu {
             disabled ? 'm3-dropdown--disabled' : '',
             error ? 'm3-dropdown--error' : '',
             hasValue ? 'm3-dropdown--has-value' : '',
-            searchable ? 'm3-dropdown--searchable' : ''
+            searchable ? 'm3-dropdown--searchable' : '',
+            multiselect ? 'm3-dropdown--multiselect' : ''
         ].filter(Boolean).join(' ');
 
         return `
@@ -138,6 +173,7 @@ export class M3DropdownMenu {
                  aria-expanded="false"
                  aria-labelledby="${this.instanceId}-label"
                  aria-controls="${this.instanceId}-menu"
+                 ${multiselect ? 'aria-multiselectable="true"' : ''}
                  ${disabled ? 'aria-disabled="true"' : ''}
                  tabindex="${disabled ? -1 : 0}">
 
@@ -154,12 +190,14 @@ export class M3DropdownMenu {
                               id="${this.instanceId}-label">
                             ${label}${required ? ' *' : ''}
                         </span>
-                        <span class="m3-dropdown__value" aria-hidden="true">
-                            ${displayValue || ''}
-                        </span>
+                        ${multiselect ? this.renderChips() : `
+                            <span class="m3-dropdown__value" aria-hidden="true">
+                                ${displayValue || ''}
+                            </span>
+                        `}
                         <input type="hidden"
                                name="${this.config.name || this.config.containerId}"
-                               value="${selectedOption?.value || ''}"
+                               value="${hiddenValue}"
                                ${required ? 'required' : ''}>
                     </div>
 
@@ -181,6 +219,7 @@ export class M3DropdownMenu {
                      id="${this.instanceId}-menu"
                      role="listbox"
                      aria-labelledby="${this.instanceId}-label"
+                     ${multiselect ? 'aria-multiselectable="true"' : ''}
                      tabindex="-1">
 
                     ${searchable ? this.renderSearchInput() : ''}
@@ -198,6 +237,40 @@ export class M3DropdownMenu {
                 ` : ''}
             </div>
         `;
+    }
+
+    renderChips() {
+        if (this.selectedIndices.length === 0) {
+            return '<span class="m3-dropdown__value" aria-hidden="true"></span>';
+        }
+
+        const maxChips = this.config.maxChips;
+        const selectedOptions = this.selectedIndices.map(i => this.originalOptions[i]).filter(Boolean);
+        const visibleChips = selectedOptions.slice(0, maxChips);
+        const remaining = selectedOptions.length - maxChips;
+
+        let chipsHtml = '<div class="m3-dropdown__chips">';
+
+        visibleChips.forEach((opt, idx) => {
+            const originalIdx = this.selectedIndices[idx];
+            chipsHtml += `
+                <span class="m3-dropdown__chip">
+                    ${this.escapeHtml(opt.label)}
+                    <button type="button" class="m3-dropdown__chip-remove" data-index="${originalIdx}" aria-label="Entfernen">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+                        </svg>
+                    </button>
+                </span>
+            `;
+        });
+
+        if (remaining > 0) {
+            chipsHtml += `<span class="m3-dropdown__chip-count">+${remaining}</span>`;
+        }
+
+        chipsHtml += '</div>';
+        return chipsHtml;
     }
 
     renderSearchInput() {
@@ -242,26 +315,49 @@ export class M3DropdownMenu {
             `;
         }
 
-        return this.options.map((option, index) => `
-            <div class="m3-dropdown__option ${index === this.selectedIndex ? 'm3-dropdown__option--selected' : ''}"
-                 role="option"
-                 data-index="${index}"
-                 data-value="${this.escapeHtml(String(option.value))}"
-                 aria-selected="${index === this.selectedIndex}"
-                 tabindex="-1">
-                ${option.icon ? `<span class="m3-dropdown__option-icon">${this.escapeHtml(option.icon)}</span>` : ''}
-                <span class="m3-dropdown__option-label">${this.highlightMatch(option.label)}</span>
-                ${option.description ? `<span class="m3-dropdown__option-description">${this.escapeHtml(option.description)}</span>` : ''}
-                ${index === this.selectedIndex ? `
-                    <span class="m3-dropdown__option-check" aria-hidden="true">
-                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                            <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
-                        </svg>
-                    </span>
-                ` : ''}
-                <div class="m3-dropdown__option-state-layer"></div>
-            </div>
-        `).join('');
+        const { multiselect } = this.config;
+
+        return this.options.map((option, index) => {
+            // Find the original index for this option
+            const originalIndex = this.originalOptions.findIndex(opt => opt.value === option.value);
+            const isSelected = multiselect
+                ? this.selectedIndices.includes(originalIndex)
+                : index === this.selectedIndex;
+
+            return `
+                <div class="m3-dropdown__option ${isSelected ? 'm3-dropdown__option--selected' : ''}"
+                     role="option"
+                     data-index="${index}"
+                     data-original-index="${originalIndex}"
+                     data-value="${this.escapeHtml(String(option.value))}"
+                     aria-selected="${isSelected}"
+                     tabindex="-1">
+                    ${multiselect ? `
+                        <span class="m3-dropdown__option-checkbox ${isSelected ? 'm3-dropdown__option-checkbox--checked' : ''}" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="20" height="20">
+                                ${isSelected ? `
+                                    <rect x="3" y="3" width="18" height="18" rx="3" fill="var(--m3-primary)"/>
+                                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" fill="white"/>
+                                ` : `
+                                    <rect x="3" y="3" width="18" height="18" rx="3" fill="none" stroke="var(--m3-on-surface-variant)" stroke-width="2"/>
+                                `}
+                            </svg>
+                        </span>
+                    ` : ''}
+                    ${option.icon ? `<span class="m3-dropdown__option-icon">${this.escapeHtml(option.icon)}</span>` : ''}
+                    <span class="m3-dropdown__option-label">${this.highlightMatch(option.label)}</span>
+                    ${option.description ? `<span class="m3-dropdown__option-description">${this.escapeHtml(option.description)}</span>` : ''}
+                    ${!multiselect ? `
+                        <span class="m3-dropdown__option-check" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                        </span>
+                    ` : ''}
+                    <div class="m3-dropdown__option-state-layer"></div>
+                </div>
+            `;
+        }).join('');
     }
 
     highlightMatch(text) {
@@ -303,8 +399,24 @@ export class M3DropdownMenu {
         // Click handler for toggle
         this.field.addEventListener('click', (e) => {
             if (this.config.disabled) return;
+            // Don't toggle if clicking on chip remove button
+            if (e.target.closest('.m3-dropdown__chip-remove')) {
+                return;
+            }
             this.toggle();
         });
+
+        // Chip remove handlers (for multiselect)
+        if (this.config.multiselect) {
+            this.dropdown.addEventListener('click', (e) => {
+                const removeBtn = e.target.closest('.m3-dropdown__chip-remove');
+                if (removeBtn) {
+                    e.stopPropagation();
+                    const idx = parseInt(removeBtn.dataset.index, 10);
+                    this.deselectOption(idx);
+                }
+            });
+        }
 
         // Keyboard navigation
         dropdown.addEventListener('keydown', (e) => this.handleKeydown(e));
@@ -682,67 +794,32 @@ export class M3DropdownMenu {
         // Find the actual index in originalOptions for consistency
         const originalIndex = this.originalOptions.findIndex(opt => opt.value === option.value);
 
-        const previousValue = this.getValue();
-        this.selectedIndex = originalIndex >= 0 ? originalIndex : index;
+        if (this.config.multiselect) {
+            // Toggle selection for multiselect
+            const idx = this.selectedIndices.indexOf(originalIndex);
+            if (idx >= 0) {
+                this.selectedIndices.splice(idx, 1);
+            } else {
+                this.selectedIndices.push(originalIndex);
+            }
 
-        // Update hidden input
-        const hiddenInput = this.dropdown.querySelector('input[type="hidden"]');
-        if (hiddenInput) {
-            hiddenInput.value = option.value;
-        }
+            // Update UI
+            this.updateMultiselectDisplay();
 
-        // Update display value
-        const valueElement = this.dropdown.querySelector('.m3-dropdown__value');
-        if (valueElement) {
-            valueElement.textContent = option.label;
-        }
+            // Trigger onChange with arrays
+            const values = this.selectedIndices.map(i => this.originalOptions[i]?.value).filter(Boolean);
+            const labels = this.selectedIndices.map(i => this.originalOptions[i]?.label).filter(Boolean);
+            const selectedOptions = this.selectedIndices.map(i => this.originalOptions[i]).filter(Boolean);
 
-        // Update label state
-        const labelElement = this.dropdown.querySelector('.m3-dropdown__label');
-        if (labelElement) {
-            labelElement.classList.add('m3-dropdown__label--float');
-        }
+            if (this.config.onChange) {
+                this.config.onChange(values, labels, selectedOptions);
+            }
 
-        // Update container state
-        this.dropdown.classList.add('m3-dropdown--has-value');
-
-        // Close menu
-        this.close();
-        this.dropdown.focus();
-
-        // Trigger onChange callback
-        if (this.config.onChange && previousValue !== option.value) {
-            this.config.onChange(option.value, option.label, option);
-        }
-    }
-
-    // Public API methods
-    getValue() {
-        if (this.selectedIndex >= 0 && this.originalOptions[this.selectedIndex]) {
-            return this.originalOptions[this.selectedIndex].value;
-        }
-        return null;
-    }
-
-    getLabel() {
-        if (this.selectedIndex >= 0 && this.originalOptions[this.selectedIndex]) {
-            return this.originalOptions[this.selectedIndex].label;
-        }
-        return null;
-    }
-
-    getSelectedOption() {
-        if (this.selectedIndex >= 0) {
-            return this.originalOptions[this.selectedIndex];
-        }
-        return null;
-    }
-
-    setValue(value) {
-        const index = this.originalOptions.findIndex(opt => opt.value === value);
-        if (index >= 0) {
-            this.selectedIndex = index;
-            const option = this.originalOptions[index];
+            // Re-render options to show updated checkboxes
+            this.updateOptionsDisplay();
+        } else {
+            const previousValue = this.getValue();
+            this.selectedIndex = originalIndex >= 0 ? originalIndex : index;
 
             // Update hidden input
             const hiddenInput = this.dropdown.querySelector('input[type="hidden"]');
@@ -762,7 +839,141 @@ export class M3DropdownMenu {
                 labelElement.classList.add('m3-dropdown__label--float');
             }
 
+            // Update container state
             this.dropdown.classList.add('m3-dropdown--has-value');
+
+            // Close menu
+            this.close();
+            this.dropdown.focus();
+
+            // Trigger onChange callback
+            if (this.config.onChange && previousValue !== option.value) {
+                this.config.onChange(option.value, option.label, option);
+            }
+        }
+    }
+
+    deselectOption(originalIndex) {
+        if (!this.config.multiselect) return;
+
+        const idx = this.selectedIndices.indexOf(originalIndex);
+        if (idx >= 0) {
+            this.selectedIndices.splice(idx, 1);
+            this.updateMultiselectDisplay();
+
+            // Trigger onChange
+            const values = this.selectedIndices.map(i => this.originalOptions[i]?.value).filter(Boolean);
+            const labels = this.selectedIndices.map(i => this.originalOptions[i]?.label).filter(Boolean);
+            const selectedOptions = this.selectedIndices.map(i => this.originalOptions[i]).filter(Boolean);
+
+            if (this.config.onChange) {
+                this.config.onChange(values, labels, selectedOptions);
+            }
+
+            // Update options display if menu is open
+            if (this.isOpen) {
+                this.updateOptionsDisplay();
+            }
+        }
+    }
+
+    updateMultiselectDisplay() {
+        // Update hidden input
+        const hiddenInput = this.dropdown.querySelector('input[type="hidden"]');
+        if (hiddenInput) {
+            hiddenInput.value = this.selectedIndices.map(i => this.originalOptions[i]?.value).filter(Boolean).join(',');
+        }
+
+        // Update chips display
+        const contentEl = this.dropdown.querySelector('.m3-dropdown__content');
+        if (contentEl) {
+            // Remove existing chips/value
+            const existingChips = contentEl.querySelector('.m3-dropdown__chips');
+            const existingValue = contentEl.querySelector('.m3-dropdown__value');
+            if (existingChips) existingChips.remove();
+            if (existingValue) existingValue.remove();
+
+            // Get label element
+            const labelEl = contentEl.querySelector('.m3-dropdown__label');
+
+            // Add new chips
+            const chipsHtml = this.renderChips();
+            labelEl.insertAdjacentHTML('afterend', chipsHtml);
+
+            // Update label state
+            if (this.selectedIndices.length > 0) {
+                labelEl.classList.add('m3-dropdown__label--float');
+                this.dropdown.classList.add('m3-dropdown--has-value');
+            } else {
+                labelEl.classList.remove('m3-dropdown__label--float');
+                this.dropdown.classList.remove('m3-dropdown--has-value');
+            }
+        }
+    }
+
+    // Public API methods
+    getValue() {
+        if (this.config.multiselect) {
+            return this.selectedIndices.map(i => this.originalOptions[i]?.value).filter(Boolean);
+        }
+        if (this.selectedIndex >= 0 && this.originalOptions[this.selectedIndex]) {
+            return this.originalOptions[this.selectedIndex].value;
+        }
+        return null;
+    }
+
+    getLabel() {
+        if (this.config.multiselect) {
+            return this.selectedIndices.map(i => this.originalOptions[i]?.label).filter(Boolean);
+        }
+        if (this.selectedIndex >= 0 && this.originalOptions[this.selectedIndex]) {
+            return this.originalOptions[this.selectedIndex].label;
+        }
+        return null;
+    }
+
+    getSelectedOption() {
+        if (this.config.multiselect) {
+            return this.selectedIndices.map(i => this.originalOptions[i]).filter(Boolean);
+        }
+        if (this.selectedIndex >= 0) {
+            return this.originalOptions[this.selectedIndex];
+        }
+        return null;
+    }
+
+    setValue(value) {
+        if (this.config.multiselect && Array.isArray(value)) {
+            this.selectedIndices = value
+                .map(val => this.originalOptions.findIndex(opt => opt.value === val))
+                .filter(idx => idx >= 0);
+            this.updateMultiselectDisplay();
+        } else if (!this.config.multiselect) {
+            const index = this.originalOptions.findIndex(opt => opt.value === value);
+            if (index >= 0) {
+                this.selectedIndex = index;
+                const option = this.originalOptions[index];
+
+                // Update hidden input
+                const hiddenInput = this.dropdown.querySelector('input[type="hidden"]');
+                if (hiddenInput) {
+                    hiddenInput.value = option.value;
+                }
+
+                // Update display value
+                const valueElement = this.dropdown.querySelector('.m3-dropdown__value');
+                if (valueElement) {
+                    valueElement.textContent = option.label;
+                }
+
+                // Update label state
+                const labelElement = this.dropdown.querySelector('.m3-dropdown__label');
+                if (labelElement) {
+                    labelElement.classList.add('m3-dropdown__label--float');
+                }
+
+                this.dropdown.classList.add('m3-dropdown--has-value');
+            }
         }
     }
 

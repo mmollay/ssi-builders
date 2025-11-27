@@ -290,7 +290,7 @@
             <!-- Page Header -->
             <div class="page-header">
                 <h1>Material Design 3 Components</h1>
-                <p>Pure CSS/JS implementation of M3 form components for SSI Builders v2.4.0</p>
+                <p id="page-subtitle">Pure CSS/JS implementation of M3 form components</p>
             </div>
 
             <!-- Table of Contents -->
@@ -982,6 +982,10 @@
         import { M3Slider } from '../../src/M3Slider.js';
         import { M3ColorPicker } from '../../src/M3ColorPicker.js';
         import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { getVersion } from '../../src/version.js';
+
+        // Set dynamic version
+        document.getElementById('page-subtitle').textContent = `Pure CSS/JS implementation of M3 form components for SSI Builders v${getVersion()}`;
 
         // Initialize Sidebar
         initializeLayout('m3-components');

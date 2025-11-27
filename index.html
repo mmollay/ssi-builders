@@ -202,8 +202,8 @@
                 <div class="hero-section">
                     <h1>🎨 SSI Builders</h1>
                     <p>Professional UI Component Library for Modern Web Apps</p>
-                    <div class="version-badge">
-                        v2.3.0 - Material Design 3
+                    <div class="version-badge" id="version-badge">
+                        Loading...
                     </div>
                 </div>
 
@@ -288,10 +288,14 @@
     <script type="module">
         import { initializeDemoLayout } from '/docs/demos/layout.js';
         import { IconManager } from '/src/IconManager.js';
+        import { getVersion } from '/src/version.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
         IconManager.setIconWeight('regular');
+
+        // Set dynamic version
+        document.getElementById('version-badge').textContent = `v${getVersion()} - Material Design 3`;
 
         // Initialize layout with sidebar (activePage: 'index')
         initializeDemoLayout('index');

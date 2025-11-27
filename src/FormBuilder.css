@@ -121,6 +121,15 @@
     grid-column: 1 / -1;
 }
 
+/* Fields with own labels (M3 components, selection controls) */
+.form-field-has-own-label {
+    /* Remove default gap since component handles its own layout */
+}
+
+.form-field-has-own-label .input-wrapper {
+    /* M3 components handle their own label positioning */
+}
+
 .form-field-error .form-input,
 .form-field-error .form-textarea,
 .form-field-error .form-select {
@@ -1376,4 +1385,926 @@ input[type="color"].form-input {
 
 .form-field-standard.form-field-size-lg .form-textarea {
     min-height: 100px;
+}
+
+/* ========================================
+   M3 SELECTION CONTROLS
+   Checkbox, Radio, Switch - Material Design 3
+   ======================================== */
+
+/* === M3 Color Variables === */
+:root {
+    --m3-primary: #1a73e8;
+    --m3-on-primary: #ffffff;
+    --m3-on-surface: #1c1b1f;
+    --m3-on-surface-variant: #49454f;
+    --m3-outline: #79747e;
+    --m3-outline-variant: #cac4d0;
+    --m3-surface-container-highest: #e6e0e9;
+    --m3-error: #b3261e;
+    --m3-state-layer-opacity-hover: 0.08;
+    --m3-state-layer-opacity-focus: 0.12;
+    --m3-state-layer-opacity-pressed: 0.12;
+}
+
+/* === M3 CHECKBOX - Enhanced Material Design 3 === */
+.m3-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-checkbox__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-checkbox__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Hover State Layer */
+.m3-checkbox:hover .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-checkbox:hover .m3-checkbox__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-checkbox__input:checked {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checkmark Icon */
+.m3-checkbox__input:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 6px;
+    height: 11px;
+    border: solid var(--m3-on-primary);
+    border-width: 0 2.5px 2.5px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    animation: m3-checkbox-check 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes m3-checkbox-check {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Focus State */
+.m3-checkbox__input:focus-visible {
+    outline: none;
+}
+
+.m3-checkbox__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-checkbox:active .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Indeterminate State */
+.m3-checkbox__input:indeterminate {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+.m3-checkbox__input:indeterminate::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 2.5px;
+    background: var(--m3-on-primary);
+    transform: translate(-50%, -50%);
+    border: none;
+}
+
+/* Disabled State */
+.m3-checkbox__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-checkbox__input:disabled:checked {
+    background: var(--m3-on-surface);
+    border-color: transparent;
+}
+
+.m3-checkbox:has(.m3-checkbox__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Error State */
+.m3-checkbox--error .m3-checkbox__input {
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__input:checked {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__label {
+    color: var(--m3-error);
+}
+
+/* Label Styling */
+.m3-checkbox__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+.m3-checkbox:hover .m3-checkbox__label {
+    color: var(--m3-on-surface);
+}
+
+/* === M3 RADIO - Enhanced Material Design 3 === */
+.m3-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.m3-radio-group--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.m3-radio-group__label {
+    font-size: 14px;
+    color: var(--m3-on-surface);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.m3-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-radio__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-radio__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Inner Dot */
+.m3-radio__input::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--m3-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover State Layer */
+.m3-radio:hover .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-radio:hover .m3-radio__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-radio__input:checked {
+    border-color: var(--m3-primary);
+}
+
+.m3-radio__input:checked::after {
+    width: 10px;
+    height: 10px;
+}
+
+/* Focus State */
+.m3-radio__input:focus-visible {
+    outline: none;
+}
+
+.m3-radio__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-radio:active .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.m3-radio:active .m3-radio__input:checked::after {
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Disabled State */
+.m3-radio__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked::after {
+    background: var(--m3-on-surface);
+}
+
+.m3-radio:has(.m3-radio__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Error State */
+.m3-radio--error .m3-radio__input {
+    border-color: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__input:checked::after {
+    background: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__label {
+    color: var(--m3-error);
+}
+
+/* Label Styling */
+.m3-radio__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+/* === M3 SWITCH - Enhanced Material Design 3 === */
+.m3-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    background: var(--m3-surface-container-highest);
+    border: 2px solid var(--m3-outline);
+    border-radius: 16px;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+/* Track Hover Effect */
+.m3-switch:hover .m3-switch__track {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-switch__thumb {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--m3-outline);
+    border-radius: 50%;
+    transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Thumb State Layer (Ripple) */
+.m3-switch__thumb::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 150ms ease;
+}
+
+/* Hover State Layer */
+.m3-switch:hover .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Checked Track */
+.m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checked Thumb */
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 28px);
+    width: 24px;
+    height: 24px;
+    background: var(--m3-on-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Checked Hover State Layer */
+.m3-switch:hover .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checkmark Icon in Thumb (when checked) */
+.m3-switch__thumb::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a73e8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Focus State */
+.m3-switch__input:focus-visible + .m3-switch__track {
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+.m3-switch__input:focus-visible + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-switch:active .m3-switch__thumb {
+    width: 28px;
+}
+
+.m3-switch:active .m3-switch__input:not(:checked) + .m3-switch__track .m3-switch__thumb {
+    left: 2px;
+}
+
+.m3-switch:active .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 30px);
+}
+
+/* Disabled State */
+.m3-switch:has(.m3-switch__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.m3-switch__input:disabled + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-surface-container-highest) 50%, transparent);
+    border-color: color-mix(in srgb, var(--m3-outline) 38%, transparent);
+}
+
+.m3-switch__input:disabled + .m3-switch__track .m3-switch__thumb {
+    background: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+    box-shadow: none;
+}
+
+.m3-switch__input:disabled:checked + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+    border-color: transparent;
+}
+
+/* Label Styling */
+.m3-switch__label {
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    line-height: 1.5;
+    transition: color 150ms ease;
+}
+
+.m3-switch:hover .m3-switch__label {
+    color: var(--m3-on-surface);
+}
+
+/* Error State */
+.m3-switch--error .m3-switch__track {
+    border-color: var(--m3-error);
+}
+
+.m3-switch--error .m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+/* === M3 COMPONENT CONTAINERS === */
+.form-m3-slider-container,
+.form-m3-colorpicker-container,
+.form-m3-dropdown-container {
+    width: 100%;
+}
+
+/* Hide label for M3 components when handled by FormBuilder */
+.form-field .form-m3-dropdown-container .m3-dropdown__label,
+.form-field .form-m3-slider-container .m3-slider__label {
+    /* Label is already rendered by FormBuilder */
+}
+
+/* Ensure M3 components fill their container */
+.form-m3-slider-container .m3-slider {
+    margin: 0;
+}
+
+.form-m3-colorpicker-container .m3-color-picker {
+    width: 100%;
+}
+
+/* === BROWSER FALLBACKS === */
+/* For browsers that don't support :has() */
+@supports not selector(:has(*)) {
+    .m3-checkbox__input:checked + .m3-checkbox__visual {
+        background: var(--m3-primary);
+        border-color: var(--m3-primary);
+    }
+
+    .m3-radio__input:checked + .m3-radio__visual {
+        border-color: var(--m3-primary);
+    }
+
+    .m3-switch__input:checked + .m3-switch__track {
+        background: var(--m3-primary);
+        border-color: var(--m3-primary);
+    }
+}
+
+/* =========================================
+   M3 DATE PICKER
+   Material Design 3 Calendar Component
+   ========================================= */
+
+.m3-date-picker {
+    position: relative;
+    width: 100%;
+    font-family: var(--m3-font-family, 'Roboto', sans-serif);
+}
+
+/* === Trigger Button === */
+.m3-date-picker__trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 56px;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker__trigger:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* Outlined Variant */
+.m3-date-picker--outlined .m3-date-picker__trigger {
+    border: 1px solid var(--m3-outline, #79747e);
+    border-radius: 4px;
+}
+
+.m3-date-picker--outlined:hover .m3-date-picker__trigger:not(:disabled) {
+    border-color: var(--m3-on-surface, #1C1B1F);
+}
+
+.m3-date-picker--outlined.m3-date-picker--open .m3-date-picker__trigger,
+.m3-date-picker--outlined .m3-date-picker__trigger:focus {
+    border-color: var(--m3-primary, #1a73e8);
+    border-width: 2px;
+    padding: 7px 15px;
+    outline: none;
+}
+
+/* Filled Variant */
+.m3-date-picker--filled .m3-date-picker__trigger {
+    background: var(--m3-surface-container-highest, #e6e0e9);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+}
+
+.m3-date-picker--filled .m3-date-picker__active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--m3-on-surface-variant, #49454f);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker--filled:hover .m3-date-picker__active-indicator {
+    background: var(--m3-on-surface, #1C1B1F);
+}
+
+.m3-date-picker--filled.m3-date-picker--open .m3-date-picker__active-indicator,
+.m3-date-picker--filled .m3-date-picker__trigger:focus ~ .m3-date-picker__active-indicator {
+    height: 2px;
+    background: var(--m3-primary, #1a73e8);
+}
+
+/* Content Area */
+.m3-date-picker__content {
+    flex: 1;
+    position: relative;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.m3-date-picker__label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--m3-on-surface-variant, #49454f);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.m3-date-picker__label--float {
+    top: 4px;
+    transform: translateY(0);
+    font-size: 12px;
+}
+
+.m3-date-picker--open .m3-date-picker__label,
+.m3-date-picker__trigger:focus .m3-date-picker__label {
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* Outlined floating label with background */
+.m3-date-picker--outlined .m3-date-picker__label--float {
+    background: var(--m3-surface, white);
+    padding: 0 4px;
+    margin-left: -4px;
+    top: -8px;
+}
+
+.m3-date-picker__required {
+    color: var(--m3-error, #b3261e);
+    margin-left: 2px;
+}
+
+.m3-date-picker__value {
+    font-size: 16px;
+    color: var(--m3-on-surface, #1C1B1F);
+    margin-top: 16px;
+}
+
+.m3-date-picker__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--m3-on-surface-variant, #49454f);
+    flex-shrink: 0;
+}
+
+/* === Calendar Dropdown === */
+.m3-date-picker__calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.95);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker--open .m3-date-picker__calendar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* === Calendar Component === */
+.m3-calendar {
+    background: var(--m3-surface-container, #f3edf7);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-width: 320px;
+}
+
+.m3-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--m3-surface-container-high, #ece6f0);
+}
+
+.m3-calendar__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--m3-on-surface-variant, #49454f);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__nav:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__nav:active {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 12%, transparent);
+}
+
+.m3-calendar__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__title:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__month {
+    font-weight: 500;
+}
+
+.m3-calendar__year {
+    color: var(--m3-on-surface-variant, #49454f);
+}
+
+/* Weekdays Header */
+.m3-calendar__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 8px 16px;
+    gap: 4px;
+}
+
+.m3-calendar__weekday {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-on-surface-variant, #49454f);
+}
+
+/* Days Grid */
+.m3-calendar__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0 16px 16px;
+    gap: 4px;
+}
+
+.m3-calendar__day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: all 150ms ease;
+    position: relative;
+}
+
+.m3-calendar__day:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__day:active:not(:disabled) {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 12%, transparent);
+}
+
+.m3-calendar__day--other {
+    color: var(--m3-on-surface-variant, #49454f);
+    opacity: 0.5;
+}
+
+.m3-calendar__day--today {
+    border: 1px solid var(--m3-primary, #1a73e8);
+    font-weight: 500;
+    color: var(--m3-primary, #1a73e8);
+}
+
+.m3-calendar__day--selected {
+    background: var(--m3-primary, #1a73e8) !important;
+    color: var(--m3-on-primary, white) !important;
+    font-weight: 500;
+}
+
+.m3-calendar__day--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* Month/Year Selection Grids */
+.m3-calendar__months,
+.m3-calendar__years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 16px;
+    gap: 8px;
+}
+
+.m3-calendar__month-btn,
+.m3-calendar__year-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border: none;
+    background: transparent;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: all 150ms ease;
+}
+
+.m3-calendar__month-btn:hover,
+.m3-calendar__year-btn:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__month-btn--current,
+.m3-calendar__year-btn--current {
+    border: 1px solid var(--m3-primary, #1a73e8);
+    color: var(--m3-primary, #1a73e8);
+}
+
+.m3-calendar__month-btn--selected,
+.m3-calendar__year-btn--selected {
+    background: var(--m3-primary, #1a73e8) !important;
+    color: var(--m3-on-primary, white) !important;
+}
+
+/* Footer */
+.m3-calendar__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--m3-surface-container-high, #ece6f0);
+}
+
+.m3-calendar__btn {
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-primary, #1a73e8);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__btn:hover {
+    background: color-mix(in srgb, var(--m3-primary, #1a73e8) 8%, transparent);
+}
+
+.m3-calendar__btn--primary {
+    background: var(--m3-primary, #1a73e8);
+    color: var(--m3-on-primary, white);
+}
+
+.m3-calendar__btn--primary:hover {
+    background: color-mix(in srgb, var(--m3-on-primary, white) 8%, var(--m3-primary, #1a73e8));
+}
+
+/* === Date Picker Container for FormBuilder === */
+.form-m3-datepicker-container {
+    width: 100%;
 }

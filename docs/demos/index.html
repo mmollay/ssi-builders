@@ -227,7 +227,7 @@
         <div class="header">
             <h1>🎨 SSI Builders</h1>
             <p>Interactive Documentation & Live Examples</p>
-            <span class="version">v2.4.0 - Material Design 3</span>
+            <span class="version" id="header-version">Loading...</span>
 
             <div class="quick-links">
                 <a href="../md-viewer.html?file=../../README.md" class="quick-link">📖 Documentation</a>
@@ -432,6 +432,21 @@
                 <span class="cta">View Examples →</span>
             </a>
 
+            <!-- FormBuilder M3 (v2.5.0) -->
+            <a href="form-builder-m3.html" class="builder-card">
+                <div class="icon">📝</div>
+                <h2>FormBuilder M3</h2>
+                <p>Enhanced Material Design 3 forms with multiselect dropdowns</p>
+                <ul class="features">
+                    <li>M3 Dropdown with Multiselect</li>
+                    <li>Pill-style Chips (20px radius)</li>
+                    <li>Enhanced styling (60px fields)</li>
+                    <li>M3 Date Picker</li>
+                    <li>3-layer elevation shadows</li>
+                </ul>
+                <span class="cta">View Examples →</span>
+            </a>
+
             <!-- ChangelogBuilder (v2.4.0) -->
             <a href="changelog-builder.html" class="builder-card">
                 <div class="icon">📜</div>
@@ -507,9 +522,17 @@ const list = new ListBuilder({
         <!-- Footer -->
         <div class="footer">
             <p>Made with ❤️ by SSI Solutions</p>
-            <p>© 2025 SSI Builders - Version 2.4.0</p>
+            <p id="footer-version">© 2025 SSI Builders</p>
         </div>
     </div>
+
+    <script type="module">
+        import { getVersion } from '../../src/version.js';
+
+        // Set dynamic versions
+        document.getElementById('header-version').textContent = `v${getVersion()} - Material Design 3`;
+        document.getElementById('footer-version').textContent = `© 2025 SSI Builders - Version ${getVersion()}`;
+    </script>
 </body>
 
 </html>

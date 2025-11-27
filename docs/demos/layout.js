@@ -167,6 +167,13 @@ export function initializeDemoLayout(activePage) {
         href: '/docs/demos/m3-components.html'
       },
       {
+        label: 'FormBuilder M3',
+        icon: IconManager.getIcon('edit'),
+        key: 'form-builder-m3',
+        href: '/docs/demos/form-builder-m3.html',
+        badge: { text: 'New', color: '#1a73e8' }
+      },
+      {
         type: 'heading',
         label: 'System'
       },
