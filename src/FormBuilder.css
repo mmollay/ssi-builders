@@ -727,7 +727,7 @@ input[type="color"].form-input {
 .form-field-filled .form-textarea {
     width: 100%;
     height: 56px;
-    padding: 16px !important;
+    padding: 24px 16px 8px 16px !important; /* M3 spec: more top padding for floating label */
     background: #EBEBEB;
     border: none !important;
     border-bottom: 1px solid #79747E !important;
@@ -859,7 +859,7 @@ input[type="color"].form-input {
 .form-field-outlined .form-textarea {
     width: 100%;
     height: 56px;
-    padding: 16px !important;
+    padding: 24px 16px 8px 16px !important; /* Match filled variant: more top padding for floating label */
     background: transparent;
     border: 1px solid #dadce0;
     border-radius: 4px;
@@ -918,7 +918,7 @@ input[type="color"].form-input {
 .form-field-outlined .form-input:focus,
 .form-field-outlined .form-textarea:focus {
     border: 2px solid #1a73e8;
-    padding: 15px !important;
+    padding: 23px 15px 7px 15px !important; /* -1px to compensate for 2px border */
 }
 
 /* Focus State for Select - M3 Filled Style (only bottom border) */
