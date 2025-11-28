@@ -139,7 +139,7 @@
 
 /* Floating label state */
 .m3-dropdown__label--float {
-    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
+    top: 4px; /* Position label at top of filled container */
     transform: translateY(0);
     font-size: 12px;
     line-height: 1;
@@ -151,7 +151,7 @@
 /* Label wird Primary bei Focus/Open */
 .m3-dropdown--filled:focus .m3-dropdown__label,
 .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__label {
-    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
+    top: 4px; /* Position label at top of filled container */
     transform: translateY(0);
     font-size: 12px;
     line-height: 1;
@@ -160,7 +160,7 @@
 }
 
 .m3-dropdown--filled .m3-dropdown__label--float {
-    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
+    top: 4px; /* Position label at top of filled container */
 }
 
 /* Outlined Label */
@@ -534,13 +534,14 @@
 
 .m3-dropdown--multiselect .m3-dropdown__field {
     min-height: var(--m3-text-field-height);
+    height: var(--m3-text-field-height); /* Fixed height to prevent field growth */
     padding: 8px 16px;
 }
 
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__field {
-    padding-top: 6px;
-    padding-bottom: 6px;
-    min-height: var(--m3-text-field-height);
+    padding-top: 4px;
+    padding-bottom: 4px;
+    height: var(--m3-text-field-height); /* Keep fixed height with chips */
 }
 
 /* Float label when multiselect has selected values */
@@ -554,9 +555,9 @@
     letter-spacing: 0.4px;
 }
 
-/* Push chips down to make room for floating label */
+/* Chips container - keep tight to fit in fixed height */
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
-    margin-top: 12px;
+    margin-top: 8px;
 }
 
 /* Compact chips in multiselect to fit 56px field height */
