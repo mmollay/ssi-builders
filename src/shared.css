@@ -1369,6 +1369,27 @@ table tr:hover {
     opacity: 1;
 }
 
+/* Subtle version badge inside builders */
+.form-builder .ssi-version-badge,
+.list-builder .ssi-version-badge {
+    position: absolute;
+    bottom: 4px;
+    right: 8px;
+    left: auto;
+    font-size: 8px;
+    padding: 1px 4px;
+    color: #bbb;
+    background: transparent;
+    border: none;
+    opacity: 0.4;
+    font-weight: 400;
+}
+
+.form-builder:hover .ssi-version-badge,
+.list-builder:hover .ssi-version-badge {
+    opacity: 0.6;
+}
+
 /* ===================================
    Utility Classes
    =================================== */

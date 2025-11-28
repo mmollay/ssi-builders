@@ -4,6 +4,7 @@
 
 /* === Form Container === */
 .form-builder {
+    position: relative; /* For version badge positioning */
     background: white;
     border-radius: 8px;
     padding: 24px;
