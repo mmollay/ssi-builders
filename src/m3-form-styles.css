@@ -546,10 +546,8 @@
     align-items: center; /* Vertically center chips */
 }
 
-/* Float label when multiselect has selected values */
+/* Float label when multiselect has selected values - move to top */
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__label {
-    top: 4px;
-    transform: translateY(0);
     font-size: 12px;
     line-height: 1;
     color: var(--m3-on-surface-variant);
@@ -557,17 +555,28 @@
     letter-spacing: 0.4px;
 }
 
-/* Chips container - flex item, no margin needed */
+/* Filled multiselect: label at very top */
+.m3-dropdown--filled.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__label {
+    top: 4px;
+    transform: translateY(0);
+}
+
+/* Chips container - base styles */
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
-    margin-top: 0; /* Flex centering handles vertical position */
     flex: 1;
     display: flex;
     flex-wrap: wrap;
     gap: 4px;
     align-items: center;
+    margin-top: 0;
 }
 
-/* Outlined multiselect: same centering */
+/* Filled multiselect: chips need margin-top for floating label space */
+.m3-dropdown--filled.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
+    margin-top: 18px;
+}
+
+/* Outlined multiselect: chips centered, no extra margin */
 .m3-dropdown--outlined.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
     margin-top: 0;
 }
