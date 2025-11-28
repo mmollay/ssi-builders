@@ -333,6 +333,13 @@
 
 
 
+                <!-- Field Variants & States -->
+                <section class="demo-section">
+                    <h2>M3 Field Variants & States</h2>
+                    <p>Demonstration of 'outlined' and 'filled' fields, including disabled and error states. Click "Speichern" to trigger validation.</p>
+                    <div id="field-variants-form"></div>
+                </section>
+
                 <!-- Code Example -->
                 <section class="demo-section">
                     <h2>Usage</h2>
@@ -748,6 +755,27 @@
         });
 
 
+
+        // Field Variants & States Form
+        new FormBuilder({
+            containerId: 'field-variants-form',
+            layout: 'grid',
+            gridColumns: 2,
+            options: {
+                useM3Components: true
+            },
+            fields: [
+                { key: 'outlined_required', type: 'text', label: 'Outlined (Required)', layout: 'outlined', required: true, width: 6, description: 'This field is required.' },
+                { key: 'filled_required', type: 'text', label: 'Filled (Required)', layout: 'filled', required: true, width: 6, description: 'This one too.' },
+                { key: 'outlined_select', type: 'select', label: 'Outlined Select (Required)', layout: 'outlined', required: true, width: 12, options: ['Option 1', 'Option 2'] },
+                { key: 'outlined_disabled', type: 'text', label: 'Outlined (Disabled)', layout: 'outlined', disabled: true, width: 6, defaultValue: 'Cannot edit' },
+                { key: 'filled_disabled', type: 'text', label: 'Filled (Disabled)', layout: 'filled', disabled: true, width: 6, defaultValue: 'Cannot edit either' }
+            ],
+            onSubmit: (values) => {
+                console.log('Variants form submitted:', values);
+                alert('Variants form submitted! Check console for values.');
+            }
+        });
 
         // Code Example
         new CodeSnippetBuilder({
