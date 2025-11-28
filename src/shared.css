@@ -1369,27 +1369,27 @@ table tr:hover {
     opacity: 1;
 }
 
-/* Subtle version badge inside builders - very delicate */
+/* Subtle version badge inside builders */
 .form-builder .ssi-version-badge,
 .list-builder .ssi-version-badge {
     position: absolute;
-    bottom: 6px;
+    bottom: 8px;
     right: 12px;
     left: auto;
-    font-size: 9px;
+    font-size: 10px;
     padding: 0;
-    color: #d0d0d0;
+    color: #a0a0a0;
     background: transparent;
     border: none;
-    opacity: 0.35;
-    font-weight: 300;
+    opacity: 0.6;
+    font-weight: 400;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     letter-spacing: 0.3px;
 }
 
 .form-builder:hover .ssi-version-badge,
 .list-builder:hover .ssi-version-badge {
-    opacity: 0.5;
+    opacity: 0.8;
 }
 
 /* ===================================
