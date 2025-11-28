@@ -779,6 +779,30 @@
                 <h2>FormBuilder: Complete M3 Form <span class="badge">Live</span></h2>
                 <p>A complete form built with FormBuilder, showcasing automatic M3 component integration.</p>
                 <div id="complete-m3-form-builder"></div>
+
+                <div class="code-block">
+<pre><code>// Just provide a container and field definitions - FormBuilder generates everything!
+new FormBuilder({
+    containerId: 'my-form',
+    fieldLayout: 'filled',           // 'filled' or 'outlined'
+    layout: 'grid',
+    gridColumns: 2,
+    options: { useM3Components: true },
+    fields: [
+        { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+        { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+        { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 12 },
+        { key: 'country', type: 'select', label: 'Land', searchable: true, options: [...] },
+        { key: 'volume', type: 'slider', label: 'Lautstärke', min: 0, max: 100 },
+        { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4 }
+    ],
+    onSubmit: async (values) => console.log('Submitted:', values)
+});</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E" alt="Copy">
+                        <span>Copy</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Field Variants & States (via FormBuilder) -->
@@ -786,6 +810,25 @@
                 <h2>FormBuilder: Field Variants & States</h2>
                 <p>Demonstration of 'outlined' and 'filled' fields, including disabled and error states. Click the submit button to trigger validation.</p>
                 <div id="field-variants-form"></div>
+
+                <div class="code-block">
+<pre><code>// Mix outlined and filled fields in one form
+new FormBuilder({
+    containerId: 'variants-form',
+    options: { useM3Components: true },
+    fields: [
+        { key: 'outlined', type: 'text', label: 'Outlined Field', layout: 'outlined', required: true },
+        { key: 'filled', type: 'text', label: 'Filled Field', layout: 'filled', required: true },
+        { key: 'disabled', type: 'text', label: 'Disabled', disabled: true, defaultValue: 'Cannot edit' },
+        { key: 'select', type: 'select', label: 'Dropdown', layout: 'outlined', options: ['A', 'B'] }
+    ],
+    onSubmit: (values) => console.log(values)
+});</code></pre>
+                    <button class="copy-btn" onclick="copyCode(this)">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1'%3E%3C/path%3E%3C/svg%3E" alt="Copy">
+                        <span>Copy</span>
+                    </button>
+                </div>
             </div>
 
             <!-- Complete Form Example -->

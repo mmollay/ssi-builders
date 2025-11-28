@@ -555,9 +555,19 @@
     letter-spacing: 0.4px;
 }
 
-/* Chips container - keep tight to fit in fixed height */
+/* Chips container - position below floating label */
 .m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
-    margin-top: 8px;
+    margin-top: 20px; /* Clear floating label (4px top + 12px font + 4px gap) */
+}
+
+/* Outlined multiselect: push content up */
+.m3-dropdown--outlined.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__chips {
+    margin-top: 16px; /* Less margin needed for outlined */
+}
+
+.m3-dropdown--outlined.m3-dropdown--multiselect.m3-dropdown--has-value .m3-dropdown__label {
+    top: 0;
+    transform: translateY(-50%); /* Center 12px label on border line */
 }
 
 /* Compact chips in multiselect to fit 56px field height */
