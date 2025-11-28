@@ -1062,10 +1062,17 @@ input[type="color"].form-input {
 
 /* Focus State */
 .form-field-outlined .form-input:focus,
-.form-field-outlined .form-select:focus,
 .form-field-outlined .form-textarea:focus {
     border: 2px solid #1a73e8;
     padding: 15px !important;
+}
+
+/* Focus State for Select - M3 Filled Style (only bottom border) */
+.form-field-outlined .form-select:focus {
+    border: none !important;
+    border-bottom: 2px solid #1a73e8 !important;
+    background-color: #EBEBEB !important;
+    outline: none;
 }
 
 /* Hover State */

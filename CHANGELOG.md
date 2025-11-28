@@ -9,6 +9,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.5.2] - 2025-11-28
+
+### Fixed
+- **FormBuilder Native Select**: Fixed focus state styling that was causing blue/purple background on native dropdowns
+  - Focus state now only applies blue bottom border (2px solid #1a73e8) instead of full border
+  - Maintains gray background (#EBEBEB) during focus for consistent M3 filled style
+  - Separate CSS rule for `.form-select:focus` to avoid style conflicts with text inputs
+
+---
+
 ## [2.5.1] - 2025-11-28
 
 ### Fixed
