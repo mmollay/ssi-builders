@@ -860,9 +860,12 @@ input[type="color"].form-input {
 
 .form-field-outlined .form-input,
 .form-field-outlined .form-select,
-.form-field-outlined .form-textarea {
+.form-field-outlined .form-textarea,
+.form-field-outlined .form-input.ssi-input-md,
+.form-field-outlined .form-select.ssi-input-md,
+.form-field-outlined .form-textarea.ssi-input-md {
     width: 100%;
-    height: 56px;
+    height: 56px !important; /* Match M3 dropdown height */
     padding: 24px 16px 8px 16px !important; /* Match filled variant: more top padding for floating label */
     background: transparent;
     border: 1px solid #dadce0;
