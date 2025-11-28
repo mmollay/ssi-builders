@@ -42,7 +42,7 @@
 .m3-dropdown--filled .m3-dropdown__field {
     background: #EBEBEB;
     border-radius: var(--m3-shape-extra-small) var(--m3-shape-extra-small) 0 0;
-    padding: 8px 16px;
+    padding: 8px 16px 8px 16px;
     min-height: var(--m3-text-field-height);
 }
 
@@ -139,7 +139,7 @@
 
 /* Floating label state */
 .m3-dropdown__label--float {
-    top: 8px;
+    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
     transform: translateY(0);
     font-size: 12px;
     line-height: 1;
@@ -151,7 +151,7 @@
 /* Label wird Primary bei Focus/Open */
 .m3-dropdown--filled:focus .m3-dropdown__label,
 .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__label {
-    top: 8px;
+    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
     transform: translateY(0);
     font-size: 12px;
     line-height: 1;
@@ -160,7 +160,7 @@
 }
 
 .m3-dropdown--filled .m3-dropdown__label--float {
-    top: 8px;
+    top: -8px; /* Compensate for field padding to align with FormBuilder input labels */
 }
 
 /* Outlined Label */
