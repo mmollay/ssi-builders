@@ -164,14 +164,8 @@ export function initializeDemoLayout(activePage) {
         label: 'M3 Components',
         icon: IconManager.getIcon('layout'),
         key: 'm3-components',
-        href: '/docs/demos/m3-components.html'
-      },
-      {
-        label: 'FormBuilder M3',
-        icon: IconManager.getIcon('edit'),
-        key: 'form-builder-m3',
-        href: '/docs/demos/form-builder-m3.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/m3-components.html',
+        badge: { text: 'Updated', color: '#1a73e8' }
       },
       {
         type: 'heading',

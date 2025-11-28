@@ -10,6 +10,7 @@
 
     <!-- M3 Design System -->
     <link rel="stylesheet" href="../../src/m3-tokens.css">
+    <link rel="stylesheet" href="../../src/FormBuilder.css">
     <link rel="stylesheet" href="../../src/m3-form-styles.css">
 
     <!-- SSI Builders Layout -->
@@ -746,6 +747,30 @@
                 <div id="code-colorpicker"></div>
             </div>
 
+            <!-- FormBuilder Examples Category -->
+            <div class="section-category" id="form-builder-examples">
+                <h2>
+                    <span class="section-category-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"/></svg>
+                    </span>
+                    FormBuilder Examples
+                </h2>
+            </div>
+
+            <!-- Complete M3 Form (via FormBuilder) -->
+            <div class="demo-section" id="complete-m3-form-builder-section">
+                <h2>FormBuilder: Complete M3 Form <span class="badge">Live</span></h2>
+                <p>A complete form built with FormBuilder, showcasing automatic M3 component integration.</p>
+                <div id="complete-m3-form-builder"></div>
+            </div>
+
+            <!-- Field Variants & States (via FormBuilder) -->
+            <div class="demo-section" id="field-variants-section">
+                <h2>FormBuilder: Field Variants & States</h2>
+                <p>Demonstration of 'outlined' and 'filled' fields, including disabled and error states. Click the submit button to trigger validation.</p>
+                <div id="field-variants-form"></div>
+            </div>
+
             <!-- Complete Form Example -->
             <div class="demo-section" id="complete-form">
                 <h2>Complete Form Example <span class="badge">All Inputs</span></h2>
@@ -978,6 +1003,7 @@
     <!-- Scripts -->
     <script type="module">
         import { initializeLayout } from './layout.js';
+        import { FormBuilder } from '../../src/FormBuilder.js';
         import { M3DropdownMenu } from '../../src/M3DropdownMenu.js';
         import { M3Slider } from '../../src/M3Slider.js';
         import { M3ColorPicker } from '../../src/M3ColorPicker.js';
@@ -1092,6 +1118,53 @@
             value: '#1a73e8',
             presets: ['#1a73e8', '#34a853', '#ea4335', '#fbbc04', '#9c27b0', '#ff5722']
         });
+
+        // ### START OF ADDED BUILDERS ###
+
+        // Complete M3 Form (via FormBuilder)
+        new FormBuilder({
+            containerId: 'complete-m3-form-builder',
+            fieldLayout: 'filled',
+            layout: 'grid',
+            gridColumns: 2,
+            options: {
+                useM3Components: true,
+                showResetButton: false
+            },
+            fields: [
+                { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+                { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+                { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 12 },
+                { key: 'country', type: 'select', label: 'Land', required: true, searchable: true, width: 12, options: countries },
+                { key: 'volume', type: 'slider', label: 'Lautstärke', min: 0, max: 100, defaultValue: 50, unit: '%', width: 12 },
+                { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4, width: 12 }
+            ],
+            onSubmit: async (values) => {
+                console.log('FormBuilder submitted:', values);
+                alert('FormBuilder submitted! Check console for values.');
+            }
+        });
+
+        // Field Variants & States Form
+        new FormBuilder({
+            containerId: 'field-variants-form',
+            layout: 'grid',
+            gridColumns: 2,
+            options: { useM3Components: true },
+            fields: [
+                { key: 'outlined_required', type: 'text', label: 'Outlined (Required)', layout: 'outlined', required: true, width: 6, description: 'This field is required.' },
+                { key: 'filled_required', type: 'text', label: 'Filled (Required)', layout: 'filled', required: true, width: 6, description: 'This one too.' },
+                { key: 'outlined_select', type: 'select', label: 'Outlined Select (Required)', layout: 'outlined', required: true, width: 12, options: ['Option 1', 'Option 2'] },
+                { key: 'outlined_disabled', type: 'text', label: 'Outlined (Disabled)', layout: 'outlined', disabled: true, width: 6, defaultValue: 'Cannot edit' },
+                { key: 'filled_disabled', type: 'text', label: 'Filled (Disabled)', layout: 'filled', disabled: true, width: 6, defaultValue: 'Cannot edit either' }
+            ],
+            onSubmit: (values) => {
+                console.log('Variants form submitted:', values);
+                alert('Variants form submitted! Check console for values.');
+            }
+        });
+
+        // ### END OF ADDED BUILDERS ###
 
         // === Searchable Dropdowns ===
 
