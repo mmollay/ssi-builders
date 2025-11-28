@@ -882,20 +882,28 @@ export class FormBuilder extends BaseBuilder {
      * Render action buttons
      */
     renderActions() {
+        // Use M3 button classes when useM3Components is enabled
+        const primaryBtnClass = this.options.useM3Components
+            ? 'm3-button m3-button--filled'
+            : 'ssi-btn ssi-btn-primary';
+        const outlinedBtnClass = this.options.useM3Components
+            ? 'm3-button m3-button--outlined'
+            : 'ssi-btn ssi-btn-outlined';
+
         if (this.options.multiStep) {
             return `
                 <div class="form-actions">
                     ${this.currentStep > 0 ? `
-                        <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_prevStep">
+                        <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_prevStep">
                             ← Zurück
                         </button>
                     ` : ''}
                     ${this.currentStep < this.options.steps.length - 1 ? `
-                        <button type="button" class="ssi-btn ssi-btn-primary" id="${this.containerId}_nextStep">
+                        <button type="button" class="${primaryBtnClass}" id="${this.containerId}_nextStep">
                             Weiter →
                         </button>
                     ` : `
-                        <button type="submit" class="ssi-btn ssi-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
+                        <button type="submit" class="${primaryBtnClass}" ${this.isSubmitting ? 'disabled' : ''}>
                             ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
                         </button>
                     `}
@@ -906,16 +914,16 @@ export class FormBuilder extends BaseBuilder {
         return `
             <div class="form-actions">
                 ${this.options.showResetButton ? `
-                    <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_reset">
+                    <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_reset">
                         Zurücksetzen
                     </button>
                 ` : ''}
                 ${this.options.onCancel ? `
-                    <button type="button" class="ssi-btn ssi-btn-outlined" id="${this.containerId}_cancel">
+                    <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_cancel">
                         ${this.options.cancelLabel}
                     </button>
                 ` : ''}
-                <button type="submit" class="ssi-btn ssi-btn-primary" ${this.isSubmitting ? 'disabled' : ''}>
+                <button type="submit" class="${primaryBtnClass}" ${this.isSubmitting ? 'disabled' : ''}>
                     ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
                 </button>
             </div>
