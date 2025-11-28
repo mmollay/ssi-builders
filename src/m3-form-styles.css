@@ -174,7 +174,7 @@
 .m3-dropdown--outlined .m3-dropdown__label--float {
     top: 0;
     transform: translateY(-50%);
-    background: var(--m3-surface);
+    background: white;
     padding: 0 6px;
     margin-left: -6px;
     z-index: 1;
@@ -188,7 +188,7 @@
 .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__label {
     top: 0;
     transform: translateY(-50%);
-    background: var(--m3-surface);
+    background: white;
     padding: 0 6px;
     margin-left: -6px;
     z-index: 1;
