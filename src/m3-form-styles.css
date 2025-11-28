@@ -119,7 +119,7 @@
 }
 
 .m3-dropdown--outlined.m3-dropdown--has-value .m3-dropdown__content {
-    padding-top: 0;
+    padding-top: 8px; /* Match filled variant spacing between label and value */
 }
 
 /* === Label - ENHANCED === */
