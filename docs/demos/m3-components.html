@@ -74,6 +74,43 @@
             color: var(--m3-on-surface-variant);
         }
 
+        .header-quick-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--m3-outline-variant);
+        }
+
+        .quick-links-label {
+            font-size: var(--m3-label-medium-size);
+            font-weight: 500;
+            color: var(--m3-on-surface-variant);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            border-radius: var(--m3-shape-full);
+            text-decoration: none;
+            font-size: var(--m3-label-large-size);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            background: var(--m3-primary);
+            color: var(--m3-on-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--m3-elevation-2);
+        }
+
         .demo-section {
             background: var(--m3-surface-container-low);
             border-radius: var(--m3-shape-medium);
@@ -292,6 +329,11 @@
             <div class="page-header">
                 <h1>Material Design 3 Components</h1>
                 <p id="page-subtitle">Pure CSS/JS implementation of M3 form components</p>
+                <div class="header-quick-links">
+                    <span class="quick-links-label">FormBuilder:</span>
+                    <a href="#complete-m3-form-builder-section" class="quick-link">Complete M3 Form</a>
+                    <a href="#field-variants-section" class="quick-link">Field Variants</a>
+                </div>
             </div>
 
             <!-- Table of Contents -->
