@@ -1038,11 +1038,19 @@
     <script type="module">
         import { initializeLayout } from './layout.js';
         import { FormBuilder } from '../../src/FormBuilder.js';
+        import { BaseBuilder } from '../../src/BaseBuilder.js';
         import { M3DropdownMenu } from '../../src/M3DropdownMenu.js';
         import { M3Slider } from '../../src/M3Slider.js';
         import { M3ColorPicker } from '../../src/M3ColorPicker.js';
         import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
         import { getVersion } from '../../src/version.js';
+        import { IconManager, GlobalConfig } from '../../src/index.js';
+
+        // Configure GlobalConfig for icons used in FormBuilder
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular'
+        });
 
         // Set dynamic version
         document.getElementById('page-subtitle').textContent = `Pure CSS/JS implementation of M3 form components for SSI Builders v${getVersion()}`;
