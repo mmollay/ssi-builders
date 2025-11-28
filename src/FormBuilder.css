@@ -710,3 +710,2042 @@ input[type="color"].form-input {
     font-size: 13px;
 }
 
+/* === FILLED VARIANT - M3 Exact Spec === */
+.form-field-filled {
+    position: relative;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field-filled .input-wrapper {
+    position: relative;
+}
+
+.form-field-filled .form-input,
+.form-field-filled .form-select,
+.form-field-filled .form-textarea {
+    width: 100%;
+    height: 56px;
+    padding: 16px !important;
+    background: #EBEBEB;
+    border: none !important;
+    border-bottom: 1px solid #79747E !important;
+    border-radius: 4px 4px 0 0 !important;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
+    color: #1C1B1F;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Textarea needs flexible height */
+.form-field-filled .form-textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+}
+
+.form-field-filled .form-label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #5F6368;
+    pointer-events: none;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: left top;
+    background: transparent;
+    padding: 0;
+    z-index: 1;
+    margin: 0 !important;
+}
+
+/* Floating Label State - Float up when focused or has value */
+.form-field-filled .form-input:focus ~ .form-label,
+.form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-filled .form-select:focus ~ .form-label,
+.form-field-filled .form-select:not([value=""]) ~ .form-label,
+.form-field-filled .form-textarea:focus ~ .form-label,
+.form-field-filled .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled .form-label-float {
+    top: 8px;
+    transform: translateY(0);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: #1a73e8;
+}
+
+/* Adjust input padding when label is floating */
+.form-field-filled .form-input:focus,
+.form-field-filled .form-input:not(:placeholder-shown),
+.form-field-filled .form-select:focus,
+.form-field-filled .form-select:not([value=""]),
+.form-field-filled .form-textarea:focus,
+.form-field-filled .form-textarea:not(:placeholder-shown),
+.form-field-filled .form-label-float ~ .form-input,
+.form-field-filled .form-label-float ~ .form-select,
+.form-field-filled .form-label-float ~ .form-textarea {
+    padding-top: 24px !important;
+    padding-bottom: 8px !important;
+}
+
+/* Focus State */
+.form-field-filled .form-input:focus,
+.form-field-filled .form-select:focus,
+.form-field-filled .form-textarea:focus {
+    background: #EEEEEE;
+    border-bottom: 2px solid #1a73e8 !important;
+    box-shadow: none !important;
+    padding-bottom: 7px !important;  /* Adjust for 2px border */
+}
+
+/* Hover State */
+.form-field-filled:hover .form-input:not(:focus),
+.form-field-filled:hover .form-select:not(:focus),
+.form-field-filled:hover .form-textarea:not(:focus) {
+    background: #EEEEEE;
+    border-bottom-color: #5F6368;
+}
+
+/* Select always has floating label in filled variant */
+.form-field-filled .form-select {
+    padding-top: 24px !important;
+    padding-bottom: 8px !important;
+    color: #1C1B1F;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px !important;
+}
+
+.form-field-filled .form-select ~ .form-label {
+    top: 8px;
+    transform: translateY(0);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #5F6368;
+}
+
+.form-field-filled .form-select:focus ~ .form-label {
+    color: #1a73e8;
+}
+
+/* === OUTLINED VARIANT - M3 Exact Spec === */
+.form-field-outlined {
+    position: relative;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field-outlined .input-wrapper {
+    position: relative;
+}
+
+.form-field-outlined .form-input,
+.form-field-outlined .form-select,
+.form-field-outlined .form-textarea {
+    width: 100%;
+    height: 56px;
+    padding: 16px !important;
+    background: transparent;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
+    color: #1C1B1F;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-sizing: border-box;
+}
+
+/* Textarea needs flexible height */
+.form-field-outlined .form-textarea {
+    height: auto;
+    min-height: 120px;
+    resize: vertical;
+    padding-top: 24px !important;
+    padding-bottom: 24px !important;
+}
+
+.form-field-outlined .form-label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    color: #49454F;
+    background: white;
+    padding: 0 4px;
+    pointer-events: none;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1;
+    margin: 0 !important;
+}
+
+/* Floating Label State */
+.form-field-outlined .form-input:focus ~ .form-label,
+.form-field-outlined .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined .form-select:focus ~ .form-label,
+.form-field-outlined .form-textarea:focus ~ .form-label,
+.form-field-outlined .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined .form-label-float {
+    top: 0;
+    transform: translateY(-50%);
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: #49454F;
+}
+
+/* Focus State */
+.form-field-outlined .form-input:focus,
+.form-field-outlined .form-textarea:focus {
+    border: 2px solid #1a73e8;
+    padding: 15px !important;
+}
+
+/* Focus State for Select - M3 Filled Style (only bottom border) */
+.form-field-outlined .form-select:focus {
+    border: none !important;
+    border-bottom: 2px solid #1a73e8 !important;
+    background-color: #EBEBEB !important;
+    outline: none;
+}
+
+/* Hover State */
+.form-field-outlined:hover .form-input:not(:focus),
+.form-field-outlined:hover .form-select:not(:focus),
+.form-field-outlined:hover .form-textarea:not(:focus) {
+    border-color: #1C1B1F;
+}
+
+/* Select always has floating label in outlined variant - M3 Filled Style */
+.form-field-outlined .form-select {
+    height: 56px !important;
+    min-height: 56px !important;
+    box-sizing: border-box !important;
+    padding: 24px 40px 8px 16px !important;
+    color: #1C1B1F;
+    font-size: 16px;
+    font-weight: 400;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%235f6368' d='M2 4l4 4 4-4'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    background-color: #EBEBEB !important;
+    border: none !important;
+    border-bottom: 1px solid #79747E !important;
+    border-radius: 4px 4px 0 0 !important;
+}
+
+.form-field-outlined .form-select ~ .form-label,
+.form-field-outlined .form-label-float {
+    top: 8px !important;
+    transform: translateY(0) !important;
+    font-size: 12px !important;
+    line-height: 16px;
+    font-weight: 400;
+    letter-spacing: 0.4px;
+    color: #49454F !important;
+    background: transparent !important;
+    padding: 0;
+    left: 16px;
+}
+
+.form-field-outlined .form-select:focus ~ .form-label {
+    color: #1a73e8;
+}
+
+/* Supporting text (descriptions) for M3 */
+.form-field-filled .form-description,
+.form-field-outlined .form-description,
+.form-field-standard .form-description {
+    margin-top: 4px;
+    padding-left: 16px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #49454F;
+}
+
+/* === STANDARD VARIANT - M3 Exact Spec === */
+.form-field-standard {
+    position: relative;
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+.form-field-standard .form-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 500;
+    color: #49454F;
+}
+
+.form-field-standard .form-input,
+.form-field-standard .form-select,
+.form-field-standard .form-textarea {
+    width: 100%;
+    padding: 12px 16px !important;
+    background: transparent;
+    border: 1px solid #dadce0;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 16px;
+    line-height: 24px;
+    color: #1C1B1F;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    outline: none;
+    box-sizing: border-box;
+}
+
+.form-field-standard .form-input:focus,
+.form-field-standard .form-select:focus,
+.form-field-standard .form-textarea:focus {
+    border-color: #1a73e8;
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.08);
+}
+
+.form-field-standard .form-input::placeholder,
+.form-field-standard .form-select::placeholder,
+.form-field-standard .form-textarea::placeholder {
+    color: #79747E;
+}
+
+/* Supporting text (descriptions) for M3 */
+.form-field-filled .form-description,
+.form-field-outlined .form-description {
+    margin-top: 4px;
+    margin-left: 16px;
+    font-size: 12px;
+    color: #49454F;
+}
+
+/* Error states for M3 */
+.form-field-filled.form-field-error .form-input,
+.form-field-filled.form-field-error .form-select,
+.form-field-filled.form-field-error .form-textarea {
+    border-bottom-color: #B3261E;
+}
+
+.form-field-outlined.form-field-error .form-input,
+.form-field-outlined.form-field-error .form-select,
+.form-field-outlined.form-field-error .form-textarea {
+    border-color: #B3261E;
+}
+
+.form-field-filled.form-field-error .form-label,
+.form-field-outlined.form-field-error .form-label {
+    color: #B3261E;
+}
+
+/* ========================================
+   M3 Size Variants - FILLED
+   sm: 40px, md: 56px (default), lg: 64px
+   ======================================== */
+
+/* FILLED - Small Size */
+.form-field-filled.form-field-size-sm .form-input,
+.form-field-filled.form-field-size-sm .form-select,
+.form-field-filled.form-field-size-sm .form-textarea {
+    height: 40px;
+    padding: 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-filled.form-field-size-sm .form-textarea {
+    height: auto;
+    min-height: 80px;
+}
+
+.form-field-filled.form-field-size-sm .form-label {
+    left: 12px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-filled.form-field-size-sm .form-input:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-sm .form-select:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-textarea:focus ~ .form-label,
+.form-field-filled.form-field-size-sm .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-sm .form-label-float {
+    top: 4px;
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.form-field-filled.form-field-size-sm .form-input:focus,
+.form-field-filled.form-field-size-sm .form-input:not(:placeholder-shown),
+.form-field-filled.form-field-size-sm .form-select:focus,
+.form-field-filled.form-field-size-sm .form-textarea:focus,
+.form-field-filled.form-field-size-sm .form-textarea:not(:placeholder-shown) {
+    padding-top: 18px !important;
+    padding-bottom: 4px !important;
+}
+
+/* FILLED - Large Size */
+.form-field-filled.form-field-size-lg .form-input,
+.form-field-filled.form-field-size-lg .form-select,
+.form-field-filled.form-field-size-lg .form-textarea {
+    height: 64px;
+    padding: 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-filled.form-field-size-lg .form-textarea {
+    height: auto;
+    min-height: 140px;
+}
+
+.form-field-filled.form-field-size-lg .form-label {
+    left: 20px;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-filled.form-field-size-lg .form-input:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-lg .form-select:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-textarea:focus ~ .form-label,
+.form-field-filled.form-field-size-lg .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-filled.form-field-size-lg .form-label-float {
+    top: 10px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.form-field-filled.form-field-size-lg .form-input:focus,
+.form-field-filled.form-field-size-lg .form-input:not(:placeholder-shown),
+.form-field-filled.form-field-size-lg .form-select:focus,
+.form-field-filled.form-field-size-lg .form-textarea:focus,
+.form-field-filled.form-field-size-lg .form-textarea:not(:placeholder-shown) {
+    padding-top: 28px !important;
+    padding-bottom: 8px !important;
+}
+
+/* ========================================
+   M3 Size Variants - OUTLINED
+   sm: 40px, md: 56px (default), lg: 64px
+   ======================================== */
+
+/* OUTLINED - Small Size */
+.form-field-outlined.form-field-size-sm .form-input,
+.form-field-outlined.form-field-size-sm .form-select,
+.form-field-outlined.form-field-size-sm .form-textarea {
+    height: 40px;
+    padding: 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-outlined.form-field-size-sm .form-textarea {
+    height: auto;
+    min-height: 80px;
+    padding-top: 18px !important;
+    padding-bottom: 18px !important;
+}
+
+.form-field-outlined.form-field-size-sm .form-label {
+    left: 12px;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-outlined.form-field-size-sm .form-input:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-select:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-textarea:focus ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-sm .form-label-float {
+    font-size: 10px;
+    line-height: 12px;
+}
+
+.form-field-outlined.form-field-size-sm .form-input:focus,
+.form-field-outlined.form-field-size-sm .form-select:focus,
+.form-field-outlined.form-field-size-sm .form-textarea:focus {
+    padding: 11px !important;
+}
+
+/* OUTLINED - Large Size */
+.form-field-outlined.form-field-size-lg .form-input,
+.form-field-outlined.form-field-size-lg .form-select,
+.form-field-outlined.form-field-size-lg .form-textarea {
+    height: 64px;
+    padding: 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-outlined.form-field-size-lg .form-textarea {
+    height: auto;
+    min-height: 140px;
+    padding-top: 28px !important;
+    padding-bottom: 28px !important;
+}
+
+.form-field-outlined.form-field-size-lg .form-label {
+    left: 20px;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-outlined.form-field-size-lg .form-input:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-input:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-select:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-textarea:focus ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-textarea:not(:placeholder-shown) ~ .form-label,
+.form-field-outlined.form-field-size-lg .form-label-float {
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.form-field-outlined.form-field-size-lg .form-input:focus,
+.form-field-outlined.form-field-size-lg .form-select:focus,
+.form-field-outlined.form-field-size-lg .form-textarea:focus {
+    padding: 19px !important;
+}
+
+/* ========================================
+   M3 Size Variants - STANDARD
+   sm: 36px, md: 44px (default), lg: 52px
+   ======================================== */
+
+/* STANDARD - Small Size */
+.form-field-standard.form-field-size-sm .form-input,
+.form-field-standard.form-field-size-sm .form-select,
+.form-field-standard.form-field-size-sm .form-textarea {
+    padding: 8px 12px !important;
+    font-size: 14px;
+    line-height: 20px;
+}
+
+.form-field-standard.form-field-size-sm .form-textarea {
+    min-height: 60px;
+}
+
+/* STANDARD - Large Size */
+.form-field-standard.form-field-size-lg .form-input,
+.form-field-standard.form-field-size-lg .form-select,
+.form-field-standard.form-field-size-lg .form-textarea {
+    padding: 16px 20px !important;
+    font-size: 18px;
+    line-height: 28px;
+}
+
+.form-field-standard.form-field-size-lg .form-textarea {
+    min-height: 100px;
+}
+
+/* ========================================
+   M3 SELECTION CONTROLS
+   Checkbox, Radio, Switch - Material Design 3
+   ======================================== */
+
+/* === M3 Color Variables === */
+:root {
+    --m3-primary: #1a73e8;
+    --m3-on-primary: #ffffff;
+    --m3-on-surface: #1c1b1f;
+    --m3-on-surface-variant: #49454f;
+    --m3-outline: #79747e;
+    --m3-outline-variant: #cac4d0;
+    --m3-surface-container-highest: #e6e0e9;
+    --m3-error: #b3261e;
+    --m3-state-layer-opacity-hover: 0.08;
+    --m3-state-layer-opacity-focus: 0.12;
+    --m3-state-layer-opacity-pressed: 0.12;
+}
+
+/* === M3 CHECKBOX - Enhanced Material Design 3 === */
+.m3-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-checkbox__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-checkbox__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Hover State Layer */
+.m3-checkbox:hover .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-checkbox:hover .m3-checkbox__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-checkbox__input:checked {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checkmark Icon */
+.m3-checkbox__input:checked::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    width: 6px;
+    height: 11px;
+    border: solid var(--m3-on-primary);
+    border-width: 0 2.5px 2.5px 0;
+    transform: translate(-50%, -50%) rotate(45deg);
+    animation: m3-checkbox-check 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes m3-checkbox-check {
+    0% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(0);
+        opacity: 0;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1.2);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg) scale(1);
+        opacity: 1;
+    }
+}
+
+/* Focus State */
+.m3-checkbox__input:focus-visible {
+    outline: none;
+}
+
+.m3-checkbox__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-checkbox:active .m3-checkbox__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Indeterminate State */
+.m3-checkbox__input:indeterminate {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+.m3-checkbox__input:indeterminate::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: 10px;
+    height: 2.5px;
+    background: var(--m3-on-primary);
+    transform: translate(-50%, -50%);
+    border: none;
+}
+
+/* Disabled State */
+.m3-checkbox__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-checkbox__input:disabled:checked {
+    background: var(--m3-on-surface);
+    border-color: transparent;
+}
+
+.m3-checkbox:has(.m3-checkbox__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Error State */
+.m3-checkbox--error .m3-checkbox__input {
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__input:checked {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+.m3-checkbox--error .m3-checkbox__label {
+    color: var(--m3-error);
+}
+
+/* Label Styling */
+.m3-checkbox__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+.m3-checkbox:hover .m3-checkbox__label {
+    color: var(--m3-on-surface);
+}
+
+/* === M3 RADIO - Enhanced Material Design 3 === */
+.m3-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.m3-radio-group--horizontal {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.m3-radio-group__label {
+    font-size: 14px;
+    color: var(--m3-on-surface);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.m3-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-radio__input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--m3-on-surface-variant);
+    border-radius: 50%;
+    cursor: pointer;
+    position: relative;
+    flex-shrink: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+}
+
+/* State Layer (Ripple Background) */
+.m3-radio__input::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+/* Inner Dot */
+.m3-radio__input::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--m3-primary);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: all 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover State Layer */
+.m3-radio:hover .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-radio:hover .m3-radio__input:checked::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checked State */
+.m3-radio__input:checked {
+    border-color: var(--m3-primary);
+}
+
+.m3-radio__input:checked::after {
+    width: 10px;
+    height: 10px;
+}
+
+/* Focus State */
+.m3-radio__input:focus-visible {
+    outline: none;
+}
+
+.m3-radio__input:focus-visible::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-radio:active .m3-radio__input::before {
+    background: color-mix(in srgb, var(--m3-primary) 20%, transparent);
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.m3-radio:active .m3-radio__input:checked::after {
+    transform: translate(-50%, -50%) scale(0.9);
+}
+
+/* Disabled State */
+.m3-radio__input:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-radio__input:disabled:checked::after {
+    background: var(--m3-on-surface);
+}
+
+.m3-radio:has(.m3-radio__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Error State */
+.m3-radio--error .m3-radio__input {
+    border-color: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__input:checked::after {
+    background: var(--m3-error);
+}
+
+.m3-radio--error .m3-radio__label {
+    color: var(--m3-error);
+}
+
+/* Label Styling */
+.m3-radio__label {
+    line-height: 1.5;
+    color: var(--m3-on-surface);
+    transition: color 150ms ease;
+}
+
+/* === M3 SWITCH - Enhanced Material Design 3 === */
+.m3-switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 0;
+    position: relative;
+}
+
+.m3-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    background: var(--m3-surface-container-highest);
+    border: 2px solid var(--m3-outline);
+    border-radius: 16px;
+    transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+}
+
+/* Track Hover Effect */
+.m3-switch:hover .m3-switch__track {
+    border-color: var(--m3-on-surface);
+}
+
+.m3-switch__thumb {
+    position: absolute;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    background: var(--m3-outline);
+    border-radius: 50%;
+    transition: all 300ms cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Thumb State Layer (Ripple) */
+.m3-switch__thumb::before {
+    content: '';
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transition: background 150ms ease;
+}
+
+/* Hover State Layer */
+.m3-switch:hover .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-on-surface) 8%, transparent);
+}
+
+.m3-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Checked Track */
+.m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-primary);
+    border-color: var(--m3-primary);
+}
+
+/* Checked Thumb */
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 28px);
+    width: 24px;
+    height: 24px;
+    background: var(--m3-on-primary);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+/* Checked Hover State Layer */
+.m3-switch:hover .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 12%, transparent);
+}
+
+/* Checkmark Icon in Thumb (when checked) */
+.m3-switch__thumb::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-switch__input:checked + .m3-switch__track .m3-switch__thumb::after {
+    content: '';
+    width: 10px;
+    height: 10px;
+    opacity: 1;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a73e8' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'%3E%3C/polyline%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+/* Focus State */
+.m3-switch__input:focus-visible + .m3-switch__track {
+    outline: 2px solid var(--m3-primary);
+    outline-offset: 2px;
+}
+
+.m3-switch__input:focus-visible + .m3-switch__track .m3-switch__thumb::before {
+    background: color-mix(in srgb, var(--m3-primary) 16%, transparent);
+}
+
+/* Active/Press State */
+.m3-switch:active .m3-switch__thumb {
+    width: 28px;
+}
+
+.m3-switch:active .m3-switch__input:not(:checked) + .m3-switch__track .m3-switch__thumb {
+    left: 2px;
+}
+
+.m3-switch:active .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    left: calc(100% - 30px);
+}
+
+/* Disabled State */
+.m3-switch:has(.m3-switch__input:disabled) {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+.m3-switch__input:disabled + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-surface-container-highest) 50%, transparent);
+    border-color: color-mix(in srgb, var(--m3-outline) 38%, transparent);
+}
+
+.m3-switch__input:disabled + .m3-switch__track .m3-switch__thumb {
+    background: color-mix(in srgb, var(--m3-on-surface) 38%, transparent);
+    box-shadow: none;
+}
+
+.m3-switch__input:disabled:checked + .m3-switch__track {
+    background: color-mix(in srgb, var(--m3-on-surface) 12%, transparent);
+    border-color: transparent;
+}
+
+/* Label Styling */
+.m3-switch__label {
+    font-size: 16px;
+    color: var(--m3-on-surface);
+    line-height: 1.5;
+    transition: color 150ms ease;
+}
+
+.m3-switch:hover .m3-switch__label {
+    color: var(--m3-on-surface);
+}
+
+/* Error State */
+.m3-switch--error .m3-switch__track {
+    border-color: var(--m3-error);
+}
+
+.m3-switch--error .m3-switch__input:checked + .m3-switch__track {
+    background: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+/* === M3 COMPONENT CONTAINERS === */
+.form-m3-slider-container,
+.form-m3-colorpicker-container,
+.form-m3-dropdown-container {
+    width: 100%;
+}
+
+/* Hide label for M3 components when handled by FormBuilder */
+.form-field .form-m3-dropdown-container .m3-dropdown__label,
+.form-field .form-m3-slider-container .m3-slider__label {
+    /* Label is already rendered by FormBuilder */
+}
+
+/* Ensure M3 components fill their container */
+.form-m3-slider-container .m3-slider {
+    margin: 0;
+}
+
+.form-m3-colorpicker-container .m3-color-picker {
+    width: 100%;
+}
+
+/* === BROWSER FALLBACKS === */
+/* For browsers that don't support :has() */
+@supports not selector(:has(*)) {
+    .m3-checkbox__input:checked + .m3-checkbox__visual {
+        background: var(--m3-primary);
+        border-color: var(--m3-primary);
+    }
+
+    .m3-radio__input:checked + .m3-radio__visual {
+        border-color: var(--m3-primary);
+    }
+
+    .m3-switch__input:checked + .m3-switch__track {
+        background: var(--m3-primary);
+        border-color: var(--m3-primary);
+    }
+}
+
+/* =========================================
+   M3 DATE PICKER
+   Material Design 3 Calendar Component
+   ========================================= */
+
+.m3-date-picker {
+    position: relative;
+    width: 100%;
+    font-family: var(--m3-font-family, 'Roboto', sans-serif);
+}
+
+/* === Trigger Button === */
+.m3-date-picker__trigger {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: 56px;
+    padding: 8px 16px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker__trigger:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* Outlined Variant */
+.m3-date-picker--outlined .m3-date-picker__trigger {
+    border: 1px solid var(--m3-outline, #79747e);
+    border-radius: 4px;
+}
+
+.m3-date-picker--outlined:hover .m3-date-picker__trigger:not(:disabled) {
+    border-color: var(--m3-on-surface, #1C1B1F);
+}
+
+.m3-date-picker--outlined.m3-date-picker--open .m3-date-picker__trigger,
+.m3-date-picker--outlined .m3-date-picker__trigger:focus {
+    border-color: var(--m3-primary, #1a73e8);
+    border-width: 2px;
+    padding: 7px 15px;
+    outline: none;
+}
+
+/* Filled Variant */
+.m3-date-picker--filled .m3-date-picker__trigger {
+    background: var(--m3-surface-container-highest, #e6e0e9);
+    border-radius: 4px 4px 0 0;
+    position: relative;
+}
+
+.m3-date-picker--filled .m3-date-picker__active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--m3-on-surface-variant, #49454f);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker--filled:hover .m3-date-picker__active-indicator {
+    background: var(--m3-on-surface, #1C1B1F);
+}
+
+.m3-date-picker--filled.m3-date-picker--open .m3-date-picker__active-indicator,
+.m3-date-picker--filled .m3-date-picker__trigger:focus ~ .m3-date-picker__active-indicator {
+    height: 2px;
+    background: var(--m3-primary, #1a73e8);
+}
+
+/* Content Area */
+.m3-date-picker__content {
+    flex: 1;
+    position: relative;
+    min-height: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.m3-date-picker__label {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 16px;
+    color: var(--m3-on-surface-variant, #49454f);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.m3-date-picker__label--float {
+    top: 4px;
+    transform: translateY(0);
+    font-size: 12px;
+}
+
+.m3-date-picker--open .m3-date-picker__label,
+.m3-date-picker__trigger:focus .m3-date-picker__label {
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* Outlined floating label with background */
+.m3-date-picker--outlined .m3-date-picker__label--float {
+    background: var(--m3-surface, white);
+    padding: 0 4px;
+    margin-left: -4px;
+    top: -8px;
+}
+
+.m3-date-picker__required {
+    color: var(--m3-error, #b3261e);
+    margin-left: 2px;
+}
+
+.m3-date-picker__value {
+    font-size: 16px;
+    color: var(--m3-on-surface, #1C1B1F);
+    margin-top: 16px;
+}
+
+.m3-date-picker__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    color: var(--m3-on-surface-variant, #49454f);
+    flex-shrink: 0;
+}
+
+/* === Calendar Dropdown === */
+.m3-date-picker__calendar {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px) scale(0.95);
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.m3-date-picker--open .m3-date-picker__calendar {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+/* === Calendar Component === */
+.m3-calendar {
+    background: var(--m3-surface-container, #f3edf7);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.14), 0 4px 16px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    min-width: 320px;
+}
+
+.m3-calendar__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    background: var(--m3-surface-container-high, #ece6f0);
+}
+
+.m3-calendar__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    color: var(--m3-on-surface-variant, #49454f);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__nav:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__nav:active {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 12%, transparent);
+}
+
+.m3-calendar__title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__title:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__month {
+    font-weight: 500;
+}
+
+.m3-calendar__year {
+    color: var(--m3-on-surface-variant, #49454f);
+}
+
+/* Weekdays Header */
+.m3-calendar__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 8px 16px;
+    gap: 4px;
+}
+
+.m3-calendar__weekday {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-on-surface-variant, #49454f);
+}
+
+/* Days Grid */
+.m3-calendar__days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0 16px 16px;
+    gap: 4px;
+}
+
+.m3-calendar__day {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: all 150ms ease;
+    position: relative;
+}
+
+.m3-calendar__day:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__day:active:not(:disabled) {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 12%, transparent);
+}
+
+.m3-calendar__day--other {
+    color: var(--m3-on-surface-variant, #49454f);
+    opacity: 0.5;
+}
+
+.m3-calendar__day--today {
+    border: 1px solid var(--m3-primary, #1a73e8);
+    font-weight: 500;
+    color: var(--m3-primary, #1a73e8);
+}
+
+.m3-calendar__day--selected {
+    background: var(--m3-primary, #1a73e8) !important;
+    color: var(--m3-on-primary, white) !important;
+    font-weight: 500;
+}
+
+.m3-calendar__day--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+/* Month/Year Selection Grids */
+.m3-calendar__months,
+.m3-calendar__years {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    padding: 16px;
+    gap: 8px;
+}
+
+.m3-calendar__month-btn,
+.m3-calendar__year-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    border: none;
+    background: transparent;
+    border-radius: 24px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #1C1B1F);
+    transition: all 150ms ease;
+}
+
+.m3-calendar__month-btn:hover,
+.m3-calendar__year-btn:hover {
+    background: color-mix(in srgb, var(--m3-on-surface, #1C1B1F) 8%, transparent);
+}
+
+.m3-calendar__month-btn--current,
+.m3-calendar__year-btn--current {
+    border: 1px solid var(--m3-primary, #1a73e8);
+    color: var(--m3-primary, #1a73e8);
+}
+
+.m3-calendar__month-btn--selected,
+.m3-calendar__year-btn--selected {
+    background: var(--m3-primary, #1a73e8) !important;
+    color: var(--m3-on-primary, white) !important;
+}
+
+/* Footer */
+.m3-calendar__footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 12px 16px;
+    background: var(--m3-surface-container-high, #ece6f0);
+}
+
+.m3-calendar__btn {
+    padding: 10px 24px;
+    border: none;
+    background: transparent;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--m3-primary, #1a73e8);
+    transition: background 150ms ease;
+}
+
+.m3-calendar__btn:hover {
+    background: color-mix(in srgb, var(--m3-primary, #1a73e8) 8%, transparent);
+}
+
+.m3-calendar__btn--primary {
+    background: var(--m3-primary, #1a73e8);
+    color: var(--m3-on-primary, white);
+}
+
+.m3-calendar__btn--primary:hover {
+    background: color-mix(in srgb, var(--m3-on-primary, white) 8%, var(--m3-primary, #1a73e8));
+}
+
+/* === Date Picker Container for FormBuilder === */
+.form-m3-datepicker-container {
+    width: 100%;
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP TEXTFIELD STYLES
+   Generated from Material Design 3 MCP Server
+   ========================================= */
+
+/* Material Design 3 Text Field */
+.md-textfield {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Roboto', system-ui, sans-serif;
+}
+
+.md-textfield__label {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.md-textfield__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.md-textfield__input {
+    flex: 1;
+    padding: 16px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: inherit;
+    min-width: 0;
+}
+
+.md-textfield__input::placeholder {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    opacity: 1;
+}
+
+/* Filled variant */
+.md-textfield--filled .md-textfield__field {
+    background: var(--md-sys-color-surface-container-highest, #e6e1e5);
+    border-bottom: 1px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 4px 4px 0 0;
+}
+
+.md-textfield--filled .md-textfield__field:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 4%, var(--md-sys-color-surface-container-highest, #e6e1e5));
+}
+
+.md-textfield--filled .md-textfield__input:focus {
+    border-bottom: 2px solid var(--md-sys-color-primary, #1a73e8);
+}
+
+/* Outlined variant */
+.md-textfield--outlined .md-textfield__field {
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline, #79747e);
+    border-radius: 4px;
+}
+
+.md-textfield--outlined .md-textfield__field:hover {
+    border-color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.md-textfield--outlined .md-textfield__input:focus {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: -2px;
+}
+
+/* Size variants */
+.md-textfield--small .md-textfield__field {
+    min-height: 48px;
+}
+
+.md-textfield--small .md-textfield__input {
+    padding: 12px;
+    font-size: 14px;
+}
+
+.md-textfield--large .md-textfield__field {
+    min-height: 64px;
+}
+
+.md-textfield--large .md-textfield__input {
+    padding: 20px;
+    font-size: 18px;
+}
+
+/* Icons */
+.md-textfield__leading-icon,
+.md-textfield__trailing-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    margin: 0 12px;
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    flex-shrink: 0;
+}
+
+.md-textfield__icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+/* Supporting text */
+.md-textfield__supporting-text {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 4px;
+    padding: 0 16px;
+    font-size: 12px;
+    line-height: 16px;
+}
+
+.md-textfield__supporting,
+.md-textfield__character-count {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+}
+
+.md-textfield__error-text {
+    color: var(--md-sys-color-error, #b3261e);
+}
+
+/* Error state */
+.md-textfield--error .md-textfield__label {
+    color: var(--md-sys-color-error, #b3261e);
+}
+
+.md-textfield--error.md-textfield--filled .md-textfield__field {
+    border-bottom-color: var(--md-sys-color-error, #b3261e);
+}
+
+.md-textfield--error.md-textfield--outlined .md-textfield__field {
+    border-color: var(--md-sys-color-error, #b3261e);
+}
+
+/* Disabled state */
+.md-textfield--disabled {
+    opacity: 0.38;
+    pointer-events: none;
+}
+
+/* Focus states */
+.md-textfield__input:focus + .md-textfield__label {
+    color: var(--md-sys-color-primary, #1a73e8);
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP SELECT STYLES
+   ========================================= */
+
+.md-select {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    width: 100%;
+    font-family: 'Roboto', system-ui, sans-serif;
+}
+
+.md-select__label {
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    margin-bottom: 8px;
+    transition: all 0.2s ease;
+}
+
+.md-select__field {
+    position: relative;
+    display: flex;
+    align-items: center;
+    min-height: 56px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+}
+
+.md-select__input {
+    flex: 1;
+    padding: 16px;
+    padding-right: 48px;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-size: 16px;
+    line-height: 24px;
+    font-family: inherit;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+.md-select__dropdown-icon {
+    position: absolute;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    color: var(--md-sys-color-on-surface-variant, #49454f);
+    pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.md-select__dropdown-icon svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+}
+
+/* Filled variant */
+.md-select--filled .md-select__field {
+    background: var(--md-sys-color-surface-container-highest, #e6e1e5);
+    border-bottom: 1px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 4px 4px 0 0;
+}
+
+.md-select--filled .md-select__field:hover {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 4%, var(--md-sys-color-surface-container-highest, #e6e1e5));
+}
+
+/* Outlined variant */
+.md-select--outlined .md-select__field {
+    background: transparent;
+    border: 1px solid var(--md-sys-color-outline, #79747e);
+    border-radius: 4px;
+}
+
+.md-select--outlined .md-select__field:hover {
+    border-color: var(--md-sys-color-on-surface, #1c1b1f);
+}
+
+.md-select--outlined .md-select__input:focus {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: -2px;
+}
+
+/* Focus states */
+.md-select__input:focus + .md-select__dropdown-icon {
+    transform: rotate(180deg);
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP CHECKBOX STYLES
+   ========================================= */
+
+.md3-checkbox-with-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    user-select: none;
+    padding: 8px 0;
+}
+
+.md3-checkbox {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.md3-checkbox .input {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 3px;
+    cursor: pointer;
+    position: relative;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    margin: 0;
+}
+
+.md3-checkbox .container {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+}
+
+.md3-checkbox .outline {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 3px;
+    transition: all 200ms ease;
+}
+
+.md3-checkbox .background {
+    position: absolute;
+    inset: 0;
+    background: var(--md-sys-color-primary, #1a73e8);
+    border-radius: 3px;
+    opacity: 0;
+    transition: opacity 200ms ease;
+}
+
+.md3-checkbox .icon {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.md3-checkbox .icon svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--md-sys-color-on-primary, #ffffff);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.md3-checkbox .mark {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    transition: stroke-dashoffset 200ms ease;
+}
+
+/* Checked state */
+.md3-checkbox .input:checked ~ .container .outline {
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md3-checkbox .input:checked ~ .container .background {
+    opacity: 1;
+}
+
+.md3-checkbox .input:checked ~ .container .mark {
+    stroke-dashoffset: 0;
+}
+
+/* State layers */
+.md3-checkbox::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: transparent;
+    transform: translate(-50%, -50%);
+    transition: background 150ms ease;
+    pointer-events: none;
+}
+
+.md3-checkbox-with-label:hover .md3-checkbox::before {
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+}
+
+.md3-checkbox .input:focus-visible ~ .container {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP SWITCH STYLES
+   ========================================= */
+
+.md-switch-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.md-switch {
+    position: relative;
+    display: inline-block;
+    transition: opacity 0.2s ease;
+}
+
+.md-switch--disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+}
+
+.md-switch__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.md-switch__track {
+    position: relative;
+    width: 52px;
+    height: 32px;
+    border-radius: 16px;
+    background: var(--md-sys-color-surface-variant, #e7e0ec);
+    border: 2px solid var(--md-sys-color-outline, #79747e);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.md-switch__handle {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--md-sys-color-outline, #79747e);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(0);
+}
+
+.md-switch__label {
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* Checked state */
+.md-switch__input:checked + .md-switch__track {
+    background: var(--md-sys-color-primary, #1a73e8);
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md-switch__input:checked + .md-switch__track .md-switch__handle {
+    background: var(--md-sys-color-on-primary, #ffffff);
+    transform: translateX(20px);
+}
+
+/* Focus state */
+.md-switch__input:focus + .md-switch__track {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* Hover state */
+.md-switch:hover:not(.md-switch--disabled) .md-switch__track::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+    transition: opacity 0.2s ease;
+}
+
+/* =========================================
+   OFFICIAL MD3 MCP RADIO STYLES
+   ========================================= */
+
+.md-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.md-radio-group--inline {
+    flex-direction: row;
+    gap: 24px;
+}
+
+.md-radio {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    position: relative;
+    min-height: 48px;
+    padding: 12px 0;
+    user-select: none;
+    transition: opacity 0.2s ease;
+}
+
+.md-radio--disabled {
+    cursor: not-allowed;
+    opacity: 0.38;
+}
+
+.md-radio__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+    margin: 0;
+}
+
+.md-radio__background {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.md-radio__outer-circle {
+    position: absolute;
+    inset: 0;
+    border: 2px solid var(--md-sys-color-on-surface-variant, #49454f);
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.md-radio__inner-circle {
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    background: var(--md-sys-color-primary, #1a73e8);
+    transform: scale(0);
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.md-radio__label {
+    color: var(--md-sys-color-on-surface, #1c1b1f);
+    font-family: 'Roboto', system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+}
+
+/* States */
+.md-radio__input:checked + .md-radio__background .md-radio__outer-circle {
+    border-color: var(--md-sys-color-primary, #1a73e8);
+}
+
+.md-radio__input:checked + .md-radio__background .md-radio__inner-circle {
+    transform: scale(1);
+}
+
+.md-radio__input:focus + .md-radio__background {
+    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* Hover state layer */
+.md-radio:hover:not(.md-radio--disabled) .md-radio__background::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
+    transition: opacity 0.2s ease;
+}
