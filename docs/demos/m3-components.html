@@ -570,6 +570,23 @@
                 <div id="code-searchable"></div>
             </div>
 
+            <!-- Multiselect Dropdown Section -->
+            <div class="demo-section" id="multiselect-dropdown">
+                <h2>M3 Multiselect Dropdown <span class="badge m3">NEW</span></h2>
+                <p>Select multiple values which are displayed as chips. Includes option to limit the number of visible chips.</p>
+
+                <div class="dropdown-showcase">
+                    <div class="component-card">
+                        <h3>Multiselect Tags</h3>
+                        <div id="multiselect-tags-demo"></div>
+                    </div>
+                    <div class="component-card">
+                        <h3>Multiselect Kategorien (max. 2 Chips)</h3>
+                        <div id="multiselect-categories-demo"></div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Checkbox & Switch Section -->
             <div class="demo-section" id="selection-controls">
                 <h2>M3 Selection Controls <span class="badge m3">M3</span></h2>
@@ -1248,6 +1265,49 @@
                 { value: 'graz', label: 'Graz' },
                 { value: 'linz', label: 'Linz' }
             ]
+        });
+
+        // Multiselect Tags Demo
+        new M3DropdownMenu({
+            containerId: 'multiselect-tags-demo',
+            label: 'Tags auswählen',
+            multiselect: true,
+            searchable: true,
+            searchPlaceholder: 'Tags suchen...',
+            variant: 'filled',
+            options: [
+                { value: 'js', label: 'JavaScript' },
+                { value: 'ts', label: 'TypeScript' },
+                { value: 'py', label: 'Python' },
+                { value: 'java', label: 'Java' },
+                { value: 'cpp', label: 'C++' },
+                { value: 'go', label: 'Go' },
+                { value: 'rust', label: 'Rust' },
+                { value: 'php', label: 'PHP' }
+            ],
+            value: ['js', 'ts'],
+            onChange: (values, labels) => {
+                console.log('Selected tags:', values, labels);
+            }
+        });
+
+        new M3DropdownMenu({
+            containerId: 'multiselect-categories-demo',
+            label: 'Kategorien',
+            multiselect: true,
+            variant: 'outlined',
+            maxChips: 2,
+            options: [
+                { value: 'tech', label: 'Technologie' },
+                { value: 'design', label: 'Design' },
+                { value: 'marketing', label: 'Marketing' },
+                { value: 'sales', label: 'Vertrieb' },
+                { value: 'support', label: 'Support' },
+                { value: 'hr', label: 'Personal' }
+            ],
+            onChange: (values, labels) => {
+                console.log('Selected categories:', values, labels);
+            }
         });
 
         // Initialize Sliders
