@@ -115,11 +115,11 @@
     position: static;
     justify-content: center;
     padding-top: 0;
-    min-height: 24px;
+    min-height: 40px; /* Match filled variant */
 }
 
 .m3-dropdown--outlined.m3-dropdown--has-value .m3-dropdown__content {
-    padding-top: 8px; /* Match filled variant spacing between label and value */
+    padding-top: 12px; /* Match filled variant spacing between label and value */
 }
 
 /* === Label - ENHANCED === */
