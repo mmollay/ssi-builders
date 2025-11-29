@@ -315,6 +315,10 @@
                     <h3>4. ssi_search_components</h3>
                     <p>Suche Komponenten nach Keyword, Feature, oder Use Case.</p>
                     <div id="tool4-example"></div>
+
+                    <h3>5. ssi_check_updates</h3>
+                    <p>Prüfe auf neue SSI Builders Versionen und update automatisch.</p>
+                    <div id="tool5-example"></div>
                 </div>
 
                 <!-- Resources -->
@@ -502,6 +506,40 @@ ssi_search_components({ query: "dark mode" })
     },
     // ... more results
   ]
+}`,
+            copyButton: true,
+            theme: 'dark'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'tool5-example',
+            language: 'javascript',
+            code: `// User fragt: "Check if there's a new SSI Builders version"
+// Claude Code verwendet intern:
+ssi_check_updates()
+
+// Output:
+{
+  "currentVersion": "2.6.0",
+  "latestVersion": "2.6.1",
+  "updateAvailable": true,
+  "releaseUrl": "https://github.com/mmollay/ssi-builders/releases/tag/v2.6.1",
+  "changelog": "### Added\\n- MCP Server Integration\\n..."
+}
+
+// Auto-Update:
+// User: "Update SSI Builders to latest version"
+ssi_check_updates({
+  projectPath: "/path/to/vendor/ssi-builders",
+  autoUpdate: true
+})
+
+// Output:
+{
+  "currentVersion": "2.6.0",
+  "latestVersion": "2.6.1",
+  "updateSuccess": true,
+  "updateMessage": "Successfully updated from v2.6.0 to v2.6.1"
 }`,
             copyButton: true,
             theme: 'dark'
