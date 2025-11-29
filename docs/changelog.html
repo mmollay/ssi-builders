@@ -136,6 +136,7 @@
         import { IconManager } from '/src/IconManager.js';
         import { ChangelogBuilder } from '/src/ChangelogBuilder.js';
         import { getVersion } from '/src/version.js';
+        import { parseChangelog } from '/src/utils/changelog-parser.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
@@ -147,20 +148,38 @@
         // Initialize layout with sidebar (activePage: 'changelog')
         initializeDemoLayout('changelog');
 
-        // Changelog data from CHANGELOG.md
-        const changelogData = [
+        // Load and parse CHANGELOG.md automatically
+        const changelogData = await parseChangelog('/CHANGELOG.md');
+
+        // Legacy fallback data (only used if parsing fails)
+        const fallbackData = [
             {
-                version: 'Unreleased',
-                date: 'Coming Soon',
+                version: '2.6.2',
+                date: '2025-11-29',
                 highlight: true,
                 changes: [
-                    { type: 'added', text: 'ModalBuilder.form(): New static method that opens a modal with integrated FormBuilder' },
-                    { type: 'added', text: 'ModalBuilder.delete(): New static method for delete confirmations with AJAX support' },
-                    { type: 'added', text: 'CRUD Demo Page: New comprehensive demo showcasing ListBuilder + ModalBuilder + FormBuilder integration' },
-                    { type: 'added', text: 'i18n Extensions: Added new translation keys for modal operations' },
-                    { type: 'fixed', text: 'FormBuilder CSS (Modal Forms): Fixed form field width issues in modal forms' },
-                    { type: 'fixed', text: 'ModalBuilder CSS: Removed unwanted box-shadow frame around forms in modals' },
-                    { type: 'changed', text: 'Sidebar Navigation: Added CRUD Demo link with "NEU" badge' }
+                    { type: 'changed', text: 'FormBuilder: Optimized spacing for better visual density in modal forms' },
+                    { type: 'changed', text: 'FormBuilder: Reduced default gap from 24px to 16px for .form-builder-form and .form-builder-grid' },
+                    { type: 'changed', text: 'FormBuilder: Removed border and box-shadow from default .form-builder container' },
+                    { type: 'changed', text: 'FormBuilder: Forms now render cleanly in modals without redundant borders' },
+                    { type: 'changed', text: 'FormBuilder: Added .form-builder-card class for standalone forms that need border/shadow styling' },
+                    { type: 'fixed', text: 'FormBuilder: Fixed excessive spacing between form fields in modal dialogs' },
+                    { type: 'fixed', text: 'FormBuilder: Removed unwanted border outline around forms in modals' }
+                ]
+            },
+            {
+                version: '2.6.1',
+                date: '2025-11-29',
+                changes: [
+                    { type: 'added', text: 'MCP Server Integration: AI-optimized documentation access for Claude Code' },
+                    { type: 'added', text: 'MCP Server: New demo page at /docs/demos/mcp-server.html with installation guide' },
+                    { type: 'added', text: 'MCP Server: 4 tools (list, get-info, generate-code, search) for component discovery' },
+                    { type: 'added', text: 'MCP Server: 3 resources for structured documentation (index, best-practices, changelog)' },
+                    { type: 'added', text: 'MCP Server: Reduces token usage by 70-90% for SSI Builders development' },
+                    { type: 'added', text: 'Pre-GITHUB Hook: Automatically syncs MCP Server data before version releases' },
+                    { type: 'added', text: 'Sidebar Navigation: Added "MCP Server" link in Resources section with "New" badge' },
+                    { type: 'changed', text: 'MCP Configuration: Added ssi-builders MCP server to .mcp.json' },
+                    { type: 'changed', text: 'Global Hooks: Enhanced with model auto-selection (Haiku for simple tasks, Sonnet for complex)' }
                 ]
             },
             {
@@ -345,11 +364,11 @@
             }
         ];
 
-        // Initialize ChangelogBuilder
+        // Initialize ChangelogBuilder with parsed data (or fallback)
         new ChangelogBuilder({
             containerId: 'changelog-render-area',
             showTitle: false,  // We have our own header
-            data: changelogData,
+            data: changelogData.length > 0 ? changelogData : fallbackData,
             options: {
                 variant: 'timeline',
                 collapsible: true,

@@ -198,7 +198,7 @@ export class SiteBuilder {
      * @private
      */
     _renderHeader() {
-        const { logo, title, subtitle, menu, actions, fixed } = this.config.header;
+        const { logo, title, subtitle, menu = [], actions = [], fixed } = this.config.header;
 
         return `
             <header class="site-header ${fixed ? 'fixed' : ''}">
@@ -277,7 +277,7 @@ export class SiteBuilder {
      * @private
      */
     _renderFooter() {
-        const { copyright, links, content } = this.config.footer;
+        const { copyright, links = [], content } = this.config.footer;
 
         if (content) {
             return `<footer class="site-footer">${content}</footer>`;
