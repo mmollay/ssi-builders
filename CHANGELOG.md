@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.2] - 2025-11-29
+
+### Changed
+- **FormBuilder**: Optimized spacing for better visual density in modal forms
+  - Reduced default gap from 24px to 16px for `.form-builder-form` and `.form-builder-grid`
+  - Removed border and box-shadow from default `.form-builder` container
+  - Forms now render cleanly in modals without redundant borders
+  - Added `.form-builder-card` class for standalone forms that need border/shadow styling
+
+### Fixed
+- **FormBuilder**: Fixed excessive spacing between form fields in modal dialogs
+- **FormBuilder**: Removed unwanted border outline around forms in modals
+
 ## [2.6.1] - 2025-11-29
 
 ### Added

@@ -9,6 +9,12 @@
     color: var(--m3-on-surface, #1c1b1f);
     border-radius: 12px;
     padding: 24px;
+    /* Border and shadow removed by default - forms are typically used in modals or cards */
+    /* Use .form-builder-card class to add border and shadow for standalone forms */
+}
+
+/* Optional card style for standalone forms */
+.form-builder-card {
     box-shadow: var(--m3-elevation-1, 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05));
     border: 1px solid var(--m3-outline-variant, #dadce0);
 }
@@ -16,7 +22,7 @@
 .form-builder-form {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
 }
 
 /* === SIZE OPTIONS - Field Height === */
@@ -333,7 +339,7 @@
 .form-builder-grid {
     display: grid;
     grid-template-columns: repeat(12, 1fr);
-    gap: 24px;
+    gap: 16px;
 }
 
 /* Fields without explicit width span full row in 12-column grid */
