@@ -15,6 +15,7 @@
  */
 
 import { createVersionBadge } from './version.js';
+import { i18n } from './i18n.js';
 
 export class ChartBuilder {
     /**
@@ -111,7 +112,6 @@ export class ChartBuilder {
                     ${this.renderChart()}
                 </div>
                 ${this.options.showLegend ? this.renderLegend() : ''}
-                ${createVersionBadge()}
             </div>
         `;
 
@@ -172,7 +172,7 @@ export class ChartBuilder {
             }));
         }
 
-        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        if (!chartData.length) return `<p class="chart-empty">${i18n.t('chart.noData')}</p>`;
 
         const maxValue = Math.max(...chartData.map(d => d.value));
         const barWidth = 100 / chartData.length;
@@ -235,7 +235,7 @@ export class ChartBuilder {
             datasets = this.data.datasets;
         }
 
-        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        if (!chartData.length) return `<p class="chart-empty">${i18n.t('chart.noData')}</p>`;
 
         // Get all values from all datasets
         const allValues = datasets.flatMap(ds => ds.data);
@@ -335,7 +335,7 @@ export class ChartBuilder {
             }));
         }
 
-        if (!chartData.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        if (!chartData.length) return `<p class="chart-empty">${i18n.t('chart.noData')}</p>`;
 
         const total = chartData.reduce((sum, item) => sum + item.value, 0);
         const size = 300;
@@ -404,7 +404,7 @@ export class ChartBuilder {
                     </text>
                     <text x="${center}" y="${center + 20}" text-anchor="middle"
                           font-size="12" fill="#5f6368">
-                        Gesamt
+                        ${i18n.t('chart.total')}
                     </text>
                 ` : ''}
             </svg>
@@ -415,7 +415,7 @@ export class ChartBuilder {
      * Render progress chart
      */
     renderProgressChart() {
-        if (!this.data.length) return '<p class="chart-empty">Keine Daten verfügbar</p>';
+        if (!this.data.length) return `<p class="chart-empty">${i18n.t('chart.noData')}</p>`;
 
         return `
             <div class="chart-progress-list">

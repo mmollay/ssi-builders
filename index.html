@@ -5,187 +5,165 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SSI Builders - Professional UI Component Library</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- SSI Builders Styles -->
     <link rel="stylesheet" href="/src/shared.css">
     <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/src/CardBuilder.css">
     <link rel="stylesheet" href="/docs/demos/layout.css">
 
     <style>
         /* Landing Page Specific Styles */
         .hero-section {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 80px 40px;
+            background: linear-gradient(135deg, var(--m3-primary, #667eea) 0%, #764ba2 100%);
+            padding: 60px 40px;
             text-align: center;
             color: white;
-            border-radius: 12px;
-            margin-bottom: 40px;
+            border-radius: 16px;
+            margin-bottom: 32px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
         }
 
         .hero-section h1 {
-            font-size: 56px;
-            margin-bottom: 16px;
+            font-size: 48px;
+            margin-bottom: 12px;
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .hero-section p {
-            font-size: 24px;
+            font-size: 20px;
             opacity: 0.95;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .version-badge {
             display: inline-block;
             background: rgba(255, 255, 255, 0.2);
-            padding: 12px 24px;
-            border-radius: 24px;
-            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 14px;
             backdrop-filter: blur(10px);
         }
 
         /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Section spacing */
+        .section-container {
+            display: flex;
+            flex-direction: column;
             gap: 24px;
-            margin-bottom: 60px;
         }
 
-        .stat-card {
-            background: white;
-            padding: 32px;
-            border-radius: 12px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-
-        .stat-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-        }
-
-        .stat-card .number {
-            font-size: 48px;
-            font-weight: 700;
-            color: #1a73e8;
-            margin-bottom: 12px;
-        }
-
-        .stat-card .label {
-            color: #5f6368;
-            font-size: 16px;
-        }
-
-        /* Info Card */
-        .info-card {
-            background: white;
-            padding: 48px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-            margin-bottom: 40px;
-        }
-
-        .info-card h2 {
-            font-size: 36px;
-            color: #1a73e8;
-            margin-bottom: 24px;
-        }
-
-        .info-card p {
-            color: #5f6368;
-            font-size: 18px;
-            line-height: 1.8;
-            margin-bottom: 24px;
-        }
-
-        /* Features Grid */
+        /* Features Grid inside card */
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-top: 16px;
         }
 
-        .feature-box {
-            padding: 24px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid;
-        }
-
-        .feature-box.blue {
-            border-left-color: #1a73e8;
-        }
-
-        .feature-box.green {
-            border-left-color: #34a853;
-        }
-
-        .feature-box.red {
-            border-left-color: #ea4335;
-        }
-
-        .feature-box h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-            color: #202124;
-        }
-
-        .feature-box p {
-            color: #5f6368;
-            font-size: 15px;
-            line-height: 1.6;
+        /* Quick links list */
+        .quick-links {
+            list-style: none;
+            padding: 0;
             margin: 0;
+        }
+
+        .quick-links li {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .quick-links li:last-child {
+            border-bottom: none;
+        }
+
+        .quick-links a {
+            color: var(--m3-primary, #1a73e8);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .quick-links a:hover {
+            text-decoration: underline;
+        }
+
+        .quick-links .description {
+            color: var(--m3-on-surface-variant, #5f6368);
+            font-size: 14px;
+            margin-left: 8px;
         }
 
         /* Footer */
         .page-footer {
             text-align: center;
-            padding: 40px 0;
-            margin-top: 60px;
-            border-top: 2px solid #e0e0e0;
+            padding: 32px 0;
+            margin-top: 40px;
+            border-top: 1px solid var(--m3-outline-variant, #e0e0e0);
         }
 
         .page-footer p {
-            color: #5f6368;
-            font-size: 16px;
-        }
-
-        .page-footer .copyright {
-            color: #9aa0a6;
+            color: var(--m3-on-surface-variant, #5f6368);
             font-size: 14px;
-            margin-top: 8px;
+            margin: 4px 0;
         }
 
         /* Responsive */
         @media (max-width: 768px) {
+            .hero-section {
+                padding: 40px 24px;
+            }
+
             .hero-section h1 {
-                font-size: 36px;
+                font-size: 32px;
             }
 
             .hero-section p {
-                font-size: 18px;
-            }
-
-            .info-card {
-                padding: 32px 24px;
-            }
-
-            .info-card h2 {
-                font-size: 28px;
-            }
-
-            .info-card p {
                 font-size: 16px;
             }
+        }
 
-            .stat-card .number {
-                font-size: 36px;
-            }
+        /* Dark mode adjustments */
+        [data-theme="dark"] .hero-section {
+            background: linear-gradient(135deg, #4a5568 0%, #2d3748 100%);
+        }
+
+        [data-theme="dark"] .quick-links li {
+            border-bottom-color: var(--m3-outline-variant, #444);
+        }
+
+        [data-theme="dark"] .page-footer {
+            border-top-color: var(--m3-outline-variant, #444);
         }
     </style>
 </head>
@@ -200,86 +178,21 @@
             <div class="demo-content-inner">
                 <!-- Hero Section -->
                 <div class="hero-section">
-                    <h1>🎨 SSI Builders</h1>
+                    <h1>SSI Builders</h1>
                     <p>Professional UI Component Library for Modern Web Apps</p>
-                    <div class="version-badge" id="version-badge">
-                        Loading...
-                    </div>
+                    <div class="version-badge" id="version-badge">Loading...</div>
                 </div>
 
-                <!-- Stats Grid -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="number">8</div>
-                        <div class="label">Builders</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">15+</div>
-                        <div class="label">Icons</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">5</div>
-                        <div class="label">Icon Systems</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="number">100%</div>
-                        <div class="label">MD3 Compliant</div>
-                    </div>
-                </div>
+                <!-- Stats Grid - using CardBuilder -->
+                <div class="stats-grid" id="stats-container"></div>
 
-                <!-- Main Info Card -->
-                <div class="info-card">
-                    <h2>🎯 Was ist SSI Builders?</h2>
-                    <p>
-                        SSI Builders ist die <strong>zentrale UI-Komponenten-Bibliothek</strong> für alle SSI-Projekte.
-                        Entwickelt mit <strong>Material Design 3</strong> Prinzipien und optimiert für moderne
-                        Webapplikationen.
-                    </p>
-
-                    <div class="features-grid">
-                        <div class="feature-box blue">
-                            <h3>🚀 Production-Ready</h3>
-                            <p>Sofort einsetzbar in allen SSI-Projekten</p>
-                        </div>
-                        <div class="feature-box green">
-                            <h3>📱 Mobile-First</h3>
-                            <p>Responsive für alle Bildschirmgrößen</p>
-                        </div>
-                        <div class="feature-box red">
-                            <h3>♿ Accessibility</h3>
-                            <p>ARIA, Keyboard Nav, Screen Reader Support</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Getting Started Info -->
-                <div class="info-card">
-                    <h2>🚀 Getting Started</h2>
-                    <p>
-                        Nutze die Sidebar-Navigation links, um alle verfügbaren Builder zu erkunden!
-                        Jede Builder-Seite zeigt dir Live-Demos und Code-Beispiele.
-                    </p>
-                    <div
-                        style="background: #e8f0fe; padding: 24px; border-radius: 8px; border-left: 4px solid #1a73e8; margin-top: 24px;">
-                        <h3 style="font-size: 20px; color: #1a73e8; margin-bottom: 12px;">💡 Quick Links</h3>
-                        <ul style="color: #5f6368; font-size: 16px; line-height: 1.8; margin-left: 20px;">
-                            <li><a href="docs/demos/all-builders-overview.html"
-                                    style="color: #1a73e8; text-decoration: none;">All Builders Overview</a> - Alle
-                                Builder auf einen Blick</li>
-                            <li><a href="docs/demos/global-config-playground.html"
-                                    style="color: #1a73e8; text-decoration: none;">Live Playground</a> - Konfiguration
-                                in Echtzeit testen</li>
-                            <li><a href="docs/demos/icon-system.html"
-                                    style="color: #1a73e8; text-decoration: none;">Icon System</a> - Icon-Verwaltung
-                                verstehen</li>
-                        </ul>
-                    </div>
-                </div>
+                <!-- Main Sections - using CardBuilder -->
+                <div class="section-container" id="sections-container"></div>
 
                 <!-- Footer -->
                 <div class="page-footer">
                     <p>Made with ❤️ by SSI Solutions</p>
-                    <p class="copyright">© 2025 SSI Builders</p>
+                    <p>© 2025 SSI Builders</p>
                 </div>
             </div>
         </main>
@@ -289,6 +202,7 @@
         import { initializeDemoLayout } from '/docs/demos/layout.js';
         import { IconManager } from '/src/IconManager.js';
         import { getVersion } from '/src/version.js';
+        import { CardBuilder } from '/src/CardBuilder.js';
 
         // Configure Icon System
         IconManager.setPreset('lucide');
@@ -297,10 +211,161 @@
         // Set dynamic version
         document.getElementById('version-badge').textContent = `v${getVersion()} - Material Design 3`;
 
-        // Initialize layout with sidebar (activePage: 'index')
+        // Initialize layout with sidebar
         initializeDemoLayout('index');
 
-        console.log('✅ SSI Builders Landing Page initialized successfully!');
+        // ========================================
+        // Stats Cards
+        // ========================================
+        const stats = [
+            { number: '12+', label: 'Builders' },
+            { number: '30+', label: 'Icons' },
+            { number: '5', label: 'Icon Systems' },
+            { number: '100%', label: 'MD3 Compliant' }
+        ];
+
+        stats.forEach(stat => {
+            new CardBuilder({
+                containerId: 'stats-container',
+                variant: 'elevated',
+                content: `
+                    <div style="text-align: center; padding: 8px 0;">
+                        <div style="font-size: 36px; font-weight: 700; color: var(--m3-primary, #1a73e8); margin-bottom: 8px;">
+                            ${stat.number}
+                        </div>
+                        <div style="color: var(--m3-on-surface-variant, #5f6368); font-size: 14px;">
+                            ${stat.label}
+                        </div>
+                    </div>
+                `,
+                padding: 'compact',
+                clickable: false
+            });
+        });
+
+        // ========================================
+        // Section: Was ist SSI Builders?
+        // ========================================
+        const aboutContent = document.createElement('div');
+        aboutContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); font-size: 16px; line-height: 1.7; margin-bottom: 20px;">
+                SSI Builders ist die <strong>zentrale UI-Komponenten-Bibliothek</strong> für alle SSI-Projekte.
+                Entwickelt mit <strong>Material Design 3</strong> Prinzipien und optimiert für moderne Webapplikationen.
+            </p>
+            <div class="features-grid" id="features-grid"></div>
+        `;
+
+        new CardBuilder({
+            containerId: 'sections-container',
+            variant: 'outlined',
+            header: {
+                title: 'Was ist SSI Builders?',
+                subtitle: 'Die zentrale UI-Bibliothek für alle SSI-Projekte'
+            },
+            content: aboutContent,
+            padding: 'relaxed'
+        });
+
+        // Feature Cards inside
+        const features = [
+            { icon: 'star', title: 'Production-Ready', desc: 'Sofort einsetzbar in allen SSI-Projekten', color: '#1a73e8' },
+            { icon: 'layout', title: 'Mobile-First', desc: 'Responsive für alle Bildschirmgrößen', color: '#34a853' },
+            { icon: 'settings', title: 'Accessibility', desc: 'ARIA, Keyboard Nav, Screen Reader', color: '#ea4335' }
+        ];
+
+        features.forEach(feature => {
+            new CardBuilder({
+                containerId: 'features-grid',
+                variant: 'outlined',
+                content: `
+                    <div style="display: flex; align-items: flex-start; gap: 12px;">
+                        <div style="width: 40px; height: 40px; border-radius: 8px; background: ${feature.color}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: white;">
+                            ${IconManager.getIcon(feature.icon)}
+                        </div>
+                        <div>
+                            <div style="font-weight: 600; color: var(--m3-on-surface); margin-bottom: 4px;">${feature.title}</div>
+                            <div style="font-size: 14px; color: var(--m3-on-surface-variant);">${feature.desc}</div>
+                        </div>
+                    </div>
+                `,
+                padding: 'compact'
+            });
+        });
+
+        // ========================================
+        // Section: Getting Started
+        // ========================================
+        const gettingStartedContent = document.createElement('div');
+        gettingStartedContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); font-size: 16px; line-height: 1.7; margin-bottom: 20px;">
+                Nutze die Sidebar-Navigation links, um alle verfügbaren Builder zu erkunden!
+                Jede Builder-Seite zeigt dir Live-Demos und Code-Beispiele.
+            </p>
+            <ul class="quick-links">
+                <li>
+                    <a href="docs/demos/all-builders-overview.html">All Builders Overview</a>
+                    <span class="description">- Alle Builder auf einen Blick</span>
+                </li>
+                <li>
+                    <a href="docs/demos/global-config-playground.html">Live Playground</a>
+                    <span class="description">- Konfiguration in Echtzeit testen</span>
+                </li>
+                <li>
+                    <a href="docs/demos/icon-system.html">Icon System</a>
+                    <span class="description">- Icon-Verwaltung verstehen</span>
+                </li>
+                <li>
+                    <a href="docs/demos/card-builder.html">CardBuilder</a>
+                    <span class="description">- Neu! M3 Card/Segment Komponente</span>
+                </li>
+            </ul>
+        `;
+
+        new CardBuilder({
+            containerId: 'sections-container',
+            variant: 'outlined',
+            header: {
+                title: 'Getting Started',
+                subtitle: 'Schnelleinstieg in SSI Builders'
+            },
+            content: gettingStartedContent,
+            padding: 'relaxed'
+        });
+
+        // ========================================
+        // Section: Neu in dieser Version
+        // ========================================
+        const whatsNewContent = document.createElement('div');
+        whatsNewContent.innerHTML = `
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--m3-surface-container, #f5f5f5); border-radius: 8px;">
+                    <span style="background: #2e7d32; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">NEU</span>
+                    <span style="color: var(--m3-on-surface);"><strong>CardBuilder</strong> - M3 Card/Segment Komponente</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--m3-surface-container, #f5f5f5); border-radius: 8px;">
+                    <span style="background: #2e7d32; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">NEU</span>
+                    <span style="color: var(--m3-on-surface);"><strong>MessageBuilder</strong> - Inline Messages/Alerts</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--m3-surface-container, #f5f5f5); border-radius: 8px;">
+                    <span style="background: #2e7d32; color: white; padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: 500;">NEU</span>
+                    <span style="color: var(--m3-on-surface);"><strong>ThemeBuilder</strong> - Dynamische Theme-Generierung</span>
+                </div>
+            </div>
+        `;
+
+        new CardBuilder({
+            containerId: 'sections-container',
+            variant: 'outlined',
+            header: {
+                title: 'Neu in dieser Version',
+                subtitle: 'Die neuesten Komponenten'
+            },
+            content: whatsNewContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        console.log('✅ SSI Builders Landing Page initialized with CardBuilder!');
     </script>
 </body>
 

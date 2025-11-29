@@ -16,7 +16,7 @@
 /* === Menu Container === */
 .menu-container {
     position: fixed;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
     overflow-y: auto;
@@ -49,7 +49,7 @@
     gap: 12px;
     padding: 10px 16px;
     cursor: pointer;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
     font-size: 14px;
     transition: background 0.2s;
     user-select: none;
@@ -67,7 +67,7 @@
 /* === Menu Shortcut === */
 .menu-shortcut {
     font-size: 12px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     margin-left: auto;
     flex-shrink: 0;
 }
@@ -75,7 +75,7 @@
 /* === Menu Arrow (Submenu) === */
 .menu-arrow {
     font-size: 16px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     margin-left: auto;
     flex-shrink: 0;
 }
@@ -83,7 +83,7 @@
 /* === Menu Divider === */
 .menu-divider {
     height: 1px;
-    background: #e8eaed;
+    background: var(--m3-outline-variant, #e8eaed);
     margin: 8px 0;
 }
 
@@ -104,17 +104,17 @@
     justify-content: center;
     width: 18px;
     height: 18px;
-    border: 2px solid #5f6368;
+    border: 2px solid var(--m3-on-surface-variant, #5f6368);
     border-radius: 3px;
     font-size: 12px;
-    color: white;
+    color: var(--m3-on-primary, #ffffff);
     flex-shrink: 0;
     transition: all 0.2s;
 }
 
 .menu-checkbox-checked {
-    background: #1a73e8;
-    border-color: #1a73e8;
+    background: var(--m3-primary, #1a73e8);
+    border-color: var(--m3-primary, #1a73e8);
 }
 
 /* === Submenu === */
@@ -122,7 +122,7 @@
     position: absolute;
     left: 100%;
     top: 0;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.08);
     min-width: 200px;
@@ -153,12 +153,12 @@
 }
 
 .menu-container::-webkit-scrollbar-thumb {
-    background: #dadce0;
+    background: var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
 }
 
 .menu-container::-webkit-scrollbar-thumb:hover {
-    background: #bdc1c6;
+    background: var(--m3-on-surface-variant, #bdc1c6);
 }
 
 /* === Mobile === */
@@ -182,4 +182,64 @@
         max-height: 80vh;
         overflow-y: auto;
     }
+}
+
+/* === Dark Mode === */
+html.dark-mode .menu-container,
+html.m3-dark .menu-container {
+    background: #2d2d2d !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-mode .menu-item,
+html.m3-dark .menu-item {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .menu-item:hover:not(.menu-item-disabled),
+html.m3-dark .menu-item:hover:not(.menu-item-disabled) {
+    background: rgba(138, 180, 248, 0.12) !important;
+}
+
+html.dark-mode .menu-shortcut,
+html.m3-dark .menu-shortcut {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .menu-arrow,
+html.m3-dark .menu-arrow {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .menu-divider,
+html.m3-dark .menu-divider {
+    background: #3d3d3d !important;
+}
+
+html.dark-mode .menu-checkbox,
+html.m3-dark .menu-checkbox {
+    border-color: #a1a1a1 !important;
+}
+
+html.dark-mode .menu-checkbox-checked,
+html.m3-dark .menu-checkbox-checked {
+    background: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+    color: #003c8f !important;
+}
+
+html.dark-mode .menu-submenu,
+html.m3-dark .menu-submenu {
+    background: #2d2d2d !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark-mode .menu-container::-webkit-scrollbar-thumb,
+html.m3-dark .menu-container::-webkit-scrollbar-thumb {
+    background: #6c6c6c !important;
+}
+
+html.dark-mode .menu-container::-webkit-scrollbar-thumb:hover,
+html.m3-dark .menu-container::-webkit-scrollbar-thumb:hover {
+    background: #8c8c8c !important;
 }

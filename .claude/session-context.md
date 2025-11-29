@@ -1,64 +1,58 @@
-# Session Context - 2025-11-27
+# Session Context - 2025-11-28
 
 ## Aktueller Stand
-- **Letzter erfolgreicher Task:** M3 Dropdown Styling v2.5.1 - Deutliche Verbesserungen ALLER Dropdowns
-- **Aktuelle Datei/Feature:** M3DropdownMenu mit Multiselect Support
-- **Browser-Status:** Dev Server läuft auf http://localhost:5177
+- **Letzter erfolgreicher Task:** ThemeBuilder System-Integration in GlobalConfig
+- **Aktuelle Datei/Feature:** ThemeBuilder + GlobalConfig Integration v2.6.0
+- **Browser-Status:** http://localhost:5177/docs/demos/theme-builder.html (Playwright)
+- **Version:** SSI Builders v2.6.0
 
-## Abgeschlossene Tasks (diese Session)
-- [x] Dropdown Field Styling verbessern (60px Höhe, 16px Border-Radius)
-- [x] Dropdown Menu Styling verbessern (3-Layer Schatten, 16px Border-Radius)
-- [x] Dropdown Option Styling verbessern (12px abgerundete Ecken, Selected State mit Primary 12%)
-- [x] Multiselect Chips Styling verbessern (Pill-Style 20px Border-Radius)
-- [x] Trailing Icon Styling verbessern (28px, Primary bei Open)
-- [x] Visual Testing mit Playwright
+## Offene Tasks
+- Keine offenen Tasks
 
-## Wichtige Änderungen (uncommitted)
+## Wichtige Änderungen (seit letztem Commit)
+- FormBuilder Layout Variations Section hinzugefügt
+- Number Stepper M3 Design Update
+- FormBuilder Density Options
+- Complete Form Example auf FormBuilder umgestellt
+- GlobalConfig i18n System (v2.5.0)
+- **NEU: ThemeBuilder GlobalConfig Integration (v2.6.0)**
+  - GlobalConfig.setTheme('preset') - Theme via Preset setzen
+  - GlobalConfig.setThemeFromSeed('#color') - Theme via Seed-Color
+  - GlobalConfig.toggleDarkMode() - Dark Mode toggle
+  - GlobalConfig.setDarkMode(true/false) - Dark Mode explizit setzen
+  - GlobalConfig.getThemeInfo() - Aktuelle Theme-Info abrufen
+  - GlobalConfig.getThemePresets() - Verfügbare Presets auflisten
+  - GlobalConfig.onThemeChange(callback) - Theme-Änderungen überwachen
+  - Zirkulärer Import-Problem gelöst (ThemeBuilder importiert NICHT GlobalConfig)
+  - Auto-Init via setTimeout um Import-Reihenfolge zu garantieren
 
-### src/m3-form-styles.css - ENHANCED v2.5.1
-- Dropdown Field: 60px min-height, 16px border-radius
-- Dropdown Menu: 3-layer shadow, 16px border-radius, 4px gap
-- Options: 56px height, 12px rounded corners, margin between items
-- Selected Option: Primary 12% background, blue text, checkmark
-- Chips: Pill-style 20px radius, hover effects
-- Search Input: 12px border-radius, subtle background
-
-### src/M3DropdownMenu.js
-- Multiselect support hinzugefügt (multiselect: true)
-- selectedIndices Array für mehrere Auswahlen
-- renderChips() Methode für Chip-Anzeige
-- Checkbox-Icons in Multiselect-Mode
-- deselect/updateMultiselectDisplay Methoden
-
-### docs/demos/form-builder-m3.html (NEW)
-- Demo-Page für FormBuilder M3 Integration
-- Multiselect Examples (Tags, Kategorien)
-
-### src/M3DatePicker.js (NEW)
-- Neuer M3 Date Picker Component
+## Erledigte Tasks dieser Session
+1. ThemeBuilder GlobalConfig Integration
+   - IST: ThemeBuilder und GlobalConfig.theme waren zwei separate Systeme
+   - SOLL: EIN unified Theme-System über GlobalConfig
+   - FIX:
+     - GlobalConfig.js: Theme-Methoden hinzugefügt (setTheme, setThemeFromSeed, toggleDarkMode, etc.)
+     - ThemeBuilder.js: GlobalConfig Import entfernt (vermeidet circular dependency)
+     - index.js: Version auf 2.6.0 aktualisiert
+     - theme-builder.html: Usage-Code mit neuer GlobalConfig API aktualisiert
 
 ## Bekannte Issues
-- [ ] Playwright Tests noch nicht ausgeführt für neue Änderungen
-- [ ] VERSION file noch auf 2.4.1
+- [ ] Keine bekannten Issues
 
-## Nächste Schritte
-1. `npm test` - Playwright Tests ausführen
-2. Git Commit mit allen Änderungen (v2.5.1)
-3. Optional: VERSION bump auf 2.5.0
-
-## Wichtige Files für Context
-- `src/m3-form-styles.css` - M3 Form Component Styles (UPDATED)
-- `src/M3DropdownMenu.js` - Dropdown mit Multiselect (UPDATED)
-- `docs/demos/form-builder-m3.html` - FormBuilder M3 Demo (NEW)
-- `src/M3DatePicker.js` - Date Picker Component (NEW)
-
-## Token-Optimierung
-- Git Status: **uncommitted** (12 files modified, 2 new)
-- Tests: **pending**
-- Browser: Dev Server läuft (Port 5177)
+## Git Status
+- Branch: main (nicht committed - ThemeBuilder Integration)
+- Last commit: e8af96b - fix: Outlined fields also 56px height to match filled variant
 
 ## Dev Server
-- SSI Builders: http://localhost:5177
-- Demo Pages:
-  - http://localhost:5177/docs/demos/form-builder-m3.html
-  - http://localhost:5177/docs/demos/m3-components.html
+- Port: 5177
+- Status: Running (npm run dev)
+
+## Theme Presets verfügbar
+- google-blue (#1a73e8)
+- material-purple (#6750A4)
+- teal (#009688)
+- orange (#ff5722)
+- green (#4caf50)
+- pink (#e91e63)
+- indigo (#3f51b5)
+- cyan (#00bcd4)

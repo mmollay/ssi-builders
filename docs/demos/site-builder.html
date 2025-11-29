@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SiteBuilder + GlobalConfig - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">

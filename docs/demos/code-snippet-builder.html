@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CodeSnippetBuilder Demo - SSI Builders</title>
 
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

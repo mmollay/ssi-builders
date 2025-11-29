@@ -709,11 +709,182 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════
-   Dark Mode Support (Optional)
+   Dark Mode Support
+   Applied via .dark-mode or .m3-dark class on html element
    ═══════════════════════════════════════════════════════════════ */
 
+/* Dark Mode Variables Override */
+html.dark-mode,
+html.m3-dark {
+    --analytics-text-primary: #e8eaed;
+    --analytics-text-secondary: #9aa0a6;
+    --analytics-text-tertiary: #80868b;
+    --analytics-bg-page: #121212;
+    --analytics-bg-card: #1e1e1e;
+    --analytics-bg-hover: #2d2d2d;
+    --analytics-bg-skeleton: #2d2d2d;
+    --analytics-border: #3d3d3d;
+    --analytics-border-hover: #5c5c5c;
+
+    /* Dark mode trend colors with better contrast */
+    --analytics-success-light: rgba(52, 168, 83, 0.15);
+    --analytics-error-light: rgba(234, 67, 53, 0.15);
+    --analytics-primary-light: rgba(138, 180, 248, 0.15);
+    --analytics-warning-light: rgba(251, 188, 4, 0.15);
+    --analytics-purple-light: rgba(156, 39, 176, 0.15);
+}
+
+/* Dark Mode Card Styles */
+html.dark-mode .analytics-card,
+html.m3-dark .analytics-card {
+    background: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+}
+
+html.dark-mode .analytics-card:hover,
+html.m3-dark .analytics-card:hover {
+    border-color: var(--analytics-border-hover);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .analytics-card-label,
+html.m3-dark .analytics-card-label {
+    color: var(--analytics-text-secondary);
+}
+
+html.dark-mode .analytics-card-value,
+html.m3-dark .analytics-card-value {
+    color: var(--analytics-text-primary);
+}
+
+html.dark-mode .analytics-card-subtext,
+html.m3-dark .analytics-card-subtext {
+    color: var(--analytics-text-tertiary);
+}
+
+html.dark-mode .analytics-card-icon,
+html.m3-dark .analytics-card-icon {
+    color: var(--analytics-text-secondary);
+}
+
+/* Dark Mode FilterBar */
+html.dark-mode .analytics-filter-bar,
+html.m3-dark .analytics-filter-bar {
+    background: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+}
+
+html.dark-mode .analytics-filter-select,
+html.m3-dark .analytics-filter-select {
+    background-color: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+    color: var(--analytics-text-primary);
+}
+
+html.dark-mode .analytics-filter-select:hover,
+html.m3-dark .analytics-filter-select:hover {
+    background-color: var(--analytics-bg-hover);
+    border-color: var(--analytics-border-hover);
+}
+
+html.dark-mode .analytics-filter-search,
+html.m3-dark .analytics-filter-search {
+    background-color: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+    color: var(--analytics-text-primary);
+}
+
+html.dark-mode .analytics-filter-search:hover,
+html.m3-dark .analytics-filter-search:hover {
+    background-color: var(--analytics-bg-hover);
+}
+
+html.dark-mode .analytics-filter-btn-secondary,
+html.m3-dark .analytics-filter-btn-secondary {
+    background: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+    color: var(--analytics-text-secondary);
+}
+
+html.dark-mode .analytics-filter-btn-secondary:hover,
+html.m3-dark .analytics-filter-btn-secondary:hover {
+    background: var(--analytics-bg-hover);
+}
+
+/* Dark Mode Time Picker */
+html.dark-mode .analytics-time-picker,
+html.m3-dark .analytics-time-picker {
+    background: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+}
+
+html.dark-mode .analytics-time-btn,
+html.m3-dark .analytics-time-btn {
+    color: var(--analytics-text-secondary);
+}
+
+html.dark-mode .analytics-time-btn:hover,
+html.m3-dark .analytics-time-btn:hover {
+    background: var(--analytics-bg-hover);
+    color: var(--analytics-text-primary);
+}
+
+/* Dark Mode Chart Card */
+html.dark-mode .analytics-chart-card,
+html.m3-dark .analytics-chart-card {
+    background: var(--analytics-bg-card);
+    border-color: var(--analytics-border);
+}
+
+html.dark-mode .analytics-chart-title,
+html.m3-dark .analytics-chart-title {
+    color: var(--analytics-text-primary);
+}
+
+/* Dark Mode Section */
+html.dark-mode .analytics-section-title,
+html.m3-dark .analytics-section-title {
+    color: var(--analytics-text-primary);
+}
+
+html.dark-mode .analytics-section-subtitle,
+html.m3-dark .analytics-section-subtitle {
+    color: var(--analytics-text-secondary);
+}
+
+/* Dark Mode Info Banner */
+html.dark-mode .analytics-info-banner,
+html.m3-dark .analytics-info-banner {
+    background: var(--analytics-bg-card);
+}
+
+html.dark-mode .analytics-info-banner p,
+html.m3-dark .analytics-info-banner p {
+    color: var(--analytics-text-secondary);
+}
+
+/* Dark Mode Loading Overlay */
+html.dark-mode .analytics-loading-overlay,
+html.m3-dark .analytics-loading-overlay {
+    background: rgba(18, 18, 18, 0.8);
+}
+
+html.dark-mode .analytics-spinner,
+html.m3-dark .analytics-spinner {
+    border-color: var(--analytics-border);
+    border-top-color: var(--m3-primary, #8ab4f8);
+}
+
+/* Dark Mode Skeleton Animation */
+html.dark-mode .skeleton,
+html.m3-dark .skeleton {
+    background: linear-gradient(90deg, var(--analytics-bg-skeleton) 25%, #3d3d3d 50%, var(--analytics-bg-skeleton) 75%);
+    background-size: 200% 100%;
+}
+
+/* Legacy prefers-color-scheme support (fallback) */
 @media (prefers-color-scheme: dark) {
-    :root {
+    :root:not(.light-mode) {
         --analytics-text-primary: #e8eaed;
         --analytics-text-secondary: #9aa0a6;
         --analytics-text-tertiary: #80868b;
@@ -723,15 +894,5 @@
         --analytics-bg-skeleton: #35363a;
         --analytics-border: #3c4043;
         --analytics-border-hover: #5f6368;
-    }
-
-    .analytics-card:hover {
-        border-color: var(--analytics-border-hover);
-    }
-
-    .analytics-filter-select,
-    .analytics-filter-search {
-        background-color: var(--analytics-bg-card);
-        color: var(--analytics-text-primary);
     }
 }

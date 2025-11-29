@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ChartBuilder - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
@@ -90,6 +100,50 @@
             .chart-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* Dark Mode Overrides */
+        html.dark-mode .demo-section h2,
+        html.m3-dark .demo-section h2 {
+            color: var(--m3-on-surface, #e1e1e1);
+        }
+
+        html.dark-mode .demo-section .subtitle,
+        html.m3-dark .demo-section .subtitle {
+            color: var(--m3-on-surface-variant, #a1a1a1);
+        }
+
+        html.dark-mode .example-demo,
+        html.m3-dark .example-demo {
+            background: var(--m3-surface-container, #1e1e1e);
+        }
+
+        html.dark-mode .config-table th,
+        html.m3-dark .config-table th {
+            background: var(--m3-surface-container-high, #2d2d2d);
+            color: var(--m3-on-surface, #e1e1e1);
+        }
+
+        html.dark-mode .config-table td,
+        html.m3-dark .config-table td {
+            color: var(--m3-on-surface-variant, #a1a1a1);
+            border-bottom-color: var(--m3-outline-variant, #3d3d3d);
+        }
+
+        html.dark-mode .config-table th,
+        html.m3-dark .config-table th {
+            border-bottom-color: var(--m3-outline-variant, #3d3d3d);
+        }
+
+        html.dark-mode .config-table code,
+        html.m3-dark .config-table code {
+            background: var(--m3-surface-container-highest, #353535);
+            color: var(--m3-tertiary, #ffb4ab);
+        }
+
+        html.dark-mode ul,
+        html.m3-dark ul {
+            color: var(--m3-on-surface-variant, #a1a1a1);
         }
     </style>
 </head>

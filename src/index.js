@@ -2,7 +2,7 @@
  * SSI Builders - Professional UI Component Library
  * Material Design 3 | Production-Ready
  *
- * @version 2.4.4
+ * @version 2.6.0
  * @author SSI Solutions
  */
 
@@ -31,6 +31,14 @@ import { M3ColorPicker } from './M3ColorPicker.js';
 import { ChangelogBuilder } from './ChangelogBuilder.js';
 // What's New System (v2.4.4)
 import WhatsNew, { isNew, getNewBadge, currentVersion as whatsNewVersion } from './whats-new.js';
+// i18n System (v2.5.0)
+import { i18n } from './i18n.js';
+// Theme System (v2.6.0)
+import { ThemeBuilder } from './ThemeBuilder.js';
+// Message System (v2.6.0)
+import { MessageBuilder } from './MessageBuilder.js';
+// Card/Segment System (v2.6.0)
+import { CardBuilder } from './CardBuilder.js';
 
 export {
     ListBuilder,
@@ -62,7 +70,15 @@ export {
     WhatsNew,
     isNew,
     getNewBadge,
-    whatsNewVersion
+    whatsNewVersion,
+    // i18n System (v2.5.0)
+    i18n,
+    // Theme System (v2.6.0)
+    ThemeBuilder,
+    // Message System (v2.6.0)
+    MessageBuilder,
+    // Card/Segment System (v2.6.0)
+    CardBuilder
 };
 
 // Default export for convenience
@@ -89,9 +105,13 @@ export default {
     createVersionBadge,
     IconManager,
     GlobalConfig,
-    SiteBuilder
+    SiteBuilder,
+    i18n,
+    ThemeBuilder,
+    MessageBuilder,
+    CardBuilder
 };
 
 // Version info
-export const VERSION = '2.4.4';
+export const VERSION = '2.6.0';
 export const LIBRARY_NAME = 'SSI Builders';

@@ -155,7 +155,7 @@
 
 .ssi-tooltip-warning {
     background: #fbbc04;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 /* Warning arrows - position specific */
@@ -192,8 +192,8 @@
 }
 
 .ssi-tooltip-light {
-    background: #fff;
-    color: #202124;
+    background: var(--m3-surface, #ffffff);
+    color: var(--m3-on-surface, #202124);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
     border: 1px solid #e8eaed;
 }
@@ -245,8 +245,42 @@
     .ssi-tooltip-light {
         background: #2d2d2d;
         color: #e8eaed;
-        border-color: #5f6368;
+        border-color: var(--m3-on-surface-variant, #5f6368);
     }
+}
+
+/* Explicit Dark Mode Classes */
+html.dark-mode .ssi-tooltip-light,
+html.m3-dark .ssi-tooltip-light {
+    background: #2d2d2d !important;
+    color: #e8eaed !important;
+    border-color: #4d4d4d !important;
+}
+
+html.dark-mode .ssi-tooltip-light.ssi-tooltip-top .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-light.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #2d2d2d !important;
+}
+
+html.dark-mode .ssi-tooltip-light.ssi-tooltip-bottom .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-light.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #2d2d2d !important;
+}
+
+html.dark-mode .ssi-tooltip-light.ssi-tooltip-left .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-light.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #2d2d2d !important;
+}
+
+html.dark-mode .ssi-tooltip-light.ssi-tooltip-right .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-light.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #2d2d2d !important;
+}
+
+/* Warning tooltip text color in dark mode */
+html.dark-mode .ssi-tooltip-warning,
+html.m3-dark .ssi-tooltip-warning {
+    color: #202124 !important;
 }
 
 /* === Accessibility === */

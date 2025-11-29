@@ -15,12 +15,15 @@
  * - Footer actions
  * - Push Mode (v2.2.0): Content shifts instead of being overlaid
  * - Top Offset (v2.4.2): Support for fixed headers with topOffset option
+ * - Full Collapse (v2.5.3): Option to completely hide sidebar when collapsed
+ * - Heading Dividers (v2.5.3): Show headings as divider lines when collapsed
  *
- * @version 2.4.2
+ * @version 2.5.3
  */
 
 import { createVersionBadge } from './version.js';
 import { IconManager } from './IconManager.js';
+import { i18n } from './i18n.js';
 
 export class SidebarBuilder {
     static sidebarCounter = 0;
@@ -44,6 +47,7 @@ export class SidebarBuilder {
             persistent: config.options?.persistent !== false,
             width: config.options?.width || 280,
             collapsedWidth: config.options?.collapsedWidth || 72,
+            fullCollapse: config.options?.fullCollapse || false, // v2.5.3: Collapse to 0px (completely hidden)
             header: config.options?.header || null,
             footer: config.options?.footer || null,
             searchable: config.options?.searchable || false,
@@ -75,18 +79,20 @@ export class SidebarBuilder {
             return this;
         }
 
-        const width = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
+        const isFullCollapse = this.options.fullCollapse;
+        const width = this.isCollapsed
+            ? (isFullCollapse ? 0 : this.options.collapsedWidth)
+            : this.options.width;
         const isPushMode = this.options.mode === 'push';
         const topOffset = this.options.topOffset;
 
         const html = `
-            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''} ${isPushMode ? 'sidebar-push-mode' : ''}" id="${this.id}" style="width: ${width}px; top: ${topOffset}px; height: calc(100vh - ${topOffset}px);">
+            <aside class="sidebar sidebar-${this.options.position} ${this.isCollapsed ? 'sidebar-collapsed' : ''} ${isPushMode ? 'sidebar-push-mode' : ''} ${isFullCollapse ? 'sidebar-full-collapse' : ''}" id="${this.id}" style="width: ${width}px; top: ${topOffset}px; height: calc(100vh - ${topOffset}px);">
                 ${this.options.header ? this.renderHeader() : ''}
                 ${this.options.searchable ? this.renderSearch() : ''}
                 ${this.renderNav()}
                 ${this.options.footer ? this.renderFooter() : ''}
                 ${this.options.collapsible ? this.renderToggleButton() : ''}
-                ${createVersionBadge()}
             </aside>
         `;
 
@@ -132,7 +138,10 @@ export class SidebarBuilder {
     updateContentMargin() {
         if (this.options.mode !== 'push' || !this.mainContentElement) return;
 
-        const margin = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
+        const isFullCollapse = this.options.fullCollapse;
+        const margin = this.isCollapsed
+            ? (isFullCollapse ? 0 : this.options.collapsedWidth)
+            : this.options.width;
         const position = this.options.position;
 
         if (position === 'left') {
@@ -164,8 +173,8 @@ export class SidebarBuilder {
                 <input
                     type="text"
                     class="sidebar-search-input"
-                    placeholder="${this.isCollapsed ? IconManager.getIcon('search') : 'Suchen...'}"
-                    aria-label="Suche"
+                    placeholder="${this.isCollapsed ? IconManager.getIcon('search') : i18n.t('sidebar.search')}"
+                    aria-label="${i18n.t('sidebar.search')}"
                 />
             </div>
         `;
@@ -289,7 +298,7 @@ export class SidebarBuilder {
      */
     renderToggleButton() {
         return `
-            <button class="sidebar-toggle" aria-label="${this.isCollapsed ? 'Sidebar erweitern' : 'Sidebar einklappen'}">
+            <button class="sidebar-toggle" aria-label="${this.isCollapsed ? i18n.t('sidebar.expand') : i18n.t('sidebar.collapse')}">
                 <span class="sidebar-toggle-icon">◂</span>
             </button>
         `;
@@ -345,7 +354,10 @@ export class SidebarBuilder {
         this.isCollapsed = !this.isCollapsed;
 
         const sidebarElement = document.getElementById(this.id);
-        const width = this.isCollapsed ? this.options.collapsedWidth : this.options.width;
+        const isFullCollapse = this.options.fullCollapse;
+        const width = this.isCollapsed
+            ? (isFullCollapse ? 0 : this.options.collapsedWidth)
+            : this.options.width;
 
         sidebarElement.classList.toggle('sidebar-collapsed');
         sidebarElement.style.width = `${width}px`;
@@ -353,7 +365,7 @@ export class SidebarBuilder {
         // Update search placeholder
         const searchInput = sidebarElement.querySelector('.sidebar-search-input');
         if (searchInput) {
-            searchInput.placeholder = this.isCollapsed ? IconManager.getIcon('search') : 'Suchen...';
+            searchInput.placeholder = this.isCollapsed ? IconManager.getIcon('search') : i18n.t('sidebar.search');
         }
 
         // Update main content margin for push mode

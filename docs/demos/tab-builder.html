@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TabBuilder - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
@@ -294,12 +304,13 @@
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
         import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
         import { GlobalConfig } from '../../src/GlobalConfig.js';
+        import { IconManager } from '../../src/IconManager.js';
 
         // Initialize layout with sidebar
         initializeLayout('tab-builder');
         addMobileMenuToggle();
 
-        // Underline Tabs
+        // Underline Tabs - with monochrome SVG icons
         new TabBuilder({
             containerId: 'underlineTabs',
             style: 'underline',
@@ -307,19 +318,19 @@
                 {
                     id: 'overview',
                     label: 'Overview',
-                    icon: '📊',
+                    icon: IconManager.getIcon('chart'),
                     content: '<div style="padding: 20px;"><h3>Overview</h3><p>Dashboard overview with key metrics and statistics.</p></div>'
                 },
                 {
                     id: 'analytics',
                     label: 'Analytics',
-                    icon: '📈',
+                    icon: IconManager.getIcon('chart'),
                     content: '<div style="padding: 20px;"><h3>Analytics</h3><p>Detailed analytics data and performance charts.</p></div>'
                 },
                 {
                     id: 'settings',
                     label: 'Settings',
-                    icon: '⚙️',
+                    icon: IconManager.getIcon('settings'),
                     content: '<div style="padding: 20px;"><h3>Settings</h3><p>Configuration options and preferences.</p></div>'
                 }
             ]

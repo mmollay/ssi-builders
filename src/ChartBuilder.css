@@ -4,7 +4,7 @@
 
 /* === Chart Container === */
 .chart-builder {
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
@@ -33,13 +33,13 @@
     margin: 0 0 4px 0;
     font-size: 18px;
     font-weight: 500;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .chart-subtitle {
     margin: 0;
     font-size: 14px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
 }
 
 /* === Bar Chart === */
@@ -70,7 +70,7 @@
 .chart-bar-value {
     font-size: 12px;
     font-weight: 500;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
     margin-bottom: 4px;
 }
 
@@ -102,7 +102,7 @@
 
 .chart-bar-label {
     font-size: 12px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     text-align: center;
     word-break: break-word;
 }
@@ -178,17 +178,17 @@
 .chart-progress-label {
     font-size: 14px;
     font-weight: 500;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .chart-progress-value {
     font-size: 14px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
 }
 
 .chart-progress-bar {
     height: 24px;
-    background: #f1f3f4;
+    background: var(--m3-surface-container-high, #f1f3f4);
     border-radius: 12px;
     overflow: hidden;
 }
@@ -233,11 +233,11 @@
 }
 
 .chart-legend-label {
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .chart-legend-value {
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     font-weight: 500;
 }
 
@@ -273,7 +273,7 @@
 /* === Empty State === */
 .chart-empty {
     text-align: center;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     padding: 40px;
     font-size: 14px;
 }
@@ -308,4 +308,66 @@
         align-items: flex-start;
         gap: 4px;
     }
+}
+
+/* === Dark Mode === */
+html.dark-mode .chart-builder,
+html.m3-dark .chart-builder {
+    background: var(--m3-surface, #1e1e1e);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .chart-title,
+html.m3-dark .chart-title {
+    color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .chart-subtitle,
+html.m3-dark .chart-subtitle {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .chart-bar-value,
+html.m3-dark .chart-bar-value {
+    color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .chart-bar-label,
+html.m3-dark .chart-bar-label {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .chart-progress-label,
+html.m3-dark .chart-progress-label {
+    color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .chart-progress-value,
+html.m3-dark .chart-progress-value {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .chart-progress-bar,
+html.m3-dark .chart-progress-bar {
+    background: var(--m3-surface-container-high, #2d2d2d);
+}
+
+html.dark-mode .chart-legend,
+html.m3-dark .chart-legend {
+    border-top-color: var(--m3-outline-variant, #3d3d3d);
+}
+
+html.dark-mode .chart-legend-label,
+html.m3-dark .chart-legend-label {
+    color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .chart-legend-value,
+html.m3-dark .chart-legend-value {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .chart-empty,
+html.m3-dark .chart-empty {
+    color: var(--m3-on-surface-variant, #a1a1a1);
 }

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SidebarBuilder - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
@@ -21,13 +31,41 @@
             margin: 24px 0;
             height: 500px;
             position: relative;
+            overflow: hidden;
         }
 
-        /* Position demo sidebar on the right */
+        /* Contain demo sidebar within example box */
         #sidebarDemo .sidebar {
-            position: absolute;
-            right: 0;
-            left: auto;
+            position: absolute !important;
+            left: 0 !important;
+            right: auto !important;
+            top: 0 !important;
+            height: 100% !important;
+            border-radius: 8px 0 0 8px;
+        }
+
+        #sidebarDemo .sidebar-toggle {
+            z-index: 10;
+        }
+
+        /* Full Collapse Demo - needs overflow visible for toggle button */
+        #fullCollapseDemo {
+            overflow: visible !important;
+        }
+
+        /* Full Collapse Demo sidebar contained in box */
+        #fullCollapseDemo .sidebar {
+            position: absolute !important;
+            height: 100% !important;
+            border-radius: 8px 0 0 8px;
+            left: 0 !important;
+            top: 0 !important;
+        }
+
+        /* Make toggle button visible in collapsed state within container */
+        #fullCollapseDemo .sidebar.sidebar-full-collapse.sidebar-collapsed .sidebar-toggle {
+            right: -40px !important;
+            z-index: 100;
         }
     </style>
 </head>
@@ -134,6 +172,33 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+
+        <div class="demo-section">
+            <h2>🆕 Full Collapse Mode (v2.5.3)</h2>
+            <p class="subtitle">Sidebar completely hides when collapsed - only a toggle button remains visible</p>
+
+            <p style="color: #5f6368; margin-bottom: 16px;">
+                With <code>fullCollapse: true</code>, the sidebar collapses to 0px width instead of the default 72px icon-only view.
+                A floating toggle button remains visible to re-expand the sidebar.
+            </p>
+
+            <!-- Interactive Full Collapse Demo -->
+            <div style="background: #f8f9fa; border-radius: 12px; overflow: hidden; margin: 24px 0; border: 1px solid #e8eaed; position: relative; height: 350px;">
+                <div id="fullCollapseDemo" style="position: absolute; left: 0; top: 0; height: 100%;"></div>
+                <div id="fullCollapseContent" style="padding: 24px; margin-left: 200px; transition: margin-left 0.3s ease;">
+                    <h3 style="margin-bottom: 16px; color: #202124;">📄 Full Collapse Demo</h3>
+                    <p style="color: #5f6368; margin-bottom: 16px;">
+                        Click the toggle button (◂) to completely hide the sidebar. A blue floating button will appear to re-expand it.
+                    </p>
+                    <p style="color: #1a73e8; font-weight: 500;">
+                        ← Try clicking the toggle button
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 24px;">Full Collapse Code:</h3>
+            <div id="code-full-collapse"></div>
         </div>
 
         <div class="demo-section">
@@ -268,6 +333,7 @@ sidebar.render();`,
         searchable: true,             // Show search box
         width: 280,                   // Sidebar width (px)
         collapsedWidth: 72,           // Width when collapsed (px)
+        fullCollapse: false,          // NEW v2.5.3: Collapse to 0px (completely hidden)
         persistent: true,             // Save state to localStorage
         defaultCollapsed: false,      // Start collapsed
         position: 'left',             // 'left' or 'right'
@@ -303,6 +369,55 @@ sidebar.render();
 sidebar.setMode('overlay');  // Switch to overlay
 sidebar.setMode('push');     // Switch back to push
 sidebar.getMode();           // Returns 'push' or 'overlay'`,
+            language: 'javascript'
+        });
+
+        // Full Collapse Mode Demo
+        const fullCollapseSidebar = new SidebarBuilder({
+            containerId: 'fullCollapseDemo',
+            items: [
+                { type: 'heading', label: 'Navigation' },
+                { key: 'home', label: 'Home', icon: IconManager.getIcon('home'), href: '#home' },
+                { key: 'dashboard', label: 'Dashboard', icon: IconManager.getIcon('chart'), href: '#dashboard' },
+                { type: 'heading', label: 'Tools' },
+                { key: 'reports', label: 'Reports', icon: IconManager.getIcon('list'), href: '#reports' },
+                { key: 'settings', label: 'Settings', icon: IconManager.getIcon('settings'), href: '#settings' }
+            ],
+            options: {
+                mode: 'push',
+                mainContentSelector: '#fullCollapseContent',
+                fullCollapse: true,  // NEW: Completely hide sidebar
+                collapsible: true,
+                persistent: false,
+                defaultCollapsed: false,
+                width: 200,
+                header: (collapsed) => collapsed
+                    ? ''
+                    : '<div style="padding:16px;font-weight:600;color:#202124;">Full Collapse</div>'
+            }
+        });
+        fullCollapseSidebar.render();
+
+        // Full Collapse Code Snippet
+        new CodeSnippetBuilder({
+            containerId: 'code-full-collapse',
+            code: `const sidebar = new SidebarBuilder({
+    containerId: 'sidebar-container',
+    items: [
+        { type: 'heading', label: 'Navigation' },
+        { key: 'home', label: 'Home', icon: IconManager.getIcon('home'), href: '#home' },
+        { key: 'dashboard', label: 'Dashboard', icon: IconManager.getIcon('chart'), href: '#dashboard' },
+        { type: 'heading', label: 'Tools' },
+        { key: 'reports', label: 'Reports', icon: IconManager.getIcon('list'), href: '#reports' },
+    ],
+    options: {
+        fullCollapse: true,              // Collapse to 0px width
+        mode: 'push',                    // Works great with push mode
+        mainContentSelector: '#main',
+        collapsible: true,
+        width: 280
+    }
+});`,
             language: 'javascript'
         });
 

@@ -86,6 +86,14 @@ export class MenuBuilder {
                     }
                 }, 100);
             });
+        } else if (this.options.trigger === 'contextmenu') {
+            this.triggerElement.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                // Store the click position for context menu positioning
+                this._contextMenuPosition = { x: e.clientX, y: e.clientY };
+                this.open();
+            });
         }
 
         return this;
@@ -152,7 +160,6 @@ export class MenuBuilder {
                 <div class="menu-container" style="${this.options.width !== 'auto' ? `width: ${this.options.width};` : ''} max-height: ${this.options.maxHeight}px">
                     ${this.renderItems(this.items)}
                 </div>
-                ${createVersionBadge()}
             </div>
         `;
 
@@ -208,39 +215,46 @@ export class MenuBuilder {
     positionMenu() {
         if (!this.triggerElement || !this.menuElement) return;
 
-        const triggerRect = this.triggerElement.getBoundingClientRect();
         const menuContainer = this.menuElement.querySelector('.menu-container');
         const menuRect = menuContainer.getBoundingClientRect();
 
         let top = 0;
         let left = 0;
 
-        // Calculate position based on options
-        switch (this.options.position) {
-            case 'bottom-left':
-                top = triggerRect.bottom + this.options.offset.y;
-                left = triggerRect.left + this.options.offset.x;
-                break;
-            case 'bottom-right':
-                top = triggerRect.bottom + this.options.offset.y;
-                left = triggerRect.right - menuRect.width + this.options.offset.x;
-                break;
-            case 'top-left':
-                top = triggerRect.top - menuRect.height - this.options.offset.y;
-                left = triggerRect.left + this.options.offset.x;
-                break;
-            case 'top-right':
-                top = triggerRect.top - menuRect.height - this.options.offset.y;
-                left = triggerRect.right - menuRect.width + this.options.offset.x;
-                break;
-            case 'right':
-                top = triggerRect.top + this.options.offset.y;
-                left = triggerRect.right + this.options.offset.x;
-                break;
-            case 'left':
-                top = triggerRect.top + this.options.offset.y;
-                left = triggerRect.left - menuRect.width - this.options.offset.x;
-                break;
+        // For context menus, use stored mouse position
+        if (this.options.trigger === 'contextmenu' && this._contextMenuPosition) {
+            top = this._contextMenuPosition.y;
+            left = this._contextMenuPosition.x;
+        } else {
+            const triggerRect = this.triggerElement.getBoundingClientRect();
+
+            // Calculate position based on options
+            switch (this.options.position) {
+                case 'bottom-left':
+                    top = triggerRect.bottom + this.options.offset.y;
+                    left = triggerRect.left + this.options.offset.x;
+                    break;
+                case 'bottom-right':
+                    top = triggerRect.bottom + this.options.offset.y;
+                    left = triggerRect.right - menuRect.width + this.options.offset.x;
+                    break;
+                case 'top-left':
+                    top = triggerRect.top - menuRect.height - this.options.offset.y;
+                    left = triggerRect.left + this.options.offset.x;
+                    break;
+                case 'top-right':
+                    top = triggerRect.top - menuRect.height - this.options.offset.y;
+                    left = triggerRect.right - menuRect.width + this.options.offset.x;
+                    break;
+                case 'right':
+                    top = triggerRect.top + this.options.offset.y;
+                    left = triggerRect.right + this.options.offset.x;
+                    break;
+                case 'left':
+                    top = triggerRect.top + this.options.offset.y;
+                    left = triggerRect.left - menuRect.width - this.options.offset.x;
+                    break;
+            }
         }
 
         // Adjust if menu goes off screen

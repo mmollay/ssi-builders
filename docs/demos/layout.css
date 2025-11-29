@@ -277,3 +277,74 @@ body {
     page-break-inside: avoid;
   }
 }
+
+/* ===================================
+   Dark Mode Overrides
+   Applied via .dark-mode or .m3-dark class on html
+   =================================== */
+html.dark-mode body,
+html.m3-dark body {
+  background: var(--m3-background, #121212);
+  color: var(--m3-on-background, #e1e1e1);
+}
+
+html.dark-mode .page-header,
+html.m3-dark .page-header {
+  border-bottom-color: var(--m3-outline-variant, #3d3d3d);
+}
+
+html.dark-mode .page-header h1,
+html.m3-dark .page-header h1 {
+  color: var(--m3-primary, #8ab4f8);
+}
+
+html.dark-mode .page-header p,
+html.m3-dark .page-header p {
+  color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .demo-section,
+html.m3-dark .demo-section {
+  background: var(--m3-surface, #1e1e1e);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+html.dark-mode .demo-section h2,
+html.m3-dark .demo-section h2 {
+  color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .demo-section h3,
+html.m3-dark .demo-section h3 {
+  color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .demo-section p,
+html.m3-dark .demo-section p {
+  color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .code-block,
+html.m3-dark .code-block {
+  background: var(--m3-surface-container-highest, #353535);
+  border-color: var(--m3-outline-variant, #3d3d3d);
+}
+
+/* Dark mode for demo-content area */
+html.dark-mode .demo-content,
+html.m3-dark .demo-content {
+  background: var(--m3-background, #121212);
+}
+
+/* Dark mode badges */
+html.dark-mode .badge,
+html.m3-dark .badge {
+  background: var(--m3-primary-container, #004a77);
+  color: var(--m3-on-primary-container, #d1e4ff);
+}
+
+html.dark-mode .badge.new,
+html.m3-dark .badge.new {
+  background: var(--m3-tertiary-container, #003c2a);
+  color: var(--m3-on-tertiary-container, #a8f5c5);
+}

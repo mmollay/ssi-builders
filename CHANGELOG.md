@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.1] - 2025-11-29
+
+### Added
+- **MCP Server Integration**: AI-optimized documentation access for Claude Code
+  - New demo page: `/docs/demos/mcp-server.html` with installation guide
+  - MCP Server provides 4 tools (list, get-info, generate-code, search)
+  - 3 resources for structured documentation (index, best-practices, changelog)
+  - Reduces token usage by 70-90% for SSI Builders development
+  - Automatic sync before GITHUB releases via pre-GITHUB hook
+- **Pre-GITHUB Hook**: Automatically syncs MCP Server data before version releases
+  - Located in `.claude/hooks.json`
+  - Triggers on "GITHUB" keyword
+  - Runs `npm run sync` in ssi-builders-mcp project
+- **Sidebar Navigation**: Added "MCP Server" link in Resources section with "New" badge
+
+### Changed
+- **MCP Configuration**: Added ssi-builders MCP server to `.mcp.json`
+- **Global Hooks**: Enhanced with model auto-selection (Haiku for simple tasks, Sonnet for complex)
+
 ## [2.6.0] - 2025-11-29
 
 ### Added

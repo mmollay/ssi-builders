@@ -146,3 +146,27 @@
     background-color: rgba(0, 0, 0, 0.05);
     color: var(--ssi-text, #202124);
 }
+
+/* === Dark Mode === */
+html.dark-mode .ssi-toast,
+html.m3-dark .ssi-toast {
+    background: #2d2d2d !important;
+    color: #e1e1e1 !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2) !important;
+}
+
+html.dark-mode .ssi-toast-message,
+html.m3-dark .ssi-toast-message {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .ssi-toast-close,
+html.m3-dark .ssi-toast-close {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .ssi-toast-close:hover,
+html.m3-dark .ssi-toast-close:hover {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+    color: #e1e1e1 !important;
+}

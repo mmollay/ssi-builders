@@ -1,6 +1,6 @@
 {
   "name": "@ssi/builders",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "description": "Professional UI Builder Components - Material Design 3 | SSI Central Component Library",
   "main": "src/index.js",
   "module": "src/index.js",

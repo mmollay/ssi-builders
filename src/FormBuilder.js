@@ -22,6 +22,7 @@ import { IconManager } from './IconManager.js';
 import { M3Slider } from './M3Slider.js';
 import { M3ColorPicker } from './M3ColorPicker.js';
 import { M3DropdownMenu } from './M3DropdownMenu.js';
+import { i18n } from './i18n.js';
 
 export class FormBuilder extends BaseBuilder {
     /**
@@ -38,9 +39,15 @@ export class FormBuilder extends BaseBuilder {
         const layout = config.layout || config.options?.layout || 'vertical';
         const gridColumns = config.gridColumns || config.options?.gridColumns || 2;
 
+        // NEW: Size, Gap, Density options
+        const size = config.size || config.options?.size || null;  // 'small' | 'medium' | 'large'
+        const gap = config.gap || config.options?.gap || null;     // 'compact' | 'normal' | 'comfortable'
+        const density = config.density || config.options?.density || null; // 'dense' | 'normal' | 'comfortable'
+
         super(config, {
-            submitLabel: 'Speichern',
-            cancelLabel: 'Abbrechen',
+            submitLabel: null,   // Uses i18n.t('form.submit') as default
+            cancelLabel: null,   // Uses i18n.t('form.cancel') as default
+            resetLabel: null,    // Uses i18n.t('form.reset') as default
             autoSave: false,
             autoSaveDelay: 1000,
             localStorageKey: null,
@@ -51,6 +58,9 @@ export class FormBuilder extends BaseBuilder {
             gridColumns: gridColumns,
             fieldSize: fieldSize,      // 'sm' | 'md' | 'lg' - default size for all fields
             fieldLayout: fieldLayout,  // 'standard' | 'floating' | 'filled' | 'outlined'
+            size: size,                // 'small' | 'medium' | 'large' - field height
+            gap: gap,                  // 'compact' | 'normal' | 'comfortable' - vertical spacing
+            density: density,          // 'dense' | 'normal' | 'comfortable' - preset (size + gap)
             onCancel: null,
             initialValues: {},
             // M3 Component Integration
@@ -105,14 +115,19 @@ export class FormBuilder extends BaseBuilder {
         // Destroy existing M3 components before re-render
         this.destroyM3Components();
 
+        // Build CSS classes for size, gap, density options
+        const sizeClass = this.options.size ? `form-size-${this.options.size}` : '';
+        const gapClass = this.options.gap ? `form-gap-${this.options.gap}` : '';
+        const densityClass = this.options.density ? `form-density-${this.options.density}` : '';
+        const optionClasses = [sizeClass, gapClass, densityClass].filter(c => c).join(' ');
+
         this.container.innerHTML = `
-            <div class="form-builder form-builder-m3">
+            <div class="form-builder form-builder-m3 ${optionClasses}">
                 ${this.options.multiStep ? this.renderSteps() : ''}
                 <form class="form-builder-form" id="${this.containerId}_form">
                     ${this.renderFields()}
                     ${this.renderActions()}
                 </form>
-                ${this.renderVersionBadge()}
             </div>
         `;
 
@@ -169,7 +184,7 @@ export class FormBuilder extends BaseBuilder {
                     const value = this.values[field.key] ?? field.defaultValue ?? field.min ?? 0;
                     this.m3Components.sliders[field.key] = new M3Slider({
                         containerId: containerId,
-                        label: '', // Label is handled by FormBuilder
+                        label: field.label || '', // Pass label to M3Slider
                         min: field.min ?? 0,
                         max: field.max ?? 100,
                         step: field.step ?? 1,
@@ -200,7 +215,7 @@ export class FormBuilder extends BaseBuilder {
                     const value = this.values[field.key] ?? field.defaultValue ?? '#1a73e8';
                     this.m3Components.colorPickers[field.key] = new M3ColorPicker({
                         containerId: containerId,
-                        label: '', // Label is handled by FormBuilder
+                        label: field.label || '', // Pass label to M3ColorPicker
                         value: value,
                         showAlpha: field.showAlpha ?? false,
                         presets: field.colorPresets || null,
@@ -233,15 +248,15 @@ export class FormBuilder extends BaseBuilder {
 
                     this.m3Components.dropdowns[field.key] = new M3DropdownMenu({
                         containerId: containerId,
-                        label: field.label || 'Select',
-                        placeholder: field.placeholder || 'Bitte wählen',
+                        label: field.label || i18n.t('dropdown.select'),
+                        placeholder: field.placeholder || i18n.t('dropdown.placeholder'),
                         options: options,
                         value: value,
                         variant: variant,
                         required: field.required ?? false,
                         disabled: field.disabled ?? false,
                         searchable: field.searchable ?? false,
-                        searchPlaceholder: field.searchPlaceholder || 'Suchen...',
+                        searchPlaceholder: field.searchPlaceholder || i18n.t('dropdown.search'),
                         supportingText: field.description || field.hint || null,
                         ...this.options.m3DropdownOptions,
                         ...field.m3Options,
@@ -627,11 +642,15 @@ export class FormBuilder extends BaseBuilder {
 
         switch (field.type) {
             case 'textarea':
+                const autoGrow = field.autoGrow !== false; // Default: true
+                const maxHeight = field.maxHeight || 300; // Default max height in px
                 return wrapInputGroup(`
                     <textarea
                         class="form-input form-textarea ${sizeClass}"
                         ${commonAttrs}
-                        rows="${field.rows || 4}"
+                        rows="${field.rows || 3}"
+                        ${autoGrow ? `data-autogrow="true" data-max-height="${maxHeight}"` : ''}
+                        style="${autoGrow ? `max-height: ${maxHeight}px;` : ''}"
                     >${value}</textarea>
                 `);
 
@@ -657,6 +676,34 @@ export class FormBuilder extends BaseBuilder {
                 `);
 
             case 'checkbox':
+                // If options are provided, render a checkbox group
+                if (field.options && Array.isArray(field.options)) {
+                    const selectedValues = Array.isArray(value) ? value : (value ? [value] : []);
+                    return `
+                        ${field.label ? `<div class="m3-checkbox-group-label">${field.label}${field.required ? '<span class="form-required">*</span>' : ''}</div>` : ''}
+                        <div class="m3-checkbox-group">
+                            ${field.options.map(opt => {
+                                const optValue = typeof opt === 'string' ? opt : opt.value;
+                                const optLabel = typeof opt === 'string' ? opt : opt.label;
+                                const isChecked = selectedValues.includes(optValue);
+                                return `
+                                    <label class="m3-checkbox ${field.disabled ? 'm3-checkbox--disabled' : ''}">
+                                        <input
+                                            type="checkbox"
+                                            class="m3-checkbox__input"
+                                            name="${field.key}"
+                                            value="${optValue}"
+                                            ${isChecked ? 'checked' : ''}
+                                            ${field.disabled ? 'disabled' : ''}
+                                        />
+                                        <span class="m3-checkbox__label">${optLabel}</span>
+                                    </label>
+                                `;
+                            }).join('')}
+                        </div>
+                    `;
+                }
+                // Single checkbox
                 return `
                     <label class="m3-checkbox ${field.disabled ? 'm3-checkbox--disabled' : ''}">
                         <input
@@ -673,6 +720,7 @@ export class FormBuilder extends BaseBuilder {
                 const radioLayout = field.radioLayout || 'vertical'; // vertical, horizontal, grid-2, grid-3
                 const radioGroupClass = radioLayout === 'horizontal' ? 'm3-radio-group--horizontal' : '';
                 return `
+                    ${field.label ? `<div class="m3-radio-group-label">${field.label}${field.required ? '<span class="form-required">*</span>' : ''}</div>` : ''}
                     <div class="m3-radio-group ${radioGroupClass}">
                         ${field.options?.map(opt => {
                             // Support both string options and object options {value, label}
@@ -711,7 +759,7 @@ export class FormBuilder extends BaseBuilder {
                         <button
                             type="button"
                             class="form-number-btn form-number-decrement"
-                            aria-label="Wert verringern"
+                            aria-label="${i18n.t('form.decreaseValue')}"
                             data-field-key="${field.key}"
                         >−</button>
                         <input
@@ -726,7 +774,7 @@ export class FormBuilder extends BaseBuilder {
                         <button
                             type="button"
                             class="form-number-btn form-number-increment"
-                            aria-label="Wert erhöhen"
+                            aria-label="${i18n.t('form.increaseValue')}"
                             data-field-key="${field.key}"
                         >+</button>
                     </div>
@@ -764,7 +812,7 @@ export class FormBuilder extends BaseBuilder {
                         <button
                             type="button"
                             class="form-password-toggle"
-                            aria-label="Passwort anzeigen/verbergen"
+                            aria-label="${i18n.t('form.togglePassword')}"
                             data-field-key="${field.key}"
                         >
                             ${IconManager.getIcon('eye-off')}
@@ -890,21 +938,29 @@ export class FormBuilder extends BaseBuilder {
             ? 'm3-button m3-button--outlined'
             : 'ssi-btn ssi-btn-outlined';
 
+        // Get labels from options or i18n
+        const submitLabel = this.options.submitLabel || i18n.t('form.submit');
+        const cancelLabel = this.options.cancelLabel || i18n.t('form.cancel');
+        const resetLabel = this.options.resetLabel || i18n.t('form.reset');
+        const previousLabel = i18n.t('form.previous');
+        const nextLabel = i18n.t('form.next');
+        const savingLabel = i18n.t('status.saving');
+
         if (this.options.multiStep) {
             return `
                 <div class="form-actions">
                     ${this.currentStep > 0 ? `
                         <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_prevStep">
-                            ← Zurück
+                            ${previousLabel}
                         </button>
                     ` : ''}
                     ${this.currentStep < this.options.steps.length - 1 ? `
                         <button type="button" class="${primaryBtnClass}" id="${this.containerId}_nextStep">
-                            Weiter →
+                            ${nextLabel}
                         </button>
                     ` : `
                         <button type="submit" class="${primaryBtnClass}" ${this.isSubmitting ? 'disabled' : ''}>
-                            ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
+                            ${this.isSubmitting ? savingLabel : submitLabel}
                         </button>
                     `}
                 </div>
@@ -915,16 +971,16 @@ export class FormBuilder extends BaseBuilder {
             <div class="form-actions">
                 ${this.options.showResetButton ? `
                     <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_reset">
-                        Zurücksetzen
+                        ${resetLabel}
                     </button>
                 ` : ''}
                 ${this.options.onCancel ? `
                     <button type="button" class="${outlinedBtnClass}" id="${this.containerId}_cancel">
-                        ${this.options.cancelLabel}
+                        ${cancelLabel}
                     </button>
                 ` : ''}
                 <button type="submit" class="${primaryBtnClass}" ${this.isSubmitting ? 'disabled' : ''}>
-                    ${this.isSubmitting ? 'Wird gespeichert...' : this.options.submitLabel}
+                    ${this.isSubmitting ? savingLabel : submitLabel}
                 </button>
             </div>
         `;
@@ -973,7 +1029,7 @@ export class FormBuilder extends BaseBuilder {
                     const isPassword = passwordInput.type === 'password';
                     passwordInput.type = isPassword ? 'text' : 'password';
                     toggleBtn.innerHTML = IconManager.getIcon(isPassword ? 'eye' : 'eye-off');
-                    toggleBtn.setAttribute('aria-label', isPassword ? 'Passwort verbergen' : 'Passwort anzeigen');
+                    toggleBtn.setAttribute('aria-label', isPassword ? i18n.t('form.hidePassword') : i18n.t('form.showPassword'));
                 }
             });
         });
@@ -1007,6 +1063,29 @@ export class FormBuilder extends BaseBuilder {
                     numberInput.dispatchEvent(new Event('input', { bubbles: true }));
                 }
             });
+        });
+
+        // Textarea auto-grow
+        const autoGrowTextareas = this.container.querySelectorAll('textarea[data-autogrow="true"]');
+        autoGrowTextareas.forEach(textarea => {
+            const adjustHeight = () => {
+                const maxHeight = parseInt(textarea.dataset.maxHeight) || 300;
+                textarea.style.height = 'auto';
+                const newHeight = Math.min(textarea.scrollHeight, maxHeight);
+                textarea.style.height = newHeight + 'px';
+
+                // Show/hide scrollbar based on content
+                if (textarea.scrollHeight > maxHeight) {
+                    textarea.style.overflowY = 'auto';
+                } else {
+                    textarea.style.overflowY = 'hidden';
+                }
+            };
+
+            textarea.addEventListener('input', adjustHeight);
+            textarea.addEventListener('focus', adjustHeight);
+            // Initial adjustment
+            setTimeout(adjustHeight, 10);
         });
 
         // Reset button
@@ -1263,7 +1342,7 @@ export class FormBuilder extends BaseBuilder {
             }
         } catch (error) {
             console.error('Form submit error:', error);
-            this.showError(error.message || 'Fehler beim Speichern');
+            this.showError(error.message || i18n.t('status.error'));
         } finally {
             this.isSubmitting = false;
             this.render();

@@ -150,6 +150,41 @@
         // Changelog data from CHANGELOG.md
         const changelogData = [
             {
+                version: 'Unreleased',
+                date: 'Coming Soon',
+                highlight: true,
+                changes: [
+                    { type: 'added', text: 'ModalBuilder.form(): New static method that opens a modal with integrated FormBuilder' },
+                    { type: 'added', text: 'ModalBuilder.delete(): New static method for delete confirmations with AJAX support' },
+                    { type: 'added', text: 'CRUD Demo Page: New comprehensive demo showcasing ListBuilder + ModalBuilder + FormBuilder integration' },
+                    { type: 'added', text: 'i18n Extensions: Added new translation keys for modal operations' },
+                    { type: 'fixed', text: 'FormBuilder CSS (Modal Forms): Fixed form field width issues in modal forms' },
+                    { type: 'fixed', text: 'ModalBuilder CSS: Removed unwanted box-shadow frame around forms in modals' },
+                    { type: 'changed', text: 'Sidebar Navigation: Added CRUD Demo link with "NEU" badge' }
+                ]
+            },
+            {
+                version: '2.5.2',
+                date: '2025-11-28',
+                changes: [
+                    { type: 'fixed', text: 'FormBuilder Native Select: Fixed focus state styling that was causing blue/purple background on native dropdowns' }
+                ]
+            },
+            {
+                version: '2.5.1',
+                date: '2025-11-28',
+                changes: [
+                    { type: 'fixed', text: 'M3DropdownMenu: Fixed hover area extending beyond visible dropdown field' },
+                    { type: 'fixed', text: 'M3DropdownMenu: Fixed selected value font-weight (was 600, now 400)' },
+                    { type: 'fixed', text: 'M3DropdownMenu: Fixed floating label font-weight and letter-spacing' },
+                    { type: 'fixed', text: 'M3DropdownMenu Multiselect: Fixed label overlap with chips' },
+                    { type: 'fixed', text: 'M3DropdownMenu Multiselect: Fixed field height to match regular dropdown (56px)' },
+                    { type: 'fixed', text: 'M3DropdownMenu Multiselect: Improved chip styling with better contrast' },
+                    { type: 'fixed', text: 'FormBuilder Native Select: Fixed native fallback dropdown to match M3 filled style' },
+                    { type: 'changed', text: 'm3-form-styles.css: Hover state selectors changed for precise interaction areas' }
+                ]
+            },
+            {
                 version: '2.4.4',
                 date: '2025-11-27',
                 highlight: true,

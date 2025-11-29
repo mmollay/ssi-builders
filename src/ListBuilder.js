@@ -18,6 +18,7 @@
 
 import { BaseBuilder } from './BaseBuilder.js';
 import { IconManager } from './IconManager.js';
+import { i18n } from './i18n.js';
 
 export class ListBuilder extends BaseBuilder {
     /**
@@ -38,8 +39,8 @@ export class ListBuilder extends BaseBuilder {
             pageSize: 50,
             serverSide: false,           // Server-side pagination/filtering/sorting
             filters: [],
-            emptyMessage: 'Keine Daten vorhanden',
-            loadingMessage: 'Lade Daten...',
+            emptyMessage: null,          // Uses i18n.t('list.empty') as default
+            loadingMessage: null,        // Uses i18n.t('list.loading') as default
             mobileBreakpoint: 768,
             enableColumnToggle: true,
             tableStyle: {                // Table styling options
@@ -48,7 +49,8 @@ export class ListBuilder extends BaseBuilder {
                 compact: false,
                 hoverable: true,
                 celled: false
-            }
+            },
+            variant: 'default'           // 'default' | 'frameless' | 'lines-only' | 'elegant' | 'minimal' | 'glass'
         });
 
         this.columns = config.columns || [];
@@ -102,14 +104,17 @@ export class ListBuilder extends BaseBuilder {
      * Main render function
      */
     render() {
+        const variantClass = this.options.variant && this.options.variant !== 'default'
+            ? `list-builder-${this.options.variant}`
+            : '';
+
         this.container.innerHTML = `
-            <div class="list-builder">
+            <div class="list-builder ${variantClass}">
                 ${this.renderToolbar()}
                 <div class="list-builder-content">
                     ${this.renderTable()}
                 </div>
                 ${this.options.paginated ? this.renderPagination() : ''}
-                ${this.renderVersionBadge()}
             </div>
         `;
 
@@ -128,7 +133,7 @@ export class ListBuilder extends BaseBuilder {
                             <input
                                 type="text"
                                 class="list-search-input"
-                                placeholder="Suchen..."
+                                placeholder="${i18n.t('list.search')}"
                                 id="${this.containerId}_search"
                                 value="${this.searchTerm}"
                             />
@@ -145,7 +150,7 @@ export class ListBuilder extends BaseBuilder {
                 <div class="list-toolbar-right">
                     ${this.options.enableColumnToggle ? `
                         <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_columnToggle">
-                            ${IconManager.getIcon('columns')} Spalten
+                            ${IconManager.getIcon('columns')} ${i18n.t('list.columns')}
                         </button>
                     ` : ''}
 
@@ -153,7 +158,7 @@ export class ListBuilder extends BaseBuilder {
 
                     ${this.options.selectable && this.selectedRows.size > 0 ? `
                         <button class="ssi-btn ssi-btn-danger ssi-btn-sm" id="${this.containerId}_bulkDelete">
-                            ${IconManager.getIcon('delete')} Löschen (${this.selectedRows.size})
+                            ${IconManager.getIcon('delete')} ${i18n.t('list.deleteSelected', { count: this.selectedRows.size })}
                         </button>
                     ` : ''}
                 </div>
@@ -172,7 +177,7 @@ export class ListBuilder extends BaseBuilder {
                 id="${this.containerId}_filter_${filter.key}"
                 data-filter-key="${filter.key}"
             >
-                <option value="">${filter.label}: Alle</option>
+                <option value="">${filter.label}: ${i18n.t('list.all')}</option>
                 ${filter.options.map(opt => `
                     <option value="${opt.value}" ${currentValue === opt.value ? 'selected' : ''}>
                         ${opt.label}
@@ -207,7 +212,7 @@ export class ListBuilder extends BaseBuilder {
             return `
                 <div class="list-loading">
                     <div class="list-spinner"></div>
-                    <p>${this.options.loadingMessage}</p>
+                    <p>${this.options.loadingMessage || i18n.t('list.loading')}</p>
                 </div>
             `;
         }
@@ -216,10 +221,10 @@ export class ListBuilder extends BaseBuilder {
             return `
                 <div class="list-empty">
                     <div class="list-empty-icon">${IconManager.getIcon('inbox')}</div>
-                    <p>${this.options.emptyMessage}</p>
+                    <p>${this.options.emptyMessage || i18n.t('list.empty')}</p>
                     ${this.searchTerm || Object.keys(this.activeFilters).length > 0 ? `
                         <button class="ssi-btn ssi-btn-outlined ssi-btn-sm" id="${this.containerId}_clearFilters">
-                            Filter zurücksetzen
+                            ${i18n.t('list.clearFilters')}
                         </button>
                     ` : ''}
                 </div>
@@ -607,7 +612,8 @@ export class ListBuilder extends BaseBuilder {
                 const actionKey = e.currentTarget.dataset.actionKey;
                 const rowId = e.currentTarget.dataset.rowId;
                 const action = this.actions.row?.find(a => a.key === actionKey);
-                const row = this.data.find(r => this.getRowId(r) === rowId);
+                // Convert rowId to match the type of the actual row ID (number or string)
+                const row = this.data.find(r => String(this.getRowId(r)) === rowId);
                 action?.handler?.(row, rowId);
             });
         });
@@ -878,7 +884,7 @@ export class ListBuilder extends BaseBuilder {
             <div class="list-modal" id="${this.containerId}_columnModal">
                 <div class="list-modal-content">
                     <div class="list-modal-header">
-                        <h3>Spalten anzeigen/verstecken</h3>
+                        <h3>${i18n.t('list.columns')}</h3>
                         <button class="list-modal-close">&times;</button>
                     </div>
                     <div class="list-modal-body">
@@ -894,8 +900,8 @@ export class ListBuilder extends BaseBuilder {
                         `).join('')}
                     </div>
                     <div class="list-modal-footer">
-                        <button class="ssi-btn ssi-btn-outlined" id="${this.containerId}_cancelColumns">Abbrechen</button>
-                        <button class="ssi-btn ssi-btn-primary" id="${this.containerId}_applyColumns">Anwenden</button>
+                        <button class="ssi-btn ssi-btn-outlined" id="${this.containerId}_cancelColumns">${i18n.t('actions.cancel')}</button>
+                        <button class="ssi-btn ssi-btn-primary" id="${this.containerId}_applyColumns">${i18n.t('filterBar.apply')}</button>
                     </div>
                 </div>
             </div>

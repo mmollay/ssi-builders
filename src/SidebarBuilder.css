@@ -245,15 +245,20 @@
     letter-spacing: 0.5px;
 }
 
+/* Collapsed state: Show as horizontal divider line */
 .sidebar-heading-collapsed {
     text-align: center;
-    padding: 16px 8px 8px;
+    padding: 8px 12px;
     font-size: 0;
+    position: relative;
 }
 
 .sidebar-heading-collapsed::after {
-    content: '•';
-    font-size: 16px;
+    content: '';
+    display: block;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, #dadce0 50%, transparent 100%);
+    width: 100%;
 }
 
 /* === Sidebar Footer === */
@@ -400,4 +405,196 @@
         margin-left: 0 !important;
         margin-right: 0 !important;
     }
+}
+
+/* === Full Collapse Mode (v2.5.3) === */
+/* Sidebar completely hides when collapsed */
+
+.sidebar-full-collapse.sidebar-collapsed {
+    overflow: visible; /* Keep visible so toggle button shows */
+    border: none;
+    background: transparent;
+}
+
+.sidebar-full-collapse.sidebar-collapsed .sidebar-header,
+.sidebar-full-collapse.sidebar-collapsed .sidebar-search,
+.sidebar-full-collapse.sidebar-collapsed .sidebar-nav,
+.sidebar-full-collapse.sidebar-collapsed .sidebar-footer,
+.sidebar-full-collapse.sidebar-collapsed .ssi-version-badge {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+/* Toggle button stays visible and moves to edge */
+.sidebar-full-collapse .sidebar-toggle {
+    transition: all 0.3s ease;
+}
+
+.sidebar-full-collapse.sidebar-collapsed .sidebar-toggle {
+    right: -40px;
+    top: 20px;
+    background: #1a73e8;
+    color: white;
+    border-color: #1a73e8;
+    width: 36px;
+    height: 36px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sidebar-full-collapse.sidebar-collapsed .sidebar-toggle:hover {
+    background: #1557b0;
+    border-color: #1557b0;
+}
+
+.sidebar-full-collapse.sidebar-right.sidebar-collapsed .sidebar-toggle {
+    left: -40px;
+    right: auto;
+    border-radius: 8px 0 0 8px;
+}
+
+/* === Dark Mode === */
+html.dark-mode .sidebar,
+html.m3-dark .sidebar {
+    background: #1e1e1e !important;
+    border-right-color: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-right,
+html.m3-dark .sidebar-right {
+    border-left-color: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-header,
+html.m3-dark .sidebar-header {
+    border-bottom-color: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-search,
+html.m3-dark .sidebar-search {
+    border-bottom-color: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-search-input,
+html.m3-dark .sidebar-search-input {
+    background: #2d2d2d !important;
+    border-color: #4d4d4d !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .sidebar-search-input::placeholder,
+html.m3-dark .sidebar-search-input::placeholder {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar-search-input:focus,
+html.m3-dark .sidebar-search-input:focus {
+    border-color: #8ab4f8 !important;
+    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.2) !important;
+}
+
+html.dark-mode .sidebar-nav::-webkit-scrollbar-thumb,
+html.m3-dark .sidebar-nav::-webkit-scrollbar-thumb {
+    background: #6c6c6c !important;
+}
+
+html.dark-mode .sidebar-nav::-webkit-scrollbar-thumb:hover,
+html.m3-dark .sidebar-nav::-webkit-scrollbar-thumb:hover {
+    background: #8c8c8c !important;
+}
+
+html.dark-mode .sidebar-link,
+html.m3-dark .sidebar-link {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar-link:hover,
+html.m3-dark .sidebar-link:hover {
+    background: rgba(138, 180, 248, 0.12) !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .sidebar-item-active > .sidebar-link,
+html.m3-dark .sidebar-item-active > .sidebar-link {
+    background: rgba(138, 180, 248, 0.2) !important;
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .sidebar-item-active > .sidebar-link .sidebar-icon,
+html.m3-dark .sidebar-item-active > .sidebar-link .sidebar-icon {
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .sidebar-icon,
+html.m3-dark .sidebar-icon {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar-divider,
+html.m3-dark .sidebar-divider {
+    background: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-heading,
+html.m3-dark .sidebar-heading {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar-heading-collapsed::after,
+html.m3-dark .sidebar-heading-collapsed::after {
+    background: linear-gradient(90deg, transparent 0%, #4d4d4d 50%, transparent 100%) !important;
+}
+
+html.dark-mode .sidebar-footer,
+html.m3-dark .sidebar-footer {
+    border-top-color: #3d3d3d !important;
+}
+
+html.dark-mode .sidebar-toggle,
+html.m3-dark .sidebar-toggle {
+    background: #2d2d2d !important;
+    border-color: #4d4d4d !important;
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar-toggle:hover,
+html.m3-dark .sidebar-toggle:hover {
+    background: #353535 !important;
+    color: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+}
+
+html.dark-mode .sidebar-toggle:active,
+html.m3-dark .sidebar-toggle:active {
+    background: rgba(138, 180, 248, 0.2) !important;
+}
+
+html.dark-mode .sidebar-arrow,
+html.m3-dark .sidebar-arrow {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .sidebar .ssi-version-badge,
+html.m3-dark .sidebar .ssi-version-badge {
+    color: #6c6c6c !important;
+}
+
+html.dark-mode .sidebar-backdrop,
+html.m3-dark .sidebar-backdrop {
+    background: rgba(0, 0, 0, 0.7) !important;
+}
+
+/* Full collapse dark mode */
+html.dark-mode .sidebar-full-collapse.sidebar-collapsed .sidebar-toggle,
+html.m3-dark .sidebar-full-collapse.sidebar-collapsed .sidebar-toggle {
+    background: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+    color: #003c8f !important;
+}
+
+html.dark-mode .sidebar-full-collapse.sidebar-collapsed .sidebar-toggle:hover,
+html.m3-dark .sidebar-full-collapse.sidebar-collapsed .sidebar-toggle:hover {
+    background: #aecbfa !important;
+    border-color: #aecbfa !important;
 }

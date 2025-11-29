@@ -16,6 +16,7 @@
 
 import { GlobalConfig } from './GlobalConfig.js';
 import { IconManager } from './IconManager.js';
+import { i18n } from './i18n.js';
 
 export class ToastBuilder {
     static container = null;
@@ -44,20 +45,20 @@ export class ToastBuilder {
         this._createToast(config);
     }
 
-    static success(message, title = 'Success', options = {}) {
-        this.show({ ...options, type: 'success', message, title });
+    static success(message, title = null, options = {}) {
+        this.show({ ...options, type: 'success', message, title: title || i18n.t('toast.success') });
     }
 
-    static error(message, title = 'Error', options = {}) {
-        this.show({ ...options, type: 'error', message, title });
+    static error(message, title = null, options = {}) {
+        this.show({ ...options, type: 'error', message, title: title || i18n.t('toast.error') });
     }
 
-    static warning(message, title = 'Warning', options = {}) {
-        this.show({ ...options, type: 'warning', message, title });
+    static warning(message, title = null, options = {}) {
+        this.show({ ...options, type: 'warning', message, title: title || i18n.t('toast.warning') });
     }
 
-    static info(message, title = 'Info', options = {}) {
-        this.show({ ...options, type: 'info', message, title });
+    static info(message, title = null, options = {}) {
+        this.show({ ...options, type: 'info', message, title: title || i18n.t('toast.info') });
     }
 
     /**

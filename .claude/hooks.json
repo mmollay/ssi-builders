@@ -1,12 +1,7 @@
 {
   "$schema": "https://claude.ai/hooks-schema.json",
-  "description": "Auto-optimize model selection based on task complexity",
-
+  "description": "SSI Builders - Auto-sync MCP Server before GITHUB releases",
   "user-prompt-submit": {
-    "command": "bash -c '\n# Token-Optimierung: Auto Model Selection\nUSER_MSG=\"$CLAUDE_USER_PROMPT\"\n\n# Komplexe Tasks die Sonnet brauchen\nif echo \"$USER_MSG\" | grep -qiE \"(refactor|architect|design pattern|complex|algorithm|performance optimization|GITHUB)\"; then\n  echo \"model:sonnet\"\n\n# Einfache Tasks -> Haiku (20x günstiger!)\nelif echo \"$USER_MSG\" | grep -qiE \"(fix|update|add|css|style|darkmode|i18n|translate|test)\"; then\n  echo \"model:haiku\"\n\n# Default: Haiku für alles andere\nelse\n  echo \"model:haiku\"\nfi\n'"
-  },
-
-  "agent-spawn": {
-    "command": "bash -c '\n# Agent-specific Model Selection\nAGENT=\"$CLAUDE_AGENT_TYPE\"\n\ncase \"$AGENT\" in\n  \"brutal-code-review-manager\"|\"pr-review-toolkit:*\")\n    echo \"model:sonnet\"\n    echo \"💎 Code review needs Sonnet\" >&2\n    ;;\n  \"Explore\"|\"Plan\")\n    echo \"model:haiku\"\n    echo \"⚡ Exploration with Haiku\" >&2\n    ;;\n  \"ssi-builder-sync\")\n    echo \"model:sonnet\"\n    echo \"💎 SSI Builder sync needs Sonnet\" >&2\n    ;;\n  *)\n    echo \"model:haiku\"\n    echo \"⚡ Default agent: Haiku\" >&2\n    ;;\nesac\n'"
+    "command": "bash -c '\nUSER_MSG=\"$CLAUDE_USER_PROMPT\"\nCWD=\"$CLAUDE_CWD\"\n\n# Check if user triggered GITHUB command\nif echo \"$USER_MSG\" | grep -qiE \"(GITHUB|github|git push.*tag)\"; then\n  echo \"🔄 Pre-GITHUB: Syncing MCP Server...\" >&2\n  \n  # Change to MCP directory and sync\n  cd /Users/martinmollay/Development/ssi-builders-mcp\n  npm run sync >&2 2>&1\n  \n  if [ $? -eq 0 ]; then\n    echo \"✅ MCP Server synchronized successfully!\" >&2\n  else\n    echo \"❌ MCP sync failed! Continuing with GITHUB anyway...\" >&2\n  fi\n  \n  cd \"$CWD\"\nfi\n\n# Model selection (same as global)\nif echo \"$USER_MSG\" | grep -qiE \"(refactor|architect|GITHUB|supabase.*query)\"; then\n  echo \"model:sonnet\"\nelif echo \"$USER_MSG\" | grep -qiE \"(fix|update|add|css|i18n|component)\"; then\n  echo \"model:haiku\"\nelse\n  echo \"model:haiku\"\nfi\n'"
   }
 }

@@ -4,7 +4,7 @@
 
 /* === Container === */
 .tab-builder {
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     overflow: hidden;
 }
@@ -12,7 +12,7 @@
 /* === Tab List === */
 .tab-list {
     display: flex;
-    background: #f8f9fa;
+    background: var(--m3-surface-container, #f8f9fa);
     border-bottom: 1px solid #e8eaed;
     overflow-x: auto;
     scrollbar-width: thin;
@@ -47,7 +47,7 @@
     padding: 12px 20px;
     border: none;
     background: transparent;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -58,7 +58,7 @@
 
 .tab-button:hover:not(.tab-disabled) {
     background: rgba(26, 115, 232, 0.04);
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
 }
 
 .tab-button:focus {
@@ -83,7 +83,7 @@
 }
 
 .tab-style-underline .tab-active {
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
 }
 
 /* === Pill Style === */
@@ -105,7 +105,7 @@
 }
 
 .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: #f1f3f4;
+    background: var(--m3-surface-container-high, #f1f3f4);
 }
 
 /* === Contained Style === */
@@ -118,19 +118,19 @@
 
 .tab-style-contained .tab-button {
     border-radius: 4px;
-    border: 1px solid #dadce0;
-    background: white;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
+    background: var(--m3-surface, #ffffff);
 }
 
 .tab-style-contained .tab-active {
     background: #1a73e8;
     color: white;
-    border-color: #1a73e8;
+    border-color: var(--m3-primary, #1a73e8);
 }
 
 .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: #f8f9fa;
-    border-color: #5f6368;
+    background: var(--m3-surface-container, #f8f9fa);
+    border-color: var(--m3-on-surface-variant, #5f6368);
 }
 
 /* === Tab Icon === */
@@ -300,5 +300,117 @@
         top: auto;
         left: 0;
         right: 0;
+    }
+}
+
+/* === Dark Mode === */
+html.dark-mode .tab-builder,
+html.m3-dark .tab-builder {
+    background: #1e1e1e !important;
+}
+
+html.dark-mode .tab-list,
+html.m3-dark .tab-list {
+    background: #252525 !important;
+    border-bottom-color: #3d3d3d !important;
+}
+
+html.dark-mode .tab-list::-webkit-scrollbar-thumb,
+html.m3-dark .tab-list::-webkit-scrollbar-thumb {
+    background: #6c6c6c !important;
+}
+
+html.dark-mode .tab-button,
+html.m3-dark .tab-button {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .tab-button:hover:not(.tab-disabled),
+html.m3-dark .tab-button:hover:not(.tab-disabled) {
+    background: rgba(138, 180, 248, 0.08) !important;
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .tab-button:focus,
+html.m3-dark .tab-button:focus {
+    background: rgba(138, 180, 248, 0.12) !important;
+}
+
+html.dark-mode .tab-style-underline .tab-active,
+html.m3-dark .tab-style-underline .tab-active {
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .tab-style-underline .tab-active::after,
+html.m3-dark .tab-style-underline .tab-active::after {
+    background: #8ab4f8 !important;
+}
+
+html.dark-mode .tab-style-pill .tab-active,
+html.m3-dark .tab-style-pill .tab-active {
+    background: #8ab4f8 !important;
+    color: #003c8f !important;
+}
+
+html.dark-mode .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active),
+html.m3-dark .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active) {
+    background: #2d2d2d !important;
+}
+
+html.dark-mode .tab-style-contained .tab-button,
+html.m3-dark .tab-style-contained .tab-button {
+    background: #1e1e1e !important;
+    border-color: #3d3d3d !important;
+}
+
+html.dark-mode .tab-style-contained .tab-active,
+html.m3-dark .tab-style-contained .tab-active {
+    background: #8ab4f8 !important;
+    color: #003c8f !important;
+    border-color: #8ab4f8 !important;
+}
+
+html.dark-mode .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active),
+html.m3-dark .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active) {
+    background: #252525 !important;
+    border-color: #a1a1a1 !important;
+}
+
+html.dark-mode .tab-panels,
+html.m3-dark .tab-panels {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .tab-panel h3,
+html.m3-dark .tab-panel h3 {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .tab-panel p,
+html.m3-dark .tab-panel p {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .tab-position-bottom .tab-list,
+html.m3-dark .tab-position-bottom .tab-list {
+    border-top-color: #3d3d3d !important;
+}
+
+html.dark-mode .tab-position-left .tab-list,
+html.m3-dark .tab-position-left .tab-list {
+    border-right-color: #3d3d3d !important;
+}
+
+html.dark-mode .tab-position-right .tab-list,
+html.m3-dark .tab-position-right .tab-list {
+    border-left-color: #3d3d3d !important;
+}
+
+@media (max-width: 768px) {
+    html.dark-mode .tab-position-left .tab-list,
+    html.dark-mode .tab-position-right .tab-list,
+    html.m3-dark .tab-position-left .tab-list,
+    html.m3-dark .tab-position-right .tab-list {
+        border-bottom-color: #3d3d3d !important;
     }
 }

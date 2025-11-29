@@ -55,20 +55,20 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 1px;
     background: var(--m3-on-surface-variant);
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .m3-dropdown--filled .m3-dropdown__field:hover + .m3-dropdown__active-indicator,
 .m3-dropdown--filled .m3-dropdown__field:hover ~ .m3-dropdown__active-indicator {
-    height: 2px;
+    height: 1px;
     background: var(--m3-on-surface);
 }
 
 .m3-dropdown--filled:focus .m3-dropdown__active-indicator,
 .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__active-indicator {
-    height: 3px;
+    height: 2px;
     background: var(--m3-primary);
 }
 
@@ -76,8 +76,8 @@
 /* Match FormBuilder textfield colors for consistency */
 .m3-dropdown--outlined .m3-dropdown__field {
     position: relative;
-    background: white;
-    border: 1px solid #dadce0;
+    background: var(--m3-surface, #ffffff);
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: var(--m3-shape-extra-small);
     padding: 8px 16px;
     min-height: var(--m3-text-field-height);
@@ -107,7 +107,8 @@
 }
 
 .m3-dropdown--has-value .m3-dropdown__content {
-    padding-top: 12px;
+    padding-top: 16px; /* More space for floated label, center value */
+    padding-bottom: 4px;
 }
 
 /* Outlined Content */
@@ -119,7 +120,8 @@
 }
 
 .m3-dropdown--outlined.m3-dropdown--has-value .m3-dropdown__content {
-    padding-top: 12px; /* Match filled variant spacing between label and value */
+    padding-top: 16px; /* Match filled variant spacing between label and value */
+    padding-bottom: 4px;
 }
 
 /* === Label - ENHANCED === */
@@ -174,7 +176,7 @@
 .m3-dropdown--outlined .m3-dropdown__label--float {
     top: 0;
     transform: translateY(-50%);
-    background: white;
+    background: var(--m3-surface, #ffffff);
     padding: 0 6px;
     margin-left: -6px;
     z-index: 1;
@@ -188,7 +190,7 @@
 .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__label {
     top: 0;
     transform: translateY(-50%);
-    background: white;
+    background: var(--m3-surface, #ffffff);
     padding: 0 6px;
     margin-left: -6px;
     z-index: 1;
@@ -1202,6 +1204,118 @@ textarea.m3-text-field__input {
 
 .m3-button--tonal:active::before {
     background: color-mix(in srgb, var(--m3-on-secondary-container) 12%, transparent);
+}
+
+/* === Danger Button (for delete/destructive actions) === */
+.m3-button--danger {
+    background: var(--m3-error);
+    color: var(--m3-on-error);
+}
+
+.m3-button--danger:hover::before {
+    background: color-mix(in srgb, var(--m3-on-error) 8%, transparent);
+}
+
+.m3-button--danger:hover {
+    box-shadow: var(--m3-elevation-1);
+}
+
+.m3-button--danger:active::before {
+    background: color-mix(in srgb, var(--m3-on-error) 12%, transparent);
+}
+
+/* Outlined Danger */
+.m3-button--outlined.m3-button--danger {
+    background: transparent;
+    color: var(--m3-error);
+    border-color: var(--m3-error);
+}
+
+.m3-button--outlined.m3-button--danger:hover::before {
+    background: color-mix(in srgb, var(--m3-error) 8%, transparent);
+}
+
+/* Text Danger */
+.m3-button--text.m3-button--danger {
+    background: transparent;
+    color: var(--m3-error);
+}
+
+.m3-button--text.m3-button--danger:hover::before {
+    background: color-mix(in srgb, var(--m3-error) 8%, transparent);
+}
+
+/* === Success Button (for confirm/save actions) === */
+.m3-button--success {
+    background: #2E7D32;
+    color: #FFFFFF;
+}
+
+.m3-button--success:hover::before {
+    background: color-mix(in srgb, white 8%, transparent);
+}
+
+.m3-button--success:hover {
+    box-shadow: var(--m3-elevation-1);
+}
+
+.m3-button--success:active::before {
+    background: color-mix(in srgb, white 12%, transparent);
+}
+
+/* Outlined Success */
+.m3-button--outlined.m3-button--success {
+    background: transparent;
+    color: #2E7D32;
+    border-color: #2E7D32;
+}
+
+.m3-button--outlined.m3-button--success:hover::before {
+    background: color-mix(in srgb, #2E7D32 8%, transparent);
+}
+
+/* === Button Sizes === */
+.m3-button--small {
+    height: 32px;
+    padding: 0 12px;
+    font-size: 12px;
+}
+
+.m3-button--small .m3-button__icon {
+    width: 16px;
+    height: 16px;
+}
+
+.m3-button--large {
+    height: 48px;
+    padding: 0 32px;
+    font-size: 16px;
+}
+
+.m3-button--large .m3-button__icon {
+    width: 22px;
+    height: 22px;
+}
+
+/* === Icon-Only Button (FAB style) === */
+.m3-button--icon-only {
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    min-width: 40px;
+    border-radius: var(--m3-shape-corner-full);
+}
+
+.m3-button--icon-only.m3-button--small {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+}
+
+.m3-button--icon-only.m3-button--large {
+    width: 56px;
+    height: 56px;
+    min-width: 56px;
 }
 
 /* === Button with Icon === */
@@ -2235,7 +2349,7 @@ textarea.m3-text-field__input {
     top: 50%;
     width: 16px;
     height: 16px;
-    background: #fff;
+    background: var(--m3-surface, #ffffff);
     border: 2px solid #fff;
     border-radius: 50%;
     box-shadow: 0 0 4px rgba(0,0,0,0.3);
@@ -2274,7 +2388,7 @@ textarea.m3-text-field__input {
     top: 50%;
     width: 16px;
     height: 16px;
-    background: #fff;
+    background: var(--m3-surface, #ffffff);
     border: 2px solid #fff;
     border-radius: 50%;
     box-shadow: 0 0 4px rgba(0,0,0,0.3);
@@ -2398,4 +2512,308 @@ textarea.m3-text-field__input {
 
 .m3-color-picker--error .m3-color-picker__supporting-text {
     color: var(--m3-error);
+}
+
+
+/* =========================================
+   DARK MODE SUPPORT
+   Explicit dark mode for all M3 form components
+   ========================================= */
+
+/* === M3 Dropdown Dark Mode === */
+html.dark-mode .m3-dropdown--filled .m3-dropdown__field,
+html.m3-dark .m3-dropdown--filled .m3-dropdown__field {
+    background: #3d3d3d !important;
+}
+
+html.dark-mode .m3-dropdown--filled .m3-dropdown__field:hover,
+html.m3-dark .m3-dropdown--filled .m3-dropdown__field:hover {
+    background: #4d4d4d !important;
+}
+
+html.dark-mode .m3-dropdown--outlined .m3-dropdown__field,
+html.m3-dark .m3-dropdown--outlined .m3-dropdown__field {
+    background: #1e1e1e !important;
+    border-color: #6c6c6c !important;
+}
+
+html.dark-mode .m3-dropdown--outlined .m3-dropdown__field:hover,
+html.m3-dark .m3-dropdown--outlined .m3-dropdown__field:hover {
+    background: #2d2d2d !important;
+    border-color: #8c8c8c !important;
+}
+
+html.dark-mode .m3-dropdown__label,
+html.m3-dark .m3-dropdown__label {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .m3-dropdown__value,
+html.m3-dark .m3-dropdown__value {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-dropdown--outlined .m3-dropdown__label--float,
+html.m3-dark .m3-dropdown--outlined .m3-dropdown__label--float {
+    background: #1e1e1e !important;
+}
+
+html.dark-mode .m3-dropdown--outlined:focus .m3-dropdown__label,
+html.dark-mode .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__label,
+html.m3-dark .m3-dropdown--outlined:focus .m3-dropdown__label,
+html.m3-dark .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__label {
+    background: #1e1e1e !important;
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .m3-dropdown__trailing-icon,
+html.m3-dark .m3-dropdown__trailing-icon {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .m3-dropdown--open .m3-dropdown__trailing-icon,
+html.m3-dark .m3-dropdown--open .m3-dropdown__trailing-icon {
+    color: #8ab4f8 !important;
+}
+
+/* Menu/Dropdown List */
+html.dark-mode .m3-dropdown__menu,
+html.m3-dark .m3-dropdown__menu {
+    background: #2d2d2d !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-mode .m3-dropdown__option,
+html.m3-dark .m3-dropdown__option {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-dropdown__option:hover,
+html.m3-dark .m3-dropdown__option:hover {
+    background: rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark-mode .m3-dropdown__option--selected,
+html.m3-dark .m3-dropdown__option--selected {
+    background: rgba(138, 180, 248, 0.16) !important;
+}
+
+html.dark-mode .m3-dropdown__option--selected .m3-dropdown__option-label,
+html.m3-dark .m3-dropdown__option--selected .m3-dropdown__option-label {
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .m3-dropdown__option-check,
+html.m3-dark .m3-dropdown__option-check {
+    color: #8ab4f8 !important;
+}
+
+/* Search in Dropdown */
+html.dark-mode .m3-dropdown__search,
+html.m3-dark .m3-dropdown__search {
+    background: #2d2d2d !important;
+    border-bottom-color: #3d3d3d !important;
+}
+
+html.dark-mode .m3-dropdown__search-input,
+html.m3-dark .m3-dropdown__search-input {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-dropdown__search-input::placeholder,
+html.m3-dark .m3-dropdown__search-input::placeholder {
+    color: #8c8c8c !important;
+}
+
+html.dark-mode .m3-dropdown__search-icon,
+html.m3-dark .m3-dropdown__search-icon {
+    color: #a1a1a1 !important;
+}
+
+/* Chips in Multiselect */
+html.dark-mode .m3-dropdown__chip,
+html.m3-dark .m3-dropdown__chip {
+    background: #4d4d4d !important;
+    color: #e1e1e1 !important;
+    border-color: #6c6c6c !important;
+}
+
+/* Active Indicator */
+html.dark-mode .m3-dropdown--filled .m3-dropdown__active-indicator,
+html.m3-dark .m3-dropdown--filled .m3-dropdown__active-indicator {
+    background: #6c6c6c !important;
+}
+
+html.dark-mode .m3-dropdown--filled:focus .m3-dropdown__active-indicator,
+html.dark-mode .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__active-indicator,
+html.m3-dark .m3-dropdown--filled:focus .m3-dropdown__active-indicator,
+html.m3-dark .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__active-indicator {
+    background: #8ab4f8 !important;
+}
+
+/* Focus States */
+html.dark-mode .m3-dropdown--outlined:focus .m3-dropdown__field,
+html.dark-mode .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__field,
+html.m3-dark .m3-dropdown--outlined:focus .m3-dropdown__field,
+html.m3-dark .m3-dropdown--outlined.m3-dropdown--open .m3-dropdown__field {
+    border-color: #8ab4f8 !important;
+}
+
+/* === M3 Text Field Dark Mode === */
+html.dark-mode .m3-text-field--filled .m3-text-field__container,
+html.m3-dark .m3-text-field--filled .m3-text-field__container {
+    background: #3d3d3d !important;
+}
+
+html.dark-mode .m3-text-field--filled .m3-text-field__input,
+html.m3-dark .m3-text-field--filled .m3-text-field__input {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-text-field--outlined .m3-text-field__input,
+html.m3-dark .m3-text-field--outlined .m3-text-field__input {
+    background: #1e1e1e !important;
+    border-color: #6c6c6c !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-text-field__label,
+html.m3-dark .m3-text-field__label {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .m3-text-field--outlined .m3-text-field__label,
+html.m3-dark .m3-text-field--outlined .m3-text-field__label {
+    background: #1e1e1e !important;
+}
+
+/* === M3 Checkbox Dark Mode === */
+html.dark-mode .m3-checkbox__input,
+html.m3-dark .m3-checkbox__input {
+    border-color: #8c8c8c !important;
+}
+
+html.dark-mode .m3-checkbox__label,
+html.m3-dark .m3-checkbox__label {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-checkbox__input:checked,
+html.m3-dark .m3-checkbox__input:checked {
+    background: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+}
+
+/* === M3 Radio Dark Mode === */
+html.dark-mode .m3-radio__input,
+html.m3-dark .m3-radio__input {
+    border-color: #8c8c8c !important;
+}
+
+html.dark-mode .m3-radio__label,
+html.m3-dark .m3-radio__label {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-radio__input:checked,
+html.m3-dark .m3-radio__input:checked {
+    border-color: #8ab4f8 !important;
+}
+
+html.dark-mode .m3-radio__input::after,
+html.m3-dark .m3-radio__input::after {
+    background: #8ab4f8 !important;
+}
+
+/* === M3 Switch Dark Mode === */
+html.dark-mode .m3-switch__track,
+html.m3-dark .m3-switch__track {
+    background: #3d3d3d !important;
+    border-color: #6c6c6c !important;
+}
+
+html.dark-mode .m3-switch__thumb,
+html.m3-dark .m3-switch__thumb {
+    background: #8c8c8c !important;
+}
+
+html.dark-mode .m3-switch__input:checked + .m3-switch__track,
+html.m3-dark .m3-switch__input:checked + .m3-switch__track {
+    background: #8ab4f8 !important;
+    border-color: #8ab4f8 !important;
+}
+
+html.dark-mode .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb,
+html.m3-dark .m3-switch__input:checked + .m3-switch__track .m3-switch__thumb {
+    background: #1e1e1e !important;
+}
+
+html.dark-mode .m3-switch__label,
+html.m3-dark .m3-switch__label {
+    color: #e1e1e1 !important;
+}
+
+/* === M3 Slider Dark Mode === */
+html.dark-mode .m3-slider__label,
+html.m3-dark .m3-slider__label {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-slider__track,
+html.m3-dark .m3-slider__track {
+    background: #3d3d3d !important;
+}
+
+html.dark-mode .m3-slider__track-active,
+html.m3-dark .m3-slider__track-active {
+    background: linear-gradient(90deg, #8ab4f8, #aecbfa) !important;
+}
+
+html.dark-mode .m3-slider__thumb,
+html.m3-dark .m3-slider__thumb {
+    background: #8ab4f8 !important;
+}
+
+html.dark-mode .m3-slider__value,
+html.m3-dark .m3-slider__value {
+    background: rgba(138, 180, 248, 0.2) !important;
+    color: #8ab4f8 !important;
+}
+
+/* === M3 Color Picker Dark Mode === */
+html.dark-mode .m3-color-picker__trigger,
+html.m3-dark .m3-color-picker__trigger {
+    background: #2d2d2d !important;
+    border-color: #6c6c6c !important;
+}
+
+html.dark-mode .m3-color-picker__value,
+html.m3-dark .m3-color-picker__value {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-color-picker__panel,
+html.m3-dark .m3-color-picker__panel {
+    background: #2d2d2d !important;
+}
+
+html.dark-mode .m3-color-picker__input,
+html.dark-mode .m3-color-picker__hex-input,
+html.m3-dark .m3-color-picker__input,
+html.m3-dark .m3-color-picker__hex-input {
+    background: #1e1e1e !important;
+    border-color: #6c6c6c !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .m3-color-picker__input-label,
+html.m3-dark .m3-color-picker__input-label {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .m3-color-picker__hue-handle,
+html.dark-mode .m3-color-picker__alpha-handle,
+html.m3-dark .m3-color-picker__hue-handle,
+html.m3-dark .m3-color-picker__alpha-handle {
+    background: #1e1e1e !important;
 }

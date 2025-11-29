@@ -3,19 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FormBuilder Demo - SSI Builders</title>
+    <title>FormBuilder - SSI Builders</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
 
-    <!-- Styles -->
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- M3 Design System -->
     <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
     <link rel="stylesheet" href="../../src/FormBuilder.css">
+    <link rel="stylesheet" href="../../src/m3-form-styles.css">
+
+    <!-- SSI Builders Layout -->
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
     <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
-    <link rel="stylesheet" href="./layout.css">
+    <link rel="stylesheet" href="layout.css">
 
     <style>
         * {
@@ -25,9 +36,9 @@
         }
 
         body {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: #f8f9fa;
-            color: #202124;
+            font-family: var(--m3-font-family);
+            background: var(--m3-surface);
+            color: var(--m3-on-surface);
             line-height: 1.6;
         }
 
@@ -42,8 +53,8 @@
             top: 0;
             height: 100vh;
             width: 280px;
-            background: white;
-            border-right: 1px solid #e8eaed;
+            background: var(--m3-surface-container);
+            border-right: 1px solid var(--m3-outline-variant);
             z-index: 1000;
         }
 
@@ -54,155 +65,106 @@
             max-width: 1200px;
         }
 
-        .demo-content-inner {
-            max-width: 100%;
-        }
-
         .page-header {
             margin-bottom: 48px;
             padding-bottom: 24px;
-            border-bottom: 2px solid #e8eaed;
+            border-bottom: 1px solid var(--m3-outline-variant);
         }
 
         .page-header h1 {
-            font-size: 36px;
-            font-weight: 500;
-            color: #202124;
+            font-size: var(--m3-headline-large-size);
+            font-weight: var(--m3-headline-large-weight);
+            line-height: var(--m3-headline-large-line-height);
+            color: var(--m3-on-surface);
             margin-bottom: 8px;
         }
 
         .page-header p {
-            font-size: 16px;
-            color: #5f6368;
+            font-size: var(--m3-body-large-size);
+            color: var(--m3-on-surface-variant);
+        }
+
+        .header-quick-links {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--m3-outline-variant);
+            flex-wrap: wrap;
+        }
+
+        .quick-links-label {
+            font-size: var(--m3-label-medium-size);
+            font-weight: 500;
+            color: var(--m3-on-surface-variant);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .quick-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 8px 16px;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            border-radius: var(--m3-shape-full);
+            text-decoration: none;
+            font-size: var(--m3-label-large-size);
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .quick-link:hover {
+            background: var(--m3-primary);
+            color: var(--m3-on-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--m3-elevation-2);
         }
 
         .demo-section {
-            background: white;
-            border-radius: 12px;
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-medium);
             padding: 32px;
             margin-bottom: 32px;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
         }
 
         .demo-section h2 {
-            font-size: 24px;
+            font-size: var(--m3-title-large-size);
             font-weight: 500;
-            color: #202124;
-            margin-bottom: 16px;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
+            gap: 12px;
         }
 
         .demo-section > p {
-            color: #5f6368;
+            color: var(--m3-on-surface-variant);
             margin-bottom: 24px;
-            font-size: 15px;
-        }
-
-        .example-demo {
-            margin: 24px 0;
-            padding: 24px;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border: 1px solid #e8eaed;
-        }
-
-        .example-code {
-            background: #1e1e1e !important;
-            color: #d4d4d4 !important;
-            padding: 20px !important;
-            border-radius: 8px !important;
-            overflow-x: auto !important;
-            font-family: 'Roboto Mono', 'Consolas', monospace !important;
-            font-size: 14px !important;
-            line-height: 1.6 !important;
-            margin: 20px 0 !important;
-        }
-
-        .example-code code {
-            color: #d4d4d4 !important;
-            background: transparent !important;
-            padding: 0 !important;
-        }
-
-        .code-block-container {
-            position: relative;
-        }
-
-        .code-copy-btn {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: #d4d4d4;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: 'Roboto', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .code-copy-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
-
-        .code-copy-btn.copied {
-            background: #34a853;
-            border-color: #34a853;
-            color: white;
+            font-size: var(--m3-body-medium-size);
         }
 
         .badge {
             display: inline-block;
-            background: #e8f0fe;
-            color: #1a73e8;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
             padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 13px;
+            border-radius: var(--m3-shape-full);
+            font-size: var(--m3-label-small-size);
             font-weight: 500;
-            margin-left: 8px;
         }
 
         .badge.new {
-            background: #e6f4ea;
-            color: #137333;
+            background: var(--m3-tertiary-container);
+            color: var(--m3-on-tertiary-container);
         }
 
-        .ssi-btn {
-            padding: 10px 24px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .ssi-btn-primary {
-            background: #1a73e8;
-            color: white;
-        }
-
-        .ssi-btn-primary:hover {
-            background: #1557b0;
-            box-shadow: 0 4px 12px rgba(26, 115, 232, 0.3);
-        }
-
-        .ssi-btn-outlined {
-            background: white;
-            color: #1a73e8;
-            border: 1px solid #1a73e8;
-        }
-
-        .ssi-btn-outlined:hover {
-            background: #e8f0fe;
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 2000;
         }
 
         @media (max-width: 768px) {
@@ -225,1004 +187,454 @@
 
         <!-- Main Content -->
         <main class="demo-content">
-            <div class="demo-content-inner">
-                <!-- Page Header -->
-                <div class="page-header">
-                    <h1>📝 FormBuilder</h1>
-                    <p>Flexible forms with validation and all input types</p>
+            <!-- Page Header -->
+            <div class="page-header">
+                <h1>FormBuilder</h1>
+                <p id="page-subtitle">Material Design 3 Forms with automatic component integration</p>
+                <div class="header-quick-links">
+                    <span class="quick-links-label">Jump to:</span>
+                    <a href="#complete-m3-form" class="quick-link">Complete M3 Form</a>
+                    <a href="#field-variants" class="quick-link">Field Variants</a>
+                    <a href="#layout-variations" class="quick-link">Layout Variations</a>
+                    <a href="#density-options" class="quick-link">Density Options</a>
+                    <a href="#all-input-types" class="quick-link">All Input Types</a>
                 </div>
-
-                <!-- Example 1: Basic Form -->
-                <div class="demo-section">
-                    <h2>1. Basic Form <span class="badge">Quick Start</span></h2>
-                    <p>Simple form with text inputs, validation, and submission handling.</p>
-
-                    <div class="example-demo">
-                        <div id="basic-form"></div>
-                    </div>
-
-                    <div id="code-basic-form"></div>
-                </div>
-
-                <!-- Example 2: All Input Types -->
-                <div class="demo-section">
-                    <h2>2. All Input Types with Flexible Grid <span class="badge">12-Column System</span></h2>
-                    <p>FormBuilder supports all HTML5 input types plus custom controls with flexible grid widths (1-12 columns).</p>
-
-                    <!-- Live Style Switcher -->
-                    <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 24px; border: 2px solid #e8eaed;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px;">
-                            <!-- Field Layout Switcher -->
-                            <div>
-                                <h3 style="font-size: 14px; font-weight: 600; color: #202124; margin-bottom: 12px;">
-                                    🎨 Field Layout (M3 Styles)
-                                </h3>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldLayout" value="standard" checked style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Standard - Classic labels above inputs</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldLayout" value="filled" style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Filled - M3 filled backgrounds with floating labels</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldLayout" value="outlined" style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Outlined - M3 outlined borders with floating labels</span>
-                                    </label>
-                                </div>
-                            </div>
-
-                            <!-- Field Size Switcher -->
-                            <div>
-                                <h3 style="font-size: 14px; font-weight: 600; color: #202124; margin-bottom: 12px;">
-                                    📏 Field Size
-                                </h3>
-                                <div style="display: flex; flex-direction: column; gap: 8px;">
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldSize" value="sm" style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Small (sm) - Compact fields</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldSize" value="md" checked style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Medium (md) - Default size</span>
-                                    </label>
-                                    <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; padding: 8px; border-radius: 4px; transition: background 0.2s;" onmouseover="this.style.background='rgba(0,0,0,0.04)'" onmouseout="this.style.background='transparent'">
-                                        <input type="radio" name="fieldSize" value="lg" style="accent-color: #1a73e8;">
-                                        <span style="font-size: 14px; color: #202124;">Large (lg) - Bigger touch targets</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="example-demo">
-                        <div id="all-types-form"></div>
-                    </div>
-
-                    <div id="code-all-types"></div>
-                </div>
-
-                <!-- Example 3: Validation -->
-                <div class="demo-section">
-                    <h2>3. Validation <span class="badge">Required, Custom Rules</span></h2>
-                    <p>Built-in validation with custom rules and error messages.</p>
-
-                    <div class="example-demo">
-                        <div id="validation-form"></div>
-                    </div>
-
-                    <div id="code-validation"></div>
-                </div>
-
-                <!-- Example 4: Grid Layout -->
-                <div class="demo-section">
-                    <h2>4. Grid Layout <span class="badge">2/3/4 Columns</span></h2>
-                    <p>Responsive grid layouts for multi-column forms.</p>
-
-                    <div class="example-demo">
-                        <div id="grid-form"></div>
-                    </div>
-
-                    <div id="code-grid"></div>
-                </div>
-
-                <!-- Example 5: Inline & Horizontal Layouts -->
-                <div class="demo-section">
-                    <h2>5. Inline & Horizontal Layouts <span class="badge">Compact Forms</span></h2>
-                    <p>Inline layout for compact forms like search bars, and horizontal label-input arrangements.</p>
-
-                    <div class="example-demo">
-                        <h3 style="font-size: 16px; margin-bottom: 16px; color: #5f6368;">Inline Layout (Search Bar Style)</h3>
-                        <div id="inline-form"></div>
-
-                        <h3 style="font-size: 16px; margin: 32px 0 16px; color: #5f6368;">Horizontal Layout (Label-Input Side-by-Side)</h3>
-                        <div id="horizontal-form"></div>
-                    </div>
-
-                    <div id="code-inline-horizontal"></div>
-                </div>
-
-                <!-- Example 6: Interactive Elements -->
-                <div class="demo-section">
-                    <h2>6. Interactive Elements <span class="badge new">Password Toggle, Number Stepper</span></h2>
-                    <p>Enhanced controls with password visibility toggle and number increment/decrement buttons.</p>
-
-                    <div class="example-demo">
-                        <div id="interactive-form"></div>
-                    </div>
-
-                    <div id="code-interactive"></div>
-                </div>
-
-                <!-- Example 6: Checkboxes, Radio, Toggle -->
-                <div class="demo-section">
-                    <h2>6. Checkboxes, Radio & Toggle <span class="badge">Material Design 3</span></h2>
-                    <p>M3-styled checkbox, radio button, and toggle switch components.</p>
-
-                    <div class="example-demo">
-                        <div id="choices-form"></div>
-                    </div>
-
-                    <div id="code-choices"></div>
-                </div>
-
-                <!-- Example 7: Conditional Fields -->
-                <div class="demo-section">
-                    <h2>7. Conditional Fields <span class="badge">Dynamic Show/Hide</span></h2>
-                    <p>Show/hide fields based on other field values.</p>
-
-                    <div class="example-demo">
-                        <div id="conditional-form"></div>
-                    </div>
-
-                    <div id="code-conditional"></div>
-                </div>
-
-                <!-- Example 8: Material Design 3 - Filled -->
-                <div class="demo-section">
-                    <h2>8. Material Design 3 - Filled <span class="badge new">M3 Variant</span></h2>
-                    <p>Google M3 filled text fields with floating labels and state layers.</p>
-
-                    <div class="example-demo">
-                        <div id="m3-filled-form"></div>
-                    </div>
-
-                    <div id="code-m3-filled"></div>
-                </div>
-
-                <!-- Example 9: Material Design 3 - Outlined -->
-                <div class="demo-section">
-                    <h2>9. Material Design 3 - Outlined <span class="badge new">M3 Variant</span></h2>
-                    <p>Google M3 outlined text fields with floating labels and focus effects.</p>
-
-                    <div class="example-demo">
-                        <div id="m3-outlined-form"></div>
-                    </div>
-
-                    <div id="code-m3-outlined"></div>
-                </div>
-
-                <!-- Example 10: Form State Management -->
-                <div class="demo-section">
-                    <h2>10. Form State Management <span class="badge">getValue, setValue, reset</span></h2>
-                    <p>Access and manipulate form data programmatically.</p>
-
-                    <div class="example-demo">
-                        <div id="state-form"></div>
-                        <div style="margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap;">
-                            <button class="ssi-btn ssi-btn-outlined" onclick="getFormData()">Get Data</button>
-                            <button class="ssi-btn ssi-btn-outlined" onclick="prefillForm()">Prefill Form</button>
-                            <button class="ssi-btn ssi-btn-outlined" onclick="resetForm()">Reset Form</button>
-                        </div>
-                    </div>
-
-                    <div id="code-state"></div>
-                </div>
-
             </div>
+
+            <!-- Theme Toggle Button -->
+            <button class="theme-toggle m3-button m3-button--tonal" onclick="toggleTheme()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                Theme
+            </button>
+
+            <!-- Complete M3 Form -->
+            <div class="demo-section" id="complete-m3-form">
+                <h2>Complete M3 Form <span class="badge">Live</span></h2>
+                <p>A complete form built with FormBuilder, showcasing automatic M3 component integration with filled fields, dropdowns, sliders, and textareas.</p>
+                <div id="complete-m3-form-builder"></div>
+                <div id="code-complete-m3"></div>
+            </div>
+
+            <!-- Field Variants & States -->
+            <div class="demo-section" id="field-variants">
+                <h2>Field Variants & States</h2>
+                <p>Demonstration of 'outlined' and 'filled' fields, including disabled and error states. Click the submit button to trigger validation.</p>
+                <div id="field-variants-form"></div>
+                <div id="code-variants"></div>
+            </div>
+
+            <!-- Layout Variations -->
+            <div class="demo-section" id="layout-variations">
+                <h2>Layout Variations <span class="badge">Flexible</span></h2>
+                <p>Demonstration of different FormBuilder configurations: flat layout without segments, 3-column layouts, and various design styles.</p>
+
+                <!-- Simple Form -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">Simple Form (No Segments)</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">A clean, flat form layout without any segment groupings.</p>
+                <div id="simple-flat-form"></div>
+
+                <!-- 3-Column Layout -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">3-Column Layout</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">Form fields arranged in three columns using <code>width: 4</code> (12-column grid).</p>
+                <div id="three-column-form"></div>
+
+                <!-- Mixed Layout -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">Mixed Width Layout</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">Combining different field widths for dynamic layouts.</p>
+                <div id="mixed-width-form"></div>
+            </div>
+
+            <!-- Density Options -->
+            <div class="demo-section" id="density-options">
+                <h2>Density Options <span class="badge new">NEW</span></h2>
+                <p>Control form compactness with <code>size</code>, <code>gap</code>, and <code>density</code> presets.</p>
+
+                <!-- Dense Form -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">Dense Layout <code style="font-size: 12px; background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">density: 'dense'</code></h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">Compact form with 40px fields and 8px gaps - ideal for data-heavy interfaces.</p>
+                <div id="dense-form"></div>
+
+                <!-- Normal Form -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">Normal Layout <code style="font-size: 12px; background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">density: 'normal'</code></h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">Standard M3 form with 56px fields and 16px gaps - balanced for most use cases.</p>
+                <div id="normal-form"></div>
+
+                <!-- Comfortable Form -->
+                <h3 style="margin-top: 32px; margin-bottom: 16px; color: var(--m3-on-surface);">Comfortable Layout <code style="font-size: 12px; background: #f5f5f5; padding: 2px 8px; border-radius: 4px;">density: 'comfortable'</code></h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">Spacious form with 64px fields and 24px gaps - great for touch/accessibility.</p>
+                <div id="comfortable-form"></div>
+
+                <div id="code-density"></div>
+            </div>
+
+            <!-- Complete Form Example - All Input Types -->
+            <div class="demo-section" id="all-input-types">
+                <h2>Complete Form Example <span class="badge">All Input Types</span></h2>
+                <p>Comprehensive form built with FormBuilder showcasing <strong>all input types</strong> with segments, validation, and M3 styling.</p>
+                <div id="complete-form-builder"></div>
+                <div id="code-complete-form"></div>
+            </div>
+
         </main>
     </div>
 
     <!-- Scripts -->
     <script type="module">
         import { initializeLayout } from './layout.js';
-        import { FormBuilder } from '../../src/index.js';
+        import { FormBuilder } from '../../src/FormBuilder.js';
         import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
-        import { GlobalConfig } from '../../src/GlobalConfig.js';
+        import { getVersion } from '../../src/version.js';
+        import { GlobalConfig } from '../../src/index.js';
+
+        // Configure GlobalConfig
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular'
+        });
+
+        // Set dynamic version
+        document.getElementById('page-subtitle').textContent = `Material Design 3 Forms with automatic component integration - v${getVersion()}`;
 
         // Initialize Sidebar
         initializeLayout('form-builder');
 
-        // Example 1: Basic Form
-        const basicForm = new FormBuilder({
-            containerId: 'basic-form',
-            fields: [
-                {
-                    key: 'name',
-                    label: 'Full Name',
-                    type: 'text',
-                    required: true,
-                    placeholder: 'Enter your name'
-                },
-                {
-                    key: 'email',
-                    label: 'Email',
-                    type: 'email',
-                    required: true,
-                    placeholder: 'you@example.com'
-                }
-            ],
-            submitLabel: 'Submit',
-            onSubmit: (data) => {
-                alert('Form submitted! Data: ' + JSON.stringify(data, null, 2));
-            }
-        });
-
-        // Example 2: All Input Types with Flexible Grid + Live Style Switcher
-        const allTypesFieldsConfig = [
-            // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
-            { key: 'anrede', label: 'Anrede', type: 'select',
-              options: ['Herr', 'Frau', 'Divers'], width: 3 },
-            { key: 'vorname', label: 'Vorname', type: 'text',
-              placeholder: 'Max', width: 4 },
-            { key: 'nachname', label: 'Nachname', type: 'text',
-              placeholder: 'Mustermann', width: 5 },
-
-            // Row 2: Email (6 cols) + Phone (6 cols) = 12
-            { key: 'email', label: 'Email', type: 'email',
-              placeholder: 'email@example.com', width: 6 },
-            { key: 'tel', label: 'Telefon', type: 'tel',
-              placeholder: '+43 123 4567890', width: 6 },
-
-            // Row 3: Full width
-            { key: 'adresse', label: 'Adresse', type: 'text',
-              placeholder: 'Straße & Hausnummer', fullWidth: true },
-
-            // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
-            { key: 'plz', label: 'PLZ', type: 'text',
-              placeholder: '1010', width: 3 },
-            { key: 'stadt', label: 'Stadt', type: 'text',
-              placeholder: 'Wien', width: 5 },
-            { key: 'land', label: 'Land', type: 'select',
-              options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
-
-            // Row 5: Date + Time
-            { key: 'date', label: 'Datum', type: 'date', width: 6 },
-            { key: 'time', label: 'Zeit', type: 'time', width: 6 },
-
-            // Row 6: Password + Number
-            { key: 'password', label: 'Passwort', type: 'password',
-              placeholder: 'Enter password', width: 6 },
-            { key: 'number', label: 'Anzahl', type: 'number',
-              placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
-
-            // Row 7: Color + Slider
-            { key: 'color', label: 'Farbe', type: 'color',
-              defaultValue: '#1a73e8', width: 3 },
-            { key: 'slider', label: 'Lautstärke', type: 'range',
-              min: 0, max: 100, defaultValue: 50, width: 9 },
-
-            // Row 8: Full width textarea
-            { key: 'textarea', label: 'Nachricht', type: 'textarea',
-              placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
-
-            // Row 9: Checkbox + Toggle (half width each)
-            { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
-            { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
-
-            // Row 10: Radio buttons (full width)
-            {
-                key: 'radio',
-                label: 'Tarif wählen',
-                type: 'radio',
-                options: [
-                    { value: 'free', label: 'Gratis' },
-                    { value: 'pro', label: 'Pro - €9.99/Monat' },
-                    { value: 'enterprise', label: 'Enterprise' }
-                ],
-                fullWidth: true
-            }
+        // Country options
+        const countries = [
+            { value: 'at', label: 'Austria' },
+            { value: 'de', label: 'Germany' },
+            { value: 'ch', label: 'Switzerland' },
+            { value: 'fr', label: 'France' },
+            { value: 'it', label: 'Italy' },
+            { value: 'es', label: 'Spain' },
+            { value: 'uk', label: 'United Kingdom' },
+            { value: 'us', label: 'United States' }
         ];
 
-        // Function to render form with current settings
-        let allTypesForm;
-        function renderAllTypesForm() {
-            const fieldLayout = document.querySelector('input[name="fieldLayout"]:checked').value;
-            const fieldSize = document.querySelector('input[name="fieldSize"]:checked').value;
+        // Languages
+        const languages = [
+            { value: 'de', label: 'Deutsch' },
+            { value: 'en', label: 'English' },
+            { value: 'fr', label: 'Français' },
+            { value: 'it', label: 'Italiano' },
+            { value: 'es', label: 'Español' }
+        ];
 
-            // Add placeholder for M3 layouts (floating labels need it)
-            const fields = allTypesFieldsConfig.map(field => {
-                const f = {...field};
-                if ((fieldLayout === 'filled' || fieldLayout === 'outlined') &&
-                    (field.type === 'text' || field.type === 'email' || field.type === 'password' ||
-                     field.type === 'tel' || field.type === 'number' || field.type === 'textarea' ||
-                     field.type === 'date' || field.type === 'time' || field.type === 'datetime-local' ||
-                     field.type === 'month' || field.type === 'week' || field.type === 'color')) {
-                    f.placeholder = ' ';  // Space required for floating label
-                }
-                return f;
-            });
-
-            allTypesForm = new FormBuilder({
-                containerId: 'all-types-form',
-                layout: 'grid',
-                fieldLayout: fieldLayout,
-                fieldSize: fieldSize,
-                fields: fields,
-                submitLabel: 'Submit All Types'
-            });
-        }
-
-        // Initial render
-        renderAllTypesForm();
-
-        // Add event listeners to radio buttons
-        document.querySelectorAll('input[name="fieldLayout"], input[name="fieldSize"]').forEach(radio => {
-            radio.addEventListener('change', () => {
-                renderAllTypesForm();
-            });
-        });
-
-        // Example 3: Validation
-        const validationForm = new FormBuilder({
-            containerId: 'validation-form',
-            fields: [
-                {
-                    key: 'username',
-                    label: 'Username',
-                    type: 'text',
-                    required: true,
-                    placeholder: 'Enter username',
-                    validate: (value) => {
-                        if (value.length < 3) return 'Username must be at least 3 characters';
-                        if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
-                        return null;
-                    }
-                },
-                {
-                    key: 'age',
-                    label: 'Age',
-                    type: 'number',
-                    required: true,
-                    validate: (value) => {
-                        if (value < 18) return 'Must be 18 or older';
-                        if (value > 120) return 'Invalid age';
-                        return null;
-                    }
-                },
-                {
-                    key: 'email',
-                    label: 'Email',
-                    type: 'email',
-                    required: true,
-                    placeholder: 'your@email.com'
-                }
-            ],
-            submitLabel: 'Validate & Submit',
-            onSubmit: (data) => {
-                alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
-            }
-        });
-
-        // Example 4: Grid Layout
-        const gridForm = new FormBuilder({
-            containerId: 'grid-form',
+        // === Complete M3 Form ===
+        new FormBuilder({
+            containerId: 'complete-m3-form-builder',
+            fieldLayout: 'filled',
             layout: 'grid',
             gridColumns: 2,
+            options: {
+                useM3Components: true,
+                showResetButton: false
+            },
             fields: [
-                { key: 'firstName', label: 'First Name', type: 'text', required: true },
-                { key: 'lastName', label: 'Last Name', type: 'text', required: true },
-                { key: 'email', label: 'Email', type: 'email', required: true },
-                { key: 'phone', label: 'Phone', type: 'tel' },
-                { key: 'address', label: 'Address', type: 'text' },
-                { key: 'city', label: 'City', type: 'text' },
-                { key: 'zip', label: 'ZIP Code', type: 'text' },
-                { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
+                { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+                { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+                { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 12 },
+                { key: 'country', type: 'select', label: 'Land', required: true, searchable: true, width: 12, options: countries },
+                { key: 'volume', type: 'slider', label: 'Lautstärke', min: 0, max: 100, defaultValue: 50, unit: '%', width: 12 },
+                { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4, width: 12 }
             ],
-            submitLabel: 'Save Contact'
-        });
-        gridForm.render();
-
-        // Example 5: Inline & Horizontal Layouts
-        const inlineForm = new FormBuilder({
-            containerId: 'inline-form',
-            layout: 'inline',
-            fields: [
-                { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
-                { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
-            ],
-            submitLabel: 'Search'
-        });
-        inlineForm.render();
-
-        const horizontalForm = new FormBuilder({
-            containerId: 'horizontal-form',
-            layout: 'horizontal',
-            fields: [
-                { key: 'username', label: 'Username', type: 'text', required: true },
-                { key: 'email', label: 'Email', type: 'email', required: true }
-            ],
-            submitLabel: 'Save'
-        });
-        horizontalForm.render();
-
-        // Example 6: Interactive Elements
-        const interactiveForm = new FormBuilder({
-            containerId: 'interactive-form',
-            fields: [
-                {
-                    key: 'password',
-                    label: 'Password',
-                    type: 'password',
-                    placeholder: 'Enter secure password',
-                    required: true
-                },
-                {
-                    key: 'quantity',
-                    label: 'Quantity',
-                    type: 'number',
-                    defaultValue: 1,
-                    min: 1,
-                    max: 99
-                },
-                {
-                    key: 'volume',
-                    label: 'Volume',
-                    type: 'range',
-                    min: 0,
-                    max: 100,
-                    defaultValue: 50
-                }
-            ],
-            submitLabel: 'Continue'
+            onSubmit: async (values) => {
+                console.log('FormBuilder submitted:', values);
+                alert('FormBuilder submitted! Check console for values.');
+            }
         });
 
-        // Example 6: Checkboxes, Radio, Toggle
-        const choicesForm = new FormBuilder({
-            containerId: 'choices-form',
+        // === Field Variants & States Form ===
+        new FormBuilder({
+            containerId: 'field-variants-form',
+            layout: 'grid',
+            gridColumns: 2,
+            options: { useM3Components: true },
             fields: [
-                {
-                    key: 'newsletter',
-                    label: 'Subscribe to newsletter',
-                    type: 'checkbox'
-                },
-                {
-                    key: 'notifications',
-                    label: 'Enable push notifications',
-                    type: 'toggle',
-                    defaultValue: true
-                },
-                {
-                    key: 'plan',
-                    label: 'Select Plan',
-                    type: 'radio',
-                    options: [
-                        { value: 'basic', label: 'Basic - Free' },
-                        { value: 'pro', label: 'Pro - €9.99/month' },
-                        { value: 'enterprise', label: 'Enterprise - Contact us' }
-                    ],
-                    defaultValue: 'basic'
-                }
+                { key: 'outlined_required', type: 'text', label: 'Outlined (Required)', layout: 'outlined', required: true, width: 6, description: 'This field is required.' },
+                { key: 'filled_required', type: 'text', label: 'Filled (Required)', layout: 'filled', required: true, width: 6, description: 'This one too.' },
+                { key: 'outlined_select', type: 'select', label: 'Outlined Select (Required)', layout: 'outlined', required: true, width: 12, options: ['Option 1', 'Option 2'] },
+                { key: 'outlined_disabled', type: 'text', label: 'Outlined (Disabled)', layout: 'outlined', disabled: true, width: 6, defaultValue: 'Cannot edit' },
+                { key: 'filled_disabled', type: 'text', label: 'Filled (Disabled)', layout: 'filled', disabled: true, width: 6, defaultValue: 'Cannot edit either' }
             ],
-            submitLabel: 'Save Preferences'
+            onSubmit: (values) => {
+                console.log('Variants form submitted:', values);
+                alert('Variants form submitted! Check console for values.');
+            }
         });
 
-        // Example 7: Conditional Fields
-        const conditionalForm = new FormBuilder({
-            containerId: 'conditional-form',
+        // === Layout Variations ===
+
+        // Simple Flat Form (No Segments)
+        new FormBuilder({
+            containerId: 'simple-flat-form',
+            layout: 'grid',
+            gridColumns: 2,
+            options: { useM3Components: true },
             fields: [
-                {
-                    key: 'hasCompany',
-                    label: 'I have a company',
-                    type: 'checkbox'
-                },
-                {
-                    key: 'companyName',
-                    label: 'Company Name',
-                    type: 'text',
-                    placeholder: 'Enter company name',
-                    showIf: (formData) => formData.hasCompany === true
-                },
-                {
-                    key: 'vatNumber',
-                    label: 'VAT Number',
-                    type: 'text',
-                    placeholder: 'ATU12345678',
-                    showIf: (formData) => formData.hasCompany === true
-                }
+                { key: 'first_name', type: 'text', label: 'First Name', layout: 'filled', required: true, width: 6 },
+                { key: 'last_name', type: 'text', label: 'Last Name', layout: 'filled', required: true, width: 6 },
+                { key: 'email', type: 'email', label: 'Email Address', layout: 'filled', required: true, width: 12 },
+                { key: 'message', type: 'textarea', label: 'Your Message', layout: 'filled', width: 12 }
             ],
-            submitLabel: 'Submit'
+            onSubmit: (values) => {
+                console.log('Simple form submitted:', values);
+                alert('Simple form submitted! Check console.');
+            }
         });
 
-        // Example 8: M3 Filled
-        const m3FilledForm = new FormBuilder({
-            containerId: 'm3-filled-form',
+        // 3-Column Layout Form
+        new FormBuilder({
+            containerId: 'three-column-form',
+            layout: 'grid',
+            gridColumns: 3,
+            options: { useM3Components: true },
+            fields: [
+                { key: 'city', type: 'text', label: 'City', layout: 'outlined', width: 4 },
+                { key: 'state', type: 'text', label: 'State', layout: 'outlined', width: 4 },
+                { key: 'zip', type: 'text', label: 'ZIP Code', layout: 'outlined', width: 4 },
+                { key: 'country', type: 'select', label: 'Country', layout: 'outlined', width: 4, options: ['Austria', 'Germany', 'Switzerland'] },
+                { key: 'language', type: 'select', label: 'Language', layout: 'outlined', width: 4, options: ['German', 'English', 'French'] },
+                { key: 'currency', type: 'select', label: 'Currency', layout: 'outlined', width: 4, options: ['EUR', 'USD', 'CHF'] }
+            ],
+            onSubmit: (values) => {
+                console.log('3-column form submitted:', values);
+                alert('3-column form submitted! Check console.');
+            }
+        });
+
+        // Mixed Width Layout Form
+        new FormBuilder({
+            containerId: 'mixed-width-form',
+            layout: 'grid',
+            options: { useM3Components: true },
+            fields: [
+                { key: 'company', type: 'text', label: 'Company Name', layout: 'filled', width: 8, required: true },
+                { key: 'employees', type: 'number', label: 'Employees', layout: 'filled', width: 4 },
+                { key: 'street', type: 'text', label: 'Street Address', layout: 'filled', width: 6 },
+                { key: 'building', type: 'text', label: 'Building/Suite', layout: 'filled', width: 3 },
+                { key: 'floor', type: 'text', label: 'Floor', layout: 'filled', width: 3 },
+                { key: 'notes', type: 'textarea', label: 'Additional Notes', layout: 'filled', width: 12 }
+            ],
+            onSubmit: (values) => {
+                console.log('Mixed width form submitted:', values);
+                alert('Mixed width form submitted! Check console.');
+            }
+        });
+
+        // === Density Options ===
+        const densityFields = [
+            { key: 'name', type: 'text', label: 'Full Name', layout: 'filled', width: 6, required: true },
+            { key: 'email', type: 'email', label: 'Email', layout: 'filled', width: 6, required: true },
+            { key: 'phone', type: 'text', label: 'Phone', layout: 'filled', width: 4 },
+            { key: 'city', type: 'text', label: 'City', layout: 'filled', width: 4 },
+            { key: 'country', type: 'select', label: 'Country', layout: 'filled', width: 4, options: ['Austria', 'Germany', 'Switzerland'] }
+        ];
+
+        // Dense Form (40px fields, 8px gaps)
+        new FormBuilder({
+            containerId: 'dense-form',
+            layout: 'grid',
+            density: 'dense',
+            options: { useM3Components: true },
+            fields: densityFields,
+            onSubmit: (values) => console.log('Dense form:', values)
+        });
+
+        // Normal Form (56px fields, 16px gaps)
+        new FormBuilder({
+            containerId: 'normal-form',
+            layout: 'grid',
+            density: 'normal',
+            options: { useM3Components: true },
+            fields: densityFields,
+            onSubmit: (values) => console.log('Normal form:', values)
+        });
+
+        // Comfortable Form (64px fields, 24px gaps)
+        new FormBuilder({
+            containerId: 'comfortable-form',
+            layout: 'grid',
+            density: 'comfortable',
+            options: { useM3Components: true },
+            fields: densityFields,
+            onSubmit: (values) => console.log('Comfortable form:', values)
+        });
+
+        // === Complete Form Example (All Input Types) ===
+        new FormBuilder({
+            containerId: 'complete-form-builder',
             fieldLayout: 'filled',
+            layout: 'grid',
+            density: 'normal',
+            options: { useM3Components: true },
             fields: [
-                {
-                    key: 'name',
-                    label: 'Full Name',
-                    type: 'text',
-                    placeholder: ' ',
-                    required: true
-                },
-                {
-                    key: 'email',
-                    label: 'Email Address',
-                    type: 'email',
-                    placeholder: ' ',
-                    required: true
-                },
-                {
-                    key: 'message',
-                    label: 'Message',
-                    type: 'textarea',
-                    placeholder: ' ',
-                    rows: 4
-                }
+                // Personal Info
+                { key: 'firstName', type: 'text', label: 'First Name', required: true, width: 6 },
+                { key: 'lastName', type: 'text', label: 'Last Name', required: true, width: 6 },
+                { key: 'email', type: 'email', label: 'Email', required: true, width: 6, description: "We won't share your email" },
+                { key: 'phone', type: 'tel', label: 'Phone', width: 6 },
+                { key: 'birthDate', type: 'date', label: 'Birth Date', width: 6 },
+                { key: 'website', type: 'url', label: 'Website', width: 6, description: 'e.g. https://example.com' },
+                // Account Settings
+                { key: 'password', type: 'password', label: 'Password', required: true, width: 6 },
+                { key: 'confirmPassword', type: 'password', label: 'Confirm Password', required: true, width: 6 },
+                { key: 'country', type: 'select', label: 'Country', searchable: true, width: 6, options: countries },
+                { key: 'language', type: 'select', label: 'Language', width: 6, options: languages },
+                // Preferences
+                { key: 'plan', type: 'radio', label: 'Select Plan', width: 12, options: [
+                    { value: 'free', label: 'Free - Basic features' },
+                    { value: 'pro', label: 'Pro - €9.99/month' },
+                    { value: 'enterprise', label: 'Enterprise - Custom pricing' }
+                ]},
+                { key: 'notifications', type: 'slider', label: 'Notification Frequency', min: 1, max: 7, defaultValue: 3, width: 12 },
+                { key: 'theme', type: 'color', label: 'Theme Color', defaultValue: '#1a73e8', width: 6 },
+                { key: 'emailNotify', type: 'toggle', label: 'Email Notifications', defaultValue: true, width: 6 },
+                { key: 'smsNotify', type: 'toggle', label: 'SMS Notifications', width: 6 },
+                // Additional
+                { key: 'bio', type: 'textarea', label: 'Bio / About Me', rows: 3, width: 12, description: 'Tell us about yourself (max. 500 characters)' },
+                { key: 'interests', type: 'checkbox', label: 'Interests', width: 12, options: ['Technology', 'Sports', 'Music', 'Travel', 'Food & Cooking', 'Gaming'] },
+                { key: 'terms', type: 'checkbox', label: 'I agree to the Terms of Service and Privacy Policy', required: true, width: 12 }
             ],
-            submitLabel: 'Send Message'
-        });
-
-        // Example 9: M3 Outlined
-        const m3OutlinedForm = new FormBuilder({
-            containerId: 'm3-outlined-form',
-            fieldLayout: 'outlined',
-            fields: [
-                {
-                    key: 'username',
-                    label: 'Username',
-                    type: 'text',
-                    placeholder: ' ',
-                    required: true
-                },
-                {
-                    key: 'password',
-                    label: 'Password',
-                    type: 'password',
-                    placeholder: ' ',
-                    required: true
-                },
-                {
-                    key: 'rememberMe',
-                    label: 'Remember me',
-                    type: 'checkbox'
-                }
-            ],
-            submitLabel: 'Sign In'
-        });
-
-        // Example 10: State Management
-        const stateForm = new FormBuilder({
-            containerId: 'state-form',
-            fields: [
-                { key: 'title', label: 'Title', type: 'text' },
-                { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
-                { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
-            ],
-            submitLabel: 'Save'
-        });
-
-        // Make functions available globally for buttons
-        window.getFormData = () => {
-            const data = stateForm.getValue();
-            alert('Current Form Data:\n\n' + JSON.stringify(data, null, 2));
-        };
-
-        window.prefillForm = () => {
-            stateForm.setValue({
-                title: 'Example Task',
-                description: 'This is a pre-filled description for demonstration purposes.',
-                priority: 'High'
-            });
-        };
-
-        window.resetForm = () => {
-            stateForm.reset();
-            alert('Form has been reset!');
-        };
-
-        // Code Snippets with CodeSnippetBuilder
-        new CodeSnippetBuilder({
-            containerId: 'code-basic-form',
-            code: `import { FormBuilder } from '/vendor/ssi-builders/src/index.js';
-
-const form = new FormBuilder({
-    fields: [
-        {
-            key: 'name',
-            label: 'Full Name',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter your name'
-        },
-        {
-            key: 'email',
-            label: 'Email',
-            type: 'email',
-            required: true,
-            placeholder: 'you@example.com'
-        }
-    ],
-    submitLabel: 'Submit',
-    onSubmit: (data) => {
-        console.log('Form data:', data);
-    }
-});
-
-form.render('#basic-form');`,
-            language: 'javascript'
-        });
-
-        new CodeSnippetBuilder({
-            containerId: 'code-all-types',
-            code: `const allTypesForm = new FormBuilder({
-    layout: 'grid',  // Enable 12-column grid
-    fields: [
-        // Row 1: Anrede (3 cols) + Vorname (4 cols) + Nachname (5 cols) = 12
-        { key: 'anrede', label: 'Anrede', type: 'select',
-          options: ['Herr', 'Frau', 'Divers'], width: 3 },
-        { key: 'vorname', label: 'Vorname', type: 'text',
-          placeholder: 'Max', width: 4 },
-        { key: 'nachname', label: 'Nachname', type: 'text',
-          placeholder: 'Mustermann', width: 5 },
-
-        // Row 2: Email (6 cols) + Phone (6 cols) = 12
-        { key: 'email', label: 'Email', type: 'email',
-          placeholder: 'email@example.com', width: 6 },
-        { key: 'tel', label: 'Telefon', type: 'tel',
-          placeholder: '+43 123 4567890', width: 6 },
-
-        // Row 3: Full width
-        { key: 'adresse', label: 'Adresse', type: 'text',
-          placeholder: 'Straße & Hausnummer', fullWidth: true },
-
-        // Row 4: PLZ (3 cols) + Stadt (5 cols) + Land (4 cols) = 12
-        { key: 'plz', label: 'PLZ', type: 'text',
-          placeholder: '1010', width: 3 },
-        { key: 'stadt', label: 'Stadt', type: 'text',
-          placeholder: 'Wien', width: 5 },
-        { key: 'land', label: 'Land', type: 'select',
-          options: ['Österreich', 'Deutschland', 'Schweiz'], width: 4 },
-
-        // Row 5: Date + Time
-        { key: 'date', label: 'Datum', type: 'date', width: 6 },
-        { key: 'time', label: 'Zeit', type: 'time', width: 6 },
-
-        // Row 6: Password + Number
-        { key: 'password', label: 'Passwort', type: 'password',
-          placeholder: 'Enter password', width: 6 },
-        { key: 'number', label: 'Anzahl', type: 'number',
-          placeholder: '0', min: 0, max: 100, defaultValue: 5, width: 6 },
-
-        // Row 7: Color + Slider
-        { key: 'color', label: 'Farbe', type: 'color',
-          defaultValue: '#1a73e8', width: 3 },
-        { key: 'slider', label: 'Lautstärke', type: 'range',
-          min: 0, max: 100, defaultValue: 50, width: 9 },
-
-        // Row 8: Full width textarea
-        { key: 'textarea', label: 'Nachricht', type: 'textarea',
-          placeholder: 'Ihre Nachricht...', rows: 3, fullWidth: true },
-
-        // Row 9: Checkbox + Toggle (half width each)
-        { key: 'checkbox', label: 'AGB akzeptieren', type: 'checkbox', width: 6 },
-        { key: 'toggle', label: 'Benachrichtigungen', type: 'toggle', width: 6 },
-
-        // Row 10: Radio buttons (full width)
-        {
-            key: 'radio',
-            label: 'Tarif wählen',
-            type: 'radio',
-            options: [
-                { value: 'free', label: 'Gratis' },
-                { value: 'pro', label: 'Pro - €9.99/Monat' },
-                { value: 'enterprise', label: 'Enterprise' }
-            ],
-            fullWidth: true
-        }
-    ],
-    submitLabel: 'Submit All Types'
-});
-
-allTypesForm.render('#all-types-form');`,
-            language: 'javascript'
-        });
-
-        new CodeSnippetBuilder({
-            containerId: 'code-validation',
-            code: `const validationForm = new FormBuilder({
-    fields: [
-        {
-            key: 'username',
-            label: 'Username',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter username',
-            validate: (value) => {
-                if (value.length < 3) return 'Username must be at least 3 characters';
-                if (!/^[a-zA-Z0-9_]+$/.test(value)) return 'Only letters, numbers, and underscores';
-                return null;
+            onSubmit: (values) => {
+                console.log('Complete Form submitted:', values);
+                alert('Form submitted! Check console for values.');
             }
-        },
-        {
-            key: 'age',
-            label: 'Age',
-            type: 'number',
-            required: true,
-            validate: (value) => {
-                if (value < 18) return 'Must be 18 or older';
-                if (value > 120) return 'Invalid age';
-                return null;
-            }
-        },
-        {
-            key: 'email',
-            label: 'Email',
-            type: 'email',
-            required: true,
-            placeholder: 'your@email.com'
-        }
-    ],
-    submitLabel: 'Validate & Submit',
-    onSubmit: (data) => {
-        alert('Validation passed! Data: ' + JSON.stringify(data, null, 2));
-    }
-});
-
-validationForm.render('#validation-form');`,
-            language: 'javascript'
         });
 
+        // === Code Snippets ===
         new CodeSnippetBuilder({
-            containerId: 'code-grid',
-            code: `const gridForm = new FormBuilder({
+            containerId: 'code-complete-m3',
+            code: `new FormBuilder({
+    containerId: 'complete-m3-form-builder',
+    fieldLayout: 'filled',
     layout: 'grid',
-    gridColumns: 2,  // 2, 3, or 4 columns
+    gridColumns: 2,
+    options: {
+        useM3Components: true,
+        showResetButton: false
+    },
     fields: [
-        { key: 'firstName', label: 'First Name', type: 'text', required: true },
-        { key: 'lastName', label: 'Last Name', type: 'text', required: true },
-        { key: 'email', label: 'Email', type: 'email', required: true },
-        { key: 'phone', label: 'Phone', type: 'tel' },
-        { key: 'address', label: 'Address', type: 'text' },
-        { key: 'city', label: 'City', type: 'text' },
-        { key: 'zip', label: 'ZIP Code', type: 'text' },
-        { key: 'country', label: 'Country', type: 'select', options: ['Austria', 'Germany', 'Switzerland'] }
+        { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+        { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+        { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 12 },
+        { key: 'country', type: 'select', label: 'Land', searchable: true, options: countries },
+        { key: 'volume', type: 'slider', label: 'Lautstärke', min: 0, max: 100, defaultValue: 50 },
+        { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4 }
     ],
-    submitLabel: 'Save Contact'
-});
-
-gridForm.render('#grid-form');`,
-            language: 'javascript'
-        });
-
-        new CodeSnippetBuilder({
-            containerId: 'code-inline-horizontal',
-            code: `// Inline Layout - All fields in one row
-const inlineForm = new FormBuilder({
-    containerId: 'inline-form',
-    layout: 'inline',
-    fields: [
-        { key: 'search', label: 'Search', type: 'text', placeholder: 'Search...' },
-        { key: 'category', label: 'Category', type: 'select', options: ['All', 'Products', 'Users'] }
-    ],
-    submitLabel: 'Search'
-});
-
-// Horizontal Layout - Labels beside inputs
-const horizontalForm = new FormBuilder({
-    containerId: 'horizontal-form',
-    layout: 'horizontal',
-    fields: [
-        { key: 'username', label: 'Username', type: 'text', required: true },
-        { key: 'email', label: 'Email', type: 'email', required: true }
-    ],
-    submitLabel: 'Save'
+    onSubmit: (values) => console.log('Submitted:', values)
 });`,
             language: 'javascript'
         });
 
         new CodeSnippetBuilder({
-            containerId: 'code-interactive',
-            code: `const interactiveForm = new FormBuilder({
+            containerId: 'code-variants',
+            code: `// Mix outlined and filled fields in one form
+new FormBuilder({
+    containerId: 'variants-form',
+    options: { useM3Components: true },
     fields: [
-        {
-            key: 'password',
-            label: 'Password',
-            type: 'password',
-            placeholder: 'Enter secure password',
-            required: true
-            // Eye icon automatically added for show/hide toggle
-        },
-        {
-            key: 'quantity',
-            label: 'Quantity',
-            type: 'number',
-            defaultValue: 1,
-            min: 1,
-            max: 99
-            // +/- buttons automatically added
-        },
-        {
-            key: 'volume',
-            label: 'Volume',
-            type: 'range',
-            min: 0,
-            max: 100,
-            defaultValue: 50
-            // Slider with live value display
-        }
+        { key: 'outlined', type: 'text', label: 'Outlined Field', layout: 'outlined', required: true },
+        { key: 'filled', type: 'text', label: 'Filled Field', layout: 'filled', required: true },
+        { key: 'disabled', type: 'text', label: 'Disabled', disabled: true, defaultValue: 'Cannot edit' },
+        { key: 'select', type: 'select', label: 'Dropdown', layout: 'outlined', options: ['A', 'B'] }
     ],
-    submitLabel: 'Continue'
-});
-
-interactiveForm.render('#interactive-form');`,
+    onSubmit: (values) => console.log(values)
+});`,
             language: 'javascript'
         });
 
         new CodeSnippetBuilder({
-            containerId: 'code-choices',
-            code: `const choicesForm = new FormBuilder({
-    fields: [
-        {
-            key: 'newsletter',
-            label: 'Subscribe to newsletter',
-            type: 'checkbox'
-        },
-        {
-            key: 'notifications',
-            label: 'Enable push notifications',
-            type: 'toggle',
-            defaultValue: true
-        },
-        {
-            key: 'plan',
-            label: 'Select Plan',
-            type: 'radio',
-            options: [
-                { value: 'basic', label: 'Basic - Free' },
-                { value: 'pro', label: 'Pro - €9.99/month' },
-                { value: 'enterprise', label: 'Enterprise - Contact us' }
-            ],
-            defaultValue: 'basic'
-        }
-    ],
-    submitLabel: 'Save Preferences'
+            containerId: 'code-density',
+            code: `// Density options control field height and spacing
+const fields = [
+    { key: 'name', type: 'text', label: 'Full Name', layout: 'filled', width: 6 },
+    { key: 'email', type: 'email', label: 'Email', layout: 'filled', width: 6 },
+    { key: 'country', type: 'select', label: 'Country', layout: 'filled', width: 4, options: countries }
+];
+
+// Dense: 40px fields, 8px gaps
+new FormBuilder({
+    containerId: 'dense-form',
+    layout: 'grid',
+    density: 'dense',  // <-- Compact
+    fields: fields
 });
 
-choicesForm.render('#choices-form');`,
+// Normal: 56px fields, 16px gaps (default)
+new FormBuilder({
+    containerId: 'normal-form',
+    layout: 'grid',
+    density: 'normal',  // <-- Standard
+    fields: fields
+});
+
+// Comfortable: 64px fields, 24px gaps
+new FormBuilder({
+    containerId: 'comfortable-form',
+    layout: 'grid',
+    density: 'comfortable',  // <-- Spacious
+    fields: fields
+});`,
             language: 'javascript'
         });
 
         new CodeSnippetBuilder({
-            containerId: 'code-conditional',
-            code: `const conditionalForm = new FormBuilder({
+            containerId: 'code-complete-form',
+            code: `// Complete Form with ALL input types via FormBuilder
+new FormBuilder({
+    containerId: 'complete-form-builder',
+    fieldLayout: 'filled',
+    layout: 'grid',
+    density: 'normal',
+    options: { useM3Components: true },
     fields: [
-        {
-            key: 'hasCompany',
-            label: 'I have a company',
-            type: 'checkbox'
-        },
-        {
-            key: 'companyName',
-            label: 'Company Name',
-            type: 'text',
-            placeholder: 'Enter company name',
-            showIf: (formData) => formData.hasCompany === true
-        },
-        {
-            key: 'vatNumber',
-            label: 'VAT Number',
-            type: 'text',
-            placeholder: 'ATU12345678',
-            showIf: (formData) => formData.hasCompany === true
-        }
-    ],
-    submitLabel: 'Submit'
-});
+        // Text inputs
+        { key: 'firstName', type: 'text', label: 'First Name', required: true, width: 6 },
+        { key: 'email', type: 'email', label: 'Email', required: true, width: 6 },
+        { key: 'phone', type: 'tel', label: 'Phone', width: 6 },
+        { key: 'birthDate', type: 'date', label: 'Birth Date', width: 6 },
+        { key: 'website', type: 'url', label: 'Website', width: 6 },
 
-conditionalForm.render('#conditional-form');`,
+        // Password with toggle
+        { key: 'password', type: 'password', label: 'Password', required: true, width: 6 },
+
+        // Selects
+        { key: 'country', type: 'select', label: 'Country', searchable: true, options: countries },
+        { key: 'language', type: 'select', label: 'Language', options: languages },
+
+        // Radio buttons
+        { key: 'plan', type: 'radio', label: 'Select Plan', options: [
+            { value: 'free', label: 'Free' },
+            { value: 'pro', label: 'Pro - €9.99/month' }
+        ]},
+
+        // Slider
+        { key: 'notifications', type: 'slider', label: 'Frequency', min: 1, max: 7 },
+
+        // Color picker
+        { key: 'theme', type: 'color', label: 'Theme', defaultValue: '#1a73e8' },
+
+        // Toggle switches
+        { key: 'emailNotify', type: 'toggle', label: 'Email Notifications', defaultValue: true },
+
+        // Textarea
+        { key: 'bio', type: 'textarea', label: 'Bio', rows: 3 },
+
+        // Checkbox group
+        { key: 'interests', type: 'checkbox', label: 'Interests', options: ['Tech', 'Sports', 'Music'] },
+
+        // Single checkbox
+        { key: 'terms', type: 'checkbox', label: 'I agree to Terms', required: true }
+    ],
+    onSubmit: (values) => console.log('Submitted:', values)
+});`,
             language: 'javascript'
         });
 
-        new CodeSnippetBuilder({
-            containerId: 'code-m3-filled',
-            code: `const m3FilledForm = new FormBuilder({
-    fieldLayout: 'filled',  // M3 Filled Style
-    fields: [
-        {
-            key: 'name',
-            label: 'Full Name',
-            type: 'text',
-            placeholder: ' ',  // Required for floating label
-            required: true
-        },
-        {
-            key: 'email',
-            label: 'Email Address',
-            type: 'email',
-            placeholder: ' ',
-            required: true
-        },
-        {
-            key: 'message',
-            label: 'Message',
-            type: 'textarea',
-            placeholder: ' ',
-            rows: 4
-        }
-    ],
-    submitLabel: 'Send Message'
-});
-
-m3FilledForm.render('#m3-filled-form');`,
-            language: 'javascript'
-        });
-
-        new CodeSnippetBuilder({
-            containerId: 'code-m3-outlined',
-            code: `const m3OutlinedForm = new FormBuilder({
-    fieldLayout: 'outlined',  // M3 Outlined Style
-    fields: [
-        {
-            key: 'username',
-            label: 'Username',
-            type: 'text',
-            placeholder: ' ',  // Required for floating label
-            required: true
-        },
-        {
-            key: 'password',
-            label: 'Password',
-            type: 'password',
-            placeholder: ' ',
-            required: true
-        },
-        {
-            key: 'rememberMe',
-            label: 'Remember me',
-            type: 'checkbox'
-        }
-    ],
-    submitLabel: 'Sign In'
-});
-
-m3OutlinedForm.render('#m3-outlined-form');`,
-            language: 'javascript'
-        });
-
-        new CodeSnippetBuilder({
-            containerId: 'code-state',
-            code: `const stateForm = new FormBuilder({
-    fields: [
-        { key: 'title', label: 'Title', type: 'text' },
-        { key: 'description', label: 'Description', type: 'textarea', rows: 3 },
-        { key: 'priority', label: 'Priority', type: 'select', options: ['Low', 'Medium', 'High'] }
-    ],
-    submitLabel: 'Save'
-});
-
-stateForm.render('#state-form');
-
-// Get current form data
-const data = stateForm.getValue();
-console.log(data); // { title: '...', description: '...', priority: '...' }
-
-// Get specific field value
-const title = stateForm.getValue('title');
-
-// Set form data
-stateForm.setValue({
-    title: 'Example Title',
-    description: 'Pre-filled description',
-    priority: 'High'
-});
-
-// Reset form to defaults
-stateForm.reset();`,
-            language: 'javascript'
-        });
+        // Theme Toggle
+        window.toggleTheme = function() {
+            document.body.classList.toggle('dark-theme');
+        };
     </script>
 </body>
 </html>

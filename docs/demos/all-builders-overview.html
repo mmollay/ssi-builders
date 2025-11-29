@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Builders Overview - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/SidebarBuilder.css">
@@ -148,6 +158,54 @@
             .builders-grid {
                 grid-template-columns: 1fr;
             }
+        }
+
+        /* ========================================
+           Dark Mode Support
+           ======================================== */
+        html.dark-mode .builder-card,
+        html.m3-dark .builder-card {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        html.dark-mode .builder-card:hover,
+        html.m3-dark .builder-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+
+        html.dark-mode .builder-card h3,
+        html.m3-dark .builder-card h3 {
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .builder-card-description,
+        html.m3-dark .builder-card-description {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .feature-tag,
+        html.m3-dark .feature-tag {
+            background: rgba(138, 180, 248, 0.15);
+            color: #8ab4f8;
+        }
+
+        html.dark-mode .builder-card-footer,
+        html.m3-dark .builder-card-footer {
+            border-top-color: #3d3d3d;
+        }
+
+        html.dark-mode .card-btn-secondary,
+        html.m3-dark .card-btn-secondary {
+            background: #1e1e1e;
+            color: #a1a1a1;
+            border-color: #3d3d3d;
+        }
+
+        html.dark-mode .card-btn-secondary:hover,
+        html.m3-dark .card-btn-secondary:hover {
+            background: #3d3d3d;
         }
     </style>
 </head>

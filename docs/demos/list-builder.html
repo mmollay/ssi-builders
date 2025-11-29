@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ListBuilder Enhanced - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/ListBuilder.css">
@@ -12,10 +22,6 @@
     <link rel="stylesheet" href="./layout.css">
     <style>
         .demo-box {
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            border: 2px solid #e8eaed;
             margin-bottom: 24px;
         }
         
@@ -113,10 +119,43 @@
                 <div class="demo-section">
                     <h2>5. Vollständiges Beispiel</h2>
                     <p>Striped Table + Server-Side + Filters kombiniert</p>
-                    
+
                     <div class="demo-box">
                         <div id="tableCombined"></div>
                     </div>
+                </div>
+
+                <!-- NEW: Elegant Variants -->
+                <div class="demo-section">
+                    <h2>6. Elegante Varianten <span class="badge new">NEU v2.5</span></h2>
+                    <p>Verschiedene Display-Varianten für unterschiedliche Stilrichtungen</p>
+
+                    <h3 style="margin: 24px 0 12px 0;">Frameless (Filter frei, nur Tabelle mit Rahmen)</h3>
+                    <div class="demo-box">
+                        <div id="tableFrameless"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Lines Only (Minimalistisch, nur horizontale Linien)</h3>
+                    <div class="demo-box">
+                        <div id="tableLinesOnly"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Elegant (Sanfte Schatten, edel)</h3>
+                    <div class="demo-box">
+                        <div id="tableElegant"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Minimal (Kein visueller Lärm)</h3>
+                    <div class="demo-box">
+                        <div id="tableMinimal"></div>
+                    </div>
+
+                    <h3 style="margin: 24px 0 12px 0;">Glass (Frosted Glass Effekt)</h3>
+                    <div class="demo-box" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 24px; border-radius: 12px;">
+                        <div id="tableGlass"></div>
+                    </div>
+
+                    <div id="code-variants" style="margin-top: 16px;"></div>
                 </div>
 
                 <!-- API Reference -->
@@ -546,6 +585,94 @@ actions: {
         totalCount: data.total    // Gesamtzahl für Pagination
     };
 }`,
+            language: 'javascript'
+        });
+
+        // 7. Elegant Variants
+        const variantUsers = generateUsers(5);
+        const variantColumns = [
+            { key: 'id', label: 'ID', width: '60px' },
+            { key: 'name', label: 'Name' },
+            { key: 'email', label: 'E-Mail' },
+            { key: 'role', label: 'Rolle' }
+        ];
+
+        // Frameless
+        new ListBuilder({
+            containerId: 'tableFrameless',
+            columns: variantColumns,
+            dataSource: async () => variantUsers,
+            options: {
+                variant: 'frameless',
+                paginated: false,
+                enableColumnToggle: false
+            }
+        });
+
+        // Lines Only
+        new ListBuilder({
+            containerId: 'tableLinesOnly',
+            columns: variantColumns,
+            dataSource: async () => variantUsers,
+            options: {
+                variant: 'lines-only',
+                paginated: false,
+                enableColumnToggle: false
+            }
+        });
+
+        // Elegant
+        new ListBuilder({
+            containerId: 'tableElegant',
+            columns: variantColumns,
+            dataSource: async () => variantUsers,
+            options: {
+                variant: 'elegant',
+                paginated: false,
+                enableColumnToggle: false
+            }
+        });
+
+        // Minimal
+        new ListBuilder({
+            containerId: 'tableMinimal',
+            columns: variantColumns,
+            dataSource: async () => variantUsers,
+            options: {
+                variant: 'minimal',
+                paginated: false,
+                enableColumnToggle: false
+            }
+        });
+
+        // Glass
+        new ListBuilder({
+            containerId: 'tableGlass',
+            columns: variantColumns,
+            dataSource: async () => variantUsers,
+            options: {
+                variant: 'glass',
+                paginated: false,
+                enableColumnToggle: false
+            }
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-variants',
+            code: `// Display Varianten
+new ListBuilder({
+    containerId: 'myTable',
+    columns: [...],
+    dataSource: async () => data,
+    options: {
+        // Verfügbare Varianten:
+        variant: 'frameless',   // Filter frei, Tabelle mit Rahmen
+        // variant: 'lines-only',  // Nur horizontale Linien
+        // variant: 'elegant',     // Sanfte Schatten, edel
+        // variant: 'minimal',     // Kein visueller Lärm
+        // variant: 'glass',       // Frosted Glass Effekt
+    }
+});`,
             language: 'javascript'
         });
 

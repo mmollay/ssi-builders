@@ -56,14 +56,16 @@
  * });
  */
 
+import { i18n } from './i18n.js';
+
 export class M3DropdownMenu {
     static instanceCount = 0;
 
     constructor(config) {
         this.config = {
             containerId: null,
-            label: 'Select',
-            placeholder: 'Choose an option',
+            label: null,            // Uses i18n.t('dropdown.select') as default
+            placeholder: null,      // Uses i18n.t('dropdown.placeholder') as default
             options: [],
             value: null,
             disabled: false,
@@ -76,19 +78,26 @@ export class M3DropdownMenu {
             onChange: null,
             // Searchable options
             searchable: false,
-            searchPlaceholder: 'Search...',
+            searchPlaceholder: null, // Uses i18n.t('dropdown.search') as default
             minSearchLength: 0,
             debounceMs: 300,
             // Async data source
             dataSource: null, // async (query) => [{ value, label }]
             // Empty/Loading states
-            emptyText: 'No results found',
-            loadingText: 'Loading...',
+            emptyText: null,        // Uses i18n.t('dropdown.noResults') as default
+            loadingText: null,      // Uses i18n.t('dropdown.loading') as default
             // Multiselect support
             multiselect: false,
             maxChips: 3, // Max chips to show before "+X more"
             ...config
         };
+
+        // Apply i18n defaults if not explicitly set
+        if (this.config.label === null) this.config.label = i18n.t('dropdown.select');
+        if (this.config.placeholder === null) this.config.placeholder = i18n.t('dropdown.placeholder');
+        if (this.config.searchPlaceholder === null) this.config.searchPlaceholder = i18n.t('dropdown.search');
+        if (this.config.emptyText === null) this.config.emptyText = i18n.t('dropdown.noResults');
+        if (this.config.loadingText === null) this.config.loadingText = i18n.t('dropdown.loading');
 
         this.instanceId = `m3-dropdown-${++M3DropdownMenu.instanceCount}`;
         this.isOpen = false;
@@ -256,7 +265,7 @@ export class M3DropdownMenu {
             chipsHtml += `
                 <span class="m3-dropdown__chip">
                     ${this.escapeHtml(opt.label)}
-                    <button type="button" class="m3-dropdown__chip-remove" data-index="${originalIdx}" aria-label="Entfernen">
+                    <button type="button" class="m3-dropdown__chip-remove" data-index="${originalIdx}" aria-label="${i18n.t('dropdown.remove')}">
                         <svg viewBox="0 0 24 24" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
                         </svg>
@@ -285,9 +294,9 @@ export class M3DropdownMenu {
                        placeholder="${this.config.searchPlaceholder}"
                        value="${this.searchQuery}"
                        autocomplete="off"
-                       aria-label="Search options">
+                       aria-label="${i18n.t('dropdown.searchOptions')}">
                 ${this.searchQuery ? `
-                    <button class="m3-dropdown__search-clear" type="button" aria-label="Clear search">
+                    <button class="m3-dropdown__search-clear" type="button" aria-label="${i18n.t('dropdown.clearSearch')}">
                         <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
                             <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
                         </svg>

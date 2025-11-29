@@ -16,6 +16,7 @@
  */
 
 import { createVersionBadge } from './version.js';
+import { i18n } from './i18n.js';
 
 export class ModalBuilder {
     static activeModals = [];
@@ -136,7 +137,6 @@ export class ModalBuilder {
                     ${this.renderBody()}
                     ${this.renderFooter()}
                 </div>
-                ${createVersionBadge()}
             </div>
         `;
 
@@ -194,17 +194,38 @@ export class ModalBuilder {
     }
 
     /**
-     * Render action button
+     * Render action button with M3 styling
      */
     renderAction(action) {
-        const btnType = action.type === 'primary' ? 'primary' : action.type === 'danger' ? 'danger' : 'outlined';
+        // Map action types to M3 button classes
+        let btnClass = 'm3-button';
+        switch (action.type) {
+            case 'primary':
+                btnClass += ' m3-button--filled';
+                break;
+            case 'danger':
+                btnClass += ' m3-button--filled m3-button--danger';
+                break;
+            case 'success':
+                btnClass += ' m3-button--filled m3-button--success';
+                break;
+            case 'text':
+                btnClass += ' m3-button--text';
+                break;
+            case 'tonal':
+                btnClass += ' m3-button--tonal';
+                break;
+            default:
+                btnClass += ' m3-button--outlined';
+        }
+
         return `
             <button
-                class="ssi-btn ssi-btn-${btnType}"
+                class="${btnClass}"
                 data-action-key="${action.key}"
                 ${action.disabled ? 'disabled' : ''}
             >
-                ${action.icon || ''} ${action.label}
+                ${action.icon ? `<span class="m3-button__icon">${action.icon}</span>` : ''} ${action.label}
             </button>
         `;
     }
@@ -291,12 +312,12 @@ export class ModalBuilder {
     static confirm(config) {
         return new Promise((resolve) => {
             const modal = new ModalBuilder({
-                title: config.title || 'Bestätigung',
-                body: config.message || 'Sind Sie sicher?',
+                title: config.title || i18n.t('modal.confirmTitle'),
+                body: config.message || '',
                 actions: [
                     {
                         key: 'cancel',
-                        label: config.cancelLabel || 'Abbrechen',
+                        label: config.cancelLabel || i18n.t('modal.cancel'),
                         type: 'secondary',
                         handler: () => {
                             resolve(false);
@@ -304,7 +325,7 @@ export class ModalBuilder {
                     },
                     {
                         key: 'confirm',
-                        label: config.confirmLabel || 'Bestätigen',
+                        label: config.confirmLabel || i18n.t('modal.confirm'),
                         type: config.danger ? 'danger' : 'primary',
                         handler: () => {
                             resolve(true);
@@ -326,12 +347,12 @@ export class ModalBuilder {
     static alert(config) {
         return new Promise((resolve) => {
             const modal = new ModalBuilder({
-                title: config.title || 'Hinweis',
+                title: config.title || i18n.t('modal.alertTitle'),
                 body: config.message || '',
                 actions: [
                     {
                         key: 'ok',
-                        label: config.okLabel || 'OK',
+                        label: config.okLabel || i18n.t('modal.ok'),
                         type: 'primary',
                         handler: () => {
                             resolve(true);
@@ -356,7 +377,7 @@ export class ModalBuilder {
             let inputValue = config.defaultValue || '';
 
             const modal = new ModalBuilder({
-                title: config.title || 'Eingabe',
+                title: config.title || i18n.t('modal.promptTitle'),
                 body: `
                     <div class="modal-prompt">
                         ${config.message ? `<p>${config.message}</p>` : ''}
@@ -372,7 +393,7 @@ export class ModalBuilder {
                 actions: [
                     {
                         key: 'cancel',
-                        label: config.cancelLabel || 'Abbrechen',
+                        label: config.cancelLabel || i18n.t('modal.cancel'),
                         type: 'secondary',
                         handler: () => {
                             resolve(null);
@@ -380,7 +401,7 @@ export class ModalBuilder {
                     },
                     {
                         key: 'submit',
-                        label: config.submitLabel || 'OK',
+                        label: config.submitLabel || i18n.t('modal.ok'),
                         type: 'primary',
                         handler: () => {
                             const input = document.getElementById(inputId);
@@ -409,6 +430,239 @@ export class ModalBuilder {
      */
     static closeAll() {
         [...ModalBuilder.activeModals].forEach(modal => modal.close());
+    }
+
+    /**
+     * Static method: Form dialog with FormBuilder integration
+     * Opens a modal containing a FormBuilder form
+     *
+     * @param {Object} config - Configuration object
+     * @param {string} config.title - Modal title
+     * @param {Array} config.fields - FormBuilder fields configuration
+     * @param {Object} config.values - Initial form values (for edit mode)
+     * @param {Function} config.dataSource - Async function to load form data (for AJAX)
+     * @param {Function} config.onSubmit - Called with form values on submit
+     * @param {string} config.submitLabel - Submit button label
+     * @param {string} config.cancelLabel - Cancel button label
+     * @param {string} config.size - Modal size (default: 'medium')
+     * @param {string} config.fieldLayout - 'filled' or 'outlined' (default: 'filled')
+     * @param {string} config.density - 'dense', 'normal', 'comfortable' (default: 'normal')
+     * @param {Object} config.formOptions - Additional FormBuilder options
+     * @returns {Promise<Object|null>} Form values on submit, null on cancel
+     *
+     * @example
+     * // Simple form
+     * const result = await ModalBuilder.form({
+     *     title: 'Neuer Benutzer',
+     *     fields: [
+     *         { key: 'name', type: 'text', label: 'Name', required: true },
+     *         { key: 'email', type: 'email', label: 'E-Mail', required: true }
+     *     ]
+     * });
+     *
+     * @example
+     * // Edit form with AJAX data loading
+     * const result = await ModalBuilder.form({
+     *     title: 'Benutzer bearbeiten',
+     *     fields: [...],
+     *     dataSource: async () => {
+     *         const response = await fetch(`/api/users/${userId}`);
+     *         return response.json();
+     *     }
+     * });
+     */
+    static form(config) {
+        return new Promise(async (resolve) => {
+            const formContainerId = `modal_form_${Date.now()}`;
+            let formBuilder = null;
+            let initialValues = config.values || {};
+
+            // Load data from dataSource if provided
+            const loadData = config.dataSource ? true : false;
+
+            const modal = new ModalBuilder({
+                title: config.title || i18n.t('modal.formTitle') || 'Formular',
+                body: `<div id="${formContainerId}" class="modal-form-container"></div>`,
+                actions: [], // We'll handle buttons via FormBuilder
+                size: config.size || 'medium',
+                closeOnBackdrop: config.closeOnBackdrop ?? false, // Don't close on backdrop for forms
+                closeOnEsc: config.closeOnEsc ?? true,
+                onOpen: async () => {
+                    // Dynamic import of FormBuilder to avoid circular dependency
+                    const { FormBuilder } = await import('./FormBuilder.js');
+
+                    // Show loading state if dataSource is provided
+                    if (loadData) {
+                        const container = document.getElementById(formContainerId);
+                        container.innerHTML = `
+                            <div class="modal-loading">
+                                <div class="modal-spinner"></div>
+                                <p>${i18n.t('modal.loading') || 'Lädt...'}</p>
+                            </div>
+                        `;
+
+                        try {
+                            initialValues = await config.dataSource();
+                        } catch (error) {
+                            console.error('Error loading form data:', error);
+                            container.innerHTML = `
+                                <div class="modal-error">
+                                    <p>${i18n.t('modal.loadError') || 'Fehler beim Laden der Daten'}</p>
+                                </div>
+                            `;
+                            return;
+                        }
+                    }
+
+                    // Create FormBuilder instance
+                    formBuilder = new FormBuilder({
+                        containerId: formContainerId,
+                        fields: config.fields || [],
+                        fieldLayout: config.fieldLayout || 'filled',
+                        density: config.density || 'normal',
+                        layout: config.layout || 'grid',
+                        gridColumns: config.gridColumns || 1,
+                        values: initialValues,
+                        options: {
+                            useM3Components: true,
+                            showResetButton: config.showResetButton ?? false,
+                            submitLabel: config.submitLabel || i18n.t('form.submit') || 'Speichern',
+                            cancelLabel: config.cancelLabel || i18n.t('form.cancel') || 'Abbrechen',
+                            ...config.formOptions
+                        },
+                        buttons: [
+                            {
+                                key: 'cancel',
+                                label: config.cancelLabel || i18n.t('form.cancel') || 'Abbrechen',
+                                type: 'secondary',
+                                onClick: () => {
+                                    modal.close();
+                                    resolve(null);
+                                }
+                            },
+                            {
+                                key: 'submit',
+                                label: config.submitLabel || i18n.t('form.submit') || 'Speichern',
+                                type: 'primary',
+                                submit: true
+                            }
+                        ],
+                        onSubmit: async (values) => {
+                            // Call custom onSubmit if provided
+                            if (config.onSubmit) {
+                                try {
+                                    const result = await config.onSubmit(values);
+                                    // If onSubmit returns false, don't close
+                                    if (result === false) return;
+                                } catch (error) {
+                                    console.error('Form submit error:', error);
+                                    return; // Don't close on error
+                                }
+                            }
+                            modal.close();
+                            resolve(values);
+                        }
+                    });
+                },
+                onClose: () => {
+                    // Clean up FormBuilder
+                    if (formBuilder && typeof formBuilder.destroy === 'function') {
+                        formBuilder.destroy();
+                    }
+                    // Resolve with null if closed without submit
+                    resolve(null);
+                },
+                ...config.options
+            });
+
+            modal.open();
+        });
+    }
+
+    /**
+     * Static method: Delete confirmation with optional AJAX
+     *
+     * @param {Object} config - Configuration object
+     * @param {string} config.title - Modal title
+     * @param {string} config.message - Confirmation message
+     * @param {string} config.itemName - Name of item being deleted (for message)
+     * @param {Function} config.onConfirm - Called when confirmed (can be async for AJAX)
+     * @returns {Promise<boolean>} true if confirmed and successful, false if cancelled
+     *
+     * @example
+     * const deleted = await ModalBuilder.delete({
+     *     itemName: 'Max Mustermann',
+     *     onConfirm: async () => {
+     *         await fetch(`/api/users/${userId}`, { method: 'DELETE' });
+     *     }
+     * });
+     */
+    static delete(config) {
+        return new Promise((resolve) => {
+            const itemName = config.itemName || '';
+            const message = config.message ||
+                (itemName
+                    ? `${i18n.t('modal.deleteConfirm') || 'Möchten Sie'} "${itemName}" ${i18n.t('modal.deleteConfirmEnd') || 'wirklich löschen?'}`
+                    : i18n.t('modal.deleteGeneric') || 'Möchten Sie diesen Eintrag wirklich löschen?');
+
+            const modal = new ModalBuilder({
+                title: config.title || i18n.t('modal.deleteTitle') || 'Löschen bestätigen',
+                body: `
+                    <div class="modal-delete-confirm">
+                        <p>${message}</p>
+                        ${config.warning ? `<p class="modal-delete-warning">${config.warning}</p>` : ''}
+                    </div>
+                `,
+                actions: [
+                    {
+                        key: 'cancel',
+                        label: config.cancelLabel || i18n.t('modal.cancel') || 'Abbrechen',
+                        type: 'secondary',
+                        handler: () => {
+                            resolve(false);
+                        }
+                    },
+                    {
+                        key: 'delete',
+                        label: config.deleteLabel || i18n.t('modal.delete') || 'Löschen',
+                        type: 'danger',
+                        handler: async (modalInstance) => {
+                            if (config.onConfirm) {
+                                // Show loading state
+                                const deleteBtn = modalInstance.modalElement.querySelector('[data-action-key="delete"]');
+                                const originalText = deleteBtn.innerHTML;
+                                deleteBtn.innerHTML = `<span class="btn-spinner"></span> ${i18n.t('modal.deleting') || 'Löschen...'}`;
+                                deleteBtn.disabled = true;
+
+                                try {
+                                    await config.onConfirm();
+                                    resolve(true);
+                                } catch (error) {
+                                    console.error('Delete error:', error);
+                                    deleteBtn.innerHTML = originalText;
+                                    deleteBtn.disabled = false;
+                                    // Show error message
+                                    const body = modalInstance.modalElement.querySelector('.modal-body');
+                                    body.innerHTML += `
+                                        <div class="modal-error-message">
+                                            ${i18n.t('modal.deleteError') || 'Fehler beim Löschen'}
+                                        </div>
+                                    `;
+                                    return false; // Don't close modal
+                                }
+                            } else {
+                                resolve(true);
+                            }
+                        }
+                    }
+                ],
+                options: {
+                    size: config.size || 'small',
+                    ...config.options
+                }
+            });
+            modal.open();
+        });
     }
 }
 

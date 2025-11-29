@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnalyticsCard - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
     <link rel="stylesheet" href="../../src/AnalyticsBuilder.css">
@@ -59,6 +69,57 @@
             padding: 2px 6px;
             border-radius: 4px;
             font-size: 13px;
+        }
+
+        /* Dark Mode Support */
+        html.dark-mode .demo-box,
+        html.m3-dark .demo-box {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+
+        html.dark-mode .badge,
+        html.m3-dark .badge {
+            background: rgba(138, 180, 248, 0.15);
+            color: #8ab4f8;
+        }
+
+        html.dark-mode .badge.new,
+        html.m3-dark .badge.new {
+            background: rgba(129, 201, 149, 0.15);
+            color: #81c995;
+        }
+
+        html.dark-mode .config-table th,
+        html.m3-dark .config-table th {
+            background: #2d2d2d;
+            border-bottom-color: #3d3d3d;
+        }
+
+        html.dark-mode .config-table td,
+        html.m3-dark .config-table td {
+            border-bottom-color: #3d3d3d;
+        }
+
+        html.dark-mode .config-table code,
+        html.m3-dark .config-table code {
+            background: #3d3d3d;
+            color: #8ab4f8;
+        }
+
+        html.dark-mode .demo-section h2,
+        html.m3-dark .demo-section h2 {
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .demo-section h3,
+        html.m3-dark .demo-section h3 {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .demo-section p,
+        html.m3-dark .demo-section p {
+            color: #a1a1a1;
         }
     </style>
 </head>

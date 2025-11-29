@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ToastBuilder - SSI Builders</title>
-    
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -37,6 +46,32 @@
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 12px;
+        }
+
+        /* Dark Mode Support */
+        html.dark-mode .demo-section h2,
+        html.m3-dark .demo-section h2 {
+            color: #8ab4f8;
+        }
+
+        html.dark-mode .demo-section .subtitle,
+        html.m3-dark .demo-section .subtitle {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .example-demo,
+        html.m3-dark .example-demo {
+            background: #2d2d2d;
+        }
+
+        html.dark-mode .demo-section ul,
+        html.m3-dark .demo-section ul {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .demo-section h3,
+        html.m3-dark .demo-section h3 {
+            color: #e1e1e1;
         }
     </style>
 </head>

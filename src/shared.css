@@ -48,32 +48,33 @@
     --md-sys-color-error-container: #f9dedc;
     --md-sys-color-on-error-container: #410e0b;
 
-    /* === Colors - Google M3 Palette === */
-    --ssi-primary: #1a73e8;         /* Google Blue */
-    --ssi-primary-hover: #1557b0;   /* Darker blue for hover */
-    --ssi-primary-active: #103f75;  /* Even darker for active */
+    /* === Colors - Dynamic M3 Theme System === */
+    /* These use M3 variables set by ThemeBuilder (falls back to defaults) */
+    --ssi-primary: var(--m3-primary, #1a73e8);
+    --ssi-primary-hover: var(--m3-primary-dark, #1557b0);
+    --ssi-primary-active: var(--m3-primary-darker, #103f75);
 
-    --ssi-success: #34a853;         /* Google Green */
-    --ssi-error: #ea4335;           /* Google Red */
-    --ssi-warning: #fbbc04;         /* Google Yellow */
-    --ssi-info: #4285f4;            /* Light Blue */
+    --ssi-success: var(--m3-success, #34a853);
+    --ssi-error: var(--m3-error, #ea4335);
+    --ssi-warning: var(--m3-warning, #fbbc04);
+    --ssi-info: var(--m3-info, #4285f4);
 
-    /* Text Colors */
-    --ssi-text-primary: #202124;    /* Almost black */
-    --ssi-text-secondary: #5f6368;  /* Medium gray */
-    --ssi-text-muted: #9aa0a6;      /* Light gray */
-    --ssi-text-inverse: #ffffff;    /* White text */
+    /* Text Colors - Dynamic from M3 */
+    --ssi-text-primary: var(--m3-on-background, #202124);
+    --ssi-text-secondary: var(--m3-on-surface-variant, #5f6368);
+    --ssi-text-muted: var(--m3-outline, #9aa0a6);
+    --ssi-text-inverse: var(--m3-on-primary, #ffffff);
 
-    /* Background Colors */
-    --ssi-bg-page: #f8f9fa;         /* Light gray page bg */
-    --ssi-bg-card: #ffffff;         /* White cards */
-    --ssi-bg-hover: #f1f3f4;        /* Hover state */
-    --ssi-bg-selected: #e8f0fe;     /* Selected state (light blue) */
+    /* Background Colors - Dynamic from M3 */
+    --ssi-bg-page: var(--m3-background, #f8f9fa);
+    --ssi-bg-card: var(--m3-surface, #ffffff);
+    --ssi-bg-hover: var(--m3-surface-variant, #f1f3f4);
+    --ssi-bg-selected: var(--m3-primary-container, #e8f0fe);
 
-    /* Border & Divider */
-    --ssi-border: #dadce0;          /* Light gray border */
-    --ssi-border-dark: #e8eaed;     /* Slightly darker */
-    --ssi-divider: #e0e0e0;         /* Divider lines */
+    /* Border & Divider - Dynamic from M3 */
+    --ssi-border: var(--m3-outline-variant, #dadce0);
+    --ssi-border-dark: var(--m3-outline, #e8eaed);
+    --ssi-divider: var(--m3-outline-variant, #e0e0e0);
 
     /* === Shadows - M3 Elevations === */
     --ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
@@ -179,7 +180,7 @@ body {
    Top Navigation - Google M3 Professional Dropdown
    =================================== */
 .top-nav {
-    background: #fff;
+    background: var(--m3-surface, #ffffff);
     border-bottom: 1px solid #dadce0;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
     position: sticky;
@@ -319,7 +320,7 @@ body {
     top: calc(100% + 4px);
     left: 0;
     min-width: 220px;
-    background: #fff;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
     opacity: 0;
@@ -426,7 +427,7 @@ body {
     top: calc(100% + 12px);
     right: 0;
     min-width: 280px;
-    background: #fff;
+    background: var(--m3-surface, #ffffff);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
     opacity: 0;
@@ -1062,7 +1063,7 @@ body {
 
 /* Table Card Container */
 .table-card {
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.05);
     border: 1px solid #e8eaed;
@@ -1077,7 +1078,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: white;
+    background: var(--m3-surface, #ffffff);
 }
 
 .table-header h2 {
@@ -1147,7 +1148,7 @@ table tr:hover {
     border: 1px solid #dadce0;
     border-radius: 16px;
     font-size: 12px;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     color: #5f6368;
     cursor: pointer;
     transition: all 0.2s;
@@ -1546,4 +1547,318 @@ textarea.ssi-input-lg { height: auto !important; min-height: 100px !important; }
     font-size: 14px;
     font-weight: 500;
     margin-bottom: 8px;
+}
+
+/* ===================================
+   Dark Mode Overrides (ThemeBuilder)
+   Applied via .dark-mode or .m3-dark class
+   =================================== */
+.dark-mode,
+.m3-dark {
+    /* Base backgrounds */
+    --bg-page: var(--m3-background, #121212);
+    --bg-card: var(--m3-surface, #1e1e1e);
+    --bg-hover: var(--m3-surface-container-high, #2d2d2d);
+
+    /* Text colors */
+    --text-primary: var(--m3-on-background, #e1e1e1);
+    --text-secondary: var(--m3-on-surface-variant, #a1a1a1);
+    --text-muted: var(--m3-outline, #6c6c6c);
+
+    /* Borders */
+    --border-color: var(--m3-outline-variant, #3d3d3d);
+    --ssi-border: var(--m3-outline-variant, #3d3d3d);
+    --ssi-divider: var(--m3-outline-variant, #3d3d3d);
+}
+
+/* Dark mode body */
+html.dark-mode body,
+html.m3-dark body {
+    background: var(--m3-background, #121212) !important;
+    color: var(--m3-on-background, #e1e1e1) !important;
+}
+
+/* Dark mode cards and containers */
+.dark-mode .list-container,
+.dark-mode .form-container,
+.dark-mode .modal-content,
+.dark-mode .card,
+.dark-mode .demo-section,
+.dark-mode .sidebar,
+.dark-mode .top-nav,
+.m3-dark .list-container,
+.m3-dark .form-container,
+.m3-dark .modal-content,
+.m3-dark .card,
+.m3-dark .demo-section,
+.m3-dark .sidebar,
+.m3-dark .top-nav {
+    background: var(--m3-surface, #1e1e1e) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+/* Dark mode tables */
+.dark-mode table,
+.dark-mode th,
+.dark-mode td,
+.m3-dark table,
+.m3-dark th,
+.m3-dark td {
+    background: var(--m3-surface, #1e1e1e) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+/* Dark mode striped rows */
+.dark-mode tbody tr:nth-child(even),
+.m3-dark tbody tr:nth-child(even) {
+    background: var(--m3-surface-container, #252525) !important;
+}
+
+/* Dark mode inputs */
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea,
+.m3-dark input,
+.m3-dark select,
+.m3-dark textarea {
+    background: var(--m3-surface-container, #252525) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+}
+
+/* Dark mode card headers (from shared.css base styles) */
+.dark-mode .card-header,
+.m3-dark .card-header {
+    background: transparent !important;
+    border-bottom-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .card-title,
+.m3-dark .card-title {
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+.dark-mode input::placeholder,
+.dark-mode textarea::placeholder,
+.m3-dark input::placeholder,
+.m3-dark textarea::placeholder {
+    color: var(--m3-on-surface-variant, #a1a1a1) !important;
+}
+
+/* Dark mode code blocks */
+.dark-mode pre,
+.dark-mode code,
+.m3-dark pre,
+.m3-dark code {
+    background: var(--m3-surface-container-highest, #353535) !important;
+}
+
+/* Dark mode headings */
+.dark-mode h1,
+.dark-mode h2,
+.dark-mode h3,
+.dark-mode h4,
+.dark-mode h5,
+.dark-mode h6,
+.m3-dark h1,
+.m3-dark h2,
+.m3-dark h3,
+.m3-dark h4,
+.m3-dark h5,
+.m3-dark h6 {
+    color: var(--m3-on-background, #e1e1e1) !important;
+}
+
+/* Dark mode links */
+.dark-mode a,
+.m3-dark a {
+    color: var(--m3-primary, #8ab4f8) !important;
+}
+
+/* Dark mode buttons - keep primary colored */
+.dark-mode .btn-primary,
+.m3-dark .btn-primary {
+    background: var(--m3-primary, #8ab4f8) !important;
+    color: var(--m3-on-primary, #003c71) !important;
+}
+
+/* Dark mode hover states */
+.dark-mode tr:hover,
+.dark-mode .list-row:hover,
+.m3-dark tr:hover,
+.m3-dark .list-row:hover {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+}
+
+/* Demo content area */
+.dark-mode .demo-content,
+.m3-dark .demo-content {
+    background: var(--m3-background, #121212) !important;
+}
+
+/* ===================================
+   ListBuilder Dark Mode Overrides
+   =================================== */
+.dark-mode .list-builder,
+.m3-dark .list-builder {
+    background: var(--m3-surface, #1e1e1e) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .list-toolbar,
+.m3-dark .list-toolbar {
+    background: var(--m3-surface, #1e1e1e) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .list-search-input,
+.m3-dark .list-search-input {
+    background: var(--m3-surface-container, #252525) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+.dark-mode .list-filter-select,
+.m3-dark .list-filter-select {
+    background: var(--m3-surface-container, #252525) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+.dark-mode .list-table th,
+.m3-dark .list-table th {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .list-table td,
+.m3-dark .list-table td {
+    background: var(--m3-surface, #1e1e1e) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .list-table-striped tbody tr:nth-child(even) td,
+.m3-dark .list-table-striped tbody tr:nth-child(even) td {
+    background: var(--m3-surface-container, #252525) !important;
+}
+
+.dark-mode .list-pagination,
+.m3-dark .list-pagination {
+    background: var(--m3-surface, #1e1e1e) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+.dark-mode .list-pagination-btn,
+.m3-dark .list-pagination-btn {
+    background: var(--m3-surface-container, #252525) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+}
+
+.dark-mode .list-pagination-btn.active,
+.m3-dark .list-pagination-btn.active {
+    background: var(--m3-primary, #8ab4f8) !important;
+    color: var(--m3-on-primary, #003c71) !important;
+}
+
+.dark-mode .list-actions-btn,
+.dark-mode .list-toolbar-btn,
+.m3-dark .list-actions-btn,
+.m3-dark .list-toolbar-btn {
+    background: var(--m3-surface-container, #252525) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+}
+
+.dark-mode .list-empty,
+.m3-dark .list-empty {
+    color: var(--m3-on-surface-variant, #a1a1a1) !important;
+}
+
+/* Column selector dropdown */
+.dark-mode .list-column-selector,
+.m3-dark .list-column-selector {
+    background: var(--m3-surface-container, #252525) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.dark-mode .list-column-selector label,
+.m3-dark .list-column-selector label {
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+/* Status badges */
+.dark-mode .status-badge,
+.m3-dark .status-badge {
+    opacity: 0.9;
+}
+
+/* ===================================
+   CodeSnippetBuilder Dark Mode
+   =================================== */
+.dark-mode .code-snippet-container,
+.m3-dark .code-snippet-container {
+    background: var(--m3-surface-container-highest, #353535) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .code-snippet-header,
+.m3-dark .code-snippet-header {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .code-snippet-copy-btn,
+.m3-dark .code-snippet-copy-btn {
+    background: var(--m3-surface-container, #252525) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline, #6c6c6c) !important;
+}
+
+/* ===================================
+   SidebarBuilder Dark Mode
+   =================================== */
+.dark-mode .sidebar,
+.m3-dark .sidebar {
+    background: var(--m3-surface, #1e1e1e) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .sidebar-nav-item,
+.m3-dark .sidebar-nav-item {
+    color: var(--m3-on-surface, #e1e1e1) !important;
+}
+
+.dark-mode .sidebar-nav-item:hover,
+.m3-dark .sidebar-nav-item:hover {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+}
+
+.dark-mode .sidebar-nav-item.active,
+.m3-dark .sidebar-nav-item.active {
+    background: var(--m3-primary-container, #004a77) !important;
+    color: var(--m3-on-primary-container, #d1e4ff) !important;
+}
+
+.dark-mode .sidebar-heading,
+.m3-dark .sidebar-heading {
+    color: var(--m3-on-surface-variant, #a1a1a1) !important;
+}
+
+.dark-mode .sidebar-toggle,
+.m3-dark .sidebar-toggle {
+    background: var(--m3-surface-container, #252525) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: var(--m3-outline-variant, #3d3d3d) !important;
+}
+
+.dark-mode .sidebar-version,
+.m3-dark .sidebar-version {
+    color: var(--m3-on-surface-variant, #a1a1a1) !important;
 }

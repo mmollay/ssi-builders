@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Icon System - SSI Builders Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <!-- Material Icons for Demo -->
@@ -232,6 +242,127 @@
 
         .icon-table tr:last-child td {
             border-bottom: none;
+        }
+
+        /* ========================================
+           Dark Mode Support
+           ======================================== */
+        html.dark-mode .demo-section h2,
+        html.m3-dark .demo-section h2 {
+            color: #8ab4f8;
+            border-bottom-color: #3d3d3d;
+        }
+
+        html.dark-mode .demo-section h3,
+        html.m3-dark .demo-section h3 {
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .demo-section p,
+        html.dark-mode .demo-section li,
+        html.m3-dark .demo-section p,
+        html.m3-dark .demo-section li {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .demo-section p code,
+        html.dark-mode .demo-section li code,
+        html.m3-dark .demo-section p code,
+        html.m3-dark .demo-section li code {
+            background: #2d2d2d;
+            color: #f28b82;
+        }
+
+        html.dark-mode .playground-controls,
+        html.m3-dark .playground-controls {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        html.dark-mode .control-label,
+        html.m3-dark .control-label {
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .icon-item,
+        html.m3-dark .icon-item {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+
+        html.dark-mode .icon-item:hover,
+        html.m3-dark .icon-item:hover {
+            border-color: #8ab4f8;
+            box-shadow: 0 4px 12px rgba(138, 180, 248, 0.15);
+        }
+
+        html.dark-mode .icon-preview,
+        html.m3-dark .icon-preview {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .icon-name,
+        html.m3-dark .icon-name {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .comparison-item,
+        html.m3-dark .comparison-item {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+
+        html.dark-mode .comparison-item h3,
+        html.m3-dark .comparison-item h3 {
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .comparison-item p,
+        html.m3-dark .comparison-item p {
+            color: #a1a1a1;
+        }
+
+        html.dark-mode .icon-table,
+        html.m3-dark .icon-table {
+            background: #1e1e1e;
+        }
+
+        html.dark-mode .icon-table th,
+        html.m3-dark .icon-table th {
+            background: #2d2d2d;
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .icon-table td,
+        html.m3-dark .icon-table td {
+            border-bottom-color: #3d3d3d;
+            color: #e1e1e1;
+        }
+
+        html.dark-mode .icon-table th,
+        html.dark-mode .icon-table td,
+        html.m3-dark .icon-table th,
+        html.m3-dark .icon-table td {
+            border-bottom-color: #3d3d3d;
+        }
+
+        html.dark-mode #iconSearch,
+        html.m3-dark #iconSearch {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+            color: #e1e1e1;
+        }
+
+        html.dark-mode #iconSearch::placeholder,
+        html.m3-dark #iconSearch::placeholder {
+            color: #6c6c6c;
+        }
+
+        html.dark-mode .info-box,
+        html.m3-dark .info-box {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
         }
     </style>
 </head>

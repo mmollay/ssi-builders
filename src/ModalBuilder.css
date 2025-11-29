@@ -57,7 +57,7 @@
 /* === Container === */
 .modal-container {
     position: relative;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     border-radius: 8px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     max-height: 90vh;
@@ -164,21 +164,21 @@
     justify-content: space-between;
     align-items: center;
     padding: 20px 24px;
-    border-bottom: 1px solid #e8eaed;
+    border-bottom: 1px solid var(--m3-outline-variant, #e8eaed);
 }
 
 .modal-title {
     margin: 0;
     font-size: 20px;
     font-weight: 500;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .modal-close-btn {
     background: none;
     border: none;
     font-size: 32px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     cursor: pointer;
     padding: 0;
     width: 32px;
@@ -192,7 +192,7 @@
 }
 
 .modal-close-btn:hover {
-    background: #f1f3f4;
+    background: var(--m3-surface-container-high, #f1f3f4);
 }
 
 /* === Body === */
@@ -207,16 +207,16 @@
 }
 
 .modal-body::-webkit-scrollbar-track {
-    background: #f1f3f4;
+    background: var(--m3-surface-container-high, #f1f3f4);
 }
 
 .modal-body::-webkit-scrollbar-thumb {
-    background: #dadce0;
+    background: var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
 }
 
 .modal-body::-webkit-scrollbar-thumb:hover {
-    background: #5f6368;
+    background: var(--m3-on-surface-variant, #5f6368);
 }
 
 /* === Footer === */
@@ -225,7 +225,7 @@
     justify-content: flex-end;
     gap: 12px;
     padding: 16px 24px;
-    border-top: 1px solid #e8eaed;
+    border-top: 1px solid var(--m3-outline-variant, #e8eaed);
 }
 
 /* === Buttons === */
@@ -240,31 +240,31 @@
 }
 
 .modal-btn-primary {
-    background: #1a73e8;
-    color: white;
+    background: var(--m3-primary, #1a73e8);
+    color: var(--m3-on-primary, #ffffff);
 }
 
 .modal-btn-primary:hover {
-    background: #1557b0;
+    background: var(--m3-primary-hover, #1557b0);
     box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
 }
 
 .modal-btn-secondary {
-    background: #f1f3f4;
-    color: #202124;
+    background: var(--m3-surface-container-high, #f1f3f4);
+    color: var(--m3-on-surface, #202124);
 }
 
 .modal-btn-secondary:hover {
-    background: #e8eaed;
+    background: var(--m3-surface-container-high, #e8eaed);
 }
 
 .modal-btn-danger {
-    background: #ea4335;
-    color: white;
+    background: var(--m3-error, #ea4335);
+    color: var(--m3-on-error, #ffffff);
 }
 
 .modal-btn-danger:hover {
-    background: #c5221f;
+    background: var(--m3-error-hover, #c5221f);
     box-shadow: 0 2px 4px rgba(234, 67, 53, 0.3);
 }
 
@@ -285,8 +285,8 @@
 .modal-spinner {
     width: 40px;
     height: 40px;
-    border: 4px solid #e8eaed;
-    border-top-color: #1a73e8;
+    border: 4px solid var(--m3-surface-container-high, #e8eaed);
+    border-top-color: var(--m3-primary, #1a73e8);
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
@@ -407,8 +407,199 @@
 
 .modal-prompt p {
     margin: 0;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     font-size: 14px;
+}
+
+/* === Modal FormBuilder Overrides === */
+/* Remove FormBuilder container shadow in modals - modal already provides container */
+.modal-body .form-builder {
+    box-shadow: none;
+    padding: 0;
+    background: transparent;
+}
+
+/* ===========================================
+   M3 BUTTONS for Modal Footer
+   Following Material Design 3 spec
+   =========================================== */
+
+.modal-footer .m3-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 64px;
+    height: 40px;
+    padding: 0 24px;
+    border: none;
+    border-radius: 20px;
+    font-family: 'Roboto', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    letter-spacing: 0.1px;
+    text-decoration: none;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.2s ease;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+}
+
+.modal-footer .m3-button:focus-visible {
+    outline: 2px solid var(--m3-primary, #1a73e8);
+    outline-offset: 2px;
+}
+
+/* State Layer */
+.modal-footer .m3-button::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: transparent;
+    transition: background 0.2s ease;
+}
+
+/* === Filled Button (Primary) === */
+.modal-footer .m3-button--filled {
+    background: var(--m3-primary, #1a73e8);
+    color: var(--m3-on-primary, #ffffff);
+}
+
+.modal-footer .m3-button--filled:hover::before {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-footer .m3-button--filled:active::before {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.modal-footer .m3-button--filled:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* === Outlined Button (Secondary) === */
+.modal-footer .m3-button--outlined {
+    background: transparent;
+    color: var(--m3-primary, #1a73e8);
+    border: 1px solid #79747E;
+}
+
+.modal-footer .m3-button--outlined:hover::before {
+    background: rgba(26, 115, 232, 0.08);
+}
+
+.modal-footer .m3-button--outlined:active::before {
+    background: rgba(26, 115, 232, 0.12);
+}
+
+/* === Text Button === */
+.modal-footer .m3-button--text {
+    background: transparent;
+    color: var(--m3-primary, #1a73e8);
+    padding: 0 12px;
+    min-width: auto;
+}
+
+.modal-footer .m3-button--text:hover::before {
+    background: rgba(26, 115, 232, 0.08);
+}
+
+.modal-footer .m3-button--text:active::before {
+    background: rgba(26, 115, 232, 0.12);
+}
+
+/* === Tonal Button === */
+.modal-footer .m3-button--tonal {
+    background: var(--m3-secondary-container, #E8DEF8);
+    color: var(--m3-on-secondary-container, #1D192B);
+}
+
+.modal-footer .m3-button--tonal:hover::before {
+    background: rgba(29, 25, 43, 0.08);
+}
+
+.modal-footer .m3-button--tonal:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.modal-footer .m3-button--tonal:active::before {
+    background: rgba(29, 25, 43, 0.12);
+}
+
+/* === Danger Button === */
+.modal-footer .m3-button--danger {
+    background: var(--m3-error, #B3261E);
+    color: var(--m3-on-error, #ffffff);
+}
+
+.modal-footer .m3-button--danger:hover::before {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-footer .m3-button--danger:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.modal-footer .m3-button--danger:active::before {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Outlined Danger */
+.modal-footer .m3-button--outlined.m3-button--danger {
+    background: transparent;
+    color: var(--m3-error, #B3261E);
+    border-color: var(--m3-error, #B3261E);
+}
+
+.modal-footer .m3-button--outlined.m3-button--danger:hover::before {
+    background: rgba(179, 38, 30, 0.08);
+}
+
+/* === Success Button === */
+.modal-footer .m3-button--success {
+    background: var(--m3-success, #2E7D32);
+    color: var(--m3-on-success, #ffffff);
+}
+
+.modal-footer .m3-button--success:hover::before {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.modal-footer .m3-button--success:hover {
+    box-shadow: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+}
+
+.modal-footer .m3-button--success:active::before {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+/* Outlined Success */
+.modal-footer .m3-button--outlined.m3-button--success {
+    background: transparent;
+    color: var(--m3-success, #2E7D32);
+    border-color: var(--m3-success, #2E7D32);
+}
+
+.modal-footer .m3-button--outlined.m3-button--success:hover::before {
+    background: rgba(46, 125, 50, 0.08);
+}
+
+/* === Button Icon === */
+.modal-footer .m3-button__icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+}
+
+/* === Disabled State === */
+.modal-footer .m3-button:disabled {
+    opacity: 0.38;
+    cursor: not-allowed;
+    pointer-events: none;
 }
 
 /* === Mobile === */
@@ -434,4 +625,102 @@
     .modal-btn {
         width: 100%;
     }
+}
+
+/* === Dark Mode === */
+html.dark-mode .modal-container,
+html.m3-dark .modal-container {
+    background: #2d2d2d !important;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark-mode .modal-header,
+html.m3-dark .modal-header {
+    border-bottom-color: #3d3d3d !important;
+}
+
+html.dark-mode .modal-title,
+html.m3-dark .modal-title {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .modal-close-btn,
+html.m3-dark .modal-close-btn {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .modal-close-btn:hover,
+html.m3-dark .modal-close-btn:hover {
+    background: #3d3d3d !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .modal-body,
+html.m3-dark .modal-body {
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .modal-body p,
+html.m3-dark .modal-body p {
+    color: #a1a1a1 !important;
+}
+
+html.dark-mode .modal-body::-webkit-scrollbar-track,
+html.m3-dark .modal-body::-webkit-scrollbar-track {
+    background: #252525 !important;
+}
+
+html.dark-mode .modal-body::-webkit-scrollbar-thumb,
+html.m3-dark .modal-body::-webkit-scrollbar-thumb {
+    background: #6c6c6c !important;
+}
+
+html.dark-mode .modal-body::-webkit-scrollbar-thumb:hover,
+html.m3-dark .modal-body::-webkit-scrollbar-thumb:hover {
+    background: #8c8c8c !important;
+}
+
+html.dark-mode .modal-footer,
+html.m3-dark .modal-footer {
+    border-top-color: #3d3d3d !important;
+}
+
+html.dark-mode .modal-btn-secondary,
+html.m3-dark .modal-btn-secondary {
+    background: #3d3d3d !important;
+    color: #e1e1e1 !important;
+}
+
+html.dark-mode .modal-btn-secondary:hover,
+html.m3-dark .modal-btn-secondary:hover {
+    background: #4d4d4d !important;
+}
+
+html.dark-mode .modal-spinner,
+html.m3-dark .modal-spinner {
+    border-color: #3d3d3d !important;
+    border-top-color: #8ab4f8 !important;
+}
+
+html.dark-mode .modal-prompt p,
+html.m3-dark .modal-prompt p {
+    color: #a1a1a1 !important;
+}
+
+/* Dark mode for M3 buttons in modal */
+html.dark-mode .modal-footer .m3-button--outlined,
+html.m3-dark .modal-footer .m3-button--outlined {
+    border-color: #6c6c6c !important;
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .modal-footer .m3-button--text,
+html.m3-dark .modal-footer .m3-button--text {
+    color: #8ab4f8 !important;
+}
+
+html.dark-mode .modal-footer .m3-button--tonal,
+html.m3-dark .modal-footer .m3-button--tonal {
+    background: #3d3d3d !important;
+    color: #d0bcff !important;
 }

@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TooltipBuilder - SSI Builders Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
@@ -22,6 +32,11 @@
             margin-bottom: 16px;
         }
 
+        html.dark-mode .demo-section h2,
+        html.m3-dark .demo-section h2 {
+            color: #8ab4f8;
+        }
+
         .tooltip-demo-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -38,6 +53,19 @@
             align-items: center;
             justify-content: center;
             min-height: 150px;
+            border: 1px solid transparent;
+        }
+
+        /* Dark mode support */
+        html.dark-mode .demo-box,
+        html.m3-dark .demo-box {
+            background: #2d2d2d;
+            border-color: #3d3d3d;
+        }
+
+        html.dark-mode .demo-box label,
+        html.m3-dark .demo-box label {
+            color: #a1a1a1 !important;
         }
 
         .demo-trigger {

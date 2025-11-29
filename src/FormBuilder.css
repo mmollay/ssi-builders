@@ -5,16 +5,297 @@
 /* === Form Container === */
 .form-builder {
     position: relative; /* For version badge positioning */
-    background: white;
-    border-radius: 8px;
+    background: var(--m3-surface, #ffffff);
+    color: var(--m3-on-surface, #1c1b1f);
+    border-radius: 12px;
     padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: var(--m3-elevation-1, 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05));
+    border: 1px solid var(--m3-outline-variant, #dadce0);
 }
 
 .form-builder-form {
     display: flex;
     flex-direction: column;
     gap: 24px;
+}
+
+/* === SIZE OPTIONS - Field Height === */
+/* Small: 40px height - compact forms */
+.form-builder.form-size-small .form-field-filled .form-input,
+.form-builder.form-size-small .form-field-filled .form-select,
+.form-builder.form-size-small .form-field-outlined .form-input,
+.form-builder.form-size-small .form-field-outlined .form-select,
+.form-builder.form-size-small .form-field-filled .form-number-wrapper,
+.form-builder.form-size-small .form-field-outlined .form-number-wrapper {
+    height: 40px !important;
+}
+
+.form-builder.form-size-small .form-field-filled .form-input,
+.form-builder.form-size-small .form-field-filled .form-select,
+.form-builder.form-size-small .form-field-outlined .form-input,
+.form-builder.form-size-small .form-field-outlined .form-select {
+    padding: 18px 12px 6px 16px !important; /* left: 16px to align with label */
+    font-size: 14px;
+}
+
+.form-builder.form-size-small .form-label {
+    font-size: 10px;
+}
+
+/* Dense/Small: Only float label when focused or has value */
+.form-builder.form-size-small .form-field-filled .form-input:focus ~ .form-label,
+.form-builder.form-size-small .form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-size-small .form-field-filled .form-select:focus ~ .form-label,
+.form-builder.form-size-small .form-field-filled .form-label-float,
+.form-builder.form-size-small .form-field-outlined .form-input:focus ~ .form-label,
+.form-builder.form-size-small .form-field-outlined .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-size-small .form-field-outlined .form-select:focus ~ .form-label,
+.form-builder.form-size-small .form-field-outlined .form-label-float {
+    top: 4px;
+    transform: translateY(0);
+}
+
+/* Medium: 56px height - M3 standard (default) */
+.form-builder.form-size-medium .form-field-filled .form-input,
+.form-builder.form-size-medium .form-field-filled .form-select,
+.form-builder.form-size-medium .form-field-outlined .form-input,
+.form-builder.form-size-medium .form-field-outlined .form-select {
+    height: 56px !important;
+}
+
+/* Large: 64px height - comfortable touch targets */
+.form-builder.form-size-large .form-field-filled .form-input,
+.form-builder.form-size-large .form-field-filled .form-select,
+.form-builder.form-size-large .form-field-outlined .form-input,
+.form-builder.form-size-large .form-field-outlined .form-select,
+.form-builder.form-size-large .form-field-filled .form-number-wrapper,
+.form-builder.form-size-large .form-field-outlined .form-number-wrapper {
+    height: 64px !important;
+}
+
+.form-builder.form-size-large .form-field-filled .form-input,
+.form-builder.form-size-large .form-field-filled .form-select,
+.form-builder.form-size-large .form-field-outlined .form-input,
+.form-builder.form-size-large .form-field-outlined .form-select {
+    padding: 28px 16px 10px 16px !important;
+    font-size: 18px;
+}
+
+.form-builder.form-size-large .form-label {
+    font-size: 14px;
+}
+
+/* === GAP OPTIONS - Vertical Spacing === */
+/* Compact: 8px gap - minimal spacing */
+.form-builder.form-gap-compact .form-builder-grid,
+.form-builder.form-gap-compact .form-builder-form,
+.form-builder.form-gap-compact .form-builder-vertical {
+    gap: 8px !important;
+}
+
+.form-builder.form-gap-compact .form-field {
+    margin-bottom: 0 !important;
+}
+
+/* Normal: 16px gap - balanced spacing (default) */
+.form-builder.form-gap-normal .form-builder-grid,
+.form-builder.form-gap-normal .form-builder-form,
+.form-builder.form-gap-normal .form-builder-vertical {
+    gap: 16px !important;
+}
+
+.form-builder.form-gap-normal .form-field {
+    margin-bottom: 0 !important;
+}
+
+/* Comfortable: 24px gap - spacious layout */
+.form-builder.form-gap-comfortable .form-builder-grid,
+.form-builder.form-gap-comfortable .form-builder-form,
+.form-builder.form-gap-comfortable .form-builder-vertical {
+    gap: 24px !important;
+}
+
+.form-builder.form-gap-comfortable .form-field {
+    margin-bottom: 0 !important;
+}
+
+/* === DENSITY PRESETS - Combined Size + Gap === */
+/* Dense: small fields + compact gaps */
+.form-builder.form-density-dense .form-field-filled .form-input,
+.form-builder.form-density-dense .form-field-filled .form-select,
+.form-builder.form-density-dense .form-field-outlined .form-input,
+.form-builder.form-density-dense .form-field-outlined .form-select,
+.form-builder.form-density-dense .form-field-filled .form-number-wrapper,
+.form-builder.form-density-dense .form-field-outlined .form-number-wrapper {
+    height: 40px !important;
+}
+
+.form-builder.form-density-dense .form-field-filled .form-input,
+.form-builder.form-density-dense .form-field-filled .form-select,
+.form-builder.form-density-dense .form-field-outlined .form-input,
+.form-builder.form-density-dense .form-field-outlined .form-select {
+    padding: 18px 12px 6px 12px !important;
+    font-size: 14px;
+}
+
+.form-builder.form-density-dense .form-label {
+    font-size: 10px;
+}
+
+/* Dense: Only float label when focused or has value */
+.form-builder.form-density-dense .form-field-filled .form-input:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-select:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-label-float,
+.form-builder.form-density-dense .form-field-outlined .form-input:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-select:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-label-float {
+    top: 4px;
+    transform: translateY(0);
+}
+
+.form-builder.form-density-dense .form-builder-grid,
+.form-builder.form-density-dense .form-builder-form,
+.form-builder.form-density-dense .form-builder-vertical {
+    gap: 8px !important;
+}
+
+.form-builder.form-density-dense .form-field {
+    margin-bottom: 0 !important;
+}
+
+/* Dense: M3 Dropdown overrides */
+.form-builder.form-density-dense .m3-dropdown__field {
+    min-height: 40px !important;
+    padding: 4px 12px !important;
+}
+
+.form-builder.form-density-dense .m3-dropdown__content {
+    min-height: 32px;
+    padding-top: 0;
+}
+
+.form-builder.form-density-dense .m3-dropdown--has-value .m3-dropdown__content {
+    padding-top: 8px;
+}
+
+.form-builder.form-density-dense .m3-dropdown__label {
+    font-size: 14px;
+}
+
+.form-builder.form-density-dense .m3-dropdown__label--float {
+    top: 2px !important;
+    font-size: 10px !important;
+}
+
+.form-builder.form-density-dense .m3-dropdown--filled:focus .m3-dropdown__label,
+.form-builder.form-density-dense .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__label {
+    top: 2px !important;
+    font-size: 10px !important;
+}
+
+.form-builder.form-density-dense .m3-dropdown__value {
+    font-size: 14px;
+}
+
+/* Dense: Float labels when focused or has value (filled variant) */
+.form-builder.form-density-dense .form-field-filled .form-input:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-select:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-filled .form-label-float {
+    top: 4px !important;
+    transform: translateY(0) !important;
+    font-size: 10px !important;
+}
+
+/* Dense: Float labels when focused or has value (outlined variant) */
+.form-builder.form-density-dense .form-field-outlined .form-input:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-input:not(:placeholder-shown) ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-select:focus ~ .form-label,
+.form-builder.form-density-dense .form-field-outlined .form-label-float {
+    top: 0 !important;
+    transform: translateY(-50%) !important;
+    font-size: 10px !important;
+    background: var(--m3-surface, #ffffff);
+    padding: 0 4px;
+}
+
+/* Dense: Text field active indicator (border-bottom) should be thin */
+.form-builder.form-density-dense .form-field-filled .form-input {
+    border-bottom-width: 1px !important;
+}
+
+.form-builder.form-density-dense .form-field-filled .form-input:focus {
+    border-bottom-width: 2px !important;
+}
+
+/* Normal density: medium fields + normal gaps (default) */
+.form-builder.form-density-normal .form-builder-grid,
+.form-builder.form-density-normal .form-builder-form,
+.form-builder.form-density-normal .form-builder-vertical {
+    gap: 16px !important;
+}
+
+/* Comfortable density: large fields + comfortable gaps */
+.form-builder.form-density-comfortable .form-field-filled .form-input,
+.form-builder.form-density-comfortable .form-field-filled .form-select,
+.form-builder.form-density-comfortable .form-field-outlined .form-input,
+.form-builder.form-density-comfortable .form-field-outlined .form-select,
+.form-builder.form-density-comfortable .form-field-filled .form-number-wrapper,
+.form-builder.form-density-comfortable .form-field-outlined .form-number-wrapper {
+    height: 64px !important;
+}
+
+.form-builder.form-density-comfortable .form-field-filled .form-input,
+.form-builder.form-density-comfortable .form-field-filled .form-select,
+.form-builder.form-density-comfortable .form-field-outlined .form-input,
+.form-builder.form-density-comfortable .form-field-outlined .form-select {
+    padding: 28px 16px 10px 16px !important;
+    font-size: 18px;
+}
+
+.form-builder.form-density-comfortable .form-label {
+    font-size: 14px;
+}
+
+.form-builder.form-density-comfortable .form-builder-grid,
+.form-builder.form-density-comfortable .form-builder-form,
+.form-builder.form-density-comfortable .form-builder-vertical {
+    gap: 24px !important;
+}
+
+/* Comfortable: M3 Dropdown overrides */
+.form-builder.form-density-comfortable .m3-dropdown__field {
+    min-height: 64px !important;
+    padding: 8px 16px !important;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown__content {
+    min-height: 48px;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown--has-value .m3-dropdown__content {
+    padding-top: 16px;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown__label {
+    font-size: 18px;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown__label--float {
+    top: 6px !important;
+    font-size: 14px !important;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown--filled:focus .m3-dropdown__label,
+.form-builder.form-density-comfortable .m3-dropdown--filled.m3-dropdown--open .m3-dropdown__label {
+    top: 6px !important;
+    font-size: 14px !important;
+}
+
+.form-builder.form-density-comfortable .m3-dropdown__value {
+    font-size: 18px;
 }
 
 /* === Layouts === */
@@ -55,6 +336,11 @@
     gap: 24px;
 }
 
+/* Fields without explicit width span full row in 12-column grid */
+.form-builder-grid .form-field:not([class*="form-field-width"]) {
+    grid-column: 1 / -1;
+}
+
 /* Backwards compatibility - gridColumns: 2/3/4 */
 .form-builder-grid-2 {
     grid-template-columns: repeat(2, 1fr);
@@ -68,11 +354,77 @@
     grid-template-columns: repeat(4, 1fr);
 }
 
-/* When gridColumns is set, fields without width span all columns */
+/* When gridColumns is set, fields without width span all columns (full row) */
 .form-builder-grid-2 .form-field:not([class*="form-field-width"]):not(.form-field-full),
 .form-builder-grid-3 .form-field:not([class*="form-field-width"]):not(.form-field-full),
 .form-builder-grid-4 .form-field:not([class*="form-field-width"]):not(.form-field-full) {
+    grid-column: 1 / -1;
+}
+
+/* GridColumns 2: Map width to 2-column grid */
+.form-builder-grid-2 .form-field-width-1,
+.form-builder-grid-2 .form-field-width-2,
+.form-builder-grid-2 .form-field-width-3,
+.form-builder-grid-2 .form-field-width-4,
+.form-builder-grid-2 .form-field-width-5,
+.form-builder-grid-2 .form-field-width-6 {
     grid-column: span 1;
+}
+
+.form-builder-grid-2 .form-field-width-7,
+.form-builder-grid-2 .form-field-width-8,
+.form-builder-grid-2 .form-field-width-9,
+.form-builder-grid-2 .form-field-width-10,
+.form-builder-grid-2 .form-field-width-11,
+.form-builder-grid-2 .form-field-width-12 {
+    grid-column: 1 / -1;
+}
+
+/* GridColumns 3: Map width to 3-column grid */
+.form-builder-grid-3 .form-field-width-1,
+.form-builder-grid-3 .form-field-width-2,
+.form-builder-grid-3 .form-field-width-3,
+.form-builder-grid-3 .form-field-width-4 {
+    grid-column: span 1;
+}
+
+.form-builder-grid-3 .form-field-width-5,
+.form-builder-grid-3 .form-field-width-6,
+.form-builder-grid-3 .form-field-width-7,
+.form-builder-grid-3 .form-field-width-8 {
+    grid-column: span 2;
+}
+
+.form-builder-grid-3 .form-field-width-9,
+.form-builder-grid-3 .form-field-width-10,
+.form-builder-grid-3 .form-field-width-11,
+.form-builder-grid-3 .form-field-width-12 {
+    grid-column: 1 / -1;
+}
+
+/* GridColumns 4: Map width to 4-column grid */
+.form-builder-grid-4 .form-field-width-1,
+.form-builder-grid-4 .form-field-width-2,
+.form-builder-grid-4 .form-field-width-3 {
+    grid-column: span 1;
+}
+
+.form-builder-grid-4 .form-field-width-4,
+.form-builder-grid-4 .form-field-width-5,
+.form-builder-grid-4 .form-field-width-6 {
+    grid-column: span 2;
+}
+
+.form-builder-grid-4 .form-field-width-7,
+.form-builder-grid-4 .form-field-width-8,
+.form-builder-grid-4 .form-field-width-9 {
+    grid-column: span 3;
+}
+
+.form-builder-grid-4 .form-field-width-10,
+.form-builder-grid-4 .form-field-width-11,
+.form-builder-grid-4 .form-field-width-12 {
+    grid-column: 1 / -1;
 }
 
 /* === Field Width Classes (12-Column Grid) === */
@@ -141,7 +493,7 @@
 .form-label {
     font-size: 14px;
     font-weight: 500;
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .form-required {
@@ -154,33 +506,33 @@
 .form-textarea,
 .form-select {
     padding: 10px 12px;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
     font-size: 14px;
     font-family: inherit;
     transition: all 0.2s;
-    background: white;
+    background: var(--m3-surface, #ffffff);
 }
 
 .form-input:hover,
 .form-textarea:hover,
 .form-select:hover {
-    border-color: #dadce0;
+    border-color: var(--m3-outline-variant, #dadce0);
 }
 
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
     outline: none;
-    border-color: #1a73e8;
+    border-color: var(--m3-primary, #1a73e8);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.08);
 }
 
 .form-input:disabled,
 .form-textarea:disabled,
 .form-select:disabled {
-    background: #f1f3f4;
-    color: #5f6368;
+    background: var(--m3-surface-container-high, #f1f3f4);
+    color: var(--m3-on-surface-variant, #5f6368);
     cursor: not-allowed;
 }
 
@@ -214,13 +566,13 @@
     align-items: center;
     justify-content: center;
     border-radius: var(--ssi-radius-sm, 4px);
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     transition: all var(--ssi-transition-base, 0.2s);
 }
 
 .form-password-toggle:hover {
     background: rgba(0, 0, 0, 0.04);
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .form-password-toggle:active {
@@ -237,19 +589,19 @@
 .form-number-wrapper {
     display: flex;
     align-items: stretch;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
     transition: all 0.2s;
-    background: white;
+    background: var(--m3-surface, #ffffff);
 }
 
 .form-number-wrapper:hover {
-    border-color: #5f6368;
+    border-color: var(--m3-on-surface-variant, #5f6368);
 }
 
 .form-number-wrapper:focus-within {
     outline: 2px solid #1a73e8;
-    border-color: #1a73e8;
+    border-color: var(--m3-primary, #1a73e8);
 }
 
 .form-number-input {
@@ -279,7 +631,7 @@
     cursor: pointer;
     font-size: 18px;
     font-weight: 500;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     transition: all var(--ssi-transition-base, 0.2s);
     display: flex;
     align-items: center;
@@ -289,7 +641,7 @@
 
 .form-number-btn:hover {
     background: rgba(0, 0, 0, 0.04);
-    color: #202124;
+    color: var(--m3-on-surface, #202124);
 }
 
 .form-number-btn:active {
@@ -317,7 +669,7 @@
 /* === Hint & Error === */
 .form-hint {
     font-size: 12px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
 }
 
 .form-error {
@@ -357,8 +709,8 @@
 }
 
 .form-btn-secondary {
-    background: #f1f3f4;
-    color: #202124;
+    background: var(--m3-surface-container-high, #f1f3f4);
+    color: var(--m3-on-surface, #202124);
 }
 
 .form-btn-secondary:hover {
@@ -403,8 +755,8 @@
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    background: #f1f3f4;
-    color: #5f6368;
+    background: var(--m3-surface-container-high, #f1f3f4);
+    color: var(--m3-on-surface-variant, #5f6368);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -425,12 +777,12 @@
 
 .form-step-label {
     font-size: 12px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     text-align: center;
 }
 
 .form-step.active .form-step-label {
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
     font-weight: 500;
 }
 
@@ -525,7 +877,7 @@
     min-width: 60px;
     font-size: 14px;
     font-weight: 600;
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
     text-align: right;
 }
 
@@ -571,7 +923,7 @@ input[type="color"].form-input {
 /* Description text under input */
 .form-description {
     font-size: 12px;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     margin-top: 4px;
     line-height: 1.4;
 }
@@ -594,7 +946,7 @@ input[type="color"].form-input {
     top: 12px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     pointer-events: none;
-    color: #5f6368;
+    color: var(--m3-on-surface-variant, #5f6368);
     background: transparent;
     padding: 0 4px;
     font-size: 14px;
@@ -609,8 +961,8 @@ input[type="color"].form-input {
     top: -8px;
     left: 8px;
     font-size: 11px;
-    color: #1a73e8;
-    background: white;
+    color: var(--m3-primary, #1a73e8);
+    background: var(--m3-surface, #ffffff);
     font-weight: 500;
 }
 
@@ -626,23 +978,23 @@ input[type="color"].form-input {
 .form-input-group {
     display: flex;
     align-items: center;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: 6px;
     overflow: hidden;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     transition: border-color 0.2s;
 }
 
 .form-input-group:focus-within {
-    border-color: #1a73e8;
+    border-color: var(--m3-primary, #1a73e8);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
 .form-input-prefix,
 .form-input-suffix {
     padding: 8px 12px;
-    background: #f8f9fa;
-    color: #5f6368;
+    background: var(--m3-surface-container, #f8f9fa);
+    color: var(--m3-on-surface-variant, #5f6368);
     font-size: 13px;
     font-weight: 500;
     white-space: nowrap;
@@ -750,6 +1102,30 @@ input[type="color"].form-input {
     height: auto;
     min-height: 120px;
     resize: vertical;
+    padding-top: 32px !important; /* Always make room for floating label */
+}
+
+/* Textarea label always floats to top */
+.form-field-filled .form-textarea ~ .form-label {
+    top: 8px !important;
+    left: 16px !important; /* Align with textarea text */
+    transform: translateY(0) !important;
+    font-size: 12px !important;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    background: var(--ssi-field-background, #EBEBEB) !important;
+    padding: 0 4px 0 0 !important; /* Only right padding for background extension */
+    z-index: 2;
+}
+
+/* Auto-grow textarea support */
+.form-textarea[data-autogrow="true"] {
+    overflow-y: hidden;
+    resize: none;
+}
+
+.form-textarea[data-max-height] {
+    overflow-y: auto;
 }
 
 .form-field-filled .form-label {
@@ -784,7 +1160,7 @@ input[type="color"].form-input {
     line-height: 16px;
     font-weight: 400;
     letter-spacing: 0.4px;
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
 }
 
 /* Adjust input padding when label is floating */
@@ -843,7 +1219,190 @@ input[type="color"].form-input {
 }
 
 .form-field-filled .form-select:focus ~ .form-label {
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* === M3 Number Stepper - Filled Variant === */
+.form-field-filled .form-number-wrapper {
+    display: flex;
+    align-items: stretch;
+    background: #EBEBEB; /* Match filled text field background */
+    border: none;
+    border-radius: 4px 4px 0 0;
+    border-bottom: 1px solid #79747E;
+    height: 56px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.form-field-filled .form-number-wrapper:hover {
+    background: #EEEEEE;
+    border-bottom-color: #5F6368;
+}
+
+.form-field-filled .form-number-wrapper:focus-within {
+    background: #EEEEEE;
+    border-bottom: 2px solid #1a73e8;
+    outline: none;
+}
+
+.form-field-filled .form-number-input {
+    flex: 1;
+    background: transparent !important;
+    border: none !important;
+    text-align: center;
+    padding: 24px 8px 8px 8px !important;
+    outline: none !important;
+    font-size: 16px;
+    color: #1C1B1F;
+    height: 100%;
+    min-width: 60px;
+}
+
+.form-field-filled .form-number-btn {
+    width: 48px;
+    min-width: 48px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 400;
+    color: #5F6368;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    height: 100%;
+}
+
+.form-field-filled .form-number-btn:hover {
+    background: rgba(0, 0, 0, 0.08);
+    color: var(--m3-on-surface, #202124);
+}
+
+.form-field-filled .form-number-btn:active {
+    background: rgba(0, 0, 0, 0.12);
+}
+
+.form-field-filled .form-number-decrement {
+    border-right: 1px solid #DADCE0;
+    border-radius: 4px 0 0 0;
+}
+
+.form-field-filled .form-number-increment {
+    border-left: 1px solid #DADCE0;
+    border-radius: 0 4px 0 0;
+}
+
+/* Number Stepper Label in Filled Variant */
+.form-field-filled .form-number-wrapper ~ .form-label,
+.form-field-filled .form-number-wrapper + .form-label {
+    position: absolute;
+    top: 8px;
+    left: 56px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: #5F6368;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.form-field-filled .form-number-wrapper:focus-within ~ .form-label,
+.form-field-filled .form-number-wrapper:focus-within + .form-label {
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* === M3 Number Stepper - Outlined Variant === */
+.form-field-outlined .form-number-wrapper {
+    display: flex;
+    align-items: stretch;
+    background: transparent;
+    border: 1px solid var(--m3-outline, #79747E);
+    border-radius: 4px;
+    height: 56px;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+.form-field-outlined .form-number-wrapper:hover {
+    border-color: var(--m3-on-surface, #1C1B1F);
+}
+
+.form-field-outlined .form-number-wrapper:focus-within {
+    border: 2px solid var(--m3-primary, #6750A4);
+    outline: none;
+}
+
+.form-field-outlined .form-number-input {
+    flex: 1;
+    background: transparent !important;
+    border: none !important;
+    text-align: center;
+    padding: 24px 8px 8px 8px !important;
+    outline: none !important;
+    font-size: 16px;
+    color: var(--m3-on-surface, #1C1B1F);
+    height: 100%;
+    min-width: 60px;
+}
+
+.form-field-outlined .form-number-btn {
+    width: 48px;
+    min-width: 48px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 400;
+    color: var(--m3-on-surface-variant, #49454F);
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+    height: 100%;
+}
+
+.form-field-outlined .form-number-btn:hover {
+    background: var(--m3-surface-container-low, rgba(0, 0, 0, 0.04));
+    color: var(--m3-on-surface, #1C1B1F);
+}
+
+.form-field-outlined .form-number-btn:active {
+    background: var(--m3-surface-container, rgba(0, 0, 0, 0.08));
+}
+
+.form-field-outlined .form-number-decrement {
+    border-right: 1px solid var(--m3-outline-variant, #CAC4D0);
+    border-radius: 4px 0 0 4px;
+}
+
+.form-field-outlined .form-number-increment {
+    border-left: 1px solid var(--m3-outline-variant, #CAC4D0);
+    border-radius: 0 4px 4px 0;
+}
+
+/* Number Stepper Label in Outlined Variant */
+.form-field-outlined .form-number-wrapper ~ .form-label,
+.form-field-outlined .form-number-wrapper + .form-label {
+    position: absolute;
+    top: -8px;
+    left: 52px;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+    color: var(--m3-on-surface-variant, #49454F);
+    background: var(--m3-surface, #FEF7FF);
+    padding: 0 4px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.form-field-outlined .form-number-wrapper:focus-within ~ .form-label,
+.form-field-outlined .form-number-wrapper:focus-within + .form-label {
+    color: var(--m3-primary, #6750A4);
 }
 
 /* === OUTLINED VARIANT - M3 Exact Spec === */
@@ -868,7 +1427,7 @@ input[type="color"].form-input {
     height: 56px !important; /* Match M3 dropdown height */
     padding: 24px 16px 8px 16px !important; /* Match filled variant: more top padding for floating label */
     background: transparent;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
     font-family: inherit;
     font-size: 16px;
@@ -884,8 +1443,18 @@ input[type="color"].form-input {
     height: auto;
     min-height: 120px;
     resize: vertical;
-    padding-top: 24px !important;
-    padding-bottom: 24px !important;
+    padding-top: 28px !important; /* Always make room for floating label */
+    padding-bottom: 16px !important;
+}
+
+/* Textarea label always floats to top for outlined */
+.form-field-outlined .form-textarea ~ .form-label {
+    top: 0 !important;
+    transform: translateY(-50%) !important;
+    font-size: 12px !important;
+    line-height: 16px;
+    letter-spacing: 0.4px;
+    background: var(--m3-surface, #ffffff);
 }
 
 .form-field-outlined .form-label {
@@ -897,7 +1466,7 @@ input[type="color"].form-input {
     line-height: 24px;
     font-weight: 400;
     color: #49454F;
-    background: white;
+    background: var(--m3-surface, #ffffff);
     padding: 0 4px;
     pointer-events: none;
     transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -979,7 +1548,7 @@ input[type="color"].form-input {
 }
 
 .form-field-outlined .form-select:focus ~ .form-label {
-    color: #1a73e8;
+    color: var(--m3-primary, #1a73e8);
 }
 
 /* Supporting text (descriptions) for M3 */
@@ -1015,7 +1584,7 @@ input[type="color"].form-input {
     width: 100%;
     padding: 12px 16px !important;
     background: transparent;
-    border: 1px solid #dadce0;
+    border: 1px solid var(--m3-outline-variant, #dadce0);
     border-radius: 4px;
     font-family: inherit;
     font-size: 16px;
@@ -1029,7 +1598,7 @@ input[type="color"].form-input {
 .form-field-standard .form-input:focus,
 .form-field-standard .form-select:focus,
 .form-field-standard .form-textarea:focus {
-    border-color: #1a73e8;
+    border-color: var(--m3-primary, #1a73e8);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.08);
 }
 
@@ -1460,11 +2029,27 @@ input[type="color"].form-input {
     gap: 24px;
 }
 
-.m3-radio-group__label {
+.m3-radio-group__label,
+.m3-radio-group-label {
     font-size: 14px;
     color: var(--m3-on-surface);
     margin-bottom: 8px;
     font-weight: 500;
+}
+
+/* Checkbox group label (for checkbox groups with options) */
+.m3-checkbox-group-label {
+    font-size: 14px;
+    color: var(--m3-on-surface);
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+/* Checkbox group container */
+.m3-checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
 .m3-radio {
@@ -2755,4 +3340,386 @@ input[type="color"].form-input {
     border-radius: 50%;
     background: color-mix(in srgb, var(--md-sys-color-on-surface, #1c1b1f) 8%, transparent);
     transition: opacity 0.2s ease;
+}
+
+/* ========================================
+   Dark Mode Support
+   ======================================== */
+
+[data-theme="dark"] .form-builder,
+.dark .form-builder {
+    background: var(--m3-surface, #1e1e1e);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+/* Labels */
+[data-theme="dark"] .form-label,
+.dark .form-label {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+/* Input fields */
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea,
+[data-theme="dark"] .form-select,
+.dark .form-input,
+.dark .form-textarea,
+.dark .form-select {
+    background: var(--m3-surface-container, #2d2d2d);
+    color: var(--m3-on-surface, #e0e0e0);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+[data-theme="dark"] .form-input::placeholder,
+[data-theme="dark"] .form-textarea::placeholder,
+.dark .form-input::placeholder,
+.dark .form-textarea::placeholder {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+[data-theme="dark"] .form-input:hover,
+[data-theme="dark"] .form-textarea:hover,
+[data-theme="dark"] .form-select:hover,
+.dark .form-input:hover,
+.dark .form-textarea:hover,
+.dark .form-select:hover {
+    border-color: var(--m3-outline, #666);
+}
+
+[data-theme="dark"] .form-input:focus,
+[data-theme="dark"] .form-textarea:focus,
+[data-theme="dark"] .form-select:focus,
+.dark .form-input:focus,
+.dark .form-textarea:focus,
+.dark .form-select:focus {
+    border-color: var(--m3-primary, #8ab4f8);
+    box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2);
+}
+
+[data-theme="dark"] .form-input:disabled,
+[data-theme="dark"] .form-textarea:disabled,
+[data-theme="dark"] .form-select:disabled,
+.dark .form-input:disabled,
+.dark .form-textarea:disabled,
+.dark .form-select:disabled {
+    background: var(--m3-surface-container-highest, #3d3d3d);
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* Number wrapper */
+[data-theme="dark"] .form-number-wrapper,
+.dark .form-number-wrapper {
+    background: var(--m3-surface-container, #2d2d2d);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+[data-theme="dark"] .form-number-input,
+.dark .form-number-input {
+    background: transparent;
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .form-number-btn,
+.dark .form-number-btn {
+    background: var(--m3-surface-container-high, #3d3d3d);
+    color: var(--m3-on-surface, #e0e0e0);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+[data-theme="dark"] .form-number-btn:hover,
+.dark .form-number-btn:hover {
+    background: var(--m3-surface-container-highest, #4d4d4d);
+}
+
+/* Password toggle */
+[data-theme="dark"] .form-password-toggle,
+.dark .form-password-toggle {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+[data-theme="dark"] .form-password-toggle:hover,
+.dark .form-password-toggle:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+/* Filled variant */
+[data-theme="dark"] .form-field-filled .form-input,
+[data-theme="dark"] .form-field-filled .form-textarea,
+[data-theme="dark"] .form-field-filled .form-select,
+.dark .form-field-filled .form-input,
+.dark .form-field-filled .form-textarea,
+.dark .form-field-filled .form-select {
+    background: var(--m3-surface-container-highest, #3d3d3d);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .form-field-filled .form-label,
+.dark .form-field-filled .form-label {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* Outlined variant */
+[data-theme="dark"] .form-field-outlined .form-input,
+[data-theme="dark"] .form-field-outlined .form-textarea,
+[data-theme="dark"] .form-field-outlined .form-select,
+.dark .form-field-outlined .form-input,
+.dark .form-field-outlined .form-textarea,
+.dark .form-field-outlined .form-select {
+    background: var(--m3-surface, #1e1e1e);
+    color: var(--m3-on-surface, #e0e0e0);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+[data-theme="dark"] .form-field-outlined .form-input:focus,
+[data-theme="dark"] .form-field-outlined .form-textarea:focus,
+[data-theme="dark"] .form-field-outlined .form-select:focus,
+.dark .form-field-outlined .form-input:focus,
+.dark .form-field-outlined .form-textarea:focus,
+.dark .form-field-outlined .form-select:focus {
+    border-color: var(--m3-primary, #8ab4f8);
+}
+
+/* Helper text */
+[data-theme="dark"] .form-helper,
+.dark .form-helper {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* Error state */
+[data-theme="dark"] .form-error,
+.dark .form-error {
+    color: var(--m3-error, #f28b82);
+}
+
+/* Checkbox & Radio */
+[data-theme="dark"] .form-checkbox-label,
+[data-theme="dark"] .form-radio-label,
+.dark .form-checkbox-label,
+.dark .form-radio-label {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+/* Toggle switch */
+[data-theme="dark"] .form-toggle-track,
+.dark .form-toggle-track {
+    background: var(--m3-surface-container-highest, #3d3d3d);
+}
+
+[data-theme="dark"] .form-toggle-thumb,
+.dark .form-toggle-thumb {
+    background: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* M3 Text Fields (Filled) */
+[data-theme="dark"] .m3-textfield--filled,
+.dark .m3-textfield--filled {
+    background: var(--m3-surface-container-highest, #3d3d3d);
+}
+
+[data-theme="dark"] .m3-textfield--filled .m3-textfield__input,
+.dark .m3-textfield--filled .m3-textfield__input {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .m3-textfield--filled .m3-textfield__label,
+.dark .m3-textfield--filled .m3-textfield__label {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* M3 Text Fields (Outlined) */
+[data-theme="dark"] .m3-textfield--outlined,
+.dark .m3-textfield--outlined {
+    background: var(--m3-surface, #1e1e1e);
+}
+
+[data-theme="dark"] .m3-textfield--outlined .m3-textfield__input,
+.dark .m3-textfield--outlined .m3-textfield__input {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .m3-textfield--outlined .m3-textfield__outline,
+.dark .m3-textfield--outlined .m3-textfield__outline {
+    border-color: var(--m3-outline-variant, #444);
+}
+
+/* Form section headers */
+[data-theme="dark"] .form-section-title,
+.dark .form-section-title {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .form-section-description,
+.dark .form-section-description {
+    color: var(--m3-on-surface-variant, #9e9e9e);
+}
+
+/* Form buttons */
+[data-theme="dark"] .form-btn-secondary,
+.dark .form-btn-secondary {
+    background: transparent;
+    color: var(--m3-primary, #8ab4f8);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+[data-theme="dark"] .form-btn-secondary:hover,
+.dark .form-btn-secondary:hover {
+    background: rgba(138, 180, 248, 0.08);
+}
+
+/* Select dropdown options */
+[data-theme="dark"] .form-select option,
+.dark .form-select option {
+    background: var(--m3-surface-container, #2d2d2d);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+/* MD3 Radio & Checkbox */
+[data-theme="dark"] .md-radio__label,
+[data-theme="dark"] .md-checkbox__label,
+.dark .md-radio__label,
+.dark .md-checkbox__label {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+[data-theme="dark"] .md-radio__outer-circle,
+[data-theme="dark"] .md-checkbox__background,
+.dark .md-radio__outer-circle,
+.dark .md-checkbox__background {
+    border-color: var(--m3-outline, #666);
+}
+
+/* ===================================
+   Dark Mode Overrides (html.dark-mode / html.m3-dark)
+   For ThemeBuilder integration
+   =================================== */
+html.dark-mode .form-builder,
+html.m3-dark .form-builder {
+    background: var(--m3-surface, #1e1e1e);
+}
+
+html.dark-mode .form-input,
+html.dark-mode .form-textarea,
+html.dark-mode .form-select,
+html.m3-dark .form-input,
+html.m3-dark .form-textarea,
+html.m3-dark .form-select {
+    background: var(--m3-surface-container, #252525);
+    color: var(--m3-on-surface, #e1e1e1);
+    border-color: var(--m3-outline, #6c6c6c);
+}
+
+html.dark-mode .form-input:focus,
+html.dark-mode .form-textarea:focus,
+html.dark-mode .form-select:focus,
+html.m3-dark .form-input:focus,
+html.m3-dark .form-textarea:focus,
+html.m3-dark .form-select:focus {
+    border-color: var(--m3-primary, #8ab4f8);
+    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.15);
+}
+
+html.dark-mode .form-label,
+html.m3-dark .form-label {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .form-field-filled .form-input,
+html.dark-mode .form-field-filled .form-textarea,
+html.dark-mode .form-field-filled .form-select,
+html.dark-mode .form-field-filled .form-input.ssi-input-md,
+html.dark-mode .form-field-filled .form-textarea.ssi-input-md,
+html.dark-mode .form-field-filled .form-select.ssi-input-md,
+html.m3-dark .form-field-filled .form-input,
+html.m3-dark .form-field-filled .form-textarea,
+html.m3-dark .form-field-filled .form-select,
+html.m3-dark .form-field-filled .form-input.ssi-input-md,
+html.m3-dark .form-field-filled .form-textarea.ssi-input-md,
+html.m3-dark .form-field-filled .form-select.ssi-input-md {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+    color: var(--m3-on-surface, #e1e1e1) !important;
+    border-color: transparent !important;
+    border-bottom-color: var(--m3-outline, #6c6c6c) !important;
+}
+
+/* Outlined variant in Dark Mode */
+html.dark-mode .form-field-outlined .form-input,
+html.dark-mode .form-field-outlined .form-textarea,
+html.dark-mode .form-field-outlined .form-select,
+html.m3-dark .form-field-outlined .form-input,
+html.m3-dark .form-field-outlined .form-textarea,
+html.m3-dark .form-field-outlined .form-select {
+    background: #1e1e1e !important;
+    color: #e1e1e1 !important;
+    border-color: #6c6c6c !important;
+}
+
+html.dark-mode .form-field-outlined .form-input:focus,
+html.dark-mode .form-field-outlined .form-textarea:focus,
+html.dark-mode .form-field-outlined .form-select:focus,
+html.m3-dark .form-field-outlined .form-input:focus,
+html.m3-dark .form-field-outlined .form-textarea:focus,
+html.m3-dark .form-field-outlined .form-select:focus {
+    border-color: #8ab4f8 !important;
+    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.15) !important;
+}
+
+html.dark-mode .form-field-outlined .form-label,
+html.m3-dark .form-field-outlined .form-label {
+    background: #1e1e1e !important;
+    color: #a1a1a1 !important;
+}
+
+/* Dark mode label background for textarea */
+html.dark-mode .form-field-filled .form-textarea ~ .form-label,
+html.m3-dark .form-field-filled .form-textarea ~ .form-label {
+    background: var(--m3-surface-container-high, #2d2d2d) !important;
+    color: var(--m3-on-surface-variant, #a1a1a1) !important;
+}
+
+html.dark-mode .form-helper-text,
+html.m3-dark .form-helper-text {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .form-section-title,
+html.m3-dark .form-section-title {
+    color: var(--m3-on-surface, #e1e1e1);
+}
+
+html.dark-mode .form-section-description,
+html.m3-dark .form-section-description {
+    color: var(--m3-on-surface-variant, #a1a1a1);
+}
+
+html.dark-mode .form-btn-secondary,
+html.m3-dark .form-btn-secondary {
+    background: transparent;
+    color: var(--m3-primary, #8ab4f8);
+    border-color: var(--m3-outline-variant, #444);
+}
+
+html.dark-mode .form-btn-secondary:hover,
+html.m3-dark .form-btn-secondary:hover {
+    background: rgba(138, 180, 248, 0.08);
+}
+
+html.dark-mode .form-select option,
+html.m3-dark .form-select option {
+    background: var(--m3-surface-container, #2d2d2d);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+html.dark-mode .md-radio__label,
+html.dark-mode .md-checkbox__label,
+html.m3-dark .md-radio__label,
+html.m3-dark .md-checkbox__label {
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+html.dark-mode .md-radio__outer-circle,
+html.dark-mode .md-checkbox__background,
+html.m3-dark .md-radio__outer-circle,
+html.m3-dark .md-checkbox__background {
+    border-color: var(--m3-outline, #666);
 }

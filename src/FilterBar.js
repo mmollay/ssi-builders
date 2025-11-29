@@ -27,6 +27,7 @@
  */
 
 import { IconManager } from './IconManager.js';
+import { i18n } from './i18n.js';
 
 export class FilterBar {
     /**
@@ -102,7 +103,7 @@ export class FilterBar {
             <div class="analytics-filter-group">
                 ${filter.label ? `<label class="analytics-filter-label">${filter.label}</label>` : ''}
                 <select class="analytics-filter-select" data-filter-key="${filter.key}">
-                    ${filter.includeAll !== false ? `<option value="all">Alle</option>` : ''}
+                    ${filter.includeAll !== false ? `<option value="all">${i18n.t('list.all')}</option>` : ''}
                     ${optionsHtml}
                 </select>
             </div>
@@ -121,7 +122,7 @@ export class FilterBar {
                     type="search"
                     class="analytics-filter-search"
                     data-filter-key="${filter.key}"
-                    placeholder="${filter.placeholder || 'Suchen...'}"
+                    placeholder="${filter.placeholder || i18n.t('list.search')}"
                     value="${this.values[filter.key] || ''}"
                 >
             </div>
@@ -178,7 +179,7 @@ export class FilterBar {
         if (this.showReset) {
             actionsHtml += `
                 <button class="analytics-filter-btn analytics-filter-btn-secondary" data-action="reset">
-                    Reset
+                    ${i18n.t('filterBar.reset')}
                 </button>
             `;
         }
@@ -193,7 +194,7 @@ export class FilterBar {
             actionsHtml += `
                 <button class="analytics-filter-btn analytics-filter-btn-secondary" data-action="export">
                     ${exportIcon}
-                    Export
+                    ${i18n.t('list.export')}
                 </button>
             `;
         }
@@ -208,7 +209,7 @@ export class FilterBar {
             actionsHtml += `
                 <button class="analytics-filter-btn analytics-filter-btn-primary" data-action="refresh">
                     ${refreshIcon}
-                    Aktualisieren
+                    ${i18n.t('list.refresh')}
                 </button>
             `;
         }

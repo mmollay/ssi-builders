@@ -8,6 +8,12 @@
       "env": {
         "DEBUG": "false"
       }
+    },
+    "ssi-builders": {
+      "command": "node",
+      "args": [
+        "/Users/martinmollay/Development/ssi-builders-mcp/build/index.js"
+      ]
     }
   }
 }

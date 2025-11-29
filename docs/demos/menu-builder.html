@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MenuBuilder - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../src/shared.css">
@@ -60,12 +70,38 @@
         </div>
 
         <div class="demo-section">
+            <h2>🎨 Dropdown Menu mit SVG Icons</h2>
+            <p class="subtitle">Einfarbige SVG-Icons aus dem IconManager (empfohlen für M3 Design)</p>
+            <div class="example-demo">
+                <button class="ssi-btn ssi-btn-primary" id="dropdownBtnSvg">Menu mit SVG Icons ▼</button>
+            </div>
+            <div id="code-dropdown-svg"></div>
+        </div>
+
+        <div class="demo-section">
             <h2>🖱️ Context Menu</h2>
-            <p class="subtitle">Right-click on the card below</p>
+            <p class="subtitle">Right-click on the card below to open the context menu</p>
             <div class="example-demo">
                 <div class="demo-card" id="contextCard">
                     <h3>Right-click me!</h3>
                     <p>Try right-clicking to see context menu</p>
+                </div>
+            </div>
+            <div style="background: #e3f2fd; border-radius: 8px; padding: 16px; margin: 16px 0 24px 0; display: flex; gap: 24px; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <strong style="color: #1565c0;">🪟 Windows:</strong>
+                    <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5f6368; line-height: 1.8;">
+                        <li>Rechtsklick mit der Maus</li>
+                        <li>Oder: Shift + F10</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <strong style="color: #1565c0;">🍎 Mac:</strong>
+                    <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #5f6368; line-height: 1.8;">
+                        <li>Control + Klick</li>
+                        <li>Oder: Zwei-Finger-Tap auf Trackpad</li>
+                        <li>Oder: Rechtsklick mit Maus</li>
+                    </ul>
                 </div>
             </div>
             <div id="code-context-menu"></div>
@@ -93,11 +129,13 @@
         import { initializeLayout, addMobileMenuToggle } from './layout.js';
         import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
         import { GlobalConfig } from '../../src/GlobalConfig.js';
+        import { IconManager } from '../../src/IconManager.js';
 
         // Initialize layout with sidebar
         initializeLayout('menu-builder');
         addMobileMenuToggle();
 
+        // Dropdown Menu with Emoji Icons
         new MenuBuilder({
             trigger: '#dropdownBtn',
             items: [
@@ -121,6 +159,34 @@
             onSelect: (itemId) => alert(`Selected: ${itemId}`)
         });
 
+        // Dropdown Menu with SVG Icons (Monochrome)
+        new MenuBuilder({
+            trigger: '#dropdownBtnSvg',
+            items: [
+                { id: 'new', label: 'New File', icon: IconManager.getIcon('add'), shortcut: 'Ctrl+N' },
+                { id: 'open', label: 'Open', icon: IconManager.getIcon('folder'), shortcut: 'Ctrl+O' },
+                { type: 'divider' },
+                { id: 'save', label: 'Save', icon: IconManager.getIcon('save'), shortcut: 'Ctrl+S' },
+                { id: 'saveas', label: 'Save As...', icon: IconManager.getIcon('save') },
+                { type: 'divider' },
+                {
+                    id: 'export',
+                    label: 'Export',
+                    icon: IconManager.getIcon('upload'),
+                    submenu: [
+                        { id: 'pdf', label: 'PDF', icon: IconManager.getIcon('download') },
+                        { id: 'csv', label: 'CSV', icon: IconManager.getIcon('download') },
+                        { id: 'json', label: 'JSON', icon: IconManager.getIcon('download') }
+                    ]
+                },
+                { type: 'divider' },
+                { id: 'settings', label: 'Settings', icon: IconManager.getIcon('settings') },
+                { id: 'delete', label: 'Delete', icon: IconManager.getIcon('delete') }
+            ],
+            onSelect: (itemId) => alert(`Selected: ${itemId}`)
+        });
+
+        // Context Menu with Emoji Icons
         new MenuBuilder({
             trigger: '#contextCard',
             triggerEvent: 'contextmenu',
@@ -157,6 +223,41 @@ const menu = new MenuBuilder({
                 { id: 'json', label: 'JSON' }
             ]
         }
+    ],
+    onSelect: (itemId) => console.log('Selected:', itemId)
+});`,
+            language: 'javascript'
+        });
+
+        // Code Snippet for SVG Icons Menu
+        new CodeSnippetBuilder({
+            containerId: 'code-dropdown-svg',
+            code: `import { MenuBuilder } from '/vendor/ssi-builders/src/MenuBuilder.js';
+import { IconManager } from '/vendor/ssi-builders/src/IconManager.js';
+
+// Einfarbige SVG Icons aus dem IconManager
+const menu = new MenuBuilder({
+    trigger: '#dropdownBtnSvg',
+    items: [
+        { id: 'new', label: 'New File', icon: IconManager.getIcon('add'), shortcut: 'Ctrl+N' },
+        { id: 'open', label: 'Open', icon: IconManager.getIcon('folder'), shortcut: 'Ctrl+O' },
+        { type: 'divider' },
+        { id: 'save', label: 'Save', icon: IconManager.getIcon('save'), shortcut: 'Ctrl+S' },
+        { id: 'saveas', label: 'Save As...', icon: IconManager.getIcon('save') },
+        { type: 'divider' },
+        {
+            id: 'export',
+            label: 'Export',
+            icon: IconManager.getIcon('upload'),
+            submenu: [
+                { id: 'pdf', label: 'PDF', icon: IconManager.getIcon('download') },
+                { id: 'csv', label: 'CSV', icon: IconManager.getIcon('download') },
+                { id: 'json', label: 'JSON', icon: IconManager.getIcon('download') }
+            ]
+        },
+        { type: 'divider' },
+        { id: 'settings', label: 'Settings', icon: IconManager.getIcon('settings') },
+        { id: 'delete', label: 'Delete', icon: IconManager.getIcon('delete') }
     ],
     onSelect: (itemId) => console.log('Selected:', itemId)
 });`,

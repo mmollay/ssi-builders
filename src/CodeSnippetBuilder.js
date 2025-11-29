@@ -5,6 +5,7 @@
 
 import { IconManager } from './IconManager.js';
 import { GlobalConfig } from './GlobalConfig.js';
+import { i18n } from './i18n.js';
 
 export class CodeSnippetBuilder {
     /**
@@ -118,14 +119,14 @@ export class CodeSnippetBuilder {
     createCopyButton() {
         const button = document.createElement('button');
         button.className = 'code-copy-btn';
-        button.setAttribute('aria-label', 'Copy code');
+        button.setAttribute('aria-label', i18n.t('codeSnippet.copy'));
 
         const copyIcon = IconManager.getIcon('copy');
         const checkIcon = IconManager.getIcon('check');
 
         button.innerHTML = `
             <span class="copy-icon">${copyIcon}</span>
-            <span class="copy-text">Copy</span>
+            <span class="copy-text">${i18n.t('codeSnippet.copy')}</span>
         `;
 
         button.addEventListener('click', async () => {
@@ -135,7 +136,7 @@ export class CodeSnippetBuilder {
                 // Show success feedback
                 button.innerHTML = `
                     <span class="copy-icon">${checkIcon}</span>
-                    <span class="copy-text">Copied!</span>
+                    <span class="copy-text">${i18n.t('codeSnippet.copied')}</span>
                 `;
                 button.classList.add('copied');
 
@@ -143,7 +144,7 @@ export class CodeSnippetBuilder {
                 setTimeout(() => {
                     button.innerHTML = `
                         <span class="copy-icon">${copyIcon}</span>
-                        <span class="copy-text">Copy</span>
+                        <span class="copy-text">${i18n.t('codeSnippet.copy')}</span>
                     `;
                     button.classList.remove('copied');
                 }, 2000);

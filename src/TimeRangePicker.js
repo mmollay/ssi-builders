@@ -24,17 +24,21 @@
  * });
  */
 
+import { i18n } from './i18n.js';
+
 export class TimeRangePicker {
     /**
-     * Predefined time ranges
+     * Get predefined time ranges with i18n labels
      */
-    static RANGES = {
-        day: { label: 'Heute', value: 'day', days: 1 },
-        week: { label: 'Woche', value: 'week', days: 7 },
-        month: { label: 'Monat', value: 'month', days: 30 },
-        quarter: { label: 'Quartal', value: 'quarter', days: 90 },
-        year: { label: 'Jahr', value: 'year', days: 365 }
-    };
+    static get RANGES() {
+        return {
+            day: { label: i18n.t('timeRange.today'), value: 'day', days: 1 },
+            week: { label: i18n.t('timeRange.last7Days'), value: 'week', days: 7 },
+            month: { label: i18n.t('timeRange.thisMonth'), value: 'month', days: 30 },
+            quarter: { label: i18n.t('timeRange.thisQuarter'), value: 'quarter', days: 90 },
+            year: { label: i18n.t('timeRange.thisYear'), value: 'year', days: 365 }
+        };
+    }
 
     /**
      * Create a TimeRangePicker
@@ -53,7 +57,7 @@ export class TimeRangePicker {
         this.defaultRange = config.defaultRange || 'day';
         this.ranges = config.ranges || Object.keys(TimeRangePicker.RANGES);
         this.showComparison = config.showComparison ?? false;
-        this.comparisonLabel = config.comparisonLabel || 'vs. Vorperiode';
+        this.comparisonLabel = config.comparisonLabel || i18n.t('timeRange.vsPreviousPeriod');
         this.onChange = config.onChange;
         this.showCustom = config.showCustom ?? false;
         this.size = config.size || 'medium';
@@ -128,7 +132,7 @@ export class TimeRangePicker {
 
         // Add custom button if enabled
         const customButtonHtml = this.showCustom
-            ? `<button class="analytics-time-btn ${this.currentRange === 'custom' ? 'active' : ''}" data-range="custom">Benutzerdefiniert</button>`
+            ? `<button class="analytics-time-btn ${this.currentRange === 'custom' ? 'active' : ''}" data-range="custom">${i18n.t('timeRange.custom')}</button>`
             : '';
 
         // Build comparison toggle
@@ -146,7 +150,7 @@ export class TimeRangePicker {
             ? `
                 <div class="analytics-time-custom">
                     <input type="date" class="analytics-filter-select" data-custom="start" value="${this.customStartDate || ''}">
-                    <span>bis</span>
+                    <span>${i18n.t('timeRange.to')}</span>
                     <input type="date" class="analytics-filter-select" data-custom="end" value="${this.customEndDate || ''}">
                 </div>
             `
@@ -230,7 +234,7 @@ export class TimeRangePicker {
                 key: 'custom',
                 start: this.customStartDate ? new Date(this.customStartDate) : null,
                 end: this.customEndDate ? new Date(this.customEndDate) : now,
-                label: 'Benutzerdefiniert'
+                label: i18n.t('timeRange.custom')
             };
         }
 
@@ -240,7 +244,7 @@ export class TimeRangePicker {
                 key: 'day',
                 start: new Date(now - 24 * 60 * 60 * 1000),
                 end: now,
-                label: 'Heute'
+                label: i18n.t('timeRange.today')
             };
         }
 
@@ -269,7 +273,7 @@ export class TimeRangePicker {
             return {
                 start: new Date(start - duration),
                 end: new Date(start - 1),
-                label: 'Vorperiode'
+                label: i18n.t('timeRange.previousPeriod')
             };
         }
 
@@ -279,7 +283,7 @@ export class TimeRangePicker {
         return {
             start: comparison.start,
             end: comparison.end,
-            label: `Vor${TimeRangePicker.RANGES[this.currentRange].label.toLowerCase()}`
+            label: i18n.t('timeRange.previousPeriod')
         };
     }
 

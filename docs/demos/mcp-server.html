@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP Server - AI Integration - SSI Builders</title>
+
+    <!-- Dark Mode Flash Prevention -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="../../src/CardBuilder.css">
+    <link rel="stylesheet" href="../../src/MessageBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, var(--m3-primary, #1a73e8) 0%, var(--m3-secondary, #5f6368) 100%);
+            color: white;
+            padding: 60px 24px;
+            text-align: center;
+            border-radius: 12px;
+            margin-bottom: 32px;
+        }
+
+        .hero-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            font-weight: 500;
+        }
+
+        .hero-section p {
+            font-size: 1.25rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin: 32px 0;
+        }
+
+        .feature-card {
+            background: var(--m3-surface-container, #f8f9fa);
+            border-radius: 12px;
+            padding: 24px;
+            border-left: 4px solid var(--m3-primary, #1a73e8);
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            color: var(--m3-primary, #1a73e8);
+            font-size: 1.25rem;
+        }
+
+        .feature-card p {
+            color: var(--m3-on-surface-variant, #5f6368);
+            line-height: 1.6;
+        }
+
+        .step-container {
+            margin: 40px 0;
+        }
+
+        .step {
+            background: var(--m3-surface-container, #f8f9fa);
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            border-left: 4px solid var(--m3-secondary, #5f6368);
+        }
+
+        .step-number {
+            display: inline-block;
+            background: var(--m3-primary, #1a73e8);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 32px;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .step h3 {
+            display: inline-block;
+            margin: 0;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin: 32px 0;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .comparison-table th {
+            background: var(--m3-surface-container, #f8f9fa);
+            font-weight: 600;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .comparison-table .good {
+            color: var(--m3-tertiary, #34a853);
+            font-weight: 600;
+        }
+
+        .comparison-table .bad {
+            color: var(--m3-error, #ea4335);
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        .badge.beta {
+            background: #fef7e0;
+            color: #fbbc04;
+        }
+
+        /* Dark Mode */
+        html.dark-mode .hero-section,
+        html.m3-dark .hero-section {
+            background: linear-gradient(135deg, var(--m3-primary, #8ab4f8) 0%, var(--m3-secondary, #5f6368) 100%);
+        }
+
+        html.dark-mode .feature-card,
+        html.m3-dark .feature-card,
+        html.dark-mode .step,
+        html.m3-dark .step {
+            background: var(--m3-surface-container, #2d2d2d);
+        }
+
+        html.dark-mode .feature-card h3,
+        html.m3-dark .feature-card h3 {
+            color: var(--m3-primary, #8ab4f8);
+        }
+
+        html.dark-mode .feature-card p,
+        html.m3-dark .feature-card p {
+            color: var(--m3-on-surface-variant, #a1a1a1);
+        }
+
+        html.dark-mode .step h3,
+        html.m3-dark .step h3 {
+            color: var(--m3-on-surface, #e1e1e1);
+        }
+
+        html.dark-mode .comparison-table th,
+        html.m3-dark .comparison-table th {
+            background: var(--m3-surface-container, #2d2d2d);
+            color: var(--m3-on-surface, #e1e1e1);
+        }
+
+        html.dark-mode .comparison-table td,
+        html.m3-dark .comparison-table td {
+            border-bottom-color: var(--m3-outline-variant, #3d3d3d);
+            color: var(--m3-on-surface, #e1e1e1);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <div id="sidebar-container"></div>
+
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Hero Section -->
+                <div class="hero-section">
+                    <h1>🤖 MCP Server für Claude Code</h1>
+                    <p>AI-optimierte Integration: Reduziere Token-Kosten um 70% und beschleunige die Entwicklung mit SSI Builders</p>
+                </div>
+
+                <!-- What is MCP -->
+                <div class="demo-section">
+                    <h2>Was ist der MCP Server? <span class="badge new">NEU v1.0.0</span></h2>
+                    <p>Der <strong>Model Context Protocol (MCP) Server</strong> stellt Claude Code strukturierte Informationen über SSI Builders zur Verfügung - ohne jedes Mal die gesamte Dokumentation durchsuchen zu müssen.</p>
+
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>⚡ Instant Zugriff</h3>
+                            <p>Claude Code erhält sofort präzise Infos zu jedem Builder - keine Datei-Suche, kein Context-Bloat.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>💰 70% Token-Ersparnis</h3>
+                            <p>Strukturierte Daten statt Full-Text-Suche. Haiku statt Sonnet für einfache Tasks.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>📝 Code-Generierung</h3>
+                            <p>Ready-to-use Snippets für alle Komponenten. Copy-Paste, fertig!</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🔍 Intelligente Suche</h3>
+                            <p>Suche nach Features ("dark mode"), Use Cases ("CRUD"), Keywords ("validation").</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Comparison -->
+                <div class="demo-section">
+                    <h2>Vorher / Nachher Vergleich</h2>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Aufgabe</th>
+                                <th>Ohne MCP</th>
+                                <th>Mit MCP</th>
+                                <th>Ersparnis</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Komponente finden</td>
+                                <td class="bad">500 tokens (Grep/Read)</td>
+                                <td class="good">50 tokens (Tool call)</td>
+                                <td class="good">90%</td>
+                            </tr>
+                            <tr>
+                                <td>Doku verstehen</td>
+                                <td class="bad">1000 tokens (Demos lesen)</td>
+                                <td class="good">100 tokens (Strukturiert)</td>
+                                <td class="good">90%</td>
+                            </tr>
+                            <tr>
+                                <td>Code generieren</td>
+                                <td class="bad">500 tokens (Analyse)</td>
+                                <td class="good">100 tokens (Template)</td>
+                                <td class="good">80%</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Gesamt</strong></td>
+                                <td class="bad"><strong>~2000 tokens</strong></td>
+                                <td class="good"><strong>~300 tokens</strong></td>
+                                <td class="good"><strong>85%</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div id="cost-comparison"></div>
+                </div>
+
+                <!-- Installation -->
+                <div class="demo-section">
+                    <h2>🚀 Installation</h2>
+
+                    <div class="step-container">
+                        <div class="step">
+                            <h3><span class="step-number">1</span> MCP Server Klonen & Bauen</h3>
+                            <div id="step1-code"></div>
+                        </div>
+
+                        <div class="step">
+                            <h3><span class="step-number">2</span> Claude Code Konfigurieren</h3>
+                            <p>Erstelle/editiere <code>.mcp.json</code> in deinem Projekt (oder global in <code>~/.mcp.json</code>):</p>
+                            <div id="step2-code"></div>
+                        </div>
+
+                        <div class="step">
+                            <h3><span class="step-number">3</span> Claude Code Neustarten</h3>
+                            <div id="step3-code"></div>
+                            <p>Nach dem Neustart stehen dir 4 neue MCP Tools zur Verfügung!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Available Tools -->
+                <div class="demo-section">
+                    <h2>🛠️ Verfügbare Tools</h2>
+
+                    <h3>1. ssi_list_components</h3>
+                    <p>Liste aller verfügbaren SSI Builder Komponenten mit optionalem Kategorie-Filter.</p>
+                    <div id="tool1-example"></div>
+
+                    <h3>2. ssi_get_component_info</h3>
+                    <p>Detaillierte Dokumentation für eine spezifische Komponente.</p>
+                    <div id="tool2-example"></div>
+
+                    <h3>3. ssi_generate_code</h3>
+                    <p>Generiere ready-to-use Code-Snippets.</p>
+                    <div id="tool3-example"></div>
+
+                    <h3>4. ssi_search_components</h3>
+                    <p>Suche Komponenten nach Keyword, Feature, oder Use Case.</p>
+                    <div id="tool4-example"></div>
+                </div>
+
+                <!-- Resources -->
+                <div class="demo-section">
+                    <h2>📚 Verfügbare Resources</h2>
+                    <p>Resources sind lesbare Dokumentationen, die Claude Code direkt abrufen kann:</p>
+
+                    <ul style="line-height: 2;">
+                        <li><code>ssi://builders/index</code> - Kompletter JSON Index aller Komponenten</li>
+                        <li><code>ssi://builders/best-practices</code> - Best Practices für SSI Builders</li>
+                        <li><code>ssi://builders/changelog</code> - Latest Changes (v2.6.0)</li>
+                    </ul>
+                </div>
+
+                <!-- Example Workflow -->
+                <div class="demo-section">
+                    <h2>💡 Beispiel-Workflow</h2>
+
+                    <div id="workflow-card"></div>
+
+                    <div id="workflow-example"></div>
+                </div>
+
+                <!-- GitHub Link -->
+                <div class="demo-section">
+                    <h2>🔗 Weitere Informationen</h2>
+                    <p>Vollständige Dokumentation, Troubleshooting, und Examples:</p>
+                    <ul style="line-height: 2;">
+                        <li><a href="https://github.com/mmollay/ssi-builders-mcp" target="_blank">GitHub Repository</a></li>
+                        <li><a href="https://github.com/mmollay/ssi-builders" target="_blank">SSI Builders</a></li>
+                        <li><a href="https://modelcontextprotocol.io" target="_blank">Model Context Protocol Docs</a></li>
+                    </ul>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { CardBuilder } from '../../src/CardBuilder.js';
+        import { MessageBuilder } from '../../src/MessageBuilder.js';
+        import { initializeDemoLayout } from './layout.js';
+        import { IconManager } from '../../src/IconManager.js';
+
+        initializeDemoLayout('mcp-server');
+        IconManager.setPreset('lucide');
+
+        // Cost Comparison Message
+        MessageBuilder.success('cost-comparison',
+            'Mit MCP Server: ~300 tokens × $4/1M (Haiku) = $0.0012 pro Task. Ohne MCP: ~2000 tokens × $15/1M (Sonnet) = $0.03. Das ist eine 96% Kostenersparnis!',
+            { title: '💰 Kosten-Vergleich', icon: true }
+        );
+
+        // Step 1 Code
+        new CodeSnippetBuilder({
+            containerId: 'step1-code',
+            language: 'bash',
+            code: `cd /Users/martinmollay/Development
+git clone https://github.com/mmollay/ssi-builders-mcp.git
+cd ssi-builders-mcp
+npm install
+npm run build
+
+# Verify build succeeded
+ls -la build/index.js`,
+            copyButton: true,
+            showLineNumbers: false
+        });
+
+        // Step 2 Code
+        new CodeSnippetBuilder({
+            containerId: 'step2-code',
+            language: 'json',
+            code: `{
+  "mcpServers": {
+    "ssi-builders": {
+      "command": "node",
+      "args": ["/Users/martinmollay/Development/ssi-builders-mcp/build/index.js"]
+    }
+  }
+}`,
+            copyButton: true,
+            showLineNumbers: false
+        });
+
+        // Step 3 Code
+        new CodeSnippetBuilder({
+            containerId: 'step3-code',
+            language: 'bash',
+            code: `# Im Claude Code Terminal:
+/reload
+
+# Oder Claude Code komplett neu starten`,
+            copyButton: true,
+            showLineNumbers: false
+        });
+
+        // Tool Examples
+        new CodeSnippetBuilder({
+            containerId: 'tool1-example',
+            language: 'javascript',
+            code: `// User fragt: "List all analytics components"
+// Claude Code verwendet intern:
+ssi_list_components({ category: "analytics" })
+
+// Output:
+{
+  "category": "analytics",
+  "components": [
+    "AnalyticsCard",
+    "AnalyticsCardGrid",
+    "FilterBar",
+    "TimeRangePicker"
+  ]
+}`,
+            copyButton: true,
+            theme: 'dark'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'tool2-example',
+            language: 'javascript',
+            code: `// User fragt: "How do I use ListBuilder?"
+// Claude Code verwendet intern:
+ssi_get_component_info({ component: "ListBuilder" })
+
+// Output:
+{
+  "name": "ListBuilder",
+  "category": "core",
+  "description": "Material Design 3 list with search, filters...",
+  "features": ["Search", "Filters", "Sorting", "Pagination"],
+  "useCases": ["Data tables", "User lists", "CRUD operations"],
+  "requiredImports": ["ListBuilder"],
+  "cssFiles": ["ListBuilder.css", "shared.css"],
+  "demoPage": "/docs/demos/list-builder.html"
+}`,
+            copyButton: true,
+            theme: 'dark'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'tool3-example',
+            language: 'javascript',
+            code: `// User fragt: "Generate code for a list with search"
+// Claude Code verwendet intern:
+ssi_generate_code({
+  component: "ListBuilder",
+  useCase: "with-search"
+})
+
+// Output: Ready-to-use code snippet
+import { ListBuilder } from '/vendor/ssi-builders/src/index.js';
+
+new ListBuilder({
+    containerId: 'my-list',
+    searchable: true,
+    columns: [...],
+    dataSource: async (params) => {
+        const response = await fetch(\`/api/users?search=\${params.search}\`);
+        return response.json();
+    }
+});`,
+            copyButton: true,
+            theme: 'dark'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'tool4-example',
+            language: 'javascript',
+            code: `// User fragt: "Which components support dark mode?"
+// Claude Code verwendet intern:
+ssi_search_components({ query: "dark mode" })
+
+// Output:
+{
+  "query": "dark mode",
+  "resultsCount": 15,
+  "results": [
+    {
+      "component": "ThemeBuilder",
+      "score": 10,
+      "matches": ["name", "features"],
+      "description": "Dynamic M3 color scheme generator..."
+    },
+    // ... more results
+  ]
+}`,
+            copyButton: true,
+            theme: 'dark'
+        });
+
+        // Workflow Card
+        new CardBuilder({
+            containerId: 'workflow-card',
+            title: 'Typischer Workflow',
+            content: 'So nutzt Claude Code den MCP Server automatisch wenn du nach SSI Builders fragst:',
+            variant: 'elevated'
+        });
+
+        // Workflow Example
+        new CodeSnippetBuilder({
+            containerId: 'workflow-example',
+            language: 'text',
+            code: `User: "Add a product list with search to my page"
+
+Claude Code (intern):
+1. ssi_list_components()
+   → Findet "ListBuilder" in "core" Kategorie
+
+2. ssi_get_component_info("ListBuilder")
+   → Erhält Features, Use Cases, Imports
+
+3. ssi_generate_code("ListBuilder", "with-search")
+   → Bekommt ready-to-use Code-Template
+
+4. Passt Code an dein Projekt an
+   → Verwendet deine API, Container-ID, Spalten
+
+Claude (zu dir):
+"Ich erstelle eine durchsuchbare Produktliste mit ListBuilder..."
+[Zeigt angepassten Code]
+
+Token-Verbrauch: ~300 tokens (mit Haiku!)
+Ohne MCP: ~2000 tokens (mit Sonnet)
+Ersparnis: 85% 🎉`,
+            copyButton: true,
+            showLineNumbers: false,
+            theme: 'dark'
+        });
+
+        console.log('MCP Server Demo initialized!');
+    </script>
+</body>
+</html>
