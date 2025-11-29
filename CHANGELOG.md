@@ -7,6 +7,55 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.6.0] - 2025-11-29
+
+### Added
+- **ModalBuilder.form()**: New static method that opens a modal with integrated FormBuilder
+  - Supports all FormBuilder field types (text, email, select, textarea, etc.)
+  - AJAX data loading via `dataSource` async function
+  - Pre-filled form values with `values` option
+  - Customizable size, grid columns, and submit label
+  - Promise-based API: returns form values on submit, null on cancel
+- **ModalBuilder.delete()**: New static method for delete confirmations with AJAX support
+  - Automatic loading state during async operations
+  - Error handling with inline error messages
+  - Customizable warning text and button labels
+  - Danger styling for delete action button
+- **CRUD Demo Page**: New comprehensive demo showcasing ListBuilder + ModalBuilder + FormBuilder integration
+  - Complete CRUD workflow with simulated API calls
+  - M3 Button variants showcase (Filled, Outlined, Text, Elevated, Tonal)
+  - Real-time console output for debugging
+  - Code examples for all CRUD operations
+- **i18n Extensions**: Added new translation keys for modal operations
+  - `modal.formTitle`, `modal.loading`, `modal.loadError`
+  - `modal.delete`, `modal.deleteTitle`, `modal.deleteConfirm`, `modal.deleteGeneric`
+  - `modal.deleting`, `modal.deleteError`
+  - Supported languages: German (de), English (en), French (fr)
+
+### Fixed
+- **FormBuilder CSS (Modal Forms)**: Fixed form field width issues in modal forms
+  - Fields without explicit `width` property now properly span full row in 12-column grid layouts
+  - Fixed `grid-column: span 1` → `1 / -1` for fields without width in `gridColumns: 2/3/4` layouts
+  - Added proper width mapping rules for `gridColumns: 2` (width 1-6 → span 1, width 7-12 → full row)
+  - Added proper width mapping rules for `gridColumns: 3` (width 1-4 → span 1, width 5-8 → span 2, width 9-12 → full row)
+  - Added proper width mapping rules for `gridColumns: 4` (width 1-3 → span 1, etc.)
+  - Modal forms now correctly display side-by-side fields (e.g., Vorname + Nachname) and full-width fields (e.g., E-Mail, Biografie)
+- **ModalBuilder CSS (FormBuilder Container)**: Removed unwanted box-shadow frame around forms in modals
+  - FormBuilder inside modal-body now has `box-shadow: none`, `padding: 0`, `background: transparent`
+  - Eliminates the subtle gray border/frame that appeared around the form area
+  - Modal container already provides the visual boundary, so inner FormBuilder shadow was redundant
+
+### Changed
+- **Sidebar Navigation**: Added CRUD Demo link with "NEU" badge in Core Builders section
+- **CRUD Demo**: Added m3-tokens.css import for proper M3 button styling in toolbar
+
+### Known Issues
+- **Playwright Tests**: 68 test failures due to DOM structure changes from Dark Mode and i18n migration
+  - Tests require selector updates to match new M3 component structure
+  - Core functionality verified through manual testing
+  - Test fixes planned for v2.6.1
+  - Affected test suites: changelog-builder, global-config-playground, form-m3-variants, list-builder
+
 ---
 
 ## [2.5.2] - 2025-11-28

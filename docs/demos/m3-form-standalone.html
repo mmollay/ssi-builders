@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material Design 3 - Professionelles Formular</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        /* ===== M3 Theme - Tonal Palettes ===== */
+        :root {
+            /* Primary Tones */
+            --md-sys-color-primary-0: #000000;
+            --md-sys-color-primary-10: #22005d;
+            --md-sys-color-primary-20: #381e72;
+            --md-sys-color-primary-30: #4f378a;
+            --md-sys-color-primary-40: #6750a4;
+            --md-sys-color-primary-50: #8069bf;
+            --md-sys-color-primary-60: #9a83db;
+            --md-sys-color-primary-70: #b69df8;
+            --md-sys-color-primary-80: #cfbcff;
+            --md-sys-color-primary-90: #e9ddff;
+            --md-sys-color-primary-95: #f6eeff;
+            --md-sys-color-primary-99: #fffbff;
+            --md-sys-color-primary-100: #ffffff;
+
+            /* Secondary Tones */
+            --md-sys-color-secondary-10: #1e192b;
+            --md-sys-color-secondary-20: #332d41;
+            --md-sys-color-secondary-30: #4a4458;
+            --md-sys-color-secondary-40: #625b71;
+            --md-sys-color-secondary-90: #e8def8;
+
+            /* Tertiary Tones */
+            --md-sys-color-tertiary-40: #7e5260;
+            --md-sys-color-tertiary-90: #ffd9e3;
+
+            /* Error Tones */
+            --md-sys-color-error-40: #ba1a1a;
+            --md-sys-color-error-90: #ffdad6;
+
+            /* Light Theme */
+            --md-sys-color-primary: #6750a4;
+            --md-sys-color-on-primary: #ffffff;
+            --md-sys-color-primary-container: #e9ddff;
+            --md-sys-color-on-primary-container: #22005d;
+            --md-sys-color-secondary: #625b71;
+            --md-sys-color-on-secondary: #ffffff;
+            --md-sys-color-secondary-container: #e8def8;
+            --md-sys-color-on-secondary-container: #1e192b;
+            --md-sys-color-tertiary: #7e5260;
+            --md-sys-color-on-tertiary: #ffffff;
+            --md-sys-color-tertiary-container: #ffd9e3;
+            --md-sys-color-on-tertiary-container: #31101d;
+            --md-sys-color-surface: #fffbff;
+            --md-sys-color-on-surface: #1c1b1e;
+            --md-sys-color-surface-variant: #e7e0eb;
+            --md-sys-color-on-surface-variant: #49454e;
+            --md-sys-color-surface-container: #f3edf7;
+            --md-sys-color-surface-container-highest: #e6e1e5;
+            --md-sys-color-background: #fffbff;
+            --md-sys-color-on-background: #1c1b1e;
+            --md-sys-color-error: #ba1a1a;
+            --md-sys-color-on-error: #ffffff;
+            --md-sys-color-error-container: #ffdad6;
+            --md-sys-color-on-error-container: #410002;
+            --md-sys-color-outline: #79747e;
+            --md-sys-color-outline-variant: #cac4cf;
+            --md-sys-color-shadow: #000000;
+        }
+
+        /* Dark Theme */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --md-sys-color-primary: #cfbcff;
+                --md-sys-color-on-primary: #381e72;
+                --md-sys-color-primary-container: #4f378a;
+                --md-sys-color-on-primary-container: #e9ddff;
+                --md-sys-color-secondary: #cbc2db;
+                --md-sys-color-on-secondary: #332d41;
+                --md-sys-color-surface: #1c1b1e;
+                --md-sys-color-on-surface: #e6e1e6;
+                --md-sys-color-surface-variant: #49454e;
+                --md-sys-color-on-surface-variant: #cac4cf;
+                --md-sys-color-surface-container: #211f22;
+                --md-sys-color-surface-container-highest: #363438;
+                --md-sys-color-background: #1c1b1e;
+                --md-sys-color-on-background: #e6e1e6;
+                --md-sys-color-error: #ffb4ab;
+                --md-sys-color-on-error: #690005;
+                --md-sys-color-outline: #948f99;
+                --md-sys-color-outline-variant: #49454e;
+            }
+        }
+
+        /* ===== Base Styles ===== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', system-ui, sans-serif;
+            background: var(--md-sys-color-background);
+            color: var(--md-sys-color-on-background);
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--md-sys-color-surface);
+            border-radius: 28px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .form-header h1 {
+            font-size: 28px;
+            font-weight: 500;
+            color: var(--md-sys-color-on-surface);
+            margin-bottom: 8px;
+        }
+
+        .form-header p {
+            font-size: 14px;
+            color: var(--md-sys-color-on-surface-variant);
+        }
+
+        .form-section {
+            margin-bottom: 32px;
+        }
+
+        .form-section-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--md-sys-color-primary);
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--md-sys-color-outline-variant);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* ===== Text Field Styles ===== */
+        .md-textfield {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-family: 'Roboto', system-ui, sans-serif;
+        }
+
+        .md-textfield__label {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            margin-bottom: 8px;
+        }
+
+        .md-textfield__field {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .md-textfield__input {
+            flex: 1;
+            padding: 16px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--md-sys-color-on-surface);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: inherit;
+            min-width: 0;
+            width: 100%;
+        }
+
+        .md-textfield__input::placeholder {
+            color: var(--md-sys-color-on-surface-variant);
+            opacity: 0.7;
+        }
+
+        /* Filled variant */
+        .md-textfield--filled .md-textfield__field {
+            background: var(--md-sys-color-surface-container-highest);
+            border-bottom: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .md-textfield--filled .md-textfield__field:hover {
+            background: var(--md-sys-color-surface-container);
+        }
+
+        .md-textfield--filled .md-textfield__input:focus {
+            outline: none;
+        }
+
+        .md-textfield--filled:focus-within .md-textfield__field {
+            border-bottom-color: var(--md-sys-color-primary);
+        }
+
+        .md-textfield--filled:focus-within .md-textfield__label {
+            color: var(--md-sys-color-primary);
+        }
+
+        /* Outlined variant */
+        .md-textfield--outlined .md-textfield__field {
+            background: transparent;
+            border: 1px solid var(--md-sys-color-outline);
+            border-radius: 4px;
+        }
+
+        .md-textfield--outlined .md-textfield__field:hover {
+            border-color: var(--md-sys-color-on-surface);
+        }
+
+        .md-textfield--outlined:focus-within .md-textfield__field {
+            border: 2px solid var(--md-sys-color-primary);
+        }
+
+        .md-textfield--outlined:focus-within .md-textfield__label {
+            color: var(--md-sys-color-primary);
+        }
+
+        /* Textarea */
+        .md-textfield textarea.md-textfield__input {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        /* ===== Select Styles ===== */
+        .md-select {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-family: 'Roboto', system-ui, sans-serif;
+        }
+
+        .md-select__label {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 20px;
+            margin-bottom: 8px;
+        }
+
+        .md-select__field {
+            position: relative;
+            display: flex;
+            align-items: center;
+            min-height: 56px;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            background: var(--md-sys-color-surface-container-highest);
+            border-bottom: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 4px 4px 0 0;
+        }
+
+        .md-select__field:hover {
+            background: var(--md-sys-color-surface-container);
+        }
+
+        .md-select__input {
+            flex: 1;
+            padding: 16px;
+            padding-right: 48px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--md-sys-color-on-surface);
+            font-size: 16px;
+            line-height: 24px;
+            font-family: inherit;
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            width: 100%;
+        }
+
+        .md-select__dropdown-icon {
+            position: absolute;
+            right: 12px;
+            width: 24px;
+            height: 24px;
+            color: var(--md-sys-color-on-surface-variant);
+            pointer-events: none;
+            transition: transform 0.2s ease;
+        }
+
+        .md-select__dropdown-icon svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+        }
+
+        .md-select:focus-within .md-select__field {
+            border-bottom-color: var(--md-sys-color-primary);
+        }
+
+        .md-select:focus-within .md-select__label {
+            color: var(--md-sys-color-primary);
+        }
+
+        .md-select:focus-within .md-select__dropdown-icon {
+            transform: rotate(180deg);
+            color: var(--md-sys-color-primary);
+        }
+
+        /* ===== Checkbox Styles ===== */
+        .md3-checkbox-with-label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            padding: 8px 0;
+        }
+
+        .md3-checkbox {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            flex-shrink: 0;
+        }
+
+        .md3-checkbox .input {
+            position: absolute;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index: 2;
+            margin: 0;
+        }
+
+        .md3-checkbox .container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .md3-checkbox .outline {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .md3-checkbox .background {
+            position: absolute;
+            inset: 0;
+            background: var(--md-sys-color-primary);
+            border-radius: 2px;
+            transform: scale(0);
+            transition: all 0.2s ease;
+        }
+
+        .md3-checkbox .icon {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .md3-checkbox .icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: var(--md-sys-color-on-primary);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 20;
+            stroke-dashoffset: 20;
+            transition: stroke-dashoffset 0.2s ease 0.1s;
+        }
+
+        .md3-checkbox .input:checked ~ .container .outline {
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md3-checkbox .input:checked ~ .container .background {
+            transform: scale(1);
+        }
+
+        .md3-checkbox .input:checked ~ .container .icon svg {
+            stroke-dashoffset: 0;
+        }
+
+        .md3-checkbox .input:focus ~ .container {
+            outline: 2px solid var(--md-sys-color-primary);
+            outline-offset: 2px;
+            border-radius: 2px;
+        }
+
+        .md3-checkbox-with-label .label {
+            color: var(--md-sys-color-on-surface);
+            font-size: 16px;
+            line-height: 24px;
+            user-select: none;
+        }
+
+        /* ===== Radio Button Styles ===== */
+        .md-radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .md-radio-group--inline {
+            flex-direction: row;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .md-radio-group__label {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .md-radio {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+            position: relative;
+            padding: 8px 0;
+            user-select: none;
+        }
+
+        .md-radio__input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .md-radio__background {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .md-radio__outer-circle {
+            position: absolute;
+            inset: 0;
+            border: 2px solid var(--md-sys-color-on-surface-variant);
+            border-radius: 50%;
+            transition: all 0.2s ease;
+        }
+
+        .md-radio__inner-circle {
+            position: absolute;
+            inset: 5px;
+            border-radius: 50%;
+            background: var(--md-sys-color-primary);
+            transform: scale(0);
+            transition: transform 0.2s ease;
+        }
+
+        .md-radio__label {
+            color: var(--md-sys-color-on-surface);
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        .md-radio__input:checked + .md-radio__background .md-radio__outer-circle {
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-radio__input:checked + .md-radio__background .md-radio__inner-circle {
+            transform: scale(1);
+        }
+
+        .md-radio__input:focus + .md-radio__background {
+            outline: 2px solid var(--md-sys-color-primary);
+            outline-offset: 2px;
+        }
+
+        .md-radio:hover .md-radio__outer-circle {
+            border-color: var(--md-sys-color-on-surface);
+        }
+
+        /* ===== Switch Styles ===== */
+        .md-switch-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            user-select: none;
+            padding: 8px 0;
+        }
+
+        .md-switch {
+            position: relative;
+            display: inline-block;
+        }
+
+        .md-switch__input {
+            position: absolute;
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .md-switch__track {
+            position: relative;
+            width: 52px;
+            height: 32px;
+            border-radius: 16px;
+            background: var(--md-sys-color-surface-variant);
+            border: 2px solid var(--md-sys-color-outline);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .md-switch__handle {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--md-sys-color-outline);
+            transition: all 0.2s ease;
+        }
+
+        .md-switch__input:checked + .md-switch__track {
+            background: var(--md-sys-color-primary);
+            border-color: var(--md-sys-color-primary);
+        }
+
+        .md-switch__input:checked + .md-switch__track .md-switch__handle {
+            background: var(--md-sys-color-on-primary);
+            transform: translateX(20px);
+        }
+
+        .md-switch__input:focus + .md-switch__track {
+            outline: 2px solid var(--md-sys-color-primary);
+            outline-offset: 2px;
+        }
+
+        .md-switch__label {
+            color: var(--md-sys-color-on-surface);
+            font-size: 16px;
+            line-height: 24px;
+        }
+
+        /* ===== Slider Styles ===== */
+        .md-slider {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-family: 'Roboto', system-ui, sans-serif;
+        }
+
+        .md-slider__label {
+            color: var(--md-sys-color-on-surface-variant);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .md-slider__container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            height: 48px;
+            padding: 0 10px;
+        }
+
+        .md-slider__input {
+            position: absolute;
+            width: calc(100% - 20px);
+            height: 48px;
+            opacity: 0;
+            cursor: pointer;
+            margin: 0;
+            z-index: 2;
+        }
+
+        .md-slider__track {
+            position: relative;
+            width: 100%;
+            height: 4px;
+            background: var(--md-sys-color-surface-variant);
+            border-radius: 2px;
+        }
+
+        .md-slider__track-active {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            background: var(--md-sys-color-primary);
+            border-radius: 2px;
+            width: 50%;
+            transition: width 0.1s ease;
+        }
+
+        .md-slider__handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            background: var(--md-sys-color-primary);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.1s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+        }
+
+        .md-slider__value-display {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 8px;
+        }
+
+        .md-slider__current-value {
+            font-weight: 500;
+            color: var(--md-sys-color-primary);
+            font-size: 14px;
+            background: var(--md-sys-color-primary-container);
+            padding: 4px 12px;
+            border-radius: 16px;
+        }
+
+        .md-slider:hover .md-slider__handle {
+            transform: translate(-50%, -50%) scale(1.2);
+            box-shadow: 0 4px 8px rgba(103, 80, 164, 0.3);
+        }
+
+        /* ===== Button Styles ===== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 40px;
+            min-width: 100px;
+            padding: 0 24px;
+            border-radius: 20px;
+            border: none;
+            outline: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.1px;
+            text-decoration: none;
+            transition: all 200ms cubic-bezier(0.2, 0.0, 0, 1.0);
+        }
+
+        .btn--filled {
+            background-color: var(--md-sys-color-primary);
+            color: var(--md-sys-color-on-primary);
+        }
+
+        .btn--filled:hover:not(:disabled) {
+            box-shadow: 0 2px 8px rgba(103, 80, 164, 0.4);
+        }
+
+        .btn--filled:active {
+            transform: scale(0.98);
+        }
+
+        .btn--outlined {
+            border: 1px solid var(--md-sys-color-outline);
+            color: var(--md-sys-color-primary);
+        }
+
+        .btn--outlined:hover:not(:disabled) {
+            background-color: var(--md-sys-color-primary);
+            background-opacity: 0.08;
+            background: rgba(103, 80, 164, 0.08);
+        }
+
+        .btn--text {
+            color: var(--md-sys-color-primary);
+        }
+
+        .btn--text:hover:not(:disabled) {
+            background: rgba(103, 80, 164, 0.08);
+        }
+
+        .btn--tonal {
+            background: var(--md-sys-color-secondary-container);
+            color: var(--md-sys-color-on-secondary-container);
+        }
+
+        .btn--tonal:hover:not(:disabled) {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn:focus-visible {
+            outline: 2px solid var(--md-sys-color-primary);
+            outline-offset: 2px;
+        }
+
+        .btn:disabled {
+            opacity: 0.38;
+            cursor: not-allowed;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--md-sys-color-outline-variant);
+        }
+
+        /* ===== Divider ===== */
+        .divider {
+            height: 1px;
+            background: var(--md-sys-color-outline-variant);
+            margin: 24px 0;
+        }
+
+        /* ===== Chip/Badge ===== */
+        .required-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            background: var(--md-sys-color-error-container);
+            color: var(--md-sys-color-on-error-container);
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 600px) {
+            body {
+                padding: 16px;
+            }
+
+            .form-container {
+                padding: 20px;
+                border-radius: 20px;
+            }
+
+            .form-header h1 {
+                font-size: 24px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn {
+                width: 100%;
+            }
+        }
+
+        /* ===== Success Toast ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--md-sys-color-inverse-surface, #313033);
+            color: var(--md-sys-color-inverse-on-surface, #f4eff4);
+            padding: 14px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+            opacity: 1;
+        }
+
+        .toast .material-icons {
+            color: #4caf50;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Registrierung</h1>
+            <p>Erstellen Sie Ihr kostenloses Konto in wenigen Schritten</p>
+        </div>
+
+        <form id="registration-form">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <span class="material-icons">person</span>
+                    Persönliche Daten
+                </div>
+
+                <div class="form-row">
+                    <div class="md-textfield md-textfield--filled">
+                        <label class="md-textfield__label" for="vorname">
+                            Vorname <span class="required-badge">Pflichtfeld</span>
+                        </label>
+                        <div class="md-textfield__field">
+                            <input type="text" id="vorname" name="vorname" placeholder="Max" required class="md-textfield__input">
+                        </div>
+                    </div>
+
+                    <div class="md-textfield md-textfield--filled">
+                        <label class="md-textfield__label" for="nachname">
+                            Nachname <span class="required-badge">Pflichtfeld</span>
+                        </label>
+                        <div class="md-textfield__field">
+                            <input type="text" id="nachname" name="nachname" placeholder="Mustermann" required class="md-textfield__input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="md-textfield md-textfield--outlined">
+                        <label class="md-textfield__label" for="email">E-Mail Adresse</label>
+                        <div class="md-textfield__field">
+                            <input type="email" id="email" name="email" placeholder="max@example.com" class="md-textfield__input">
+                        </div>
+                    </div>
+
+                    <div class="md-textfield md-textfield--outlined">
+                        <label class="md-textfield__label" for="telefon">Telefonnummer</label>
+                        <div class="md-textfield__field">
+                            <input type="tel" id="telefon" name="telefon" placeholder="+43 123 456 789" class="md-textfield__input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Address Section -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <span class="material-icons">home</span>
+                    Adresse
+                </div>
+
+                <div class="form-row">
+                    <div class="md-textfield md-textfield--filled">
+                        <label class="md-textfield__label" for="strasse">Straße & Hausnummer</label>
+                        <div class="md-textfield__field">
+                            <input type="text" id="strasse" name="strasse" placeholder="Musterstraße 123" class="md-textfield__input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="md-textfield md-textfield--filled">
+                        <label class="md-textfield__label" for="plz">PLZ</label>
+                        <div class="md-textfield__field">
+                            <input type="text" id="plz" name="plz" placeholder="1010" class="md-textfield__input">
+                        </div>
+                    </div>
+
+                    <div class="md-textfield md-textfield--filled">
+                        <label class="md-textfield__label" for="stadt">Stadt</label>
+                        <div class="md-textfield__field">
+                            <input type="text" id="stadt" name="stadt" placeholder="Wien" class="md-textfield__input">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="md-select">
+                        <label class="md-select__label" for="land">Land</label>
+                        <div class="md-select__field">
+                            <select id="land" name="land" class="md-select__input">
+                                <option value="" disabled selected>Bitte wählen...</option>
+                                <option value="at">Österreich</option>
+                                <option value="de">Deutschland</option>
+                                <option value="ch">Schweiz</option>
+                                <option value="li">Liechtenstein</option>
+                            </select>
+                            <div class="md-select__dropdown-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preferences Section -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <span class="material-icons">tune</span>
+                    Präferenzen
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <div class="md-radio-group__label">Bevorzugte Zahlungsart</div>
+                        <div class="md-radio-group md-radio-group--inline" role="radiogroup" aria-label="Zahlungsart">
+                            <label class="md-radio" for="zahlung-kreditkarte">
+                                <input type="radio" name="zahlungsart" value="kreditkarte" id="zahlung-kreditkarte" class="md-radio__input" checked>
+                                <div class="md-radio__background">
+                                    <div class="md-radio__outer-circle"></div>
+                                    <div class="md-radio__inner-circle"></div>
+                                </div>
+                                <span class="md-radio__label">Kreditkarte</span>
+                            </label>
+                            <label class="md-radio" for="zahlung-paypal">
+                                <input type="radio" name="zahlungsart" value="paypal" id="zahlung-paypal" class="md-radio__input">
+                                <div class="md-radio__background">
+                                    <div class="md-radio__outer-circle"></div>
+                                    <div class="md-radio__inner-circle"></div>
+                                </div>
+                                <span class="md-radio__label">PayPal</span>
+                            </label>
+                            <label class="md-radio" for="zahlung-ueberweisung">
+                                <input type="radio" name="zahlungsart" value="ueberweisung" id="zahlung-ueberweisung" class="md-radio__input">
+                                <div class="md-radio__background">
+                                    <div class="md-radio__outer-circle"></div>
+                                    <div class="md-radio__inner-circle"></div>
+                                </div>
+                                <span class="md-radio__label">Überweisung</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-row">
+                    <div class="md-slider">
+                        <label class="md-slider__label" for="budget">Monatliches Budget (€)</label>
+                        <div class="md-slider__container">
+                            <input type="range" id="budget" name="budget" min="0" max="1000" value="250" step="50" class="md-slider__input">
+                            <div class="md-slider__track">
+                                <div class="md-slider__track-active"></div>
+                                <div class="md-slider__handle"></div>
+                            </div>
+                        </div>
+                        <div class="md-slider__value-display">
+                            <span class="md-slider__current-value">€ 250</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-row">
+                    <div>
+                        <label class="md-switch-container">
+                            <div class="md-switch">
+                                <input type="checkbox" role="switch" id="notifications" name="notifications" class="md-switch__input">
+                                <div class="md-switch__track">
+                                    <div class="md-switch__handle"></div>
+                                </div>
+                            </div>
+                            <span class="md-switch__label">Push-Benachrichtigungen aktivieren</span>
+                        </label>
+
+                        <label class="md-switch-container">
+                            <div class="md-switch">
+                                <input type="checkbox" role="switch" id="darkmode" name="darkmode" class="md-switch__input">
+                                <div class="md-switch__track">
+                                    <div class="md-switch__handle"></div>
+                                </div>
+                            </div>
+                            <span class="md-switch__label">Dark Mode bevorzugen</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="form-row">
+                    <div>
+                        <div class="md3-checkbox-with-label">
+                            <div class="md3-checkbox">
+                                <input type="checkbox" class="input" id="newsletter" name="newsletter">
+                                <div class="container">
+                                    <div class="outline"></div>
+                                    <div class="background"></div>
+                                    <div class="icon">
+                                        <svg viewBox="0 0 18 18">
+                                            <path class="mark checkmark" d="M6,9 L8,11 L12,7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="newsletter" class="label">Newsletter abonnieren</label>
+                        </div>
+
+                        <div class="md3-checkbox-with-label">
+                            <div class="md3-checkbox">
+                                <input type="checkbox" class="input" id="agb" name="agb" required>
+                                <div class="container">
+                                    <div class="outline"></div>
+                                    <div class="background"></div>
+                                    <div class="icon">
+                                        <svg viewBox="0 0 18 18">
+                                            <path class="mark checkmark" d="M6,9 L8,11 L12,7"></path>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <label for="agb" class="label">Ich akzeptiere die AGB und Datenschutzrichtlinien</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comments Section -->
+            <div class="form-section">
+                <div class="form-section-title">
+                    <span class="material-icons">chat</span>
+                    Anmerkungen
+                </div>
+
+                <div class="form-row">
+                    <div class="md-textfield md-textfield--outlined">
+                        <label class="md-textfield__label" for="kommentar">Optionaler Kommentar</label>
+                        <div class="md-textfield__field">
+                            <textarea id="kommentar" name="kommentar" placeholder="Gibt es etwas, das wir wissen sollten?" class="md-textfield__input"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="button" class="btn btn--text" onclick="resetForm()">
+                    Zurücksetzen
+                </button>
+                <button type="button" class="btn btn--outlined" onclick="saveDraft()">
+                    Entwurf speichern
+                </button>
+                <button type="submit" class="btn btn--filled">
+                    Registrieren
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast" id="toast">
+        <span class="material-icons">check_circle</span>
+        <span id="toast-message">Erfolgreich gespeichert!</span>
+    </div>
+
+    <script>
+        // Slider functionality
+        document.querySelectorAll('.md-slider').forEach(slider => {
+            const input = slider.querySelector('.md-slider__input');
+            const track = slider.querySelector('.md-slider__track-active');
+            const handle = slider.querySelector('.md-slider__handle');
+            const valueDisplay = slider.querySelector('.md-slider__current-value');
+
+            function updateSlider() {
+                const value = parseFloat(input.value);
+                const min = parseFloat(input.min);
+                const max = parseFloat(input.max);
+                const percentage = ((value - min) / (max - min)) * 100;
+
+                track.style.width = percentage + '%';
+                handle.style.left = percentage + '%';
+                valueDisplay.textContent = '€ ' + value;
+            }
+
+            input.addEventListener('input', updateSlider);
+            updateSlider();
+        });
+
+        // Toast functionality
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Form submission
+        document.getElementById('registration-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            const data = Object.fromEntries(formData.entries());
+            console.log('Form submitted:', data);
+            showToast('Registrierung erfolgreich!');
+        });
+
+        // Reset form
+        function resetForm() {
+            document.getElementById('registration-form').reset();
+            // Reset slider display
+            document.querySelectorAll('.md-slider').forEach(slider => {
+                const input = slider.querySelector('.md-slider__input');
+                const event = new Event('input');
+                input.dispatchEvent(event);
+            });
+            showToast('Formular zurückgesetzt');
+        }
+
+        // Save draft
+        function saveDraft() {
+            const formData = new FormData(document.getElementById('registration-form'));
+            const data = Object.fromEntries(formData.entries());
+            localStorage.setItem('registrationDraft', JSON.stringify(data));
+            showToast('Entwurf gespeichert');
+        }
+
+        // Load draft on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            const draft = localStorage.getItem('registrationDraft');
+            if (draft) {
+                const data = JSON.parse(draft);
+                Object.keys(data).forEach(key => {
+                    const input = document.querySelector(`[name="${key}"]`);
+                    if (input) {
+                        if (input.type === 'checkbox' || input.type === 'radio') {
+                            input.checked = data[key] === 'on' || data[key] === input.value;
+                        } else {
+                            input.value = data[key];
+                        }
+                    }
+                });
+                // Update slider display
+                document.querySelectorAll('.md-slider').forEach(slider => {
+                    const input = slider.querySelector('.md-slider__input');
+                    const event = new Event('input');
+                    input.dispatchEvent(event);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

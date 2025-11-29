@@ -13,18 +13,11 @@
  */
 
 // Current version being developed
-export const currentVersion = '2.4.4';
+export const currentVersion = '2.5.2';
 
 // Components updated in current development cycle
 // CLEAR THIS ARRAY when releasing a new version!
-export const updatedComponents = [
-    {
-        name: 'ListBuilder',
-        feature: 'Bulk Actions & Multi-Select',
-        description: 'getSelectedRows(), clearSelection(), optimistic UI delete',
-        date: '2025-11-27'
-    }
-];
+export const updatedComponents = [];
 
 /**
  * Check if a component has updates in current dev cycle
@@ -97,7 +90,7 @@ export function getUpdatedComponentNames() {
  * This is just a helper - you should manually clear updatedComponents array
  */
 export function clearUpdates() {
-    console.warn('[whats-new] Remember to clear updatedComponents array in whats-new.js for new release!');
+    // Developer reminder removed - check updatedComponents array manually before release
 }
 
 // CSS for badges (inject into page if needed)

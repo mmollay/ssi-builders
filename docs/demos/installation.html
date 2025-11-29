@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Installation - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- M3 Design System -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
+
+    <!-- SSI Builders Layout -->
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="../../src/CardBuilder.css">
+    <link rel="stylesheet" href="../../src/MessageBuilder.css">
+    <link rel="stylesheet" href="layout.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--m3-font-family);
+            background: var(--m3-surface);
+            color: var(--m3-on-surface);
+            line-height: 1.6;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--m3-surface-container);
+            border-right: 1px solid var(--m3-outline-variant);
+            z-index: 1000;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1200px;
+        }
+
+        .page-header {
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--m3-outline-variant);
+        }
+
+        .page-header h1 {
+            font-size: var(--m3-headline-large-size, 32px);
+            font-weight: var(--m3-headline-large-weight, 400);
+            line-height: var(--m3-headline-large-line-height, 40px);
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+        }
+
+        .page-header p {
+            font-size: var(--m3-body-large-size, 16px);
+            color: var(--m3-on-surface-variant);
+        }
+
+        .demo-section {
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-medium, 12px);
+            padding: 32px;
+            margin-bottom: 32px;
+        }
+
+        .demo-section h2 {
+            font-size: var(--m3-title-large-size, 22px);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .demo-section > p {
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 24px;
+            font-size: var(--m3-body-medium-size, 14px);
+        }
+
+        .section-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--m3-primary);
+            color: var(--m3-on-primary, white);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 16px;
+            padding: 20px;
+            background: var(--m3-surface-container);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            transition: all 0.2s ease;
+        }
+
+        .step-item:hover {
+            box-shadow: var(--m3-elevation-1, 0 1px 3px rgba(0,0,0,0.12));
+        }
+
+        .step-number {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            background: var(--m3-primary);
+            color: var(--m3-on-primary, white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .step-content h3 {
+            font-size: 18px;
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--m3-on-surface-variant);
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .code-block {
+            background: var(--m3-surface-container-highest, #1e1e1e);
+            color: var(--m3-on-surface, #e1e1e1);
+            padding: 16px 20px;
+            border-radius: 8px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            position: relative;
+        }
+
+        .code-block code {
+            display: block;
+            white-space: pre;
+        }
+
+        .code-comment {
+            color: #6a9955;
+        }
+
+        .code-keyword {
+            color: #569cd6;
+        }
+
+        .code-string {
+            color: #ce9178;
+        }
+
+        .code-function {
+            color: #dcdcaa;
+        }
+
+        .code-property {
+            color: #9cdcfe;
+        }
+
+        .code-number {
+            color: #b5cea8;
+        }
+
+        /* Dark mode */
+        html.dark-mode .code-block,
+        html.m3-dark .code-block {
+            background: #1e1e1e;
+            color: #e1e1e1;
+        }
+
+        /* Light mode code block */
+        html:not(.dark-mode):not(.m3-dark) .code-block {
+            background: #2d2d2d;
+            color: #f5f5f5;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 6px 12px;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .code-block:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .copy-btn:hover {
+            background: var(--m3-primary);
+            color: var(--m3-on-primary, white);
+        }
+
+        .file-structure {
+            background: var(--m3-surface-container);
+            padding: 20px;
+            border-radius: 12px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 14px;
+            line-height: 1.8;
+        }
+
+        .file-structure .folder {
+            color: var(--m3-primary);
+            font-weight: 500;
+        }
+
+        .file-structure .file {
+            color: var(--m3-on-surface-variant);
+        }
+
+        .file-structure .indent-1 { margin-left: 20px; }
+        .file-structure .indent-2 { margin-left: 40px; }
+
+        .builder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .builder-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--m3-surface-container);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--m3-on-surface);
+            transition: all 0.2s;
+        }
+
+        .builder-chip:hover {
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+        }
+
+        .builder-chip svg {
+            width: 20px;
+            height: 20px;
+            color: var(--m3-primary);
+        }
+
+        .tip-box {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: var(--m3-tertiary-container, #e6f4ea);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .tip-box svg {
+            width: 24px;
+            height: 24px;
+            color: var(--m3-on-tertiary-container, #1e8e3e);
+            flex-shrink: 0;
+        }
+
+        .tip-box p {
+            color: var(--m3-on-tertiary-container, #1e8e3e);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        html.dark-mode .tip-box,
+        html.m3-dark .tip-box {
+            background: rgba(46, 125, 50, 0.15);
+        }
+
+        html.dark-mode .tip-box p,
+        html.m3-dark .tip-box p,
+        html.dark-mode .tip-box svg,
+        html.m3-dark .tip-box svg {
+            color: #81c784;
+        }
+
+        .warning-box {
+            display: flex;
+            gap: 12px;
+            padding: 16px;
+            background: var(--m3-error-container, #fce8e6);
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .warning-box svg {
+            width: 24px;
+            height: 24px;
+            color: var(--m3-on-error-container, #c5221f);
+            flex-shrink: 0;
+        }
+
+        .warning-box p {
+            color: var(--m3-on-error-container, #c5221f);
+            font-size: 14px;
+            margin: 0;
+        }
+
+        html.dark-mode .warning-box,
+        html.m3-dark .warning-box {
+            background: rgba(234, 67, 53, 0.15);
+        }
+
+        html.dark-mode .warning-box p,
+        html.m3-dark .warning-box p,
+        html.dark-mode .warning-box svg,
+        html.m3-dark .warning-box svg {
+            color: #f28b82;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .demo-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .step-item {
+                flex-direction: column;
+            }
+
+            .step-number {
+                margin-bottom: 8px;
+            }
+
+            .builder-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <!-- Page Header -->
+            <header class="page-header">
+                <h1>Installation</h1>
+                <p>So bringst du SSI Builders in deinem Projekt zum Einsatz</p>
+            </header>
+
+            <!-- Section 1: Git Submodule -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-download"></span>
+                    1. Als Git Submodule einbinden
+                </h2>
+                <p>Die empfohlene Methode: SSI Builders als Git Submodule in dein Projekt integrieren.</p>
+
+                <ul class="step-list">
+                    <li class="step-item">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Submodule hinzufügen</h3>
+                            <p>Navigiere zum Root-Verzeichnis deines Projekts und führe folgenden Befehl aus:</p>
+                            <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                                <code>git submodule add https://github.com/mmollay/ssi-builders.git vendor/ssi-builders</code>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Projekt-Struktur</h3>
+                            <p>Nach dem Einbinden sollte deine Projekt-Struktur so aussehen:</p>
+                            <div class="file-structure">
+                                <div class="folder">dein-projekt/</div>
+                                <div class="file indent-1">src/</div>
+                                <div class="file indent-1">public/</div>
+                                <div class="folder indent-1">vendor/</div>
+                                <div class="folder indent-2">ssi-builders/</div>
+                                <div class="file indent-1">package.json</div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="step-item">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Updates beziehen</h3>
+                            <p>Um die neueste Version von SSI Builders zu holen:</p>
+                            <div class="code-block">
+                                <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                                <code>git submodule update --remote vendor/ssi-builders</code>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                    <p><strong>Tipp:</strong> Versioniere die Submodule-Referenz in deinem Repository, um sicherzustellen, dass alle Team-Mitglieder die gleiche Version nutzen.</p>
+                </div>
+            </section>
+
+            <!-- Section 2: CSS einbinden -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-layout"></span>
+                    2. CSS-Dateien einbinden
+                </h2>
+                <p>Binde die benötigten CSS-Dateien in deinem HTML-Dokument ein.</p>
+
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">&lt;!-- Design System Basis --&gt;</span>
+<span class="code-keyword">&lt;link</span> <span class="code-property">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-property">href</span>=<span class="code-string">"/vendor/ssi-builders/src/shared.css"</span><span class="code-keyword">&gt;</span>
+<span class="code-keyword">&lt;link</span> <span class="code-property">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-property">href</span>=<span class="code-string">"/vendor/ssi-builders/src/m3-tokens.css"</span><span class="code-keyword">&gt;</span>
+
+<span class="code-comment">&lt;!-- Nur die Builder importieren, die du brauchst --&gt;</span>
+<span class="code-keyword">&lt;link</span> <span class="code-property">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-property">href</span>=<span class="code-string">"/vendor/ssi-builders/src/ListBuilder.css"</span><span class="code-keyword">&gt;</span>
+<span class="code-keyword">&lt;link</span> <span class="code-property">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-property">href</span>=<span class="code-string">"/vendor/ssi-builders/src/FormBuilder.css"</span><span class="code-keyword">&gt;</span>
+<span class="code-keyword">&lt;link</span> <span class="code-property">rel</span>=<span class="code-string">"stylesheet"</span> <span class="code-property">href</span>=<span class="code-string">"/vendor/ssi-builders/src/ModalBuilder.css"</span><span class="code-keyword">&gt;</span></code>
+                </div>
+
+                <div class="warning-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M1 21h22L12 2 1 21zm12-3h-2v-2h2v2zm0-4h-2v-4h2v4z"/>
+                    </svg>
+                    <p><strong>Wichtig:</strong> <code>shared.css</code> muss immer als erstes geladen werden - sie enthält die Design Tokens für alle Komponenten.</p>
+                </div>
+            </section>
+
+            <!-- Section 3: JavaScript Import -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-code"></span>
+                    3. JavaScript-Module importieren
+                </h2>
+                <p>Es gibt drei Möglichkeiten, SSI Builders zu importieren:</p>
+
+                <h3 style="margin: 24px 0 12px; color: var(--m3-primary);">Option A: All-in-One Import (Empfohlen für die meisten Projekte)</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 12px;">Importiere alle Builder auf einmal - einfach und übersichtlich:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">// Alles auf einmal importieren</span>
+<span class="code-keyword">import</span> <span class="code-property">SSI</span> <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="code-comment">// Verwendung:</span>
+<span class="code-keyword">const</span> list = <span class="code-keyword">new</span> <span class="code-property">SSI</span>.<span class="code-function">ListBuilder</span>({ ... });
+<span class="code-keyword">const</span> form = <span class="code-keyword">new</span> <span class="code-property">SSI</span>.<span class="code-function">FormBuilder</span>({ ... });
+<span class="code-keyword">const</span> modal = <span class="code-keyword">new</span> <span class="code-property">SSI</span>.<span class="code-function">ModalBuilder</span>({ ... });
+<span class="code-property">SSI</span>.<span class="code-property">IconManager</span>.<span class="code-function">setPreset</span>(<span class="code-string">'lucide'</span>);</code>
+                </div>
+
+                <h3 style="margin: 24px 0 12px; color: var(--m3-primary);">Option B: Named Imports (Mehr Kontrolle)</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 12px;">Importiere nur die Builder, die du benötigst:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">// Nur benötigte Builder importieren</span>
+<span class="code-keyword">import</span> {
+    <span class="code-property">GlobalConfig</span>,
+    <span class="code-property">IconManager</span>,
+    <span class="code-property">ListBuilder</span>,
+    <span class="code-property">FormBuilder</span>,
+    <span class="code-property">ModalBuilder</span>
+} <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;</code>
+                </div>
+
+                <h3 style="margin: 24px 0 12px; color: var(--m3-primary);">Option C: Dynamic Import / Lazy Loading (Beste Performance)</h3>
+                <p style="color: var(--m3-on-surface-variant); margin-bottom: 12px;">Lade Builder erst wenn sie gebraucht werden - optimal für große Apps:</p>
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">// Lazy Loading - Builder werden erst bei Bedarf geladen</span>
+<span class="code-keyword">async function</span> <span class="code-function">showUserList</span>() {
+    <span class="code-keyword">const</span> { <span class="code-property">ListBuilder</span> } = <span class="code-keyword">await</span> <span class="code-keyword">import</span>(<span class="code-string">'/vendor/ssi-builders/src/ListBuilder.js'</span>);
+
+    <span class="code-keyword">const</span> list = <span class="code-keyword">new</span> <span class="code-function">ListBuilder</span>({
+        <span class="code-property">containerId</span>: <span class="code-string">'user-list'</span>,
+        <span class="code-property">columns</span>: [...],
+        <span class="code-property">data</span>: [...]
+    });
+    list.<span class="code-function">render</span>();
+}
+
+<span class="code-comment">// Modal erst laden wenn User auf Button klickt</span>
+document.<span class="code-function">getElementById</span>(<span class="code-string">'open-modal-btn'</span>).<span class="code-function">addEventListener</span>(<span class="code-string">'click'</span>, <span class="code-keyword">async</span> () => {
+    <span class="code-keyword">const</span> { <span class="code-property">ModalBuilder</span> } = <span class="code-keyword">await</span> <span class="code-keyword">import</span>(<span class="code-string">'/vendor/ssi-builders/src/ModalBuilder.js'</span>);
+    <span class="code-property">ModalBuilder</span>.<span class="code-function">alert</span>({ <span class="code-property">title</span>: <span class="code-string">'Hallo!'</span>, <span class="code-property">message</span>: <span class="code-string">'Modal wurde lazy geladen.'</span> });
+});</code>
+                </div>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+                    </svg>
+                    <p><strong>Performance-Tipp:</strong> Bei Vite/Webpack werden Dynamic Imports automatisch in separate Chunks aufgeteilt. So wird nur der Code geladen, der wirklich gebraucht wird!</p>
+                </div>
+            </section>
+
+            <!-- Section 4: GlobalConfig -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-settings"></span>
+                    4. GlobalConfig einrichten
+                </h2>
+                <p>Konfiguriere SSI Builders einmalig beim App-Start - alle Builder erben diese Einstellungen automatisch.</p>
+
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-keyword">import</span> { <span class="code-property">GlobalConfig</span>, <span class="code-property">IconManager</span> } <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="code-comment">// Icon-System konfigurieren</span>
+<span class="code-property">IconManager</span>.<span class="code-function">setPreset</span>(<span class="code-string">'lucide'</span>);       <span class="code-comment">// 'lucide' | 'heroicons' | 'material' | 'fontawesome' | 'emoji'</span>
+<span class="code-property">IconManager</span>.<span class="code-function">setIconWeight</span>(<span class="code-string">'regular'</span>);  <span class="code-comment">// 'thin' | 'regular' | 'bold'</span>
+
+<span class="code-comment">// Globale Einstellungen</span>
+<span class="code-property">GlobalConfig</span>.<span class="code-function">configure</span>({
+    <span class="code-property">iconPreset</span>: <span class="code-string">'lucide'</span>,
+    <span class="code-property">iconWeight</span>: <span class="code-string">'regular'</span>,
+    <span class="code-property">theme</span>: {
+        <span class="code-property">primary</span>: <span class="code-string">'#1a73e8'</span>,
+        <span class="code-property">darkMode</span>: <span class="code-keyword">false</span>
+    },
+    <span class="code-property">buttons</span>: {
+        <span class="code-property">defaultSize</span>: <span class="code-string">'medium'</span>
+    }
+});</code>
+                </div>
+            </section>
+
+            <!-- Section 5: Erster Builder -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-star"></span>
+                    5. Deinen ersten Builder erstellen
+                </h2>
+                <p>Jetzt kannst du Builder in deinem Projekt nutzen. Hier ein einfaches Beispiel:</p>
+
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">// HTML: &lt;div id="user-list"&gt;&lt;/div&gt;</span>
+
+<span class="code-keyword">const</span> userList = <span class="code-keyword">new</span> <span class="code-function">ListBuilder</span>({
+    <span class="code-property">containerId</span>: <span class="code-string">'user-list'</span>,
+    <span class="code-property">title</span>: <span class="code-string">'Benutzer'</span>,
+    <span class="code-property">columns</span>: [
+        { <span class="code-property">key</span>: <span class="code-string">'name'</span>, <span class="code-property">label</span>: <span class="code-string">'Name'</span> },
+        { <span class="code-property">key</span>: <span class="code-string">'email'</span>, <span class="code-property">label</span>: <span class="code-string">'E-Mail'</span> },
+        { <span class="code-property">key</span>: <span class="code-string">'role'</span>, <span class="code-property">label</span>: <span class="code-string">'Rolle'</span> }
+    ],
+    <span class="code-property">data</span>: [
+        { <span class="code-property">id</span>: <span class="code-number">1</span>, <span class="code-property">name</span>: <span class="code-string">'Max Mustermann'</span>, <span class="code-property">email</span>: <span class="code-string">'max@example.com'</span>, <span class="code-property">role</span>: <span class="code-string">'Admin'</span> },
+        { <span class="code-property">id</span>: <span class="code-number">2</span>, <span class="code-property">name</span>: <span class="code-string">'Anna Schmidt'</span>, <span class="code-property">email</span>: <span class="code-string">'anna@example.com'</span>, <span class="code-property">role</span>: <span class="code-string">'User'</span> }
+    ],
+    <span class="code-property">options</span>: {
+        <span class="code-property">searchable</span>: <span class="code-keyword">true</span>,
+        <span class="code-property">pagination</span>: <span class="code-keyword">true</span>,
+        <span class="code-property">variant</span>: <span class="code-string">'elegant'</span>
+    }
+});
+
+userList.<span class="code-function">render</span>();</code>
+                </div>
+
+                <div id="demo-list-container" style="margin-top: 24px;"></div>
+            </section>
+
+            <!-- Section 6: Verfügbare Builder -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-grid"></span>
+                    6. Verfügbare Builder
+                </h2>
+                <p>SSI Builders bietet eine Vielzahl von Production-Ready UI-Komponenten:</p>
+
+                <div class="builder-grid" id="builder-grid">
+                    <!-- Dynamisch gefüllt -->
+                </div>
+            </section>
+
+            <!-- Section 7: Dark Mode -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-moon"></span>
+                    7. Dark Mode aktivieren
+                </h2>
+                <p>Aktiviere Dark Mode mit dem ThemeBuilder oder über CSS-Klassen.</p>
+
+                <div class="code-block">
+                    <button class="copy-btn" onclick="copyCode(this)">Kopieren</button>
+                    <code><span class="code-comment">// Option 1: ThemeBuilder verwenden</span>
+<span class="code-keyword">import</span> { <span class="code-property">ThemeBuilder</span> } <span class="code-keyword">from</span> <span class="code-string">'/vendor/ssi-builders/src/index.js'</span>;
+
+<span class="code-keyword">const</span> theme = <span class="code-keyword">new</span> <span class="code-function">ThemeBuilder</span>({
+    <span class="code-property">seedColor</span>: <span class="code-string">'#1a73e8'</span>,
+    <span class="code-property">darkMode</span>: <span class="code-keyword">true</span>,
+    <span class="code-property">autoApply</span>: <span class="code-keyword">true</span>
+});
+
+<span class="code-comment">// Option 2: Manuell CSS-Klassen setzen</span>
+document.documentElement.classList.<span class="code-function">add</span>(<span class="code-string">'m3-dark'</span>, <span class="code-string">'dark-mode'</span>);</code>
+                </div>
+
+                <div class="tip-box">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7z"/>
+                    </svg>
+                    <p><strong>Tipp:</strong> Speichere die Dark Mode Einstellung im localStorage, um sie beim nächsten Besuch wiederherzustellen. Nutze den Theme-Button unten rechts als Referenz!</p>
+                </div>
+            </section>
+
+            <!-- Section 8: Nächste Schritte -->
+            <section class="demo-section">
+                <h2>
+                    <span class="section-icon" id="icon-arrow"></span>
+                    Nächste Schritte
+                </h2>
+                <p>Erkunde die Dokumentation und Live-Demos für jeden Builder:</p>
+
+                <ul class="step-list">
+                    <li class="step-item" style="cursor: pointer;" onclick="window.location='/docs/demos/all-builders-overview.html'">
+                        <div class="step-number" id="icon-grid-2"></div>
+                        <div class="step-content">
+                            <h3>All Builders Overview</h3>
+                            <p>Übersicht aller verfügbaren Builder mit Live-Previews</p>
+                        </div>
+                    </li>
+                    <li class="step-item" style="cursor: pointer;" onclick="window.location='/docs/demos/global-config-playground.html'">
+                        <div class="step-number" id="icon-settings-2"></div>
+                        <div class="step-content">
+                            <h3>Global Config Playground</h3>
+                            <p>Teste GlobalConfig-Einstellungen in Echtzeit</p>
+                        </div>
+                    </li>
+                    <li class="step-item" style="cursor: pointer;" onclick="window.location='/docs/demos/icon-system.html'">
+                        <div class="step-number" id="icon-star-2"></div>
+                        <div class="step-content">
+                            <h3>Icon System</h3>
+                            <p>Alle verfügbaren Icons und Presets erkunden</p>
+                        </div>
+                    </li>
+                </ul>
+            </section>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from '/docs/demos/layout.js';
+        import { IconManager } from '/src/IconManager.js';
+        import { ListBuilder } from '/src/ListBuilder.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('installation');
+
+        // Configure icons
+        IconManager.setPreset('lucide');
+        IconManager.setIconWeight('regular');
+
+        // Add icons to section headers
+        document.getElementById('icon-download').innerHTML = IconManager.getIcon('download');
+        document.getElementById('icon-layout').innerHTML = IconManager.getIcon('layout');
+        document.getElementById('icon-code').innerHTML = IconManager.getIcon('copy');
+        document.getElementById('icon-settings').innerHTML = IconManager.getIcon('settings');
+        document.getElementById('icon-star').innerHTML = IconManager.getIcon('star');
+        document.getElementById('icon-grid').innerHTML = IconManager.getIcon('grid');
+        document.getElementById('icon-moon').innerHTML = IconManager.getIcon('eye');
+        document.getElementById('icon-arrow').innerHTML = IconManager.getIcon('home');
+
+        // Next steps icons
+        document.getElementById('icon-grid-2').innerHTML = IconManager.getIcon('grid');
+        document.getElementById('icon-settings-2').innerHTML = IconManager.getIcon('settings');
+        document.getElementById('icon-star-2').innerHTML = IconManager.getIcon('star');
+
+        // Builder grid
+        const builders = [
+            { name: 'ListBuilder', icon: 'list', href: '/docs/demos/list-builder.html' },
+            { name: 'FormBuilder', icon: 'edit', href: '/docs/demos/form-builder.html' },
+            { name: 'ModalBuilder', icon: 'modal', href: '/docs/demos/modal-builder.html' },
+            { name: 'TabBuilder', icon: 'tab', href: '/docs/demos/tab-builder.html' },
+            { name: 'MenuBuilder', icon: 'menu', href: '/docs/demos/menu-builder.html' },
+            { name: 'SidebarBuilder', icon: 'sidebar', href: '/docs/demos/sidebar-builder.html' },
+            { name: 'ToastBuilder', icon: 'bell', href: '/docs/demos/toast-builder.html' },
+            { name: 'ChartBuilder', icon: 'chart', href: '/docs/demos/chart-builder.html' },
+            { name: 'CardBuilder', icon: 'layout', href: '/docs/demos/card-builder.html' },
+            { name: 'MessageBuilder', icon: 'info', href: '/docs/demos/message-builder.html' },
+            { name: 'ThemeBuilder', icon: 'star', href: '/docs/demos/theme-builder.html' },
+            { name: 'TooltipBuilder', icon: 'info', href: '/docs/demos/tooltip-builder.html' }
+        ];
+
+        const builderGrid = document.getElementById('builder-grid');
+        builders.forEach(builder => {
+            const chip = document.createElement('a');
+            chip.href = builder.href;
+            chip.className = 'builder-chip';
+            chip.innerHTML = `${IconManager.getIcon(builder.icon)} ${builder.name}`;
+            builderGrid.appendChild(chip);
+        });
+
+        // Create demo list
+        const demoList = new ListBuilder({
+            containerId: 'demo-list-container',
+            title: 'Benutzer',
+            columns: [
+                { key: 'name', label: 'Name' },
+                { key: 'email', label: 'E-Mail' },
+                { key: 'role', label: 'Rolle' }
+            ],
+            data: [
+                { id: 1, name: 'Max Mustermann', email: 'max@example.com', role: 'Admin' },
+                { id: 2, name: 'Anna Schmidt', email: 'anna@example.com', role: 'User' }
+            ],
+            options: {
+                searchable: false,
+                pagination: false,
+                variant: 'elegant'
+            }
+        });
+        demoList.render();
+
+        // Copy code function
+        window.copyCode = function(btn) {
+            const codeBlock = btn.parentElement;
+            const code = codeBlock.querySelector('code').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                btn.textContent = 'Kopiert!';
+                setTimeout(() => btn.textContent = 'Kopieren', 2000);
+            });
+        };
+
+        console.log('Installation page initialized');
+    </script>
+</body>
+</html>

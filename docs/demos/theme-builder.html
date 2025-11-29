@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThemeBuilder - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- Google Fonts - Roboto -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <!-- M3 Design System -->
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
+    <link rel="stylesheet" href="../../src/m3-form-styles.css">
+
+    <!-- SSI Builders -->
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="layout.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--m3-font-family);
+            background: var(--m3-surface);
+            color: var(--m3-on-surface);
+            line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        #sidebar-container {
+            position: fixed;
+            left: 0;
+            top: 0;
+            height: 100vh;
+            width: 280px;
+            background: var(--m3-surface-container);
+            border-right: 1px solid var(--m3-outline-variant);
+            z-index: 1000;
+        }
+
+        .demo-content {
+            margin-left: 280px;
+            flex: 1;
+            padding: 40px;
+            max-width: 1400px;
+        }
+
+        .page-header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--m3-outline-variant);
+        }
+
+        .page-header h1 {
+            font-size: var(--m3-headline-large-size);
+            font-weight: var(--m3-headline-large-weight);
+            line-height: var(--m3-headline-large-line-height);
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-header p {
+            font-size: var(--m3-body-large-size);
+            color: var(--m3-on-surface-variant);
+        }
+
+        .badge {
+            display: inline-block;
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+            padding: 4px 12px;
+            border-radius: var(--m3-shape-full);
+            font-size: var(--m3-label-small-size);
+            font-weight: 500;
+        }
+
+        /* Theme Builder Layout */
+        .theme-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 1200px) {
+            .theme-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Config Card */
+        .config-card {
+            background: var(--m3-surface-container-low);
+            border-radius: var(--m3-shape-large);
+            padding: 24px;
+            margin-bottom: 24px;
+        }
+
+        .config-card h2 {
+            font-size: var(--m3-title-large-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .config-card > p {
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 24px;
+            font-size: var(--m3-body-medium-size);
+        }
+
+        /* Seed Color Section */
+        .seed-color-section {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .seed-color-preview {
+            width: 80px;
+            height: 80px;
+            border-radius: var(--m3-shape-medium);
+            box-shadow: var(--m3-elevation-2);
+            cursor: pointer;
+            border: 3px solid var(--m3-outline);
+            transition: all 0.2s ease;
+        }
+
+        .seed-color-preview:hover {
+            transform: scale(1.05);
+            box-shadow: var(--m3-elevation-3);
+        }
+
+        .seed-color-info {
+            flex: 1;
+        }
+
+        .seed-color-info h3 {
+            font-size: var(--m3-title-medium-size);
+            color: var(--m3-on-surface);
+            margin-bottom: 4px;
+        }
+
+        .seed-color-info p {
+            font-size: var(--m3-body-small-size);
+            color: var(--m3-on-surface-variant);
+        }
+
+        /* Preset Grid */
+        .preset-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 12px;
+            margin-top: 16px;
+        }
+
+        .preset-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 12px;
+            border-radius: var(--m3-shape-medium);
+            border: 2px solid transparent;
+            background: var(--m3-surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: var(--m3-surface-container-high);
+            transform: translateY(-2px);
+            box-shadow: var(--m3-elevation-1);
+        }
+
+        .preset-btn.active {
+            border-color: var(--m3-primary);
+            background: var(--m3-primary-container);
+        }
+
+        .preset-color {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            box-shadow: var(--m3-elevation-1);
+        }
+
+        .preset-label {
+            font-size: var(--m3-label-medium-size);
+            color: var(--m3-on-surface);
+            text-align: center;
+        }
+
+        /* Mode Toggle */
+        .mode-toggle {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 16px;
+            border-radius: var(--m3-shape-medium);
+            border: 2px solid var(--m3-outline);
+            background: var(--m3-surface);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: var(--m3-font-family);
+            font-size: var(--m3-label-large-size);
+            font-weight: 500;
+            color: var(--m3-on-surface);
+        }
+
+        .mode-btn:hover {
+            background: var(--m3-surface-container-high);
+        }
+
+        .mode-btn.active {
+            border-color: var(--m3-primary);
+            background: var(--m3-primary-container);
+            color: var(--m3-on-primary-container);
+        }
+
+        .mode-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Color Palette */
+        .palette-section {
+            margin-top: 24px;
+        }
+
+        .palette-section h3 {
+            font-size: var(--m3-title-small-size);
+            color: var(--m3-on-surface);
+            margin-bottom: 12px;
+        }
+
+        .palette-row {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .palette-label {
+            width: 80px;
+            font-size: var(--m3-label-small-size);
+            color: var(--m3-on-surface-variant);
+            display: flex;
+            align-items: center;
+        }
+
+        .palette-colors {
+            display: flex;
+            flex: 1;
+            gap: 2px;
+        }
+
+        .palette-swatch {
+            flex: 1;
+            height: 32px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+
+        .palette-swatch:hover {
+            transform: scale(1.1);
+            z-index: 1;
+        }
+
+        /* Preview Section */
+        .preview-section {
+            background: var(--m3-surface-container);
+            border-radius: var(--m3-shape-large);
+            padding: 24px;
+        }
+
+        .preview-section h3 {
+            font-size: var(--m3-title-medium-size);
+            color: var(--m3-on-surface);
+            margin-bottom: 16px;
+        }
+
+        /* Component Preview */
+        .component-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .preview-group {
+            background: var(--m3-surface);
+            border-radius: var(--m3-shape-medium);
+            padding: 20px;
+        }
+
+        .preview-group h4 {
+            font-size: var(--m3-label-large-size);
+            color: var(--m3-on-surface-variant);
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .button-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        /* Export Section */
+        .export-section {
+            margin-top: 32px;
+        }
+
+        .export-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        /* Mobile */
+        @media (max-width: 768px) {
+            #sidebar-container {
+                transform: translateX(-100%);
+                transition: transform 0.3s ease;
+            }
+
+            #sidebar-container.open {
+                transform: translateX(0);
+            }
+
+            .demo-content {
+                margin-left: 0;
+                padding: 20px;
+            }
+
+            .theme-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 1001;
+            width: 48px;
+            height: 48px;
+            border-radius: var(--m3-shape-full);
+            background: var(--m3-primary);
+            color: var(--m3-on-primary);
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--m3-elevation-2);
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-toggle {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>
+                        <span id="header-icon"></span>
+                        ThemeBuilder
+                        <span class="badge">v2.6.0</span>
+                    </h1>
+                    <p>Generiere vollstandige Material Design 3 Themes aus einer Seed-Farbe</p>
+                </div>
+
+                <div class="theme-layout">
+                    <!-- Left: Configuration -->
+                    <div>
+                        <!-- Seed Color -->
+                        <div class="config-card">
+                            <h2>Seed Color</h2>
+                            <p>Wahle eine Seed-Farbe - daraus wird automatisch eine komplette M3-Farbpalette generiert.</p>
+
+                            <div class="seed-color-section">
+                                <input type="color" id="seedColorPicker" class="seed-color-preview" value="#1a73e8">
+                                <div class="seed-color-info">
+                                    <h3 id="seedColorName">Google Blue</h3>
+                                    <p id="seedColorHex">#1a73e8</p>
+                                </div>
+                            </div>
+
+                            <h3 style="font-size: var(--m3-label-large-size); color: var(--m3-on-surface-variant); margin-bottom: 8px;">Presets</h3>
+                            <div class="preset-grid" id="presetGrid"></div>
+                        </div>
+
+                        <!-- Mode Toggle -->
+                        <div class="config-card">
+                            <h2>Color Mode</h2>
+                            <p>Wechsle zwischen Light und Dark Mode.</p>
+
+                            <div class="mode-toggle">
+                                <button class="mode-btn active" id="lightModeBtn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"/>
+                                    </svg>
+                                    Light
+                                </button>
+                                <button class="mode-btn" id="darkModeBtn">
+                                    <svg viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9 9-4.03 9-9c0-.46-.04-.92-.1-1.36-.98 1.37-2.58 2.26-4.4 2.26-2.98 0-5.4-2.42-5.4-5.4 0-1.81.89-3.42 2.26-4.4-.44-.06-.9-.1-1.36-.1z"/>
+                                    </svg>
+                                    Dark
+                                </button>
+                            </div>
+
+                            <!-- Generated Palette -->
+                            <div class="palette-section">
+                                <h3>Generated Palette</h3>
+                                <div id="paletteDisplay"></div>
+                            </div>
+                        </div>
+
+                        <!-- Export -->
+                        <div class="config-card">
+                            <h2>Export</h2>
+                            <p>Exportiere das generierte Theme als CSS-Variablen.</p>
+
+                            <div class="export-actions">
+                                <button class="m3-button m3-button--filled" id="exportCssBtn">
+                                    <span class="m3-button__icon">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                            <path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/>
+                                        </svg>
+                                    </span>
+                                    Export CSS
+                                </button>
+                                <button class="m3-button m3-button--outlined" id="copyVarsBtn">
+                                    <span class="m3-button__icon">
+                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                                            <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+                                        </svg>
+                                    </span>
+                                    Copy Variables
+                                </button>
+                            </div>
+
+                            <div id="exportCode"></div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Preview -->
+                    <div>
+                        <div class="preview-section">
+                            <h3>Live Preview</h3>
+
+                            <div class="component-preview">
+                                <!-- Buttons -->
+                                <div class="preview-group">
+                                    <h4>Buttons</h4>
+                                    <div class="button-row">
+                                        <button class="m3-button m3-button--filled">Filled</button>
+                                        <button class="m3-button m3-button--outlined">Outlined</button>
+                                        <button class="m3-button m3-button--tonal">Tonal</button>
+                                        <button class="m3-button m3-button--text">Text</button>
+                                    </div>
+                                </div>
+
+                                <!-- Danger/Success Buttons -->
+                                <div class="preview-group">
+                                    <h4>Semantic Colors</h4>
+                                    <div class="button-row">
+                                        <button class="m3-button m3-button--filled m3-button--danger">Delete</button>
+                                        <button class="m3-button m3-button--filled m3-button--success">Save</button>
+                                        <button class="m3-button m3-button--outlined m3-button--danger">Cancel</button>
+                                    </div>
+                                </div>
+
+                                <!-- Form Elements -->
+                                <div class="preview-group">
+                                    <h4>Form Elements</h4>
+                                    <div style="display: flex; flex-direction: column; gap: 16px;">
+                                        <div class="m3-text-field m3-text-field--filled">
+                                            <div class="m3-text-field__container">
+                                                <input type="text" class="m3-text-field__input" placeholder=" " id="demo-name" value="Max Mustermann">
+                                                <label class="m3-text-field__label" for="demo-name">Name</label>
+                                                <div class="m3-text-field__active-indicator"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class="m3-text-field m3-text-field--outlined">
+                                            <div class="m3-text-field__container">
+                                                <input type="email" class="m3-text-field__input" placeholder=" " id="demo-email">
+                                                <label class="m3-text-field__label" for="demo-email">Email</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Selection Controls -->
+                                <div class="preview-group">
+                                    <h4>Selection Controls</h4>
+                                    <div style="display: flex; flex-direction: column; gap: 8px;">
+                                        <label class="m3-checkbox">
+                                            <input type="checkbox" class="m3-checkbox__input" checked>
+                                            <span class="m3-checkbox__label">Newsletter abonnieren</span>
+                                        </label>
+                                        <label class="m3-switch">
+                                            <input type="checkbox" class="m3-switch__input" checked>
+                                            <span class="m3-switch__track">
+                                                <span class="m3-switch__thumb"></span>
+                                            </span>
+                                            <span class="m3-switch__label">Benachrichtigungen</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Cards -->
+                                <div class="preview-group">
+                                    <h4>Surface Variants</h4>
+                                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+                                        <div style="background: var(--m3-surface-container-lowest); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-surface-variant);">Lowest</small>
+                                        </div>
+                                        <div style="background: var(--m3-surface-container-low); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-surface-variant);">Low</small>
+                                        </div>
+                                        <div style="background: var(--m3-surface-container); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-surface-variant);">Container</small>
+                                        </div>
+                                        <div style="background: var(--m3-surface-container-high); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-surface-variant);">High</small>
+                                        </div>
+                                        <div style="background: var(--m3-surface-container-highest); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-surface-variant);">Highest</small>
+                                        </div>
+                                        <div style="background: var(--m3-primary-container); padding: 16px; border-radius: 8px; text-align: center;">
+                                            <small style="color: var(--m3-on-primary-container);">Primary</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usage Code -->
+                <div class="config-card" style="margin-top: 32px;">
+                    <h2>Usage</h2>
+                    <p>So verwendest du ThemeBuilder in deiner App:</p>
+                    <div id="usageCode"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from './layout.js';
+        import { ThemeBuilder } from '../../src/ThemeBuilder.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { IconManager } from '../../src/IconManager.js';
+
+        // Initialize layout with sidebar
+        initializeDemoLayout('theme-builder');
+
+        // Set header icon
+        document.getElementById('header-icon').innerHTML = IconManager.getIcon('star');
+
+        // Initialize ThemeBuilder
+        let themeBuilder = new ThemeBuilder({
+            seedColor: '#1a73e8',
+            darkMode: false,
+            autoApply: true
+        });
+
+        // Render preset buttons
+        function renderPresets() {
+            const grid = document.getElementById('presetGrid');
+            grid.innerHTML = '';
+
+            Object.entries(ThemeBuilder.presets).forEach(([key, preset]) => {
+                const btn = document.createElement('button');
+                btn.className = 'preset-btn' + (preset.seed === themeBuilder.seedColor ? ' active' : '');
+                btn.innerHTML = `
+                    <div class="preset-color" style="background: ${preset.seed}"></div>
+                    <span class="preset-label">${preset.name}</span>
+                `;
+                btn.onclick = () => {
+                    themeBuilder.setSeedColor(preset.seed);
+                    document.getElementById('seedColorPicker').value = preset.seed;
+                    document.getElementById('seedColorName').textContent = preset.name;
+                    document.getElementById('seedColorHex').textContent = preset.seed;
+                    renderPresets();
+                    renderPalette();
+                };
+                grid.appendChild(btn);
+            });
+        }
+
+        // Render palette display
+        function renderPalette() {
+            const container = document.getElementById('paletteDisplay');
+            const tones = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 100];
+
+            const palettes = [
+                { name: 'Primary', key: 'primary' },
+                { name: 'Secondary', key: 'secondary' },
+                { name: 'Tertiary', key: 'tertiary' },
+                { name: 'Neutral', key: 'neutral' }
+            ];
+
+            let html = '';
+            palettes.forEach(palette => {
+                const colors = themeBuilder.palette[palette.key];
+                html += `
+                    <div class="palette-row">
+                        <div class="palette-label">${palette.name}</div>
+                        <div class="palette-colors">
+                            ${tones.map(tone => {
+                                const color = colors[tone];
+                                const textColor = tone > 50 ? '#000' : '#fff';
+                                return `<div class="palette-swatch" style="background: ${color}; color: ${textColor}" title="${palette.key}${tone}: ${color}">${tone}</div>`;
+                            }).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+
+            container.innerHTML = html;
+        }
+
+        // Seed color picker
+        document.getElementById('seedColorPicker').addEventListener('input', (e) => {
+            const color = e.target.value;
+            themeBuilder.setSeedColor(color);
+            document.getElementById('seedColorName').textContent = 'Custom Color';
+            document.getElementById('seedColorHex').textContent = color;
+            renderPresets();
+            renderPalette();
+        });
+
+        // Mode toggle
+        const lightBtn = document.getElementById('lightModeBtn');
+        const darkBtn = document.getElementById('darkModeBtn');
+
+        lightBtn.addEventListener('click', () => {
+            lightBtn.classList.add('active');
+            darkBtn.classList.remove('active');
+            themeBuilder.setDarkMode(false);
+            document.documentElement.classList.remove('m3-dark');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            darkBtn.classList.add('active');
+            lightBtn.classList.remove('active');
+            themeBuilder.setDarkMode(true);
+            document.documentElement.classList.add('m3-dark');
+        });
+
+        // Export buttons
+        document.getElementById('exportCssBtn').addEventListener('click', () => {
+            const css = themeBuilder.exportCSS();
+            const blob = new Blob([css], { type: 'text/css' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'theme.css';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+
+        document.getElementById('copyVarsBtn').addEventListener('click', () => {
+            const css = themeBuilder.exportCSS();
+            navigator.clipboard.writeText(css).then(() => {
+                alert('CSS variables copied to clipboard!');
+            });
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-toggle').addEventListener('click', () => {
+            document.getElementById('sidebar-container').classList.toggle('open');
+        });
+
+        // Initialize
+        renderPresets();
+        renderPalette();
+
+        // Usage code snippet
+        new CodeSnippetBuilder({
+            containerId: 'usageCode',
+            language: 'javascript',
+            theme: 'dark',
+            code: `import { GlobalConfig, ThemeBuilder } from '/vendor/ssi-builders/src/index.js';
+
+// === RECOMMENDED: Use GlobalConfig (v2.6.0+) ===
+
+// 1. Set theme via GlobalConfig (recommended)
+GlobalConfig.setTheme('teal');  // Use a preset
+
+// 2. Or use custom seed color
+GlobalConfig.setThemeFromSeed('#ff5722');
+
+// 3. Toggle dark mode
+GlobalConfig.toggleDarkMode();
+
+// 4. Set dark mode explicitly
+GlobalConfig.setDarkMode(true);
+
+// 5. Get theme info
+const info = GlobalConfig.getThemeInfo();
+console.log(info.seedColor, info.darkMode);
+
+// 6. Listen for theme changes
+GlobalConfig.onThemeChange((theme) => {
+    console.log('Theme changed:', theme);
+});
+
+// Available presets:
+// 'google-blue', 'material-purple', 'teal', 'orange',
+// 'green', 'pink', 'indigo', 'cyan'
+
+// === Or use ThemeBuilder directly ===
+const theme = new ThemeBuilder({
+    seedColor: '#1a73e8',
+    darkMode: false,
+    autoApply: true
+});
+const css = theme.exportCSS();  // Export for production`
+        });
+
+        // Export code preview
+        new CodeSnippetBuilder({
+            containerId: 'exportCode',
+            language: 'css',
+            theme: 'dark',
+            code: `:root {
+    /* Generated M3 Theme */
+    --m3-primary: ${themeBuilder.palette.primary[40]};
+    --m3-on-primary: ${themeBuilder.palette.primary[100]};
+    --m3-primary-container: ${themeBuilder.palette.primary[90]};
+    --m3-on-primary-container: ${themeBuilder.palette.primary[10]};
+    /* ... and more */
+}`
+        });
+
+        console.log('ThemeBuilder Demo loaded');
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MessageBuilder - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/MessageBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <style>
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: var(--m3-on-surface, #202124); }
+        .demo-section .subtitle { color: var(--m3-on-surface-variant, #5f6368); font-size: 16px; margin-bottom: 24px; }
+
+        .example-demo {
+            background: var(--m3-surface-container, #f8f9fa);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .message-container {
+            min-height: 100px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .demo-card {
+            background: var(--m3-surface, #ffffff);
+            border: 1px solid var(--m3-outline-variant, #dadce0);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .demo-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        /* Dark mode support */
+        [data-theme="dark"] .example-demo {
+            background: var(--m3-surface-container, #2d2d2d);
+        }
+
+        [data-theme="dark"] .demo-card {
+            background: var(--m3-surface, #1e1e1e);
+            border-color: var(--m3-outline-variant, #3d3d3d);
+        }
+
+        [data-theme="dark"] .demo-section h2,
+        [data-theme="dark"] .demo-card h3 {
+            color: var(--m3-on-surface, #e0e0e0);
+        }
+
+        [data-theme="dark"] .demo-section .subtitle {
+            color: var(--m3-on-surface-variant, #9e9e9e);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>Message Builder</h1>
+                    <p>Persistent inline messages and alerts for user feedback</p>
+                </div>
+
+                <!-- Message Types -->
+                <div class="demo-section">
+                    <h2>Message Types</h2>
+                    <p class="subtitle">Different message types for various use cases</p>
+
+                    <div class="example-demo">
+                        <div class="btn-group">
+                            <button class="ssi-btn ssi-btn-primary" onclick="showInfo()">Info</button>
+                            <button class="ssi-btn ssi-btn-success" onclick="showSuccess()">Success</button>
+                            <button class="ssi-btn ssi-btn-warning" onclick="showWarning()">Warning</button>
+                            <button class="ssi-btn ssi-btn-danger" onclick="showError()">Error</button>
+                            <button class="ssi-btn ssi-btn-secondary" onclick="showLoading()">Loading</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="clearMessages('types-container')">Clear All</button>
+                        </div>
+                        <div id="types-container" class="message-container"></div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Code Example:</h3>
+                    <div id="code-types-example"></div>
+                </div>
+
+                <!-- Variants -->
+                <div class="demo-section">
+                    <h2>Style Variants</h2>
+                    <p class="subtitle">Soft, Outlined, and Filled variants</p>
+
+                    <div class="demo-grid">
+                        <div class="demo-card">
+                            <h3>Soft (Default)</h3>
+                            <div id="soft-container"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>Outlined</h3>
+                            <div id="outlined-container"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>Filled</h3>
+                            <div id="filled-container"></div>
+                        </div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Code Example:</h3>
+                    <div id="code-variants-example"></div>
+                </div>
+
+                <!-- With Title and Actions -->
+                <div class="demo-section">
+                    <h2>With Title & Actions</h2>
+                    <p class="subtitle">Messages with titles and action buttons</p>
+
+                    <div class="example-demo">
+                        <div class="btn-group">
+                            <button class="ssi-btn ssi-btn-primary" onclick="showWithTitle()">With Title</button>
+                            <button class="ssi-btn ssi-btn-secondary" onclick="showWithActions()">With Actions</button>
+                            <button class="ssi-btn ssi-btn-outlined" onclick="showComplex()">Complex Message</button>
+                        </div>
+                        <div id="actions-container" class="message-container"></div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Code Example:</h3>
+                    <div id="code-actions-example"></div>
+                </div>
+
+                <!-- Dynamic Update -->
+                <div class="demo-section">
+                    <h2>Dynamic Updates</h2>
+                    <p class="subtitle">Update message type and content dynamically</p>
+
+                    <div class="example-demo">
+                        <div class="btn-group">
+                            <button class="ssi-btn ssi-btn-primary" onclick="startProcess()">Start Process</button>
+                        </div>
+                        <div id="dynamic-container" class="message-container"></div>
+                    </div>
+
+                    <h3 style="margin-top: 24px;">Code Example:</h3>
+                    <div id="code-dynamic-example"></div>
+                </div>
+
+                <!-- Features -->
+                <div class="demo-section">
+                    <h2>Features</h2>
+                    <ul style="padding-left: 24px; color: var(--m3-on-surface-variant, #5f6368); line-height: 2;">
+                        <li><strong>5 Types</strong> - Info, Success, Warning, Error, Loading</li>
+                        <li><strong>3 Variants</strong> - Soft, Outlined, Filled</li>
+                        <li><strong>Dismissible</strong> - Optional close button</li>
+                        <li><strong>Action Buttons</strong> - Add custom actions</li>
+                        <li><strong>Dynamic Updates</strong> - Change type/content on the fly</li>
+                        <li><strong>Dark Mode</strong> - Full dark theme support</li>
+                        <li><strong>Accessible</strong> - ARIA roles and live regions</li>
+                        <li><strong>M3 Design</strong> - Material Design 3 compliant</li>
+                    </ul>
+                </div>
+
+                <!-- API Reference -->
+                <div class="demo-section">
+                    <h2>API Reference</h2>
+
+                    <h3 style="margin-top: 16px; margin-bottom: 12px;">Static Methods</h3>
+                    <table style="width: 100%; border-collapse: collapse; margin-bottom: 24px;">
+                        <thead>
+                            <tr style="background: var(--m3-surface-container, #f5f5f5);">
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Method</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.info(container, message, options)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Create info message</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.success(container, message, options)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Create success message</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.warning(container, message, options)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Create warning message</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.error(container, message, options)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Create error message</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.loading(container, message, options)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Create loading message</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>MessageBuilder.clearAll(container)</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Clear all messages in container</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-bottom: 12px;">Instance Methods</h3>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead>
+                            <tr style="background: var(--m3-surface-container, #f5f5f5);">
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Method</th>
+                                <th style="padding: 12px; text-align: left; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>message.dismiss()</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Dismiss the message with animation</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>message.update({ type, title, message })</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Update message content dynamically</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);"><code>message.destroy()</code></td>
+                                <td style="padding: 12px; border-bottom: 1px solid var(--m3-outline-variant, #dadce0);">Remove message immediately</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" style="position: fixed; bottom: 20px; right: 20px; width: 48px; height: 48px; border-radius: 50%; border: none; background: var(--m3-primary, #1a73e8); color: white; font-size: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000;">
+        <span id="theme-icon">🌙</span>
+    </button>
+
+    <script type="module">
+        import { MessageBuilder } from '../../src/MessageBuilder.js';
+        import { initializeLayout } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('message-builder');
+
+        // Initialize variant examples
+        MessageBuilder.info('soft-container', 'This is a soft info message');
+        MessageBuilder.info('outlined-container', 'This is an outlined info message', { variant: 'outlined' });
+        MessageBuilder.info('filled-container', 'This is a filled info message', { variant: 'filled' });
+
+        // Code Snippets
+        new CodeSnippetBuilder({
+            containerId: 'code-types-example',
+            code: `import { MessageBuilder } from '/vendor/ssi-builders/src/index.js';
+
+// Static convenience methods
+MessageBuilder.info('#container', 'This is an info message');
+MessageBuilder.success('#container', 'Operation completed!');
+MessageBuilder.warning('#container', 'Please review your changes');
+MessageBuilder.error('#container', 'An error occurred');
+MessageBuilder.loading('#container', 'Processing...');`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-variants-example',
+            code: `// Soft variant (default)
+MessageBuilder.info('#container', 'Soft message');
+
+// Outlined variant
+MessageBuilder.info('#container', 'Outlined message', {
+    variant: 'outlined'
+});
+
+// Filled variant
+MessageBuilder.info('#container', 'Filled message', {
+    variant: 'filled'
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-actions-example',
+            code: `// Message with title and actions
+new MessageBuilder({
+    containerId: 'container',
+    type: 'warning',
+    title: 'Session Expiring',
+    message: 'Your session will expire in 5 minutes.',
+    actions: [
+        {
+            label: 'Extend Session',
+            variant: 'filled',
+            handler: (msg) => {
+                msg.update({ type: 'success', message: 'Session extended!' });
+            }
+        },
+        {
+            label: 'Logout',
+            variant: 'text',
+            handler: () => logout()
+        }
+    ]
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-dynamic-example',
+            code: `// Dynamic update example
+const msg = MessageBuilder.loading('#container', 'Processing...');
+
+// Simulate async operation
+setTimeout(() => {
+    msg.update({
+        type: 'success',
+        message: 'Process completed successfully!'
+    });
+}, 2000);`,
+            language: 'javascript'
+        });
+
+        // Store dynamic message reference
+        let dynamicMsg = null;
+
+        // Expose functions to window
+        window.showInfo = () => {
+            MessageBuilder.info('types-container', 'This is an informational message.');
+        };
+
+        window.showSuccess = () => {
+            MessageBuilder.success('types-container', 'Operation completed successfully!');
+        };
+
+        window.showWarning = () => {
+            MessageBuilder.warning('types-container', 'Please review your changes before continuing.');
+        };
+
+        window.showError = () => {
+            MessageBuilder.error('types-container', 'An error occurred while processing your request.');
+        };
+
+        window.showLoading = () => {
+            MessageBuilder.loading('types-container', 'Processing your request...');
+        };
+
+        window.clearMessages = (containerId) => {
+            MessageBuilder.clearAll(containerId);
+        };
+
+        window.showWithTitle = () => {
+            new MessageBuilder({
+                containerId: 'actions-container',
+                type: 'info',
+                title: 'Information',
+                message: 'This message has a title above the content text.'
+            });
+        };
+
+        window.showWithActions = () => {
+            new MessageBuilder({
+                containerId: 'actions-container',
+                type: 'warning',
+                title: 'Action Required',
+                message: 'Please confirm or cancel this action.',
+                actions: [
+                    { label: 'Confirm', variant: 'filled', handler: (msg) => msg.dismiss() },
+                    { label: 'Cancel', variant: 'text', handler: (msg) => msg.dismiss() }
+                ]
+            });
+        };
+
+        window.showComplex = () => {
+            new MessageBuilder({
+                containerId: 'actions-container',
+                type: 'error',
+                title: 'Connection Lost',
+                message: 'Unable to connect to the server. Please check your internet connection and try again.',
+                variant: 'outlined',
+                actions: [
+                    { label: 'Retry', variant: 'filled', handler: () => alert('Retrying...') },
+                    { label: 'Work Offline', variant: 'text', handler: () => alert('Working offline') }
+                ]
+            });
+        };
+
+        window.startProcess = () => {
+            // Clear previous
+            MessageBuilder.clearAll('dynamic-container');
+
+            // Create loading message
+            dynamicMsg = MessageBuilder.loading('dynamic-container', 'Step 1: Initializing...');
+
+            // Simulate multi-step process
+            setTimeout(() => {
+                dynamicMsg.update({ message: 'Step 2: Processing data...' });
+            }, 1000);
+
+            setTimeout(() => {
+                dynamicMsg.update({ message: 'Step 3: Finalizing...' });
+            }, 2000);
+
+            setTimeout(() => {
+                dynamicMsg.update({
+                    type: 'success',
+                    title: 'Complete!',
+                    message: 'Process completed successfully.'
+                });
+            }, 3000);
+        };
+
+        // Dark Mode Toggle
+        const toggle = document.getElementById('dark-mode-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        let isDark = false;
+
+        toggle.addEventListener('click', () => {
+            isDark = !isDark;
+            document.body.setAttribute('data-theme', isDark ? 'dark' : 'light');
+            document.body.classList.toggle('dark', isDark);
+            themeIcon.textContent = isDark ? '☀️' : '🌙';
+        });
+
+        console.log('✅ MessageBuilder Demo initialized!');
+    </script>
+</body>
+</html>

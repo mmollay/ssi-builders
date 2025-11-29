@@ -1,0 +1,12 @@
+{
+  "$schema": "https://claude.ai/hooks-schema.json",
+  "description": "Auto-optimize model selection based on task complexity",
+
+  "user-prompt-submit": {
+    "command": "bash -c '\n# Token-Optimierung: Auto Model Selection\nUSER_MSG=\"$CLAUDE_USER_PROMPT\"\n\n# Komplexe Tasks die Sonnet brauchen\nif echo \"$USER_MSG\" | grep -qiE \"(refactor|architect|design pattern|complex|algorithm|performance optimization|GITHUB)\"; then\n  echo \"model:sonnet\"\n\n# Einfache Tasks -> Haiku (20x günstiger!)\nelif echo \"$USER_MSG\" | grep -qiE \"(fix|update|add|css|style|darkmode|i18n|translate|test)\"; then\n  echo \"model:haiku\"\n\n# Default: Haiku für alles andere\nelse\n  echo \"model:haiku\"\nfi\n'"
+  },
+
+  "agent-spawn": {
+    "command": "bash -c '\n# Agent-specific Model Selection\nAGENT=\"$CLAUDE_AGENT_TYPE\"\n\ncase \"$AGENT\" in\n  \"brutal-code-review-manager\"|\"pr-review-toolkit:*\")\n    echo \"model:sonnet\"\n    echo \"💎 Code review needs Sonnet\" >&2\n    ;;\n  \"Explore\"|\"Plan\")\n    echo \"model:haiku\"\n    echo \"⚡ Exploration with Haiku\" >&2\n    ;;\n  \"ssi-builder-sync\")\n    echo \"model:sonnet\"\n    echo \"💎 SSI Builder sync needs Sonnet\" >&2\n    ;;\n  *)\n    echo \"model:haiku\"\n    echo \"⚡ Default agent: Haiku\" >&2\n    ;;\nesac\n'"
+  }
+}

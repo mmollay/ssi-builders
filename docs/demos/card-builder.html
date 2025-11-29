@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CardBuilder - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CardBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <style>
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 16px;
+        }
+
+        .demo-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .demo-row > * {
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .section-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Feature list styling */
+        .feature-list {
+            padding-left: 20px;
+            color: var(--m3-on-surface-variant, #5f6368);
+            line-height: 2;
+            margin: 0;
+        }
+
+        /* API Table styling */
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .api-table th,
+        .api-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--m3-outline-variant, #dadce0);
+        }
+
+        .api-table thead tr {
+            background: var(--m3-surface-container, #f5f5f5);
+        }
+
+        [data-theme="dark"] .api-table thead tr {
+            background: var(--m3-surface-container, #2d2d2d);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>Card Builder</h1>
+                    <p>Material Design 3 Card/Segment component for grouping content</p>
+                </div>
+
+                <!-- All sections will be rendered as Cards -->
+                <div class="section-cards" id="sections-container"></div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { CardBuilder } from '../../src/CardBuilder.js';
+        import { initializeLayout } from './layout.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+
+        // Initialize layout with sidebar
+        initializeLayout('card-builder');
+
+        const container = document.getElementById('sections-container');
+
+        // ========================================
+        // Section 1: Card Variants
+        // ========================================
+        const variantsContent = document.createElement('div');
+        variantsContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Elevated, Filled, and Outlined variants following M3 spec
+            </p>
+            <div class="demo-grid" id="variants-demo"></div>
+            <div id="code-variants" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Card Variants', subtitle: 'The 3 M3 standard variants' },
+            content: variantsContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        // Add variant demos
+        new CardBuilder({
+            containerId: 'variants-demo',
+            variant: 'elevated',
+            header: { title: 'Elevated Card' },
+            content: 'This card has a subtle shadow that increases on hover. Best for highlighting important content.'
+        });
+
+        new CardBuilder({
+            containerId: 'variants-demo',
+            variant: 'filled',
+            header: { title: 'Filled Card' },
+            content: 'This card has a solid background color. Good for secondary content or grouped items.'
+        });
+
+        new CardBuilder({
+            containerId: 'variants-demo',
+            variant: 'outlined',
+            header: { title: 'Outlined Card' },
+            content: 'This card has only a border. Ideal for clean, minimal designs or when many cards are shown.'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-variants',
+            code: `// Elevated (default)
+new CardBuilder({
+    containerId: 'container',
+    variant: 'elevated',
+    header: { title: 'Card Title' },
+    content: 'Card content here'
+});
+
+// Filled
+new CardBuilder({
+    containerId: 'container',
+    variant: 'filled',
+    content: 'Filled card content'
+});
+
+// Outlined
+new CardBuilder({
+    containerId: 'container',
+    variant: 'outlined',
+    content: 'Outlined card content'
+});`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 2: Cards with Header
+        // ========================================
+        const headerContent = document.createElement('div');
+        headerContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Headers with title, subtitle, avatar, and actions
+            </p>
+            <div class="demo-grid" id="header-demo"></div>
+            <div id="code-header" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Cards with Header', subtitle: 'Title, subtitle, avatar & actions' },
+            content: headerContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        new CardBuilder({
+            containerId: 'header-demo',
+            variant: 'elevated',
+            header: {
+                title: 'Simple Title',
+                subtitle: 'With a subtitle'
+            },
+            content: 'Card content goes here.'
+        });
+
+        new CardBuilder({
+            containerId: 'header-demo',
+            variant: 'elevated',
+            header: {
+                title: 'John Doe',
+                subtitle: 'Software Engineer',
+                avatar: { text: 'JD', color: '#1a73e8' }
+            },
+            content: 'Card with avatar showing initials.'
+        });
+
+        new CardBuilder({
+            containerId: 'header-demo',
+            variant: 'elevated',
+            header: {
+                title: 'With Actions',
+                subtitle: 'Click the menu icon',
+                actions: [
+                    { icon: 'menu', label: 'More options', handler: () => alert('Menu clicked!') }
+                ]
+            },
+            content: 'Card with header action button.'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-header',
+            code: `new CardBuilder({
+    containerId: 'container',
+    header: {
+        title: 'User Name',
+        subtitle: 'Role or description',
+        avatar: {
+            text: 'UN',        // or src: 'avatar.jpg'
+            color: '#1a73e8'
+        },
+        actions: [
+            { icon: 'menu', handler: () => openMenu() }
+        ]
+    },
+    content: 'Card content...'
+});`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 3: Cards with Media
+        // ========================================
+        const mediaContent = document.createElement('div');
+        mediaContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Cards can include images or videos
+            </p>
+            <div class="demo-grid" id="media-demo"></div>
+            <div id="code-media" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Cards with Media', subtitle: 'Images and videos' },
+            content: mediaContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        new CardBuilder({
+            containerId: 'media-demo',
+            variant: 'elevated',
+            media: {
+                src: 'https://picsum.photos/400/200?random=1',
+                alt: 'Random image',
+                height: '160px',
+                position: 'top'
+            },
+            header: { title: 'Media at Top' },
+            content: 'Image positioned above the header.'
+        });
+
+        new CardBuilder({
+            containerId: 'media-demo',
+            variant: 'elevated',
+            header: { title: 'Media Below Header' },
+            media: {
+                src: 'https://picsum.photos/400/200?random=2',
+                alt: 'Random image',
+                height: '160px'
+            },
+            content: 'Image positioned below the header.'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-media',
+            code: `new CardBuilder({
+    containerId: 'container',
+    media: {
+        src: 'image.jpg',
+        alt: 'Description',
+        height: '200px',
+        position: 'top'  // or omit for below header
+    },
+    header: { title: 'Card with Image' },
+    content: 'Card content...'
+});`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 4: Cards with Footer Actions
+        // ========================================
+        const footerContent = document.createElement('div');
+        footerContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Action buttons in the footer area
+            </p>
+            <div class="demo-grid" id="footer-demo"></div>
+            <div id="code-footer" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Cards with Footer Actions', subtitle: 'Buttons & alignment' },
+            content: footerContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        new CardBuilder({
+            containerId: 'footer-demo',
+            variant: 'elevated',
+            header: { title: 'Card with Actions' },
+            content: 'This card has action buttons in the footer area.',
+            footer: {
+                actions: [
+                    { label: 'Cancel', variant: 'text', handler: () => alert('Cancel') },
+                    { label: 'Save', variant: 'filled', handler: () => alert('Saved!') }
+                ],
+                align: 'end'
+            }
+        });
+
+        new CardBuilder({
+            containerId: 'footer-demo',
+            variant: 'elevated',
+            header: { title: 'Centered Actions' },
+            content: 'Footer actions can be centered.',
+            footer: {
+                actions: [
+                    { label: 'Learn More', variant: 'outlined', handler: () => {} }
+                ],
+                align: 'center'
+            }
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-footer',
+            code: `new CardBuilder({
+    containerId: 'container',
+    header: { title: 'Card Title' },
+    content: 'Card content...',
+    footer: {
+        actions: [
+            { label: 'Cancel', variant: 'text', handler: () => {} },
+            { label: 'Save', variant: 'filled', handler: () => {} }
+        ],
+        align: 'end'  // 'start' | 'center' | 'end' | 'between'
+    }
+});`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 5: Collapsible Cards
+        // ========================================
+        const collapsibleContent = document.createElement('div');
+        collapsibleContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Cards that can be collapsed/expanded - perfect for FAQs & settings
+            </p>
+            <div class="demo-row" id="collapsible-demo"></div>
+            <div id="code-collapsible" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Collapsible Cards', subtitle: 'Expand & collapse content' },
+            content: collapsibleContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        new CardBuilder({
+            containerId: 'collapsible-demo',
+            variant: 'filled',
+            header: { title: 'Expanded by Default' },
+            content: 'Click the chevron icon in the header to collapse this card. This is useful for FAQs, settings panels, or long content.',
+            collapsible: true,
+            collapsed: false
+        });
+
+        new CardBuilder({
+            containerId: 'collapsible-demo',
+            variant: 'filled',
+            header: { title: 'Collapsed by Default' },
+            content: 'This content is initially hidden. Click to expand.',
+            collapsible: true,
+            collapsed: true
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-collapsible',
+            code: `new CardBuilder({
+    containerId: 'container',
+    header: { title: 'FAQ Item' },
+    content: 'Answer content here...',
+    collapsible: true,
+    collapsed: false  // initial state
+});
+
+// Toggle programmatically
+card.toggleCollapse();
+card.expand();
+card.collapse();`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 6: States
+        // ========================================
+        const statesContent = document.createElement('div');
+        statesContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Loading, clickable, and disabled states
+            </p>
+            <div class="demo-grid" id="states-demo"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Card States', subtitle: 'Loading, clickable & disabled' },
+            content: statesContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        new CardBuilder({
+            containerId: 'states-demo',
+            variant: 'elevated',
+            header: { title: 'Loading State' },
+            content: 'This card is in a loading state.',
+            loading: true
+        });
+
+        new CardBuilder({
+            containerId: 'states-demo',
+            variant: 'elevated',
+            header: { title: 'Clickable Card' },
+            content: 'This entire card is clickable. Hover to see the effect.',
+            clickable: true,
+            onClick: (card) => alert('Card clicked!')
+        });
+
+        new CardBuilder({
+            containerId: 'states-demo',
+            variant: 'elevated',
+            header: { title: 'Disabled Card' },
+            content: 'This card is disabled and not interactive.',
+            disabled: true
+        });
+
+        // ========================================
+        // Section 7: Card Groups
+        // ========================================
+        const groupContent = document.createElement('div');
+        groupContent.innerHTML = `
+            <p style="color: var(--m3-on-surface-variant); margin-bottom: 16px;">
+                Multiple cards can be grouped together horizontally or vertically
+            </p>
+            <div id="group-demo" style="margin: 16px 0;"></div>
+            <div id="code-group" style="margin-top: 20px;"></div>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Card Groups', subtitle: 'Horizontal & vertical layouts' },
+            content: groupContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        CardBuilder.group('group-demo', [
+            { header: { title: 'Card 1' }, content: 'First card in group', variant: 'filled' },
+            { header: { title: 'Card 2' }, content: 'Second card in group', variant: 'filled' },
+            { header: { title: 'Card 3' }, content: 'Third card in group', variant: 'filled' }
+        ], { direction: 'horizontal', gap: '16px' });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-group',
+            code: `// Create card group
+CardBuilder.group('container', [
+    { header: { title: 'Card 1' }, content: '...' },
+    { header: { title: 'Card 2' }, content: '...' },
+    { header: { title: 'Card 3' }, content: '...' }
+], {
+    direction: 'horizontal',  // or 'vertical'
+    gap: '16px'
+});`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Section 8: Features
+        // ========================================
+        const featuresContent = document.createElement('div');
+        featuresContent.innerHTML = `
+            <ul class="feature-list">
+                <li><strong>3 Variants</strong> - Elevated, Filled, Outlined (M3 standard)</li>
+                <li><strong>Header</strong> - Title, subtitle, avatar, actions</li>
+                <li><strong>Media</strong> - Image/video support</li>
+                <li><strong>Footer</strong> - Action buttons with alignment options</li>
+                <li><strong>Collapsible</strong> - Expand/collapse content</li>
+                <li><strong>Loading State</strong> - Spinner overlay</li>
+                <li><strong>Clickable</strong> - Full card as button</li>
+                <li><strong>Groups</strong> - Vertical/horizontal card groups</li>
+                <li><strong>Dark Mode</strong> - Full theme support</li>
+                <li><strong>Responsive</strong> - Mobile-friendly</li>
+            </ul>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'Features', subtitle: 'All CardBuilder capabilities' },
+            content: featuresContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        // ========================================
+        // Section 9: API Reference
+        // ========================================
+        const apiContent = document.createElement('div');
+        apiContent.innerHTML = `
+            <table class="api-table">
+                <thead>
+                    <tr>
+                        <th>Option</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>variant</code></td>
+                        <td>string</td>
+                        <td>'elevated' | 'filled' | 'outlined'</td>
+                    </tr>
+                    <tr>
+                        <td><code>header</code></td>
+                        <td>object</td>
+                        <td>{ title, subtitle, avatar, actions }</td>
+                    </tr>
+                    <tr>
+                        <td><code>media</code></td>
+                        <td>object</td>
+                        <td>{ src, alt, height, type, position }</td>
+                    </tr>
+                    <tr>
+                        <td><code>content</code></td>
+                        <td>string | HTMLElement</td>
+                        <td>Main card content</td>
+                    </tr>
+                    <tr>
+                        <td><code>footer</code></td>
+                        <td>object</td>
+                        <td>{ actions, align }</td>
+                    </tr>
+                    <tr>
+                        <td><code>collapsible</code></td>
+                        <td>boolean</td>
+                        <td>Enable collapse toggle</td>
+                    </tr>
+                    <tr>
+                        <td><code>collapsed</code></td>
+                        <td>boolean</td>
+                        <td>Initial collapsed state</td>
+                    </tr>
+                    <tr>
+                        <td><code>loading</code></td>
+                        <td>boolean</td>
+                        <td>Show loading overlay</td>
+                    </tr>
+                    <tr>
+                        <td><code>disabled</code></td>
+                        <td>boolean</td>
+                        <td>Disable card interactions</td>
+                    </tr>
+                    <tr>
+                        <td><code>clickable</code></td>
+                        <td>boolean</td>
+                        <td>Make entire card clickable</td>
+                    </tr>
+                    <tr>
+                        <td><code>onClick</code></td>
+                        <td>function</td>
+                        <td>Click handler for clickable cards</td>
+                    </tr>
+                    <tr>
+                        <td><code>padding</code></td>
+                        <td>string</td>
+                        <td>'none' | 'compact' | 'normal' | 'relaxed'</td>
+                    </tr>
+                </tbody>
+            </table>
+        `;
+
+        new CardBuilder({
+            containerId: container,
+            variant: 'outlined',
+            header: { title: 'API Reference', subtitle: 'Configuration options' },
+            content: apiContent,
+            collapsible: true,
+            padding: 'relaxed'
+        });
+
+        console.log('✅ CardBuilder Demo initialized with CardBuilder sections!');
+    </script>
+</body>
+</html>

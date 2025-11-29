@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "material-design-3": {
+      "command": "node",
+      "args": [
+        "/Users/martinmollay/Development/mcp-material-desing-3/dist/index.js"
+      ],
+      "env": {
+        "DEBUG": "false"
+      }
+    }
+  }
+}
