@@ -17,7 +17,7 @@
 - ✅ v2.6.1 Release zu GitHub gepusht
 
 ## Offene Tasks
-- [ ] **User muss Claude Code neu starten** um MCP Server zu aktivieren (`/reload`)
+- [ ] **User muss Claude Code neu starten** um MCP Server zu aktivieren durch kompletten Neustart
 - [ ] Playwright Tests fixen (68 failing tests - dokumentiert als Known Issue in v2.6.0)
 
 ## Git Status
@@ -34,7 +34,7 @@
 - **Token Savings:** 70-90% für SSI Builders Entwicklung
 
 ## Nächste Schritte
-1. Claude Code neu starten (`/reload`)
+1. Claude Code neu starten durch kompletten Neustart
 2. MCP Server testen
 3. Optional: Playwright Tests fixen
 
