@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ModalBuilder.form() Bug Test</title>
+    <link rel="stylesheet" href="src/shared.css">
+    <link rel="stylesheet" href="src/m3-tokens.css">
+    <link rel="stylesheet" href="src/FormBuilder.css">
+    <link rel="stylesheet" href="src/m3-form-styles.css">
+    <link rel="stylesheet" href="src/ModalBuilder.css">
+</head>
+<body style="padding: 40px;">
+    <h1>ModalBuilder.form() Bug Test</h1>
+    <button id="testBtn" style="padding: 12px 24px; font-size: 16px;">Open Modal Form</button>
+
+    <div id="console" style="margin-top: 20px; padding: 20px; background: #f0f0f0; font-family: monospace; white-space: pre-wrap;"></div>
+
+    <script type="module">
+        import { ModalBuilder } from './src/ModalBuilder.js';
+        import { GlobalConfig } from './src/GlobalConfig.js';
+
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular'
+        });
+
+        const log = (msg) => {
+            const console = document.getElementById('console');
+            console.textContent += new Date().toLocaleTimeString() + ' - ' + msg + '\n';
+            window.console.log(msg);
+        };
+
+        document.getElementById('testBtn').addEventListener('click', async () => {
+            log('Opening ModalBuilder.form()...');
+
+            const testData = {
+                name: 'Test Name',
+                description: 'Test Description',
+                monthly_price: 9.99,
+                is_active: true
+            };
+
+            log('Test Data: ' + JSON.stringify(testData));
+
+            const result = await ModalBuilder.form({
+                title: 'Test Form',
+                size: 'medium',
+                fieldLayout: 'filled',
+                gridColumns: 2,
+                fields: [
+                    { type: 'section', label: 'Basic Info' },
+                    { key: 'name', type: 'text', label: 'Name', required: true, width: 6 },
+                    { key: 'description', type: 'textarea', label: 'Description', rows: 2, width: 6 },
+                    { key: 'monthly_price', type: 'number', label: 'Price', min: 0, step: 0.01, width: 6 },
+                    { key: 'is_active', type: 'toggle', label: 'Active', width: 6 }
+                ],
+                values: testData,
+                submitLabel: 'Save',
+                onSubmit: async (values) => {
+                    log('Form submitted with values: ' + JSON.stringify(values));
+                }
+            });
+
+            log('Modal closed with result: ' + JSON.stringify(result));
+        });
+
+        log('Test page loaded. Click button to test ModalBuilder.form()');
+    </script>
+</body>
+</html>

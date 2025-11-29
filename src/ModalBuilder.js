@@ -522,12 +522,16 @@ export class ModalBuilder {
                         density: config.density || 'normal',
                         layout: config.layout || 'grid',
                         gridColumns: config.gridColumns || 1,
-                        values: initialValues,
                         options: {
                             useM3Components: true,
                             showResetButton: config.showResetButton ?? false,
                             submitLabel: config.submitLabel || i18n.t('form.submit') || 'Speichern',
                             cancelLabel: config.cancelLabel || i18n.t('form.cancel') || 'Abbrechen',
+                            initialValues: initialValues,  // FIX: Use initialValues, not values
+                            fieldLayout: config.fieldLayout || 'filled',  // FIX: Also pass fieldLayout in options
+                            density: config.density || 'normal',          // FIX: Also pass density in options
+                            layout: config.layout || 'grid',              // FIX: Also pass layout in options
+                            gridColumns: config.gridColumns || 1,         // FIX: Also pass gridColumns in options
                             ...config.formOptions
                         },
                         buttons: [

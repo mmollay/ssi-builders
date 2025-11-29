@@ -19,6 +19,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - **FormBuilder**: Fixed excessive spacing between form fields in modal dialogs
 - **FormBuilder**: Removed unwanted border outline around forms in modals
+- **ModalBuilder.form()**: Fixed values not being passed to FormBuilder
+  - Form fields now correctly display initial values via `values` parameter
+  - Fixed `fieldLayout`, `density`, `layout`, and `gridColumns` not being passed to FormBuilder options
+  - Values are now properly passed as `initialValues` to FormBuilder
+  - Resolves issue where edit forms appeared empty despite having data
 
 ## [2.6.1] - 2025-11-29
 
