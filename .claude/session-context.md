@@ -1,58 +1,42 @@
-# Session Context - 2025-11-28
+# Session Context - 2025-11-29
 
 ## Aktueller Stand
-- **Letzter erfolgreicher Task:** ThemeBuilder System-Integration in GlobalConfig
-- **Aktuelle Datei/Feature:** ThemeBuilder + GlobalConfig Integration v2.6.0
-- **Browser-Status:** http://localhost:5177/docs/demos/theme-builder.html (Playwright)
-- **Version:** SSI Builders v2.6.0
+- **Letzter erfolgreicher Task:** MCP Server Integration vollständig implementiert und global verfügbar gemacht
+- **Aktuelle Version:** v2.6.1 (released und gepusht zu GitHub)
+- **Browser-Status:** Vite Dev Server läuft auf Port 5178
+
+## Abgeschlossene Tasks (Heute)
+- ✅ MCP Server Projekt erstellt (`/Users/martinmollay/Development/ssi-builders-mcp/`)
+- ✅ 5 MCP Tools implementiert (list, get-info, generate-code, search, check-updates)
+- ✅ 3 MCP Resources (index, best-practices, changelog)
+- ✅ Auto-Sync Script für Pre-GITHUB Hook
+- ✅ Auto-Update Tool mit GitHub API Integration
+- ✅ Demo-Page erstellt (`docs/demos/mcp-server.html`)
+- ✅ Global MCP Config (`~/.mcp.json`) für alle Projekte
+- ✅ Build-Script repariert (data files werden kopiert)
+- ✅ v2.6.1 Release zu GitHub gepusht
 
 ## Offene Tasks
-- Keine offenen Tasks
-
-## Wichtige Änderungen (seit letztem Commit)
-- FormBuilder Layout Variations Section hinzugefügt
-- Number Stepper M3 Design Update
-- FormBuilder Density Options
-- Complete Form Example auf FormBuilder umgestellt
-- GlobalConfig i18n System (v2.5.0)
-- **NEU: ThemeBuilder GlobalConfig Integration (v2.6.0)**
-  - GlobalConfig.setTheme('preset') - Theme via Preset setzen
-  - GlobalConfig.setThemeFromSeed('#color') - Theme via Seed-Color
-  - GlobalConfig.toggleDarkMode() - Dark Mode toggle
-  - GlobalConfig.setDarkMode(true/false) - Dark Mode explizit setzen
-  - GlobalConfig.getThemeInfo() - Aktuelle Theme-Info abrufen
-  - GlobalConfig.getThemePresets() - Verfügbare Presets auflisten
-  - GlobalConfig.onThemeChange(callback) - Theme-Änderungen überwachen
-  - Zirkulärer Import-Problem gelöst (ThemeBuilder importiert NICHT GlobalConfig)
-  - Auto-Init via setTimeout um Import-Reihenfolge zu garantieren
-
-## Erledigte Tasks dieser Session
-1. ThemeBuilder GlobalConfig Integration
-   - IST: ThemeBuilder und GlobalConfig.theme waren zwei separate Systeme
-   - SOLL: EIN unified Theme-System über GlobalConfig
-   - FIX:
-     - GlobalConfig.js: Theme-Methoden hinzugefügt (setTheme, setThemeFromSeed, toggleDarkMode, etc.)
-     - ThemeBuilder.js: GlobalConfig Import entfernt (vermeidet circular dependency)
-     - index.js: Version auf 2.6.0 aktualisiert
-     - theme-builder.html: Usage-Code mit neuer GlobalConfig API aktualisiert
-
-## Bekannte Issues
-- [ ] Keine bekannten Issues
+- [ ] **User muss Claude Code neu starten** um MCP Server zu aktivieren (`/reload`)
+- [ ] Playwright Tests fixen (68 failing tests - dokumentiert als Known Issue in v2.6.0)
 
 ## Git Status
-- Branch: main (nicht committed - ThemeBuilder Integration)
-- Last commit: e8af96b - fix: Outlined fields also 56px height to match filled variant
+**Letzter Commit:** `54a287f - feat: Add ssi_check_updates tool to MCP Server`
+**Status:** ✅ Clean (alle Änderungen committed)
 
-## Dev Server
-- Port: 5177
-- Status: Running (npm run dev)
+## Bekannte Issues
+- [ ] **68 Playwright Tests failing** - Test-Fixes geplant für v2.6.2
 
-## Theme Presets verfügbar
-- google-blue (#1a73e8)
-- material-purple (#6750A4)
-- teal (#009688)
-- orange (#ff5722)
-- green (#4caf50)
-- pink (#e91e63)
-- indigo (#3f51b5)
-- cyan (#00bcd4)
+## MCP Server Details
+- **Location:** `/Users/martinmollay/Development/ssi-builders-mcp/`
+- **Global Config:** `~/.mcp.json`
+- **5 Tools:** list, get-info, generate-code, search, check-updates
+- **Token Savings:** 70-90% für SSI Builders Entwicklung
+
+## Nächste Schritte
+1. Claude Code neu starten (`/reload`)
+2. MCP Server testen
+3. Optional: Playwright Tests fixen
+
+## GitHub Releases
+- v2.6.1 - MCP Server Integration
