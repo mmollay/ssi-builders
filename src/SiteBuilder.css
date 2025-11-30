@@ -184,6 +184,7 @@
 .site-content-inner {
     margin: 0 auto;
     width: 100%;
+    /* Note: padding is set via inline style from config.content.padding (default: 40px) */
 }
 
 /* ============================================
@@ -267,7 +268,7 @@
     }
 
     .site-content-inner {
-        padding: 20px !important;
+        padding: 20px;
     }
 
     .site-footer {
