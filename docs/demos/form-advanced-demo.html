@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Form Demo - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/m3-tokens.css">
+    <link rel="stylesheet" href="../../src/FormBuilder.css">
+    <link rel="stylesheet" href="../../src/ModalBuilder.css">
+    <link rel="stylesheet" href="../../src/TabBuilder.css">
+    <link rel="stylesheet" href="../../src/ToastBuilder.css">
+    <link rel="stylesheet" href="../../src/m3-form-styles.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <style>
+        .demo-box {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            border: 2px solid #e8eaed;
+            margin-bottom: 24px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #e8f0fe;
+            color: #1a73e8;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+
+        .badge.new {
+            background: #e6f4ea;
+            color: #1e8e3e;
+        }
+
+        .toolbar {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .info-box {
+            background: #e8f0fe;
+            border-left: 4px solid #1a73e8;
+            padding: 16px;
+            border-radius: 0 8px 8px 0;
+            margin-bottom: 24px;
+        }
+
+        .info-box h4 {
+            margin: 0 0 8px 0;
+            color: #1a73e8;
+        }
+
+        .info-box p {
+            margin: 0;
+            color: #3c4043;
+        }
+
+        .result-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            display: none;
+        }
+
+        .result-box.visible {
+            display: block;
+        }
+
+        .result-box pre {
+            margin: 8px 0 0;
+            white-space: pre-wrap;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 13px;
+        }
+
+        /* Multi-step form container */
+        #multiStepFormContainer {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <div id="sidebar-container"></div>
+
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <div class="page-header">
+                    <h1>Advanced Form Demo</h1>
+                    <p>Fortgeschrittene FormBuilder Patterns: Modal Forms mit allen Feldtypen & Multi-Tab Forms</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>Features in dieser Demo</h4>
+                    <p>
+                        <strong>Outlined Text Fields</strong> - Material Design 3 Outlined Inputs<br>
+                        <strong>Slider/Range</strong> - Numeric range controls mit min/max<br>
+                        <strong>Toggle/Switch</strong> - Boolean switches<br>
+                        <strong>Multi-Tab Forms</strong> - Komplexe Formulare aufgeteilt auf mehrere Tabs
+                    </p>
+                </div>
+
+                <!-- Modal Form with All Field Types -->
+                <div class="demo-section">
+                    <h2>Modal: Alle Feldtypen <span class="badge new">NEU</span></h2>
+                    <p>Ein Modal mit FormBuilder der alle verfügbaren Feldtypen zeigt (Outlined Style).</p>
+
+                    <div class="demo-box">
+                        <div class="toolbar">
+                            <button class="m3-button m3-button--filled" id="btnShowAllFields">
+                                <span class="m3-button__icon" id="iconForm"></span>
+                                Alle Feldtypen anzeigen
+                            </button>
+                            <button class="m3-button m3-button--tonal" id="btnShowSettings">
+                                <span class="m3-button__icon" id="iconSettings"></span>
+                                Einstellungs-Form
+                            </button>
+                            <button class="m3-button m3-button--outlined" id="btnShowProfile">
+                                <span class="m3-button__icon" id="iconUser"></span>
+                                Profil-Form
+                            </button>
+                        </div>
+
+                        <div class="result-box" id="resultBox1">
+                            <strong>Formular-Ergebnis:</strong>
+                            <pre id="resultContent1"></pre>
+                        </div>
+                    </div>
+
+                    <div id="code-modal-fields" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- Multi-Tab Form -->
+                <div class="demo-section">
+                    <h2>Multi-Tab Formular <span class="badge new">NEU</span></h2>
+                    <p>Komplexe Formulare auf mehrere Tabs aufgeteilt - ideal für Benutzerregistrierung, Einstellungen, etc.</p>
+
+                    <div class="demo-box">
+                        <div class="toolbar">
+                            <button class="m3-button m3-button--filled" id="btnShowTabForm">
+                                <span class="m3-button__icon" id="iconTabs"></span>
+                                Multi-Tab Formular öffnen
+                            </button>
+                            <button class="m3-button m3-button--tonal" id="btnShowInlineTab">
+                                <span class="m3-button__icon" id="iconLayout"></span>
+                                Inline Tab Formular
+                            </button>
+                        </div>
+
+                        <div class="result-box" id="resultBox2">
+                            <strong>Formular-Ergebnis:</strong>
+                            <pre id="resultContent2"></pre>
+                        </div>
+                    </div>
+
+                    <div id="code-tab-form" style="margin-top: 16px;"></div>
+                </div>
+
+                <!-- Inline Multi-Step Form Demo -->
+                <div class="demo-section">
+                    <h2>Inline Multi-Step Form</h2>
+                    <p>Ein mehrstufiges Formular direkt auf der Seite (nicht im Modal).</p>
+
+                    <div class="demo-box">
+                        <div id="multiStepFormContainer"></div>
+                    </div>
+
+                    <div id="code-inline-tab" style="margin-top: 16px;"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { FormBuilder } from '../../src/FormBuilder.js';
+        import { ModalBuilder } from '../../src/ModalBuilder.js';
+        import { TabBuilder } from '../../src/TabBuilder.js';
+        import { ToastBuilder } from '../../src/ToastBuilder.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+        import { GlobalConfig } from '../../src/GlobalConfig.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { initializeDemoLayout } from './layout.js';
+
+        // Initialize
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular'
+        });
+
+        initializeDemoLayout('form-advanced-demo');
+
+        // Inject icons
+        const iconMappings = {
+            'iconForm': 'edit',
+            'iconSettings': 'settings',
+            'iconUser': 'view',
+            'iconTabs': 'tab',
+            'iconLayout': 'layout'
+        };
+
+        Object.entries(iconMappings).forEach(([elementId, iconName]) => {
+            const el = document.getElementById(elementId);
+            if (el) el.innerHTML = IconManager.getIcon(iconName);
+        });
+
+        // Helper to show results
+        function showResult(boxId, contentId, data) {
+            const box = document.getElementById(boxId);
+            const content = document.getElementById(contentId);
+            box.classList.add('visible');
+            content.textContent = data ? JSON.stringify(data, null, 2) : 'Abgebrochen';
+        }
+
+        // ========================================
+        // MODAL: ALL FIELD TYPES
+        // ========================================
+        document.getElementById('btnShowAllFields').addEventListener('click', async () => {
+            const result = await ModalBuilder.form({
+                title: 'Alle Feldtypen',
+                size: 'large',
+                fieldLayout: 'outlined', // Outlined style!
+                gridColumns: 2,
+                fields: [
+                    // Text fields
+                    { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+                    { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+                    { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 6 },
+                    { key: 'phone', type: 'tel', label: 'Telefon', width: 6 },
+                    { key: 'website', type: 'url', label: 'Website', width: 12 },
+
+                    // Number with stepper
+                    { key: 'age', type: 'number', label: 'Alter', min: 18, max: 120, width: 6 },
+                    { key: 'salary', type: 'number', label: 'Gehalt (€)', step: 100, width: 6 },
+
+                    // Select
+                    { key: 'country', type: 'select', label: 'Land', width: 6, options: [
+                        { value: 'AT', label: 'Österreich' },
+                        { value: 'DE', label: 'Deutschland' },
+                        { value: 'CH', label: 'Schweiz' }
+                    ]},
+                    { key: 'language', type: 'select', label: 'Sprache', width: 6, options: [
+                        { value: 'de', label: 'Deutsch' },
+                        { value: 'en', label: 'English' }
+                    ]},
+
+                    // Date
+                    { key: 'birthdate', type: 'date', label: 'Geburtsdatum', width: 6 },
+
+                    // Toggle
+                    { key: 'newsletter', type: 'toggle', label: 'Newsletter abonnieren', width: 6 },
+
+                    // Checkbox
+                    { key: 'terms', type: 'checkbox', label: 'AGB akzeptieren', required: true, width: 12 },
+
+                    // Textarea
+                    { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4, width: 12 },
+
+                    // Password with toggle
+                    { key: 'password', type: 'password', label: 'Passwort', required: true, width: 6 },
+                    { key: 'confirmPassword', type: 'password', label: 'Passwort bestätigen', required: true, width: 6 }
+                ],
+                values: {
+                    country: 'AT',
+                    language: 'de',
+                    newsletter: true
+                },
+                onSubmit: async (values) => {
+                    await new Promise(r => setTimeout(r, 500));
+                    ToastBuilder.success('Formular erfolgreich gespeichert!');
+                }
+            });
+
+            showResult('resultBox1', 'resultContent1', result);
+        });
+
+        // Settings Form
+        document.getElementById('btnShowSettings').addEventListener('click', async () => {
+            const result = await ModalBuilder.form({
+                title: 'Einstellungen',
+                size: 'medium',
+                fieldLayout: 'outlined',
+                fields: [
+                    { key: 'theme', type: 'select', label: 'Theme', options: [
+                        { value: 'light', label: 'Hell' },
+                        { value: 'dark', label: 'Dunkel' },
+                        { value: 'auto', label: 'Automatisch' }
+                    ]},
+                    { key: 'fontSize', type: 'number', label: 'Schriftgröße (px)', min: 12, max: 24, value: 16 },
+                    { key: 'notifications', type: 'toggle', label: 'Benachrichtigungen aktivieren' },
+                    { key: 'autoSave', type: 'toggle', label: 'Automatisch speichern' },
+                    { key: 'language', type: 'select', label: 'Sprache', options: [
+                        { value: 'de', label: 'Deutsch' },
+                        { value: 'en', label: 'English' }
+                    ]},
+                    { key: 'timezone', type: 'select', label: 'Zeitzone', options: [
+                        { value: 'Europe/Vienna', label: 'Wien (UTC+1)' },
+                        { value: 'Europe/Berlin', label: 'Berlin (UTC+1)' },
+                        { value: 'Europe/Zurich', label: 'Zürich (UTC+1)' }
+                    ]}
+                ],
+                values: {
+                    theme: 'auto',
+                    fontSize: 16,
+                    notifications: true,
+                    autoSave: true,
+                    language: 'de',
+                    timezone: 'Europe/Vienna'
+                }
+            });
+
+            showResult('resultBox1', 'resultContent1', result);
+        });
+
+        // Profile Form
+        document.getElementById('btnShowProfile').addEventListener('click', async () => {
+            const result = await ModalBuilder.form({
+                title: 'Profil bearbeiten',
+                size: 'medium',
+                fieldLayout: 'outlined',
+                gridColumns: 2,
+                fields: [
+                    { key: 'avatar', type: 'text', label: 'Avatar URL', width: 12 },
+                    { key: 'displayName', type: 'text', label: 'Anzeigename', required: true, width: 6 },
+                    { key: 'username', type: 'text', label: 'Benutzername', required: true, width: 6 },
+                    { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 6 },
+                    { key: 'phone', type: 'tel', label: 'Telefon', width: 6 },
+                    { key: 'location', type: 'text', label: 'Standort', width: 6 },
+                    { key: 'website', type: 'url', label: 'Website', width: 6 },
+                    { key: 'bio', type: 'textarea', label: 'Bio', rows: 4, width: 12 }
+                ],
+                values: {
+                    displayName: 'Max Mustermann',
+                    username: 'maxmuster',
+                    email: 'max@example.com',
+                    location: 'Wien, Österreich'
+                }
+            });
+
+            showResult('resultBox1', 'resultContent1', result);
+        });
+
+        // ========================================
+        // MULTI-TAB FORM IN MODAL
+        // ========================================
+        document.getElementById('btnShowTabForm').addEventListener('click', async () => {
+            // Create modal with TabBuilder + FormBuilder
+            const modal = new ModalBuilder({
+                title: 'Benutzerregistrierung',
+                size: 'large',
+                content: '<div id="modal-tab-container"></div>',
+                buttons: [
+                    {
+                        label: 'Abbrechen',
+                        onClick: () => modal.close()
+                    },
+                    {
+                        label: 'Registrieren',
+                        primary: true,
+                        onClick: async () => {
+                            // Collect data from all forms
+                            const personalData = formPersonal.getData();
+                            const accountData = formAccount.getData();
+                            const preferencesData = formPreferences.getData();
+
+                            // Validate all forms
+                            const valid = formPersonal.validate() &&
+                                         formAccount.validate() &&
+                                         formPreferences.validate();
+
+                            if (valid) {
+                                const allData = { ...personalData, ...accountData, ...preferencesData };
+                                await new Promise(r => setTimeout(r, 500));
+                                ToastBuilder.success('Registrierung erfolgreich!');
+                                showResult('resultBox2', 'resultContent2', allData);
+                                modal.close();
+                            } else {
+                                ToastBuilder.error('Bitte alle Pflichtfelder ausfüllen');
+                            }
+                        }
+                    }
+                ]
+            });
+
+            modal.open();
+
+            // Create tabs after modal is open
+            const tabs = new TabBuilder({
+                containerId: 'modal-tab-container',
+                tabs: [
+                    {
+                        key: 'personal',
+                        label: 'Persönliche Daten',
+                        icon: IconManager.getIcon('view'),
+                        content: '<div id="form-personal"></div>'
+                    },
+                    {
+                        key: 'account',
+                        label: 'Account',
+                        icon: IconManager.getIcon('settings'),
+                        content: '<div id="form-account"></div>'
+                    },
+                    {
+                        key: 'preferences',
+                        label: 'Einstellungen',
+                        icon: IconManager.getIcon('star'),
+                        content: '<div id="form-preferences"></div>'
+                    }
+                ]
+            });
+
+            tabs.render();
+
+            // Create forms in each tab
+            const formPersonal = new FormBuilder({
+                containerId: 'form-personal',
+                fieldLayout: 'outlined',
+                gridColumns: 2,
+                showSubmitButton: false, // No submit button in tabs
+                fields: [
+                    { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+                    { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+                    { key: 'birthdate', type: 'date', label: 'Geburtsdatum', width: 6 },
+                    { key: 'phone', type: 'tel', label: 'Telefon', width: 6 },
+                    { key: 'street', type: 'text', label: 'Straße', width: 8 },
+                    { key: 'number', type: 'text', label: 'Nr.', width: 4 },
+                    { key: 'zip', type: 'text', label: 'PLZ', width: 4 },
+                    { key: 'city', type: 'text', label: 'Stadt', width: 8 }
+                ]
+            });
+
+            const formAccount = new FormBuilder({
+                containerId: 'form-account',
+                fieldLayout: 'outlined',
+                showSubmitButton: false,
+                fields: [
+                    { key: 'username', type: 'text', label: 'Benutzername', required: true },
+                    { key: 'email', type: 'email', label: 'E-Mail', required: true },
+                    { key: 'password', type: 'password', label: 'Passwort', required: true },
+                    { key: 'confirmPassword', type: 'password', label: 'Passwort bestätigen', required: true }
+                ]
+            });
+
+            const formPreferences = new FormBuilder({
+                containerId: 'form-preferences',
+                fieldLayout: 'outlined',
+                showSubmitButton: false,
+                fields: [
+                    { key: 'newsletter', type: 'toggle', label: 'Newsletter abonnieren' },
+                    { key: 'notifications', type: 'toggle', label: 'E-Mail Benachrichtigungen' },
+                    { key: 'language', type: 'select', label: 'Sprache', options: [
+                        { value: 'de', label: 'Deutsch' },
+                        { value: 'en', label: 'English' }
+                    ]},
+                    { key: 'timezone', type: 'select', label: 'Zeitzone', options: [
+                        { value: 'Europe/Vienna', label: 'Wien (UTC+1)' },
+                        { value: 'Europe/Berlin', label: 'Berlin (UTC+1)' }
+                    ]},
+                    { key: 'terms', type: 'checkbox', label: 'AGB akzeptieren', required: true }
+                ],
+                values: {
+                    newsletter: true,
+                    notifications: true,
+                    language: 'de',
+                    timezone: 'Europe/Vienna'
+                }
+            });
+        });
+
+        // ========================================
+        // INLINE TAB FORM
+        // ========================================
+        document.getElementById('btnShowInlineTab').addEventListener('click', () => {
+            // Scroll to inline form
+            document.getElementById('multiStepFormContainer').scrollIntoView({ behavior: 'smooth' });
+            ToastBuilder.info('Siehe Inline Multi-Step Form unten');
+        });
+
+        // Create inline multi-step form
+        const inlineTabs = new TabBuilder({
+            containerId: 'multiStepFormContainer',
+            tabs: [
+                {
+                    key: 'step1',
+                    label: 'Schritt 1: Persönliche Daten',
+                    content: '<div id="inline-form-1"></div>'
+                },
+                {
+                    key: 'step2',
+                    label: 'Schritt 2: Kontaktdaten',
+                    content: '<div id="inline-form-2"></div>'
+                },
+                {
+                    key: 'step3',
+                    label: 'Schritt 3: Zusammenfassung',
+                    content: '<div id="inline-summary"></div>'
+                }
+            ]
+        });
+
+        inlineTabs.render();
+
+        const inlineForm1 = new FormBuilder({
+            containerId: 'inline-form-1',
+            fieldLayout: 'outlined',
+            gridColumns: 2,
+            submitLabel: 'Weiter zu Schritt 2',
+            fields: [
+                { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+                { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+                { key: 'birthdate', type: 'date', label: 'Geburtsdatum', width: 12 }
+            ],
+            onSubmit: async (data) => {
+                await new Promise(r => setTimeout(r, 300));
+                inlineTabs.switchTab('step2');
+                ToastBuilder.success('Schritt 1 abgeschlossen');
+            }
+        });
+
+        const inlineForm2 = new FormBuilder({
+            containerId: 'inline-form-2',
+            fieldLayout: 'outlined',
+            submitLabel: 'Weiter zur Zusammenfassung',
+            fields: [
+                { key: 'email', type: 'email', label: 'E-Mail', required: true },
+                { key: 'phone', type: 'tel', label: 'Telefon' },
+                { key: 'address', type: 'textarea', label: 'Adresse', rows: 3 }
+            ],
+            onSubmit: async (data) => {
+                await new Promise(r => setTimeout(r, 300));
+
+                // Show summary
+                const allData = { ...inlineForm1.getData(), ...inlineForm2.getData() };
+                document.getElementById('inline-summary').innerHTML = `
+                    <div style="padding: 24px; background: #f8f9fa; border-radius: 12px;">
+                        <h3>Zusammenfassung</h3>
+                        <pre>${JSON.stringify(allData, null, 2)}</pre>
+                        <button class="m3-button m3-button--filled" id="btnFinalSubmit">
+                            Abschließen
+                        </button>
+                    </div>
+                `;
+
+                document.getElementById('btnFinalSubmit').addEventListener('click', async () => {
+                    await new Promise(r => setTimeout(r, 500));
+                    ToastBuilder.success('Formular erfolgreich abgeschlossen!');
+                    showResult('resultBox2', 'resultContent2', allData);
+                });
+
+                inlineTabs.switchTab('step3');
+                ToastBuilder.success('Schritt 2 abgeschlossen');
+            }
+        });
+
+        // ========================================
+        // CODE SNIPPETS
+        // ========================================
+        new CodeSnippetBuilder({
+            containerId: 'code-modal-fields',
+            language: 'javascript',
+            code: `// Modal mit allen FormBuilder Feldtypen (Outlined Style)
+const result = await ModalBuilder.form({
+    title: 'Alle Feldtypen',
+    size: 'large',
+    fieldLayout: 'outlined', // 'filled' | 'outlined'
+    gridColumns: 2,
+    fields: [
+        // Text inputs
+        { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+        { key: 'email', type: 'email', label: 'E-Mail', required: true, width: 6 },
+        { key: 'phone', type: 'tel', label: 'Telefon', width: 6 },
+        { key: 'website', type: 'url', label: 'Website', width: 6 },
+
+        // Number with stepper buttons
+        { key: 'age', type: 'number', label: 'Alter', min: 18, max: 120, width: 6 },
+
+        // Select dropdown
+        { key: 'country', type: 'select', label: 'Land', width: 6, options: [
+            { value: 'AT', label: 'Österreich' },
+            { value: 'DE', label: 'Deutschland' }
+        ]},
+
+        // Date picker
+        { key: 'birthdate', type: 'date', label: 'Geburtsdatum', width: 6 },
+
+        // Toggle switch
+        { key: 'newsletter', type: 'toggle', label: 'Newsletter abonnieren', width: 6 },
+
+        // Checkbox
+        { key: 'terms', type: 'checkbox', label: 'AGB akzeptieren', required: true },
+
+        // Textarea
+        { key: 'bio', type: 'textarea', label: 'Über mich', rows: 4, width: 12 },
+
+        // Password with eye toggle
+        { key: 'password', type: 'password', label: 'Passwort', required: true, width: 6 }
+    ],
+    values: {
+        country: 'AT',
+        newsletter: true
+    }
+});`
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-tab-form',
+            language: 'javascript',
+            code: `// Multi-Tab Formular in Modal
+const modal = new ModalBuilder({
+    title: 'Benutzerregistrierung',
+    size: 'large',
+    content: '<div id="modal-tab-container"></div>',
+    buttons: [
+        {
+            label: 'Registrieren',
+            primary: true,
+            onClick: async () => {
+                // Daten von allen Forms sammeln
+                const personalData = formPersonal.getData();
+                const accountData = formAccount.getData();
+                const preferencesData = formPreferences.getData();
+
+                // Alle Forms validieren
+                const valid = formPersonal.validate() &&
+                             formAccount.validate() &&
+                             formPreferences.validate();
+
+                if (valid) {
+                    const allData = { ...personalData, ...accountData, ...preferencesData };
+                    await api.register(allData);
+                    modal.close();
+                }
+            }
+        }
+    ]
+});
+
+modal.open();
+
+// Tabs erstellen
+const tabs = new TabBuilder({
+    containerId: 'modal-tab-container',
+    tabs: [
+        {
+            key: 'personal',
+            label: 'Persönliche Daten',
+            icon: IconManager.getIcon('view'),
+            content: '<div id="form-personal"></div>'
+        },
+        {
+            key: 'account',
+            label: 'Account',
+            icon: IconManager.getIcon('settings'),
+            content: '<div id="form-account"></div>'
+        },
+        {
+            key: 'preferences',
+            label: 'Einstellungen',
+            icon: IconManager.getIcon('star'),
+            content: '<div id="form-preferences"></div>'
+        }
+    ]
+});
+
+tabs.render();
+
+// Forms in jedem Tab erstellen (OHNE Submit-Button!)
+const formPersonal = new FormBuilder({
+    containerId: 'form-personal',
+    fieldLayout: 'outlined',
+    gridColumns: 2,
+    showSubmitButton: false, // Wichtig: Kein Submit in Tabs!
+    fields: [
+        { key: 'firstName', type: 'text', label: 'Vorname', required: true, width: 6 },
+        { key: 'lastName', type: 'text', label: 'Nachname', required: true, width: 6 },
+        // ... mehr Felder
+    ]
+});
+
+const formAccount = new FormBuilder({
+    containerId: 'form-account',
+    fieldLayout: 'outlined',
+    showSubmitButton: false,
+    fields: [
+        { key: 'username', type: 'text', label: 'Benutzername', required: true },
+        { key: 'email', type: 'email', label: 'E-Mail', required: true },
+        // ... mehr Felder
+    ]
+});`
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-inline-tab',
+            language: 'javascript',
+            code: `// Inline Multi-Step Form (nicht in Modal)
+const tabs = new TabBuilder({
+    containerId: 'form-container',
+    tabs: [
+        {
+            key: 'step1',
+            label: 'Schritt 1: Persönliche Daten',
+            content: '<div id="form-step-1"></div>'
+        },
+        {
+            key: 'step2',
+            label: 'Schritt 2: Kontaktdaten',
+            content: '<div id="form-step-2"></div>'
+        },
+        {
+            key: 'step3',
+            label: 'Schritt 3: Zusammenfassung',
+            content: '<div id="summary"></div>'
+        }
+    ]
+});
+
+tabs.render();
+
+// Schritt 1 Form
+const form1 = new FormBuilder({
+    containerId: 'form-step-1',
+    fieldLayout: 'outlined',
+    submitLabel: 'Weiter zu Schritt 2',
+    fields: [
+        { key: 'firstName', type: 'text', label: 'Vorname', required: true },
+        { key: 'lastName', type: 'text', label: 'Nachname', required: true }
+    ],
+    onSubmit: async (data) => {
+        // Zur nächsten Tab wechseln
+        tabs.switchTab('step2');
+    }
+});
+
+// Schritt 2 Form
+const form2 = new FormBuilder({
+    containerId: 'form-step-2',
+    submitLabel: 'Weiter zur Zusammenfassung',
+    fields: [
+        { key: 'email', type: 'email', label: 'E-Mail', required: true }
+    ],
+    onSubmit: async (data) => {
+        // Alle Daten sammeln
+        const allData = { ...form1.getData(), ...form2.getData() };
+
+        // Zusammenfassung anzeigen
+        document.getElementById('summary').innerHTML = \`
+            <h3>Zusammenfassung</h3>
+            <pre>\${JSON.stringify(allData, null, 2)}</pre>
+        \`;
+
+        tabs.switchTab('step3');
+    }
+});`
+        });
+
+        console.log('Advanced Form Demo loaded');
+    </script>
+</body>
+</html>

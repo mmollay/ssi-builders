@@ -116,6 +116,13 @@ export function initializeDemoLayout(activePage) {
         href: '/docs/demos/crud-demo.html'
       },
       {
+        label: 'Advanced Forms',
+        icon: IconManager.getIcon('edit'),
+        key: 'form-advanced-demo',
+        href: '/docs/demos/form-advanced-demo.html',
+        badge: { text: 'New', color: '#2e7d32' }
+      },
+      {
         label: 'ChartBuilder',
         icon: IconManager.getIcon('chart'),
         key: 'chart-builder',
