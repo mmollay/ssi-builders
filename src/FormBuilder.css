@@ -308,7 +308,21 @@
 .form-builder-vertical {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    /* gap: 20px; REMOVED to allow variable spacing via margins */
+}
+
+.form-builder-vertical > .form-field {
+    margin-bottom: 20px; /* Replaces the gap */
+}
+
+.form-builder-vertical > .form-field:last-child {
+    margin-bottom: 0;
+}
+
+/* Toggles and Checkboxes get tighter spacing - High Specificity */
+.form-builder .form-builder-vertical .form-field-toggle,
+.form-builder .form-builder-vertical .form-field-checkbox {
+    margin-bottom: 8px !important;
 }
 
 .form-builder-inline {
@@ -476,6 +490,9 @@
     gap: 6px;
 }
 
+/* Reduce spacing for Checkboxes and Toggles - Handled in Layout section now */
+/* .form-field-checkbox, .form-field-toggle { margin-bottom: 8px; } */
+
 .form-field-full {
     grid-column: 1 / -1;
 }
@@ -483,11 +500,25 @@
 /* Fields with own labels (M3 components, selection controls) */
 .form-field-has-own-label {
     /* Remove default gap since component handles its own layout */
+    margin-bottom: 0;
 }
 
 .form-field-has-own-label .input-wrapper {
     /* M3 components handle their own label positioning */
+    position: relative;
 }
+
+/* ... (skipping to line 650 area for appearance fix) ... */
+
+/* Fix for appearance property */
+.form-select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    /* ... other styles ... */
+}
+
+/* Remove empty ruleset at end if exists */
 
 .form-field-error .form-input,
 .form-field-error .form-textarea,
@@ -512,7 +543,7 @@
 .form-textarea,
 .form-select {
     padding: 10px 12px;
-    border: 1px solid var(--m3-outline-variant, #dadce0);
+    border: 1px solid var(--m3-outline-variant, #dadce0); /* M3 Outlined spec */
     border-radius: 4px;
     font-size: 14px;
     font-family: inherit;
@@ -520,10 +551,15 @@
     background: var(--m3-surface, #ffffff);
 }
 
+/* Ensure number inputs don't have different borders */
+input[type="number"] {
+    border-color: var(--m3-outline-variant, #dadce0);
+}
+
 .form-input:hover,
 .form-textarea:hover,
 .form-select:hover {
-    border-color: var(--m3-outline-variant, #dadce0);
+    border-color: var(--m3-on-surface, #1C1B1F); /* Darker on hover */
 }
 
 .form-input:focus,
@@ -595,14 +631,14 @@
 .form-number-wrapper {
     display: flex;
     align-items: stretch;
-    border: 1px solid var(--m3-outline-variant, #dadce0);
+    border: 1px solid var(--m3-outline-variant, #dadce0); /* M3 Outlined spec */
     border-radius: 4px;
     transition: all 0.2s;
     background: var(--m3-surface, #ffffff);
 }
 
 .form-number-wrapper:hover {
-    border-color: var(--m3-on-surface-variant, #5f6368);
+    border-color: var(--m3-on-surface, #1C1B1F);
 }
 
 .form-number-wrapper:focus-within {
@@ -3728,4 +3764,501 @@ html.dark-mode .md-checkbox__background,
 html.m3-dark .md-radio__outer-circle,
 html.m3-dark .md-checkbox__background {
     border-color: var(--m3-outline, #666);
+}
+
+/* ============================================
+   STUDIO-STYLE FIELD TYPES
+   ============================================ */
+
+/* === Section Header === */
+.form-section-header {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--m3-on-surface-variant, #3c4043);
+    margin-top: 16px; /* Visual separation from previous section */
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* First section header needs no top margin */
+.form-field:first-child .form-section-header {
+    margin-top: 0;
+}
+
+.form-section-header__number {
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* === Button Group === */
+.form-button-group {
+    display: flex;
+    gap: 8px;
+}
+
+.form-button-group__btn {
+    flex: 1;
+    padding: 10px;
+    border: 2px solid var(--m3-outline-variant, #e0e0e0);
+    background: var(--m3-surface, white);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #202124);
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.form-button-group__btn:hover {
+    background: var(--m3-surface-container-low, #f8f9fa);
+    border-color: var(--m3-primary, #1a73e8);
+}
+
+.form-button-group__btn.active {
+    background: var(--m3-primary, #1a73e8);
+    color: white;
+    border-color: var(--m3-primary, #1a73e8);
+}
+
+.form-button-group__btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-button-group__sublabel {
+    font-size: 11px;
+    font-weight: 400;
+    opacity: 0.7;
+}
+
+/* === Card Select === */
+.form-card-select {
+    display: grid;
+    gap: 8px;
+}
+
+.form-card-select__card {
+    padding: 12px;
+    border: 2px solid var(--m3-outline-variant, #e0e0e0);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+    background: var(--m3-surface, white);
+}
+
+.form-card-select__card:hover {
+    border-color: var(--m3-primary, #1a73e8);
+    background: var(--m3-surface-container-low, #f8f9fa);
+}
+
+.form-card-select__card.active {
+    border-color: var(--m3-primary, #1a73e8);
+    background: var(--m3-primary-container, #e8f0fe);
+}
+
+.form-card-select__card[data-disabled="true"] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.form-card-select__icon {
+    font-size: 24px;
+    margin-bottom: 4px;
+}
+
+.form-card-select__label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--m3-on-surface-variant, #5f6368);
+}
+
+.form-card-select__card.active .form-card-select__label {
+    color: var(--m3-primary, #1a73e8);
+}
+
+/* === Color Swatches === */
+.form-color-swatches {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.form-color-swatch {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    padding: 0;
+}
+
+.form-color-swatch:hover {
+    transform: scale(1.1);
+}
+
+.form-color-swatch.active {
+    border-color: var(--m3-on-surface, #202124);
+    transform: scale(1.1);
+}
+
+.form-color-swatch:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* === Inline Checkbox === */
+.form-inline-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    background: var(--m3-surface-container-low, #f8f9fa);
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.form-inline-checkbox:hover {
+    background: var(--m3-surface-container, #f1f3f4);
+}
+
+.form-inline-checkbox.checked {
+    background: var(--m3-primary-container, #e8f0fe);
+}
+
+.form-inline-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    accent-color: var(--m3-primary, #1a73e8);
+}
+
+.form-inline-checkbox label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--m3-on-surface, #202124);
+    cursor: pointer;
+    margin: 0;
+    user-select: none;
+}
+
+/* === Item List === */
+.form-item-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-item-list__items {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-item-list__row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 8px;
+    background: var(--m3-surface-container-low, #f8f9fa);
+    border-radius: 8px;
+    border: 1px solid var(--m3-outline-variant, #e0e0e0);
+}
+
+.form-item-list__input {
+    flex: 1;
+    padding: 8px 10px;
+    border: 1px solid var(--m3-outline-variant, #e0e0e0);
+    border-radius: 6px;
+    font-size: 12px;
+    background: var(--m3-surface, white);
+    color: var(--m3-on-surface, #202124);
+    min-width: 0; /* Allow shrinking in flex */
+}
+
+.form-item-list__input:focus {
+    outline: none;
+    border-color: var(--m3-primary, #1a73e8);
+    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
+}
+
+.form-item-list__input::placeholder {
+    color: var(--m3-on-surface-variant, #9aa0a6);
+}
+
+select.form-item-list__input {
+    cursor: pointer;
+    padding-right: 24px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%235f6368' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    background-size: 12px;
+    appearance: none;
+}
+
+.form-item-list__delete {
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: var(--m3-error-container, #ffebee);
+    color: var(--m3-error, #c62828);
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s;
+    flex-shrink: 0;
+}
+
+.form-item-list__delete:hover {
+    background: var(--m3-error, #c62828);
+    color: white;
+}
+
+.form-item-list__add {
+    width: 100%;
+    padding: 10px;
+    border: 2px dashed var(--m3-outline-variant, #e0e0e0);
+    background: transparent;
+    color: var(--m3-on-surface-variant, #5f6368);
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+}
+
+.form-item-list__add:hover {
+    border-color: var(--m3-primary, #1a73e8);
+    color: var(--m3-primary, #1a73e8);
+    background: var(--m3-primary-container, #e8f0fe);
+}
+
+/* === Dark Mode for Studio-Style Fields === */
+html.dark-mode .form-section-header,
+html.m3-dark .form-section-header {
+    color: var(--m3-on-surface-variant, #a0a0a0);
+}
+
+html.dark-mode .form-button-group__btn,
+html.m3-dark .form-button-group__btn {
+    background: var(--m3-surface-container, #2d2d2d);
+    border-color: var(--m3-outline, #666);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+html.dark-mode .form-button-group__btn:hover,
+html.m3-dark .form-button-group__btn:hover {
+    background: var(--m3-surface-container-high, #3d3d3d);
+}
+
+html.dark-mode .form-card-select__card,
+html.m3-dark .form-card-select__card {
+    background: var(--m3-surface-container, #2d2d2d);
+    border-color: var(--m3-outline, #666);
+}
+
+html.dark-mode .form-card-select__card:hover,
+html.m3-dark .form-card-select__card:hover {
+    background: var(--m3-surface-container-high, #3d3d3d);
+}
+
+html.dark-mode .form-card-select__card.active,
+html.m3-dark .form-card-select__card.active {
+    background: rgba(138, 180, 248, 0.15);
+    border-color: var(--m3-primary, #8ab4f8);
+}
+
+html.dark-mode .form-inline-checkbox,
+html.m3-dark .form-inline-checkbox {
+    background: var(--m3-surface-container, #2d2d2d);
+}
+
+html.dark-mode .form-inline-checkbox.checked,
+html.m3-dark .form-inline-checkbox.checked {
+    background: rgba(138, 180, 248, 0.15);
+}
+
+html.dark-mode .form-item-list__row,
+html.m3-dark .form-item-list__row {
+    background: var(--m3-surface-container, #2d2d2d);
+    border-color: var(--m3-outline, #666);
+}
+
+html.dark-mode .form-item-list__input,
+html.m3-dark .form-item-list__input {
+    background: var(--m3-surface, #1c1b1f);
+    border-color: var(--m3-outline, #666);
+    color: var(--m3-on-surface, #e0e0e0);
+}
+
+html.dark-mode .form-item-list__delete,
+html.m3-dark .form-item-list__delete {
+    background: rgba(207, 102, 121, 0.2);
+    color: #cf6679;
+}
+
+html.dark-mode .form-item-list__add,
+html.m3-dark .form-item-list__add {
+    border-color: var(--m3-outline, #666);
+    color: var(--m3-on-surface-variant, #a0a0a0);
+}
+
+html.dark-mode .form-item-list__add:hover,
+html.m3-dark .form-item-list__add:hover {
+    background: rgba(138, 180, 248, 0.1);
+    border-color: var(--m3-primary, #8ab4f8);
+    color: var(--m3-primary, #8ab4f8);
+}
+
+/* === Density Overrides for Studio-Style Fields === */
+/* Dense: Compact spacing for sidebars and panels */
+
+/* Standard fields in dense mode need margin-top for visual separation */
+.form-builder.form-density-dense .form-field-standard {
+    margin-bottom: 0; /* gap handles this */
+    margin-top: 4px; /* Visual breathing room from previous element */
+}
+
+.form-builder.form-density-dense .form-field-standard .form-label {
+    margin-bottom: 4px;
+    font-size: 11px;
+}
+
+.form-builder.form-density-dense .form-field-standard .form-input,
+.form-builder.form-density-dense .form-field-standard .form-select {
+    padding: 10px 12px !important;
+    font-size: 13px;
+}
+
+.form-builder.form-density-dense .form-section-header {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    padding-top: 12px;
+    border-top: 1px solid var(--m3-outline-variant, #e0e0e0);
+    font-size: 12px;
+}
+
+.form-builder.form-density-dense .form-field:first-child .form-section-header {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+}
+
+.form-builder.form-density-dense .form-button-group__btn {
+    padding: 8px;
+    font-size: 12px;
+}
+
+.form-builder.form-density-dense .form-card-select__card {
+    padding: 10px;
+}
+
+.form-builder.form-density-dense .form-card-select__icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+}
+
+.form-builder.form-density-dense .form-card-select__label {
+    font-size: 11px;
+}
+
+.form-builder.form-density-dense .form-inline-checkbox {
+    padding: 8px 10px;
+}
+
+.form-builder.form-density-dense .form-inline-checkbox label {
+    font-size: 12px;
+}
+
+.form-builder.form-density-dense .form-item-list__row {
+    padding: 6px;
+}
+
+.form-builder.form-density-dense .form-item-list__input {
+    padding: 6px 8px;
+    font-size: 11px;
+}
+
+.form-builder.form-density-dense .form-item-list__delete {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+}
+
+.form-builder.form-density-dense .form-item-list__add {
+    padding: 8px;
+    font-size: 12px;
+}
+
+/* Comfortable: Spacious layout */
+.form-builder.form-density-comfortable .form-section-header {
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-size: 16px;
+}
+
+.form-builder.form-density-comfortable .form-button-group__btn {
+    padding: 14px;
+    font-size: 15px;
+}
+
+.form-builder.form-density-comfortable .form-card-select__card {
+    padding: 16px;
+}
+
+.form-builder.form-density-comfortable .form-card-select__icon {
+    font-size: 28px;
+    margin-bottom: 8px;
+}
+
+.form-builder.form-density-comfortable .form-card-select__label {
+    font-size: 14px;
+}
+
+.form-builder.form-density-comfortable .form-inline-checkbox {
+    padding: 14px 16px;
+}
+
+.form-builder.form-density-comfortable .form-inline-checkbox label {
+    font-size: 15px;
+}
+
+.form-builder.form-density-comfortable .form-item-list__row {
+    padding: 12px;
+}
+
+.form-builder.form-density-comfortable .form-item-list__input {
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.form-builder.form-density-comfortable .form-item-list__delete {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+}
+
+.form-builder.form-density-comfortable .form-item-list__add {
+    padding: 14px;
+    font-size: 15px;
 }

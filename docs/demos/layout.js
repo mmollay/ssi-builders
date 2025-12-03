@@ -47,6 +47,7 @@ export function initializeDemoLayout(activePage) {
       background: '#1a73e8'
     },
     items: [
+      // Getting Started
       {
         type: 'heading',
         label: 'Getting Started'
@@ -64,14 +65,132 @@ export function initializeDemoLayout(activePage) {
         href: '/docs/demos/installation.html'
       },
       {
+        label: 'SiteBuilder Studio',
+        icon: '🎨',
+        key: 'sitebuilder-studio',
+        href: '/docs/demos/sitebuilder-studio.html',
+        badge: { text: 'New', color: '#2e7d32' }
+      },
+
+      // Layout & Structure
+      {
         type: 'heading',
-        label: 'Analytics'
+        label: 'Layout & Structure'
+      },
+      {
+        label: 'SiteBuilder',
+        icon: IconManager.getIcon('layout'),
+        key: 'site-builder',
+        href: '/docs/demos/site-builder.html'
+      },
+      {
+        label: 'SidebarBuilder',
+        icon: IconManager.getIcon('sidebar'),
+        key: 'sidebar-builder',
+        href: '/docs/demos/sidebar-builder.html'
+      },
+      {
+        label: 'MenuBuilder',
+        icon: IconManager.getIcon('menu'),
+        key: 'menu-builder',
+        href: '/docs/demos/menu-builder.html'
+      },
+      {
+        label: 'TabBuilder',
+        icon: IconManager.getIcon('tab'),
+        key: 'tab-builder',
+        href: '/docs/demos/tab-builder.html'
+      },
+      {
+        label: 'CardBuilder',
+        icon: IconManager.getIcon('layout'),
+        key: 'card-builder',
+        href: '/docs/demos/card-builder.html'
+      },
+      {
+        label: 'HeaderBuilder',
+        icon: IconManager.getIcon('menu'),
+        key: 'header-builder',
+        href: '/docs/demos/header-builder.html',
+        badge: { text: 'New', color: '#2e7d32' }
+      },
+
+      // Data & Forms
+      {
+        type: 'heading',
+        label: 'Data & Forms'
+      },
+      {
+        label: 'ListBuilder',
+        icon: IconManager.getIcon('list'),
+        key: 'list-builder',
+        href: '/docs/demos/list-builder.html'
+      },
+      {
+        label: 'FormBuilder',
+        icon: IconManager.getIcon('edit'),
+        key: 'form-builder',
+        href: '/docs/demos/form-builder.html'
+      },
+      {
+        label: 'Advanced Forms',
+        icon: IconManager.getIcon('edit'),
+        key: 'form-advanced-demo',
+        href: '/docs/demos/form-advanced-demo.html'
+      },
+      {
+        label: 'CRUD Demo',
+        icon: IconManager.getIcon('grid'),
+        key: 'crud-demo',
+        href: '/docs/demos/crud-demo.html'
+      },
+
+      // Modals & Feedback
+      {
+        type: 'heading',
+        label: 'Modals & Feedback'
+      },
+      {
+        label: 'ModalBuilder',
+        icon: IconManager.getIcon('modal'),
+        key: 'modal-builder',
+        href: '/docs/demos/modal-builder.html'
+      },
+      {
+        label: 'ToastBuilder',
+        icon: IconManager.getIcon('bell'),
+        key: 'toast-builder',
+        href: '/docs/demos/toast-builder.html'
+      },
+      {
+        label: 'MessageBuilder',
+        icon: IconManager.getIcon('info'),
+        key: 'message-builder',
+        href: '/docs/demos/message-builder.html'
+      },
+      {
+        label: 'TooltipBuilder',
+        icon: IconManager.getIcon('info'),
+        key: 'tooltip-builder',
+        href: '/docs/demos/tooltip-builder.html'
+      },
+
+      // Analytics & Data Visualization
+      {
+        type: 'heading',
+        label: 'Analytics & Charts'
       },
       {
         label: 'AnalyticsCard',
         icon: IconManager.getIcon('chart'),
         key: 'analytics-card',
         href: '/docs/demos/analytics-card.html'
+      },
+      {
+        label: 'ChartBuilder',
+        icon: IconManager.getIcon('chart'),
+        key: 'chart-builder',
+        href: '/docs/demos/chart-builder.html'
       },
       {
         label: 'FilterBar',
@@ -85,98 +204,11 @@ export function initializeDemoLayout(activePage) {
         key: 'time-range-picker',
         href: '/docs/demos/time-range-picker.html'
       },
+
+      // Utilities
       {
         type: 'heading',
-        label: 'Core Builders'
-      },
-      {
-        label: 'ListBuilder',
-        icon: IconManager.getIcon('list'),
-        key: 'list-builder',
-        href: '/docs/demos/list-builder.html',
-        badge: getComponentBadge('ListBuilder', { text: 'Popular', color: '#34a853' })
-      },
-      {
-        label: 'FormBuilder',
-        icon: IconManager.getIcon('edit'),
-        key: 'form-builder',
-        href: '/docs/demos/form-builder.html',
-        badge: { text: 'Popular', color: '#34a853' }
-      },
-      {
-        label: 'ModalBuilder',
-        icon: IconManager.getIcon('modal'),
-        key: 'modal-builder',
-        href: '/docs/demos/modal-builder.html'
-      },
-      {
-        label: 'CRUD Demo',
-        icon: IconManager.getIcon('grid'),
-        key: 'crud-demo',
-        href: '/docs/demos/crud-demo.html'
-      },
-      {
-        label: 'Advanced Forms',
-        icon: IconManager.getIcon('edit'),
-        key: 'form-advanced-demo',
-        href: '/docs/demos/form-advanced-demo.html',
-        badge: { text: 'New', color: '#2e7d32' }
-      },
-      {
-        label: 'ChartBuilder',
-        icon: IconManager.getIcon('chart'),
-        key: 'chart-builder',
-        href: '/docs/demos/chart-builder.html'
-      },
-      {
-        label: 'TabBuilder',
-        icon: IconManager.getIcon('tab'),
-        key: 'tab-builder',
-        href: '/docs/demos/tab-builder.html'
-      },
-      {
-        label: 'MenuBuilder',
-        icon: IconManager.getIcon('menu'),
-        key: 'menu-builder',
-        href: '/docs/demos/menu-builder.html'
-      },
-      {
-        label: 'SidebarBuilder',
-        icon: IconManager.getIcon('sidebar'),
-        key: 'sidebar-builder',
-        href: '/docs/demos/sidebar-builder.html'
-      },
-      {
-        label: 'SiteBuilder',
-        icon: IconManager.getIcon('layout'),
-        key: 'site-builder',
-        href: '/docs/demos/site-builder.html'
-      },
-      {
-        label: 'ToastBuilder',
-        icon: IconManager.getIcon('bell'),
-        key: 'toast-builder',
-        href: '/docs/demos/toast-builder.html'
-      },
-      {
-        label: 'MessageBuilder',
-        icon: IconManager.getIcon('info'),
-        key: 'message-builder',
-        href: '/docs/demos/message-builder.html',
-        badge: { text: 'New', color: '#2e7d32' }
-      },
-      {
-        label: 'CardBuilder',
-        icon: IconManager.getIcon('layout'),
-        key: 'card-builder',
-        href: '/docs/demos/card-builder.html',
-        badge: { text: 'New', color: '#2e7d32' }
-      },
-      {
-        label: 'TooltipBuilder',
-        icon: IconManager.getIcon('info'),
-        key: 'tooltip-builder',
-        href: '/docs/demos/tooltip-builder.html'
+        label: 'Utilities'
       },
       {
         label: 'CodeSnippetBuilder',
@@ -188,36 +220,37 @@ export function initializeDemoLayout(activePage) {
         label: 'ChangelogBuilder',
         icon: IconManager.getIcon('history'),
         key: 'changelog-builder',
-        href: '/docs/demos/changelog-builder.html',
-        badge: { text: 'New', color: '#1a73e8' }
+        href: '/docs/demos/changelog-builder.html'
       },
+
+      // Design System
       {
         type: 'heading',
         label: 'Design System'
       },
       {
-        label: 'M3 Components',
-        icon: IconManager.getIcon('layout'),
-        key: 'm3-components',
-        href: '/docs/demos/m3-components.html',
-        badge: { text: 'Updated', color: '#1a73e8' }
-      },
-      {
         label: 'ThemeBuilder',
         icon: IconManager.getIcon('star'),
         key: 'theme-builder',
-        href: '/docs/demos/theme-builder.html',
-        badge: { text: 'New', color: '#2e7d32' }
+        href: '/docs/demos/theme-builder.html'
       },
       {
-        type: 'heading',
-        label: 'System'
+        label: 'M3 Components',
+        icon: IconManager.getIcon('layout'),
+        key: 'm3-components',
+        href: '/docs/demos/m3-components.html'
       },
       {
         label: 'Icon System',
         icon: IconManager.getIcon('star'),
         key: 'icon-system',
         href: '/docs/demos/icon-system.html'
+      },
+
+      // System
+      {
+        type: 'heading',
+        label: 'System'
       },
       {
         label: 'Global Config',

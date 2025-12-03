@@ -21,6 +21,7 @@
 }
 
 .sidebar-right {
+    left: auto;
     right: 0;
     border-right: none;
     border-left: 1px solid #e8eaed;

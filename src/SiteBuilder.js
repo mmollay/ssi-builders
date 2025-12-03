@@ -29,9 +29,19 @@
 import { GlobalConfig } from './GlobalConfig.js';
 import { IconManager } from './IconManager.js';
 import { SidebarBuilder } from './SidebarBuilder.js';
+import { HeaderBuilder } from './HeaderBuilder.js';
 import { deepMerge } from './utils.js';
 
 export class SiteBuilder {
+    /**
+     * Spacing Presets für Content Padding
+     */
+    static spacingPresets = {
+        compact: 16,    // Minimaler Abstand
+        normal: 40,     // Standard Abstand (default)
+        spacious: 64    // Großzügiger Abstand
+    };
+
     /**
      * Pre-configured Layout Templates
      */
@@ -67,6 +77,9 @@ export class SiteBuilder {
     };
 
     constructor(config) {
+        // Store user config for template application
+        this.userConfig = config || {};
+
         this.config = {
             containerId: 'app',
             layout: 'admin',        // 'admin' | 'website' | 'dashboard' | 'landing' | 'custom'
@@ -85,6 +98,7 @@ export class SiteBuilder {
             // Sidebar Config
             sidebar: {
                 show: false,
+                position: 'left',   // 'left' | 'right'
                 width: GlobalConfig.get('sidebar.width') || 280,
                 collapsible: GlobalConfig.get('sidebar.collapsible') || true,
                 navigation: [],     // [{ label, icon, href, onClick, badge }]
@@ -94,16 +108,22 @@ export class SiteBuilder {
             // Content Config
             content: {
                 maxWidth: 1400,     // px oder 'full'
-                padding: 40,        // px
+                padding: 'normal',  // 'compact' | 'normal' | 'spacious' | number (px)
                 background: GlobalConfig.get('theme.background') || '#ffffff'
             },
 
             // Footer Config
             footer: {
                 show: false,
+                layout: 'simple',   // 'simple' | 'columns' | 'centered'
                 copyright: `© ${new Date().getFullYear()} SSI Solutions`,
                 links: [],          // [{ label, href }]
-                content: null       // Custom HTML
+                columns: [],        // [{ title, links: [{ label, href }] }] - for 'columns' layout
+                social: [],         // [{ icon, href, label }] - social media links
+                logo: null,         // Footer logo URL
+                tagline: null,      // Company tagline
+                background: null,   // 'light' | 'dark' | custom color
+                content: null       // Custom HTML (overrides all)
             },
 
             // Callbacks
@@ -121,9 +141,24 @@ export class SiteBuilder {
         this.container = null;
         this.contentContainer = null;
         this.sidebarInstance = null;
+        this.headerInstance = null;
         this.sidebarCollapsed = false;
 
         this._init();
+    }
+
+    /**
+     * Konvertiert Spacing-Preset zu px-Wert
+     * @private
+     */
+    _resolvePadding(padding) {
+        if (typeof padding === 'number') {
+            return padding;
+        }
+        if (typeof padding === 'string' && SiteBuilder.spacingPresets[padding]) {
+            return SiteBuilder.spacingPresets[padding];
+        }
+        return SiteBuilder.spacingPresets.normal; // fallback
     }
 
     /**
@@ -133,11 +168,12 @@ export class SiteBuilder {
     _applyTemplate(templateName) {
         const template = SiteBuilder.templates[templateName];
 
-        this.config.header.show = template.header;
-        this.config.sidebar.show = template.sidebar;
-        this.config.footer.show = template.footer;
-        this.config.content.maxWidth = template.maxWidth;
-        this.config.sidebar.collapsible = template.sidebarCollapsible;
+        // Only apply template defaults if user didn't specify them
+        if (this.userConfig.header?.show === undefined) this.config.header.show = template.header;
+        if (this.userConfig.sidebar?.show === undefined) this.config.sidebar.show = template.sidebar;
+        if (this.userConfig.footer?.show === undefined) this.config.footer.show = template.footer;
+        if (this.userConfig.content?.maxWidth === undefined) this.config.content.maxWidth = template.maxWidth;
+        if (this.userConfig.sidebar?.collapsible === undefined) this.config.sidebar.collapsible = template.sidebarCollapsible;
     }
 
     /**
@@ -162,18 +198,21 @@ export class SiteBuilder {
     _render() {
         const hasFixedHeader = this.config.header.show && this.config.header.fixed;
         const hasSidebar = this.config.sidebar.show;
+        const sidebarPosition = this.config.sidebar.position || 'left';
+        const sidebarRightClass = hasSidebar && sidebarPosition === 'right' ? 'sidebar-right' : '';
+        const headerHeight = this.config.header.height || 64;
 
         this.container.innerHTML = `
-            <div class="site-builder ${hasFixedHeader ? 'has-fixed-header' : ''} ${hasSidebar ? 'has-sidebar' : ''}">
-                ${this.config.header.show ? this._renderHeader() : ''}
+            <div class="site-builder ${hasFixedHeader ? 'has-fixed-header' : ''} ${hasSidebar ? 'has-sidebar' : ''} ${sidebarRightClass}">
+                ${this.config.header.show ? `<div id="${this.config.containerId}_header" class="site-header-container"></div>` : ''}
 
-                <div class="site-main ${hasSidebar ? 'with-sidebar' : ''}">
-                    ${hasSidebar ? this._renderSidebarContainer() : ''}
+                ${hasSidebar ? this._renderSidebarContainer() : ''}
 
+                <div class="site-main ${hasSidebar ? 'with-sidebar' : ''} ${sidebarRightClass}" style="${hasFixedHeader ? `padding-top: ${headerHeight}px;` : ''}">
                     <div class="site-content" id="${this.config.containerId}_content">
                         <div class="site-content-inner" style="
                             max-width: ${this.config.content.maxWidth === 'full' ? '100%' : this.config.content.maxWidth + 'px'};
-                            padding: ${this.config.content.padding}px;
+                            padding: ${this._resolvePadding(this.config.content.padding)}px;
                             background: ${this.config.content.background};
                         ">
                             <!-- Content will be injected here -->
@@ -187,6 +226,11 @@ export class SiteBuilder {
 
         this.contentContainer = this.container.querySelector('.site-content-inner');
 
+        // Header Builder initialisieren
+        if (this.config.header.show) {
+            this._initHeader();
+        }
+
         // Sidebar Builder initialisieren wenn vorhanden
         if (hasSidebar) {
             this._initSidebar();
@@ -194,52 +238,54 @@ export class SiteBuilder {
     }
 
     /**
-     * Header rendern
+     * Header initialisieren mit HeaderBuilder
      * @private
      */
-    _renderHeader() {
-        const { logo, title, subtitle, menu = [], actions = [], fixed } = this.config.header;
+    _initHeader() {
+        const { logo, title, subtitle, menu = [], actions = [], fixed, height, search, user } = this.config.header;
 
-        return `
-            <header class="site-header ${fixed ? 'fixed' : ''}">
-                <div class="site-header-left">
-                    ${this.config.sidebar.show ? `
-                        <button class="site-sidebar-toggle ssi-btn ssi-btn-icon ssi-btn-text" data-action="toggle-sidebar">
-                            ${IconManager.getIcon('menu')}
-                        </button>
-                    ` : ''}
+        // Convert menu items to HeaderBuilder tabs format
+        const tabs = menu.map(item => ({
+            label: item.label,
+            href: item.href || '#',
+            icon: item.icon || null,
+            active: item.active || false,
+            badge: item.badge || null
+        }));
 
-                    ${logo ? `<img src="${logo}" alt="${title}" class="site-logo">` : ''}
+        // Convert actions to HeaderBuilder format
+        const headerActions = actions.map(action => ({
+            icon: action.icon || null,
+            label: action.label || null,
+            type: action.type || null,
+            tooltip: action.tooltip || action.label || null,
+            onClick: action.onClick || null,
+            iconOnly: !action.label
+        }));
 
-                    <div class="site-header-title">
-                        <h1>${title}</h1>
-                        ${subtitle ? `<span class="site-header-subtitle">${subtitle}</span>` : ''}
-                    </div>
-                </div>
+        this.headerInstance = new HeaderBuilder({
+            containerId: `${this.config.containerId}_header`,
+            options: {
+                logo: logo,
+                title: title,
+                subtitle: subtitle,
+                tabs: tabs,
+                actions: headerActions,
+                position: fixed ? 'fixed' : 'static',
+                height: height || 64,
+                showSidebarToggle: this.config.sidebar.show,
+                onSidebarToggle: () => this.toggleSidebar(),
+                onNavigate: (href) => {
+                    if (this.config.onNavigate) {
+                        this.config.onNavigate(href);
+                    }
+                },
+                search: search || null,
+                user: user || null
+            }
+        });
 
-                ${menu.length > 0 ? `
-                    <nav class="site-header-menu">
-                        ${menu.map(item => `
-                            <a href="${item.href || '#'}" class="site-menu-item" data-href="${item.href || '#'}">
-                                ${item.icon ? IconManager.getIcon(item.icon) : ''}
-                                <span>${item.label}</span>
-                            </a>
-                        `).join('')}
-                    </nav>
-                ` : ''}
-
-                ${actions.length > 0 ? `
-                    <div class="site-header-actions">
-                        ${actions.map((action, idx) => `
-                            <button class="ssi-btn ${action.type ? `ssi-btn-${action.type}` : 'ssi-btn-text'} ssi-btn-icon" data-action-idx="${idx}">
-                                ${action.icon ? IconManager.getIcon(action.icon) : ''}
-                                ${action.label ? `<span>${action.label}</span>` : ''}
-                            </button>
-                        `).join('')}
-                    </div>
-                ` : ''}
-            </header>
-        `;
+        this.headerInstance.render();
     }
 
     /**
@@ -247,7 +293,8 @@ export class SiteBuilder {
      * @private
      */
     _renderSidebarContainer() {
-        return `<div id="${this.config.containerId}_sidebar" class="site-sidebar-container"></div>`;
+        const positionClass = this.config.sidebar.position === 'right' ? 'site-sidebar-right' : '';
+        return `<div id="${this.config.containerId}_sidebar" class="site-sidebar-container ${positionClass}"></div>`;
     }
 
     /**
@@ -261,15 +308,21 @@ export class SiteBuilder {
 
         this.sidebarInstance = new SidebarBuilder({
             containerId: `${this.config.containerId}_sidebar`,
-            width: this.config.sidebar.width,
-            collapsible: this.config.sidebar.collapsible,
             items: this.config.sidebar.navigation,
-            onNavigate: (item) => {
-                if (this.config.onNavigate) {
-                    this.config.onNavigate(item.href);
+            options: {
+                width: this.config.sidebar.width || 280,
+                collapsible: this.config.sidebar.collapsible,
+                position: this.config.sidebar.position || 'left',
+                onNavigate: (item) => {
+                    if (this.config.onNavigate) {
+                        this.config.onNavigate(item.href);
+                    }
                 }
             }
         });
+
+        // CRITICAL: Must call render() to actually display the sidebar!
+        this.sidebarInstance.render();
     }
 
     /**
@@ -277,15 +330,48 @@ export class SiteBuilder {
      * @private
      */
     _renderFooter() {
-        const { copyright, links = [], content } = this.config.footer;
+        const {
+            layout = 'simple',
+            copyright,
+            links = [],
+            columns = [],
+            social = [],
+            logo,
+            tagline,
+            background,
+            content
+        } = this.config.footer;
 
+        // Custom HTML overrides everything
         if (content) {
             return `<footer class="site-footer">${content}</footer>`;
         }
 
+        // Background class/style
+        const bgClass = background === 'dark' ? 'site-footer--dark' : background === 'light' ? '' : '';
+        const bgStyle = background && background !== 'dark' && background !== 'light'
+            ? `background: ${background};`
+            : '';
+
+        // Render based on layout
+        switch (layout) {
+            case 'columns':
+                return this._renderColumnsFooter({ copyright, columns, social, logo, tagline, bgClass, bgStyle });
+            case 'centered':
+                return this._renderCenteredFooter({ copyright, links, social, logo, tagline, bgClass, bgStyle });
+            default:
+                return this._renderSimpleFooter({ copyright, links, social, bgClass, bgStyle });
+        }
+    }
+
+    /**
+     * Simple Footer Layout (default)
+     * @private
+     */
+    _renderSimpleFooter({ copyright, links, social, bgClass, bgStyle }) {
         return `
-            <footer class="site-footer">
-                <div class="site-footer-content">
+            <footer class="site-footer ${bgClass}" style="${bgStyle}">
+                <div class="site-footer-content site-footer-content--simple">
                     <div class="site-footer-copyright">${copyright}</div>
                     ${links.length > 0 ? `
                         <div class="site-footer-links">
@@ -294,8 +380,84 @@ export class SiteBuilder {
                             `).join('')}
                         </div>
                     ` : ''}
+                    ${social.length > 0 ? this._renderSocialLinks(social) : ''}
                 </div>
             </footer>
+        `;
+    }
+
+    /**
+     * Columns Footer Layout
+     * @private
+     */
+    _renderColumnsFooter({ copyright, columns, social, logo, tagline, bgClass, bgStyle }) {
+        return `
+            <footer class="site-footer ${bgClass}" style="${bgStyle}">
+                <div class="site-footer-content site-footer-content--columns">
+                    <div class="site-footer-columns">
+                        ${logo || tagline ? `
+                            <div class="site-footer-brand">
+                                ${logo ? `<img src="${logo}" alt="Logo" class="site-footer-logo" />` : ''}
+                                ${tagline ? `<p class="site-footer-tagline">${tagline}</p>` : ''}
+                                ${social.length > 0 ? this._renderSocialLinks(social) : ''}
+                            </div>
+                        ` : ''}
+                        ${columns.map(col => `
+                            <div class="site-footer-column">
+                                ${col.title ? `<h4 class="site-footer-column-title">${col.title}</h4>` : ''}
+                                <ul class="site-footer-column-links">
+                                    ${(col.links || []).map(link => `
+                                        <li><a href="${link.href}" class="site-footer-link">${link.label}</a></li>
+                                    `).join('')}
+                                </ul>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="site-footer-bottom">
+                        <div class="site-footer-copyright">${copyright}</div>
+                    </div>
+                </div>
+            </footer>
+        `;
+    }
+
+    /**
+     * Centered Footer Layout
+     * @private
+     */
+    _renderCenteredFooter({ copyright, links, social, logo, tagline, bgClass, bgStyle }) {
+        return `
+            <footer class="site-footer ${bgClass}" style="${bgStyle}">
+                <div class="site-footer-content site-footer-content--centered">
+                    ${logo ? `<img src="${logo}" alt="Logo" class="site-footer-logo" />` : ''}
+                    ${tagline ? `<p class="site-footer-tagline">${tagline}</p>` : ''}
+                    ${links.length > 0 ? `
+                        <div class="site-footer-links">
+                            ${links.map(link => `
+                                <a href="${link.href}" class="site-footer-link">${link.label}</a>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+                    ${social.length > 0 ? this._renderSocialLinks(social) : ''}
+                    <div class="site-footer-copyright">${copyright}</div>
+                </div>
+            </footer>
+        `;
+    }
+
+    /**
+     * Render Social Media Links
+     * @private
+     */
+    _renderSocialLinks(social) {
+        return `
+            <div class="site-footer-social">
+                ${social.map(s => `
+                    <a href="${s.href}" class="site-footer-social-link" title="${s.label || ''}" target="_blank" rel="noopener">
+                        ${IconManager.getIcon(s.icon) || s.icon}
+                    </a>
+                `).join('')}
+            </div>
         `;
     }
 
@@ -379,6 +541,56 @@ export class SiteBuilder {
     }
 
     /**
+     * Konfiguration aktualisieren und Layout neu rendern
+     * @param {Object} updates - Partial config object with updates
+     * @example
+     * site.update({
+     *   sidebar: { show: false },
+     *   footer: { show: true },
+     *   content: { padding: 'spacious' }
+     * });
+     */
+    update(updates) {
+        // Store current content
+        const currentContent = this.contentContainer ? this.contentContainer.innerHTML : '';
+
+        // Deep merge updates into config
+        if (updates.header) {
+            this.config.header = { ...this.config.header, ...updates.header };
+        }
+        if (updates.sidebar) {
+            this.config.sidebar = { ...this.config.sidebar, ...updates.sidebar };
+        }
+        if (updates.content) {
+            this.config.content = { ...this.config.content, ...updates.content };
+        }
+        if (updates.footer) {
+            this.config.footer = { ...this.config.footer, ...updates.footer };
+        }
+
+        // Destroy existing header if present
+        if (this.headerInstance) {
+            this.headerInstance.destroy();
+            this.headerInstance = null;
+        }
+
+        // Destroy existing sidebar if present
+        if (this.sidebarInstance) {
+            this.sidebarInstance.destroy();
+            this.sidebarInstance = null;
+        }
+
+        // Re-render layout
+        this._render();
+        this._attachEventListeners();
+
+        // Restore content
+        if (currentContent) {
+            this.renderContent(currentContent);
+        }
+    }
+
+    /**
      * Sidebar toggle
      */
     toggleSidebar() {
@@ -430,13 +642,14 @@ export class SiteBuilder {
      * Header Titel/Logo updaten
      */
     updateHeader({ title, subtitle, logo }) {
-        const titleEl = this.container.querySelector('.site-header-title h1');
-        const subtitleEl = this.container.querySelector('.site-header-subtitle');
-        const logoEl = this.container.querySelector('.site-logo');
-
-        if (title && titleEl) titleEl.textContent = title;
-        if (subtitle && subtitleEl) subtitleEl.textContent = subtitle;
-        if (logo && logoEl) logoEl.src = logo;
+        if (this.headerInstance) {
+            this.headerInstance.updateTitle(title, subtitle);
+            // For logo changes, we need to re-render
+            if (logo) {
+                this.config.header.logo = logo;
+                this.headerInstance.update({ logo });
+            }
+        }
     }
 
     /**
@@ -478,11 +691,30 @@ export class SiteBuilder {
      * Destroy
      */
     destroy() {
+        if (this.headerInstance) {
+            this.headerInstance.destroy();
+        }
         if (this.sidebarInstance) {
             this.sidebarInstance.destroy();
         }
         if (this.container) {
             this.container.innerHTML = '';
         }
+    }
+
+    /**
+     * Get header instance for direct access
+     * @returns {HeaderBuilder|null}
+     */
+    getHeader() {
+        return this.headerInstance;
+    }
+
+    /**
+     * Get sidebar instance for direct access
+     * @returns {SidebarBuilder|null}
+     */
+    getSidebar() {
+        return this.sidebarInstance;
     }
 }

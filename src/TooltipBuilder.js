@@ -49,6 +49,7 @@ export class TooltipBuilder {
         this.handleClick = this.handleClick.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleDocumentClick = this.handleDocumentClick.bind(this);
+        this.updatePosition = this.updatePosition.bind(this);
 
         // Initialize
         this.init();
@@ -191,6 +192,10 @@ export class TooltipBuilder {
             this.tooltipElement.style.opacity = '1';
         });
 
+        // Add listeners to reposition on scroll/resize
+        window.addEventListener('scroll', this.updatePosition, true);
+        window.addEventListener('resize', this.updatePosition, true);
+
         // Fire custom event
         this.target.dispatchEvent(new CustomEvent('tooltip:show', { 
             detail: { tooltip: this } 
@@ -206,6 +211,10 @@ export class TooltipBuilder {
         this.isVisible = false;
         this.tooltipElement.classList.remove('ssi-tooltip-visible');
         this.tooltipElement.style.opacity = '0';
+
+        // Remove listeners
+        window.removeEventListener('scroll', this.updatePosition, true);
+        window.removeEventListener('resize', this.updatePosition, true);
 
         // Hide after animation
         setTimeout(() => {
@@ -390,6 +399,8 @@ export class TooltipBuilder {
         this.target.removeEventListener('click', this.handleClick);
         this.target.removeEventListener('keydown', this.handleKeyDown);
         document.removeEventListener('click', this.handleDocumentClick);
+        window.removeEventListener('scroll', this.updatePosition, true);
+        window.removeEventListener('resize', this.updatePosition, true);
 
         // Remove ARIA attribute
         this.target.removeAttribute('aria-describedby');

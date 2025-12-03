@@ -39,6 +39,8 @@ import { ThemeBuilder } from './ThemeBuilder.js';
 import { MessageBuilder } from './MessageBuilder.js';
 // Card/Segment System (v2.6.0)
 import { CardBuilder } from './CardBuilder.js';
+// Header System (v2.7.0)
+import { HeaderBuilder } from './HeaderBuilder.js';
 
 export {
     ListBuilder,
@@ -78,7 +80,9 @@ export {
     // Message System (v2.6.0)
     MessageBuilder,
     // Card/Segment System (v2.6.0)
-    CardBuilder
+    CardBuilder,
+    // Header System (v2.7.0)
+    HeaderBuilder
 };
 
 // Default export for convenience
@@ -109,7 +113,8 @@ export default {
     i18n,
     ThemeBuilder,
     MessageBuilder,
-    CardBuilder
+    CardBuilder,
+    HeaderBuilder
 };
 
 // Version info

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SiteBuilder Studio - SSI Builders</title>
+    <link rel="stylesheet" href="/src/shared.css">
+    <link rel="stylesheet" href="/src/m3-tokens.css">
+    <link rel="stylesheet" href="/src/SiteBuilder.css">
+    <link rel="stylesheet" href="/src/SidebarBuilder.css">
+    <link rel="stylesheet" href="/src/HeaderBuilder.css">
+    <link rel="stylesheet" href="/src/ListBuilder.css">
+    <link rel="stylesheet" href="/src/ToastBuilder.css">
+    <link rel="stylesheet" href="/src/ModalBuilder.css">
+    <link rel="stylesheet" href="/src/TabBuilder.css">
+    <link rel="stylesheet" href="/src/FormBuilder.css">
+    <link rel="stylesheet" href="/src/m3-form-styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #f5f5f5;
+            overflow: hidden;
+        }
+
+        .studio-container {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            width: 320px;
+            background: white;
+            border-right: 1px solid #e0e0e0;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1000;
+        }
+
+        .control-panel.collapsed {
+            transform: translateX(-320px);
+        }
+
+        /* Toggle Button */
+        .panel-toggle {
+            position: absolute;
+            right: -48px;
+            top: 20px;
+            width: 48px;
+            height: 48px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-left: none;
+            border-radius: 0 8px 8px 0;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: #5f6368;
+            transition: all 0.2s;
+            box-shadow: 2px 2px 8px rgba(0,0,0,0.1);
+            z-index: 9999; /* Über allem */
+        }
+
+        .panel-toggle:hover {
+            background: #f8f9fa;
+            color: #1a73e8;
+        }
+
+        .panel-header {
+            padding: 16px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .panel-header h1 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .panel-header p {
+            font-size: 12px;
+            opacity: 0.9;
+        }
+
+        /* Element Tabs */
+        .element-tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .element-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .element-tab {
+            flex: 1;
+            min-width: 60px;
+            padding: 12px 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            font-size: 10px;
+            font-weight: 500;
+            color: #5f6368;
+            transition: all 0.2s;
+            border-bottom: 2px solid transparent;
+            position: relative;
+        }
+
+        .element-tab:hover {
+            background: #e8f0fe;
+            color: #1a73e8;
+        }
+
+        .element-tab.active {
+            background: white;
+            color: #1a73e8;
+            border-bottom-color: #1a73e8;
+        }
+
+        .element-tab-icon {
+            font-size: 18px;
+        }
+
+        .element-tab-label {
+            white-space: nowrap;
+        }
+
+        .panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 0; /* FormBuilder has its own 24px padding */
+        }
+
+        /* Edit Frame Styles for Preview */
+        .edit-highlight {
+            outline: 2px dashed #1a73e8 !important;
+            outline-offset: -2px;
+            position: relative !important;
+        }
+
+        .edit-highlight::before {
+            content: attr(data-edit-label);
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            background: #1a73e8;
+            color: white;
+            font-size: 10px;
+            font-weight: 500;
+            padding: 2px 8px;
+            border-radius: 4px;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        /* Clickable elements in preview */
+        #preview-frame .edit-clickable {
+            cursor: pointer;
+            transition: outline 0.2s, box-shadow 0.2s;
+        }
+
+        #preview-frame .edit-clickable:hover {
+            outline: 2px dashed rgba(26, 115, 232, 0.5) !important;
+            outline-offset: -2px;
+        }
+
+        .control-section {
+            margin-bottom: 24px;
+        }
+
+        .control-section h3 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #3c4043;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .control-group {
+            margin-bottom: 16px;
+        }
+
+        .control-label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #202124;
+            margin-bottom: 8px;
+        }
+
+        .skeleton-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .skeleton-option {
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            background: white;
+        }
+
+        .skeleton-option:hover {
+            border-color: #1a73e8;
+            background: #f8f9fa;
+        }
+
+        .skeleton-option.active {
+            border-color: #1a73e8;
+            background: #e8f0fe;
+        }
+
+        .skeleton-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        .skeleton-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #5f6368;
+        }
+
+        .skeleton-option.active .skeleton-label {
+            color: #1a73e8;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 8px;
+        }
+
+        .button-group button {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .button-group button:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .button-group button.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-group label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #202124;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .panel-footer {
+            padding: 16px 20px;
+            background: white;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .export-button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .export-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Color Swatches */
+        .color-swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .color-swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .color-swatch.active {
+            border-color: #202124;
+            transform: scale(1.1);
+        }
+
+        .color-swatch.active::after {
+            content: '✓';
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+
+        /* Input Fields */
+        .control-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 13px;
+            transition: all 0.2s;
+            background: white;
+        }
+
+        .control-input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        .control-input::placeholder {
+            color: #9aa0a6;
+        }
+
+        /* Navigation Items Editor */
+        .nav-items-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .nav-item-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .nav-item-row input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .nav-item-row input:focus {
+            outline: none;
+            border-color: #1a73e8;
+        }
+
+        .nav-item-row select {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .nav-item-delete {
+            width: 28px;
+            height: 28px;
+            border: none;
+            background: #ffebee;
+            color: #c62828;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .nav-item-delete:hover {
+            background: #ffcdd2;
+        }
+
+        .add-nav-btn {
+            width: 100%;
+            padding: 10px;
+            border: 2px dashed #e0e0e0;
+            background: transparent;
+            color: #5f6368;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .add-nav-btn:hover {
+            border-color: #1a73e8;
+            color: #1a73e8;
+            background: #e8f0fe;
+        }
+
+        /* Viewport Switcher */
+        .viewport-switcher {
+            display: flex;
+            gap: 4px;
+            background: #f1f3f4;
+            padding: 4px;
+            border-radius: 8px;
+        }
+
+        .viewport-btn {
+            padding: 8px 12px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s;
+            color: #5f6368;
+        }
+
+        .viewport-btn:hover {
+            background: rgba(0,0,0,0.05);
+        }
+
+        .viewport-btn.active {
+            background: white;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            color: #1a73e8;
+        }
+
+        /* Preview Frame Responsive */
+        .preview-frame-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100%;
+            padding: 0;
+            background: transparent;
+            transition: all 0.3s ease;
+        }
+
+        .preview-frame-wrapper.viewport-desktop #preview-frame {
+            width: 100%;
+            max-width: none;
+        }
+
+        /* Add padding and background only for tablet/mobile viewports */
+        .preview-frame-wrapper.viewport-tablet,
+        .preview-frame-wrapper.viewport-mobile {
+            padding: 20px;
+            background: #e0e0e0;
+        }
+
+        .preview-frame-wrapper.viewport-tablet #preview-frame {
+            width: 768px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .preview-frame-wrapper.viewport-mobile #preview-frame {
+            width: 375px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Code Preview Toggle */
+        .code-preview-btn {
+            padding: 8px 16px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .code-preview-btn:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .code-preview-btn.active {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        /* Action Buttons Row */
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .action-btn:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .action-btn.danger {
+            color: #c62828;
+            border-color: #ffcdd2;
+        }
+
+        .action-btn.danger:hover {
+            background: #ffebee;
+            border-color: #c62828;
+        }
+
+        /* Footer Links Editor */
+        .footer-links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .footer-link-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .footer-link-row input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        /* Header Actions Editor */
+        .header-actions-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .header-action-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            padding: 8px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .header-action-row input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+
+        .header-action-row select {
+            padding: 8px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            font-size: 12px;
+            background: white;
+        }
+
+        /* Config Storage Buttons */
+        .storage-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 12px;
+        }
+
+        .storage-btn {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .storage-btn:hover {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .storage-btn.primary {
+            background: #1a73e8;
+            color: white;
+            border-color: #1a73e8;
+        }
+
+        .storage-btn.primary:hover {
+            background: #1557b0;
+        }
+
+        /* Saved Configs List */
+        .saved-configs-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 12px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .saved-config-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .saved-config-item:hover {
+            border-color: #1a73e8;
+        }
+
+        .saved-config-name {
+            font-size: 13px;
+            font-weight: 500;
+            color: #202124;
+            cursor: pointer;
+        }
+
+        .saved-config-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        .saved-config-actions button {
+            padding: 4px 8px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-size: 12px;
+            border-radius: 4px;
+        }
+
+        .saved-config-actions button:hover {
+            background: #e0e0e0;
+        }
+
+        /* Undo/Redo Toolbar */
+        .undo-redo-toolbar {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+
+        .undo-redo-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .undo-redo-btn:hover:not(:disabled) {
+            background: #f8f9fa;
+            border-color: #1a73e8;
+        }
+
+        .undo-redo-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Preview Toolbar */
+        .preview-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        /* Preview Area */
+        .preview-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--m3-background, white);
+            position: relative;
+            z-index: 1;
+            isolation: isolate;
+        }
+
+        .preview-header {
+            padding: 8px 16px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .preview-title {
+            font-size: 16px;
+            font-weight: 500;
+            color: #202124;
+        }
+
+        .preview-info {
+            font-size: 13px;
+            color: #5f6368;
+        }
+
+        .preview-content {
+            flex: 1;
+            overflow: auto;
+            position: relative;
+            isolation: isolate;
+        }
+
+        #preview-frame {
+            width: 100%;
+            min-height: 100%;
+            position: relative;
+            background: var(--m3-background, white); /* Fix: Use variable for dark mode */
+        }
+
+        /* Override HeaderBuilder positioning for contained demo */
+        #preview-frame .header-builder.header-fixed {
+            position: sticky !important;
+            top: 0;
+            z-index: 100;
+        }
+
+        #preview-frame .header-builder {
+            position: relative !important;
+        }
+
+        /* Ensure header container is positioned correctly */
+        #preview-frame .site-header-container {
+            position: sticky !important;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Remove the extra padding-top that SiteBuilder adds for fixed header */
+        #preview-frame .site-builder.has-fixed-header {
+            padding-top: 0 !important;
+        }
+
+        #preview-frame .site-main {
+            margin-top: 0 !important;
+            padding-top: 0 !important;
+        }
+
+        /* CRITICAL: Sidebar must be absolute (not fixed) in preview context! */
+        #preview-frame .site-sidebar-container {
+            position: absolute !important;
+            top: 64px !important;
+            bottom: 0 !important;
+            height: auto !important;
+            z-index: 10 !important;
+            /* Fix: Remove default background/border from container to avoid "double sidebar" look */
+            background: transparent !important;
+            border-right: none !important;
+            border-left: none !important;
+            width: auto !important; /* Let inner sidebar dictate width */
+        }
+
+        /* Left sidebar container (default) */
+        #preview-frame .site-sidebar-container:not(.site-sidebar-right) {
+            left: 0 !important;
+            right: auto !important;
+        }
+
+        /* Right sidebar container */
+        #preview-frame .site-sidebar-container.site-sidebar-right {
+            left: auto !important;
+            right: 0 !important;
+        }
+
+        /* Sidebar visibility and styling */
+        #preview-frame .sidebar {
+            position: absolute !important;  /* CRITICAL: Override fixed positioning */
+            top: 0 !important;
+            bottom: 0 !important;
+            background: var(--m3-surface, #ffffff) !important;
+            transition: width 0.3s ease !important;
+        }
+
+        /* Left sidebar (default) */
+        #preview-frame .sidebar:not(.sidebar-right) {
+            left: 0 !important;
+            right: auto !important;
+            border-right: 1px solid var(--m3-outline-variant, #e0e0e0) !important;
+            box-shadow: 2px 0 8px rgba(0,0,0,0.1) !important;
+        }
+
+        /* Right sidebar */
+        #preview-frame .sidebar.sidebar-right {
+            left: auto !important;
+            right: 0 !important;
+            border-right: none !important;
+            border-left: 1px solid var(--m3-outline-variant, #e0e0e0) !important;
+            box-shadow: -2px 0 8px rgba(0,0,0,0.1) !important;
+        }
+
+        /* Sidebar expanded state */
+        #preview-frame .sidebar:not(.sidebar-collapsed) {
+            width: 280px !important;
+        }
+
+        /* Sidebar collapsed state */
+        #preview-frame .sidebar.sidebar-collapsed {
+            width: 72px !important;
+        }
+
+        /* Make sidebar navigation items clearly visible */
+        #preview-frame .sidebar-link {
+            display: flex !important;
+            align-items: center !important;
+            padding: 12px 20px !important;
+            color: var(--m3-on-surface-variant, #5f6368) !important;
+            text-decoration: none !important;
+            transition: all 0.2s !important;
+            border-radius: 8px !important;
+            margin: 4px 12px !important;
+            font-size: 14px !important;
+            font-weight: 500 !important;
+        }
+
+        #preview-frame .sidebar-link:hover {
+            background: var(--m3-surface-container-high, #f8f9fa) !important;
+            color: var(--m3-on-surface, #202124) !important;
+        }
+
+        /* Fix: Correct selector for active state (SidebarBuilder puts class on item, not link) */
+        #preview-frame .sidebar-item-active .sidebar-link,
+        #preview-frame .sidebar-link.active {
+            background: var(--m3-secondary-container, #e8f0fe) !important;
+            color: var(--m3-on-secondary-container, #1a73e8) !important;
+        }
+
+        #preview-frame .sidebar-icon {
+            margin-right: 12px !important;
+            display: flex !important;
+            align-items: center !important;
+            color: currentColor !important;
+        }
+
+        #preview-frame .sidebar-label {
+            flex: 1 !important;
+            color: currentColor !important;
+            display: block !important; /* Ensure labels are visible */
+        }
+
+        /* Hide labels only when collapsed */
+        #preview-frame .sidebar.sidebar-collapsed .sidebar-label {
+            display: none !important;
+        }
+
+        /* Main content must have proper spacing from header and sidebar */
+        #preview-frame .site-main {
+            margin-top: 64px !important;
+            padding-left: 0 !important; /* Fix: Remove default padding from SiteBuilder.css */
+            padding-right: 0 !important;
+            transition: margin-left 0.3s ease, margin-right 0.3s ease !important;
+        }
+
+        /* Left sidebar (default): content margin on left */
+        #preview-frame:has(.sidebar:not(.sidebar-right)) .site-main {
+            margin-left: 280px !important;
+            margin-right: 0 !important;
+        }
+
+        /* Right sidebar: content margin on right */
+        #preview-frame:has(.sidebar.sidebar-right) .site-main {
+            margin-left: 0 !important;
+            margin-right: 280px !important;
+        }
+
+        /* Adjust main content when LEFT sidebar is collapsed */
+        #preview-frame:has(.sidebar.sidebar-collapsed:not(.sidebar-right)) .site-main {
+            margin-left: 72px !important; /* Collapsed sidebar width */
+        }
+
+        /* Adjust main content when RIGHT sidebar is collapsed */
+        #preview-frame:has(.sidebar.sidebar-right.sidebar-collapsed) .site-main {
+            margin-right: 72px !important; /* Collapsed sidebar width */
+        }
+
+        /* When sidebar is completely hidden (not in DOM) - content takes full width */
+        #preview-frame:not(:has(.site-sidebar-container)) .site-main,
+        #preview-frame:not(:has(.sidebar)) .site-main {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        /* Ensure site-builder takes full height with flexbox layout */
+        #preview-frame .site-builder {
+            min-height: 100vh;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+
+        /* Main content should grow to push footer down */
+        #preview-frame .site-main {
+            flex: 1 !important;
+        }
+
+        /* Footer stays at bottom naturally via flexbox - no absolute positioning */
+        #preview-frame .site-footer {
+            position: relative !important;
+            margin-top: auto !important;
+            flex-shrink: 0 !important;
+            transition: margin-left 0.3s ease, margin-right 0.3s ease !important;
+        }
+
+        /* Footer margin for LEFT sidebar (default) */
+        #preview-frame:has(.sidebar:not(.sidebar-right)) .site-footer {
+            margin-left: 280px !important;
+            margin-right: 0 !important;
+        }
+
+        /* Footer margin for RIGHT sidebar */
+        #preview-frame:has(.sidebar.sidebar-right) .site-footer {
+            margin-left: 0 !important;
+            margin-right: 280px !important;
+        }
+
+        /* Footer margin when LEFT sidebar is collapsed */
+        #preview-frame:has(.sidebar.sidebar-collapsed:not(.sidebar-right)) .site-footer {
+            margin-left: 72px !important;
+        }
+
+        /* Footer margin when RIGHT sidebar is collapsed */
+        #preview-frame:has(.sidebar.sidebar-right.sidebar-collapsed) .site-footer {
+            margin-right: 72px !important;
+        }
+
+        /* Footer when no sidebar */
+        #preview-frame:not(:has(.sidebar)) .site-footer,
+        #preview-frame:not(:has(.site-sidebar-container)) .site-footer {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+
+        @media (max-width: 768px) {
+            .studio-container {
+                flex-direction: column;
+            }
+
+            .control-panel {
+                width: 100%;
+                height: 50%;
+                border-right: none;
+                border-bottom: 1px solid #e0e0e0;
+            }
+
+            .control-panel.collapsed {
+                transform: translateY(-100%);
+            }
+
+            .panel-toggle {
+                right: 20px;
+                top: auto;
+                bottom: -48px;
+                border-radius: 0 0 8px 8px;
+                border-top: none;
+                border-left: 1px solid #e0e0e0;
+            }
+
+            .skeleton-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* Studio Form - Use FormBuilder's built-in density styles */
+        /* No custom overrides needed - density: 'dense' handles spacing */
+    </style>
+</head>
+<body>
+    <div class="studio-container">
+        <!-- Control Panel -->
+        <div class="control-panel" id="control-panel">
+            <!-- Toggle Button -->
+            <div class="panel-toggle" id="panel-toggle" title="Toggle Controls">
+                ◀
+            </div>
+
+            <div class="panel-header">
+                <h1>🎨 SiteBuilder Studio</h1>
+                <p>Design your perfect layout</p>
+                <div class="action-buttons-row" style="margin-top: 8px;">
+                    <button class="undo-redo-btn" id="undo-btn" title="Undo (Ctrl+Z)" disabled>↶</button>
+                    <button class="undo-redo-btn" id="redo-btn" title="Redo (Ctrl+Y)" disabled>↷</button>
+                    <button class="action-btn danger" id="reset-btn" title="Reset to defaults">Reset</button>
+                </div>
+            </div>
+
+            <!-- Element Tabs -->
+            <div class="element-tabs" id="element-tabs">
+                <button class="element-tab active" data-element="page">
+                    <span class="element-tab-icon">📄</span>
+                    <span class="element-tab-label">Page</span>
+                </button>
+                <button class="element-tab" data-element="header">
+                    <span class="element-tab-icon">🔷</span>
+                    <span class="element-tab-label">Header</span>
+                </button>
+                <button class="element-tab" data-element="sidebar">
+                    <span class="element-tab-icon">📊</span>
+                    <span class="element-tab-label">Sidebar</span>
+                </button>
+                <button class="element-tab" data-element="content">
+                    <span class="element-tab-icon">📝</span>
+                    <span class="element-tab-label">Content</span>
+                </button>
+                <button class="element-tab" data-element="footer">
+                    <span class="element-tab-icon">🔻</span>
+                    <span class="element-tab-label">Footer</span>
+                </button>
+            </div>
+
+            <div class="panel-content">
+                <!-- FormBuilder will render the studio controls here -->
+                <div id="studio-form-container"></div>
+            </div>
+
+            <div class="panel-footer">
+                <button class="export-button" onclick="exportCode()">
+                    📦 Export Code
+                </button>
+            </div>
+        </div>
+
+        <!-- Preview Area -->
+        <div class="preview-area">
+            <div class="preview-header">
+                <div class="preview-title">Live Preview</div>
+                <div class="viewport-switcher">
+                    <button class="viewport-btn active" data-viewport="desktop" title="Desktop">🖥️</button>
+                    <button class="viewport-btn" data-viewport="tablet" title="Tablet">📱</button>
+                    <button class="viewport-btn" data-viewport="mobile" title="Mobile">📲</button>
+                </div>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <div class="preview-info" id="preview-info">Admin Dashboard • Normal Spacing</div>
+                    <button class="code-preview-btn" id="toggle-code-preview" title="Toggle Code Preview">
+                        &lt;/&gt; Code
+                    </button>
+                </div>
+            </div>
+            <div class="preview-content">
+                <div class="preview-frame-wrapper viewport-desktop" id="preview-wrapper">
+                    <div id="preview-frame"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./sitebuilder-studio.js"></script>
+</body>
+</html>

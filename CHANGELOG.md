@@ -7,6 +7,40 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.0] - 2025-12-03
+
+### Added
+- **SiteBuilder Studio**: New visual layout editor for SiteBuilder configurations
+  - Element-based editing system (Page, Header, Sidebar, Content, Footer tabs)
+  - Edit-Frame highlighting with blue dashed outline and labels
+  - Click-to-select: clicking elements in preview switches to corresponding tab
+  - Extended Content settings: Background Color, Page Title, Max Width, Alignment
+  - Real-time preview updates with undo/redo history
+  - Export configuration as code
+- **FormBuilder Studio-Style Fields**: New field types for visual editors
+  - `button-group`: Horizontal single-select buttons with optional sublabels
+  - `card-select`: Grid-based card selection (like layout skeleton picker)
+  - `color-swatches`: Round color picker buttons with checkmark indicator
+  - `inline-checkbox`: Compact checkbox with background container
+  - `section-header`: Numbered section headers (e.g., "1. LAYOUT SKELETON")
+  - `item-list`: Dynamic list with add/remove (for navigation items, footer links)
+- **SiteBuilder**: Right sidebar position support (`position: 'right'`)
+- **SiteBuilder**: Footer layout variants (`simple`, `columns`, `centered`)
+- **SiteBuilder**: Spacing presets (compact: 16px, normal: 40px, spacious: 64px)
+- **IconManager**: Social media icons (Facebook, Twitter, Instagram, LinkedIn, YouTube, Email)
+- **TooltipBuilder**: Dynamic repositioning on scroll and resize
+
+### Fixed
+- **FormBuilder**: XSS vulnerability in studio-style field types (escaped all user input)
+- **FormBuilder**: Duplicate CSS hover rules causing incorrect border colors
+- **FormBuilder**: Hardcoded emoji in color-swatches replaced with SVG checkmark
+- **SiteBuilder**: Mobile padding override issue (removed !important from CSS)
+- **ThemeBuilder**: darkMode option now correctly respects explicit `false` value
+
+### Security
+- **FormBuilder**: All studio-style field types now use `escapeHtml()` for user-provided content
+- **FormBuilder**: Color values sanitized to prevent CSS injection
+
 ## [2.6.2] - 2025-11-29
 
 ### Changed

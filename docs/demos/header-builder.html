@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HeaderBuilder - Interactive Documentation</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/HeaderBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="../../src/ToastBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+    <style>
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: var(--m3-on-surface, #202124); }
+        .demo-section .subtitle { color: var(--m3-on-surface-variant, #5f6368); font-size: 16px; margin-bottom: 24px; }
+
+        .example-demo {
+            background: var(--m3-surface-container, #f8f9fa);
+            border-radius: 12px;
+            margin: 24px 0;
+            overflow: hidden;
+            border: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .example-demo .header-builder {
+            position: relative !important;
+        }
+
+        .demo-content-area {
+            padding: 24px;
+            min-height: 200px;
+            background: var(--m3-surface, #ffffff);
+        }
+
+        .config-panel {
+            background: var(--m3-surface-container, #f8f9fa);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+            border: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .config-panel h3 {
+            margin: 0 0 16px 0;
+            font-size: 18px;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .config-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .config-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-item label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--m3-on-surface-variant, #5f6368);
+        }
+
+        .config-item input,
+        .config-item select {
+            padding: 10px 12px;
+            border: 1px solid var(--m3-outline-variant, #e0e0e0);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--m3-surface, #ffffff);
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .config-item input:focus,
+        .config-item select:focus {
+            outline: none;
+            border-color: var(--m3-primary, #1a73e8);
+            box-shadow: 0 0 0 3px rgba(26, 115, 232, 0.1);
+        }
+
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        .feature-item {
+            background: var(--m3-surface, #ffffff);
+            border: 1px solid var(--m3-outline-variant, #e0e0e0);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .feature-item h4 {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 16px;
+            margin: 0 0 8px 0;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .feature-item p {
+            font-size: 14px;
+            color: var(--m3-on-surface-variant, #5f6368);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .api-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+            font-size: 14px;
+        }
+
+        .api-table th,
+        .api-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .api-table th {
+            background: var(--m3-surface-container, #f8f9fa);
+            font-weight: 500;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .api-table td {
+            color: var(--m3-on-surface-variant, #5f6368);
+        }
+
+        .api-table code {
+            background: var(--m3-surface-container-high, #e8eaed);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Roboto Mono', monospace;
+            font-size: 13px;
+            color: var(--m3-primary, #1a73e8);
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .demo-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .demo-btn-primary {
+            background: var(--m3-primary, #1a73e8);
+            color: var(--m3-on-primary, #ffffff);
+        }
+
+        .demo-btn-primary:hover {
+            background: var(--m3-primary-dark, #1557b0);
+        }
+
+        .demo-btn-secondary {
+            background: var(--m3-surface-container, #f8f9fa);
+            color: var(--m3-on-surface, #202124);
+            border: 1px solid var(--m3-outline-variant, #e0e0e0);
+        }
+
+        .demo-btn-secondary:hover {
+            background: var(--m3-surface-container-high, #e8eaed);
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" id="mobile-menu-toggle" aria-label="Toggle Navigation">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+            </svg>
+        </button>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>📌 HeaderBuilder</h1>
+                    <p>Material Design 3 App Bar - Google-Style Navigation Header</p>
+                </div>
+
+                <!-- Live Demo Section -->
+                <div class="demo-section">
+                    <h2>Live Demo</h2>
+                    <p class="subtitle">Interaktive Header-Konfiguration mit Live-Preview</p>
+
+                    <!-- Config Panel -->
+                    <div class="config-panel">
+                        <h3>Header konfigurieren</h3>
+                        <div class="config-grid">
+                            <div class="config-item">
+                                <label>Titel</label>
+                                <input type="text" id="config-title" value="My Application" placeholder="App Title">
+                            </div>
+                            <div class="config-item">
+                                <label>Subtitle</label>
+                                <input type="text" id="config-subtitle" value="Dashboard" placeholder="Optional subtitle">
+                            </div>
+                            <div class="config-item">
+                                <label>Variante</label>
+                                <select id="config-variant">
+                                    <option value="surface">Surface (Default)</option>
+                                    <option value="primary">Primary Color</option>
+                                    <option value="transparent">Transparent</option>
+                                </select>
+                            </div>
+                            <div class="config-item">
+                                <label>Position</label>
+                                <select id="config-position">
+                                    <option value="static">Static</option>
+                                    <option value="sticky">Sticky</option>
+                                    <option value="fixed">Fixed</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="btn-row">
+                            <button class="demo-btn demo-btn-primary" onclick="updateHeaderDemo()">Update Header</button>
+                            <button class="demo-btn demo-btn-secondary" onclick="toggleSearch()">Toggle Search</button>
+                            <button class="demo-btn demo-btn-secondary" onclick="toggleUser()">Toggle User Menu</button>
+                        </div>
+                    </div>
+
+                    <!-- Demo Preview -->
+                    <div class="example-demo" id="headerDemo">
+                        <div id="header-container"></div>
+                        <div class="demo-content-area">
+                            <h3>Content Area</h3>
+                            <p>Dies ist der Inhaltsbereich unter dem Header. Scrolle um die Elevation-on-Scroll Funktion zu testen.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="demo-section">
+                    <h2>Features</h2>
+                    <p class="subtitle">Alle Funktionen des HeaderBuilders im Überblick</p>
+
+                    <div class="feature-list">
+                        <div class="feature-item">
+                            <h4>🎨 Material Design 3</h4>
+                            <p>Google-Style Header mit MD3 Design Tokens, Elevation, und Animationen.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>📑 Navigation Tabs</h4>
+                            <p>Horizontale Navigation mit Pill-Design, Icons, und aktiven Zuständen.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>🔘 Action Buttons</h4>
+                            <p>Primary, Filled, und Text Buttons mit Icons und Badges.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>🔍 Search Bar</h4>
+                            <p>Integrierte Suchleiste mit Expand-Animation und Clear-Button.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>👤 User Profile</h4>
+                            <p>Avatar mit Dropdown-Menu für User-Aktionen.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>📱 Mobile Support</h4>
+                            <p>Hamburger Menu mit Drawer-Navigation für Mobile Devices.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>🌙 Dark Mode</h4>
+                            <p>Vollständige Dark Mode Unterstützung mit automatischer Anpassung.</p>
+                        </div>
+                        <div class="feature-item">
+                            <h4>⬆️ Elevation on Scroll</h4>
+                            <p>Dynamischer Schatten beim Scrollen für visuelles Feedback.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- API Reference Section -->
+                <div class="demo-section">
+                    <h2>API Reference</h2>
+                    <p class="subtitle">Alle verfügbaren Konfigurationsoptionen</p>
+
+                    <h3 style="margin-top: 32px;">Constructor Options</h3>
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Option</th>
+                                <th>Type</th>
+                                <th>Default</th>
+                                <th>Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>containerId</code></td>
+                                <td>string</td>
+                                <td>-</td>
+                                <td>Container Element ID (required)</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.logo</code></td>
+                                <td>string</td>
+                                <td>null</td>
+                                <td>Logo URL oder HTML</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.title</code></td>
+                                <td>string</td>
+                                <td>'App'</td>
+                                <td>Anwendungstitel</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.subtitle</code></td>
+                                <td>string</td>
+                                <td>null</td>
+                                <td>Optionaler Untertitel</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.tabs</code></td>
+                                <td>Array</td>
+                                <td>[]</td>
+                                <td>Navigation Tabs: [{label, href, icon, active, badge}]</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.actions</code></td>
+                                <td>Array</td>
+                                <td>[]</td>
+                                <td>Action Buttons: [{icon, label, onClick, type, tooltip}]</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.search</code></td>
+                                <td>Object</td>
+                                <td>null</td>
+                                <td>Search Config: {placeholder, onSearch, onClear}</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.user</code></td>
+                                <td>Object</td>
+                                <td>null</td>
+                                <td>User Profile: {name, email, avatar, menu: [...] }</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.position</code></td>
+                                <td>string</td>
+                                <td>'fixed'</td>
+                                <td>'fixed' | 'sticky' | 'static'</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.height</code></td>
+                                <td>number</td>
+                                <td>64</td>
+                                <td>Header Höhe in Pixel</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.variant</code></td>
+                                <td>string</td>
+                                <td>'surface'</td>
+                                <td>'surface' | 'primary' | 'transparent'</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.elevateOnScroll</code></td>
+                                <td>boolean</td>
+                                <td>true</td>
+                                <td>Shadow beim Scrollen</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.showSidebarToggle</code></td>
+                                <td>boolean</td>
+                                <td>false</td>
+                                <td>Sidebar Toggle Button anzeigen</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.onSidebarToggle</code></td>
+                                <td>function</td>
+                                <td>null</td>
+                                <td>Callback für Sidebar Toggle</td>
+                            </tr>
+                            <tr>
+                                <td><code>options.onNavigate</code></td>
+                                <td>function</td>
+                                <td>null</td>
+                                <td>Callback für Navigation: (href) => void</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h3 style="margin-top: 32px;">Methods</h3>
+                    <table class="api-table">
+                        <thead>
+                            <tr>
+                                <th>Method</th>
+                                <th>Beschreibung</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>render()</code></td>
+                                <td>Rendert den Header in den Container</td>
+                            </tr>
+                            <tr>
+                                <td><code>update(options)</code></td>
+                                <td>Aktualisiert Header mit neuen Optionen</td>
+                            </tr>
+                            <tr>
+                                <td><code>updateTitle(title, subtitle)</code></td>
+                                <td>Ändert Titel und Subtitle</td>
+                            </tr>
+                            <tr>
+                                <td><code>setActiveTab(index)</code></td>
+                                <td>Setzt aktiven Tab</td>
+                            </tr>
+                            <tr>
+                                <td><code>updateActionBadge(index, badge)</code></td>
+                                <td>Aktualisiert Badge eines Action Buttons</td>
+                            </tr>
+                            <tr>
+                                <td><code>destroy()</code></td>
+                                <td>Entfernt Header und Event Listeners</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Code Example Section -->
+                <div class="demo-section">
+                    <h2>Code Beispiel</h2>
+                    <p class="subtitle">Vollständiges Beispiel für HeaderBuilder</p>
+
+                    <div id="code-example"></div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeDemoLayout } from './layout.js';
+        import { HeaderBuilder } from '../../src/HeaderBuilder.js';
+        import { IconManager } from '../../src/IconManager.js';
+        import { ToastBuilder } from '../../src/ToastBuilder.js';
+        import { CodeSnippetBuilder } from '../../src/CodeSnippetBuilder.js';
+
+        // Initialize layout
+        initializeDemoLayout('header-builder');
+
+        // Demo Header instance
+        let demoHeader = null;
+        let showSearch = true;
+        let showUser = true;
+
+        // Create initial header demo
+        function createHeaderDemo() {
+            const title = document.getElementById('config-title').value || 'My Application';
+            const subtitle = document.getElementById('config-subtitle').value || '';
+            const variant = document.getElementById('config-variant').value;
+            const position = document.getElementById('config-position').value;
+
+            if (demoHeader) {
+                demoHeader.destroy();
+            }
+
+            demoHeader = new HeaderBuilder({
+                containerId: 'header-container',
+                options: {
+                    // Logo - SSI Style
+                    logo: `<div style="width: 36px; height: 36px; background: linear-gradient(135deg, #1a73e8, #4285f4); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; font-size: 14px; letter-spacing: -0.5px;">SSI</div>`,
+                    title: title,
+                    subtitle: subtitle || null,
+                    variant: variant,
+                    position: position,
+                    height: 64,
+                    tabs: [
+                        { label: 'Dashboard', href: '#', icon: 'home', active: true },
+                        { label: 'Projects', href: '#', icon: 'folder' },
+                        { label: 'Analytics', href: '#', icon: 'chart', badge: '3' },
+                        { label: 'Settings', href: '#', icon: 'settings' }
+                    ],
+                    actions: [
+                        { icon: 'bell', tooltip: 'Notifications', badge: '5', onClick: () => ToastBuilder.info('Notifications clicked') },
+                        { icon: 'add', label: 'New', type: 'primary', onClick: () => ToastBuilder.success('New item created!') }
+                    ],
+                    search: showSearch ? {
+                        placeholder: 'Search...',
+                        onSearch: (query) => ToastBuilder.info(`Searching: ${query}`),
+                        onClear: () => ToastBuilder.info('Search cleared')
+                    } : null,
+                    user: showUser ? {
+                        name: 'Maria Schmidt',
+                        email: 'maria.schmidt@ssi.at',
+                        avatar: 'https://i.pravatar.cc/150?img=47',
+                        menu: [
+                            { label: 'Mein Profil', icon: 'settings', onClick: () => ToastBuilder.info('Profile clicked') },
+                            { label: 'Einstellungen', icon: 'settings', onClick: () => ToastBuilder.info('Settings clicked') },
+                            { type: 'divider' },
+                            { label: 'Abmelden', icon: 'close', onClick: () => ToastBuilder.warning('Logged out') }
+                        ]
+                    } : null,
+                    onNavigate: (href) => ToastBuilder.info(`Navigate to: ${href}`)
+                }
+            });
+
+            demoHeader.render();
+        }
+
+        window.updateHeaderDemo = createHeaderDemo;
+
+        window.toggleSearch = () => {
+            showSearch = !showSearch;
+            createHeaderDemo();
+            ToastBuilder.info(showSearch ? 'Search enabled' : 'Search disabled');
+        };
+
+        window.toggleUser = () => {
+            showUser = !showUser;
+            createHeaderDemo();
+            ToastBuilder.info(showUser ? 'User menu enabled' : 'User menu disabled');
+        };
+
+        // Initial render
+        createHeaderDemo();
+
+        // Code Example
+        new CodeSnippetBuilder({
+            containerId: 'code-example',
+            code: `import { HeaderBuilder, IconManager } from '/vendor/ssi-builders/src/index.js';
+
+const header = new HeaderBuilder({
+    containerId: 'header-container',
+    options: {
+        // Brand
+        logo: '/logo.svg',
+        title: 'My Application',
+        subtitle: 'Dashboard',
+        titleLink: '/',
+
+        // Navigation Tabs
+        tabs: [
+            { label: 'Dashboard', href: '#', icon: 'home', active: true },
+            { label: 'Projects', href: '#projects', icon: 'folder' },
+            { label: 'Analytics', href: '#analytics', icon: 'chart', badge: '3' },
+            { label: 'Settings', href: '#settings', icon: 'settings' }
+        ],
+
+        // Action Buttons
+        actions: [
+            { icon: 'bell', tooltip: 'Notifications', badge: '5', onClick: () => {...} },
+            { icon: 'add', label: 'New', type: 'primary', onClick: () => {...} }
+        ],
+
+        // Search Bar
+        search: {
+            placeholder: 'Search...',
+            onSearch: (query) => console.log('Search:', query),
+            onClear: () => console.log('Cleared')
+        },
+
+        // User Profile
+        user: {
+            name: 'John Doe',
+            email: 'john@example.com',
+            avatar: '/avatar.jpg',
+            menu: [
+                { label: 'Profile', icon: 'settings', onClick: () => {...} },
+                { type: 'divider' },
+                { label: 'Logout', icon: 'close', onClick: () => {...} }
+            ]
+        },
+
+        // Layout Options
+        position: 'fixed',      // 'fixed' | 'sticky' | 'static'
+        height: 64,
+        variant: 'surface',     // 'surface' | 'primary' | 'transparent'
+        elevateOnScroll: true,
+
+        // Sidebar Integration
+        showSidebarToggle: true,
+        onSidebarToggle: () => sidebar.toggle(),
+
+        // Callbacks
+        onNavigate: (href) => router.push(href)
+    }
+});
+
+header.render();
+
+// Update title dynamically
+header.updateTitle('New Title', 'New Subtitle');
+
+// Set active tab
+header.setActiveTab(2);
+
+// Update notification badge
+header.updateActionBadge(0, '10');`,
+            language: 'javascript',
+            options: {
+                showLineNumbers: true,
+                theme: 'dark'
+            }
+        });
+    </script>
+</body>
+</html>

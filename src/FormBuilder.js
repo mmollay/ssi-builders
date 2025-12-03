@@ -62,6 +62,7 @@ export class FormBuilder extends BaseBuilder {
             gap: gap,                  // 'compact' | 'normal' | 'comfortable' - vertical spacing
             density: density,          // 'dense' | 'normal' | 'comfortable' - preset (size + gap)
             onCancel: null,
+            onChange: null,        // Global onChange callback: (values, changedField) => void
             initialValues: {},
             // M3 Component Integration
             useM3Components: true,     // Enable M3 Slider, ColorPicker, Dropdown
@@ -200,6 +201,7 @@ export class FormBuilder extends BaseBuilder {
                         onChange: (newValue) => {
                             this.values[field.key] = newValue;
                             this.validateField(field);
+                            this._notifyChange(field, newValue); // Trigger form onChange callback
                             if (this.options.autoSave) {
                                 this.triggerAutoSave();
                             }
@@ -225,6 +227,7 @@ export class FormBuilder extends BaseBuilder {
                         onChange: (colorObj) => {
                             this.values[field.key] = colorObj.hex;
                             this.validateField(field);
+                            this._notifyChange(field, colorObj.hex); // Trigger form onChange callback
                             if (this.options.autoSave) {
                                 this.triggerAutoSave();
                             }
@@ -361,6 +364,11 @@ export class FormBuilder extends BaseBuilder {
             return true;
         }
 
+        // Studio-style components that render their own labels
+        if (['section-header', 'inline-checkbox'].includes(type)) {
+            return true;
+        }
+
         // M3 components have their own labels when useM3Components is enabled
         if (this.options.useM3Components) {
             // M3Slider, M3ColorPicker, M3DropdownMenu all render their own labels
@@ -398,6 +406,7 @@ export class FormBuilder extends BaseBuilder {
             'form-field',
             `form-field-${fieldLayout}`,
             `form-field-size-${fieldSize}`,
+            `form-field-${field.type}`, // Add type class
             widthClass,
             error && touched ? 'form-field-error' : '',
             field.fullWidth ? 'form-field-full' : '',
@@ -914,6 +923,157 @@ export class FormBuilder extends BaseBuilder {
                     </label>
                 `;
 
+            // ============================================
+            // STUDIO-STYLE FIELD TYPES
+            // ============================================
+
+            case 'button-group':
+                // Horizontal buttons for single-select (like Spacing, Width, Position)
+                return `
+                    <div class="form-button-group" data-field-key="${this.escapeHtml(field.key)}">
+                        ${field.options?.map(opt => {
+                            const optValue = typeof opt === 'string' ? opt : opt.value;
+                            const optLabel = typeof opt === 'string' ? opt : opt.label;
+                            const optSubLabel = typeof opt === 'object' ? opt.subLabel : null;
+                            const isActive = value === optValue;
+                            return `
+                                <button
+                                    type="button"
+                                    class="form-button-group__btn ${isActive ? 'active' : ''}"
+                                    data-value="${this.escapeHtml(optValue)}"
+                                    ${field.disabled ? 'disabled' : ''}
+                                >
+                                    ${this.escapeHtml(optLabel)}
+                                    ${optSubLabel ? `<span class="form-button-group__sublabel">${this.escapeHtml(optSubLabel)}</span>` : ''}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+            case 'card-select':
+                // Grid with selectable cards (like Layout Skeleton)
+                const gridCols = field.columns || 2;
+                return `
+                    <div class="form-card-select" data-field-key="${this.escapeHtml(field.key)}" style="grid-template-columns: repeat(${parseInt(gridCols) || 2}, 1fr);">
+                        ${field.options?.map(opt => {
+                            const optValue = typeof opt === 'string' ? opt : opt.value;
+                            const optLabel = typeof opt === 'string' ? opt : opt.label;
+                            const optIcon = typeof opt === 'object' ? opt.icon : null;
+                            const isActive = value === optValue;
+                            return `
+                                <div
+                                    class="form-card-select__card ${isActive ? 'active' : ''}"
+                                    data-value="${this.escapeHtml(optValue)}"
+                                    ${field.disabled ? 'data-disabled="true"' : ''}
+                                >
+                                    ${optIcon ? `<div class="form-card-select__icon">${optIcon}</div>` : ''}
+                                    <div class="form-card-select__label">${this.escapeHtml(optLabel)}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+            case 'color-swatches':
+                // Color picker with round swatches
+                const colors = field.colors || field.options || ['#1a73e8', '#7c4dff', '#00897b', '#ff6d00', '#e53935'];
+                return `
+                    <div class="form-color-swatches" data-field-key="${this.escapeHtml(field.key)}">
+                        ${colors.map(color => {
+                            const colorValue = typeof color === 'string' ? color : color.value;
+                            const colorLabel = typeof color === 'object' ? color.label : null;
+                            const isActive = value === colorValue;
+                            // Sanitize color value to prevent CSS injection
+                            const safeColorValue = this.escapeHtml(colorValue);
+                            const safeColorLabel = this.escapeHtml(colorLabel || colorValue);
+                            return `
+                                <button
+                                    type="button"
+                                    class="form-color-swatch ${isActive ? 'active' : ''}"
+                                    data-value="${safeColorValue}"
+                                    style="background-color: ${safeColorValue};"
+                                    title="${safeColorLabel}"
+                                    ${field.disabled ? 'disabled' : ''}
+                                >
+                                    ${isActive ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}
+                                </button>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+
+            case 'inline-checkbox':
+                // Compact checkbox with background container
+                return `
+                    <div class="form-inline-checkbox ${value ? 'checked' : ''}" data-field-key="${this.escapeHtml(field.key)}">
+                        <input
+                            type="checkbox"
+                            id="${this.escapeHtml(this.containerId)}_${this.escapeHtml(field.key)}"
+                            name="${this.escapeHtml(field.key)}"
+                            ${value ? 'checked' : ''}
+                            ${field.disabled ? 'disabled' : ''}
+                        />
+                        <label for="${this.escapeHtml(this.containerId)}_${this.escapeHtml(field.key)}">${this.escapeHtml(field.checkboxLabel || field.label || '')}</label>
+                    </div>
+                `;
+
+            case 'section-header':
+                // Section header like "1. LAYOUT SKELETON"
+                return `
+                    <div class="form-section-header">
+                        ${field.number ? `<span class="form-section-header__number">${this.escapeHtml(field.number)}.</span>` : ''}
+                        ${this.escapeHtml(field.label || field.title || '')}
+                    </div>
+                `;
+
+            case 'item-list':
+                // Dynamic list with add/remove (for Navigation Items, Footer Links)
+                const items = Array.isArray(value) ? value : [];
+                const itemFields = field.itemFields || [{ key: 'label', placeholder: 'Label' }];
+                return `
+                    <div class="form-item-list" data-field-key="${this.escapeHtml(field.key)}">
+                        <div class="form-item-list__items">
+                            ${items.map((item, idx) => `
+                                <div class="form-item-list__row" data-index="${idx}">
+                                    ${itemFields.map(itemField => {
+                                        const itemValue = item[itemField.key] || '';
+                                        if (itemField.type === 'select') {
+                                            return `
+                                                <select
+                                                    class="form-item-list__input"
+                                                    data-item-key="${this.escapeHtml(itemField.key)}"
+                                                    ${itemField.disabled ? 'disabled' : ''}
+                                                >
+                                                    ${itemField.options?.map(opt => {
+                                                        const optVal = typeof opt === 'string' ? opt : opt.value;
+                                                        const optLbl = typeof opt === 'string' ? opt : opt.label;
+                                                        return `<option value="${this.escapeHtml(optVal)}" ${itemValue === optVal ? 'selected' : ''}>${this.escapeHtml(optLbl)}</option>`;
+                                                    }).join('')}
+                                                </select>
+                                            `;
+                                        }
+                                        return `
+                                            <input
+                                                type="${this.escapeHtml(itemField.type || 'text')}"
+                                                class="form-item-list__input"
+                                                data-item-key="${this.escapeHtml(itemField.key)}"
+                                                value="${this.escapeHtml(itemValue)}"
+                                                placeholder="${this.escapeHtml(itemField.placeholder || '')}"
+                                                ${itemField.disabled ? 'disabled' : ''}
+                                            />
+                                        `;
+                                    }).join('')}
+                                    <button type="button" class="form-item-list__delete" data-index="${idx}">×</button>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <button type="button" class="form-item-list__add">
+                            + ${this.escapeHtml(field.addLabel || 'Add Item')}
+                        </button>
+                    </div>
+                `;
+
             default: // text
                 return wrapInputGroup(`
                     <input
@@ -930,6 +1090,11 @@ export class FormBuilder extends BaseBuilder {
      * Render action buttons
      */
     renderActions() {
+        // If showActions is explicitly false, don't render any actions
+        if (this.options.showActions === false) {
+            return '';
+        }
+
         // Use M3 button classes when useM3Components is enabled
         const primaryBtnClass = this.options.useM3Components
             ? 'm3-button m3-button--filled'
@@ -1105,6 +1270,225 @@ export class FormBuilder extends BaseBuilder {
 
         // M3 Floating Label Logic
         this.attachFloatingLabels();
+
+        // ============================================
+        // STUDIO-STYLE FIELD EVENT LISTENERS
+        // ============================================
+
+        // Button Group clicks
+        this.container.querySelectorAll('.form-button-group').forEach(group => {
+            const fieldKey = group.dataset.fieldKey;
+            const field = this.fields.find(f => f.key === fieldKey);
+
+            group.querySelectorAll('.form-button-group__btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const value = btn.dataset.value;
+
+                    // Update active state
+                    group.querySelectorAll('.form-button-group__btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    // Update form value
+                    this.values[fieldKey] = value;
+                    this._notifyChange(field, value);
+                    this.triggerAutoSave();
+                });
+            });
+        });
+
+        // Card Select clicks
+        this.container.querySelectorAll('.form-card-select').forEach(grid => {
+            const fieldKey = grid.dataset.fieldKey;
+            const field = this.fields.find(f => f.key === fieldKey);
+
+            grid.querySelectorAll('.form-card-select__card').forEach(card => {
+                card.addEventListener('click', () => {
+                    if (card.dataset.disabled === 'true') return;
+
+                    const value = card.dataset.value;
+
+                    // Update active state
+                    grid.querySelectorAll('.form-card-select__card').forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+
+                    // Update form value
+                    this.values[fieldKey] = value;
+                    this._notifyChange(field, value);
+                    this.triggerAutoSave();
+                });
+            });
+        });
+
+        // Color Swatches clicks
+        this.container.querySelectorAll('.form-color-swatches').forEach(container => {
+            const fieldKey = container.dataset.fieldKey;
+            const field = this.fields.find(f => f.key === fieldKey);
+
+            container.querySelectorAll('.form-color-swatch').forEach(swatch => {
+                swatch.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const value = swatch.dataset.value;
+
+                    // Update active state
+                    container.querySelectorAll('.form-color-swatch').forEach(s => {
+                        s.classList.remove('active');
+                        s.textContent = '';
+                    });
+                    swatch.classList.add('active');
+                    swatch.textContent = '✓';
+
+                    // Update form value
+                    this.values[fieldKey] = value;
+                    this._notifyChange(field, value);
+                    this.triggerAutoSave();
+                });
+            });
+        });
+
+        // Inline Checkbox clicks
+        this.container.querySelectorAll('.form-inline-checkbox').forEach(container => {
+            const fieldKey = container.dataset.fieldKey;
+            const field = this.fields.find(f => f.key === fieldKey);
+            const checkbox = container.querySelector('input[type="checkbox"]');
+
+            checkbox?.addEventListener('change', () => {
+                const value = checkbox.checked;
+                container.classList.toggle('checked', value);
+
+                // Update form value
+                this.values[fieldKey] = value;
+                this._notifyChange(field, value);
+                this.triggerAutoSave();
+            });
+        });
+
+        // Item List events (add, remove, input change)
+        this.container.querySelectorAll('.form-item-list').forEach(container => {
+            const fieldKey = container.dataset.fieldKey;
+            const field = this.fields.find(f => f.key === fieldKey);
+
+            // Add button
+            const addBtn = container.querySelector('.form-item-list__add');
+            addBtn?.addEventListener('click', (e) => {
+                e.preventDefault();
+                const items = Array.isArray(this.values[fieldKey]) ? [...this.values[fieldKey]] : [];
+
+                // Create empty item based on itemFields
+                const newItem = {};
+                (field?.itemFields || [{ key: 'label' }]).forEach(itemField => {
+                    newItem[itemField.key] = itemField.defaultValue || '';
+                });
+
+                items.push(newItem);
+                this.values[fieldKey] = items;
+                this.reRenderItemList(fieldKey, field);
+                this._notifyChange(field, items);
+                this.triggerAutoSave();
+            });
+
+            // Delete buttons & input changes
+            this.attachItemListRowEvents(container, fieldKey, field);
+        });
+    }
+
+    /**
+     * Re-render item list after add/remove
+     */
+    reRenderItemList(fieldKey, field) {
+        const container = this.container.querySelector(`.form-item-list[data-field-key="${fieldKey}"]`);
+        if (!container) return;
+
+        const items = Array.isArray(this.values[fieldKey]) ? this.values[fieldKey] : [];
+        const itemFields = field?.itemFields || [{ key: 'label', placeholder: 'Label' }];
+        const itemsContainer = container.querySelector('.form-item-list__items');
+
+        itemsContainer.innerHTML = items.map((item, idx) => `
+            <div class="form-item-list__row" data-index="${idx}">
+                ${itemFields.map(itemField => {
+                    const itemValue = item[itemField.key] || '';
+                    if (itemField.type === 'select') {
+                        return `
+                            <select
+                                class="form-item-list__input"
+                                data-item-key="${itemField.key}"
+                                ${itemField.disabled ? 'disabled' : ''}
+                            >
+                                ${itemField.options?.map(opt => {
+                                    const optVal = typeof opt === 'string' ? opt : opt.value;
+                                    const optLbl = typeof opt === 'string' ? opt : opt.label;
+                                    return `<option value="${optVal}" ${itemValue === optVal ? 'selected' : ''}>${optLbl}</option>`;
+                                }).join('')}
+                            </select>
+                        `;
+                    }
+                    return `
+                        <input
+                            type="${itemField.type || 'text'}"
+                            class="form-item-list__input"
+                            data-item-key="${itemField.key}"
+                            value="${itemValue}"
+                            placeholder="${itemField.placeholder || ''}"
+                            ${itemField.disabled ? 'disabled' : ''}
+                        />
+                    `;
+                }).join('')}
+                <button type="button" class="form-item-list__delete" data-index="${idx}">×</button>
+            </div>
+        `).join('');
+
+        // Re-attach events
+        this.attachItemListRowEvents(container, fieldKey, field);
+    }
+
+    /**
+     * Attach events to item list rows
+     */
+    attachItemListRowEvents(container, fieldKey, field) {
+        // Delete buttons
+        container.querySelectorAll('.form-item-list__delete').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                const idx = parseInt(btn.dataset.index);
+                const items = Array.isArray(this.values[fieldKey]) ? [...this.values[fieldKey]] : [];
+                items.splice(idx, 1);
+                this.values[fieldKey] = items;
+                this.reRenderItemList(fieldKey, field);
+                this._notifyChange(field, items);
+                this.triggerAutoSave();
+            });
+        });
+
+        // Input changes
+        container.querySelectorAll('.form-item-list__row').forEach(row => {
+            const idx = parseInt(row.dataset.index);
+
+            row.querySelectorAll('.form-item-list__input').forEach(input => {
+                input.addEventListener('input', () => {
+                    const itemKey = input.dataset.itemKey;
+                    const items = Array.isArray(this.values[fieldKey]) ? [...this.values[fieldKey]] : [];
+
+                    if (items[idx]) {
+                        items[idx][itemKey] = input.value;
+                        this.values[fieldKey] = items;
+                        this._notifyChange(field, items);
+                        this.triggerAutoSave();
+                    }
+                });
+
+                input.addEventListener('change', () => {
+                    const itemKey = input.dataset.itemKey;
+                    const items = Array.isArray(this.values[fieldKey]) ? [...this.values[fieldKey]] : [];
+
+                    if (items[idx]) {
+                        items[idx][itemKey] = input.value;
+                        this.values[fieldKey] = items;
+                        this._notifyChange(field, items);
+                        this.triggerAutoSave();
+                    }
+                });
+            });
+        });
     }
 
     /**
@@ -1194,6 +1578,9 @@ export class FormBuilder extends BaseBuilder {
         if (this.hasConditionalFields()) {
             this.updateFieldsVisibility();
         }
+
+        // Notify about change (field-level and global callbacks)
+        this._notifyChange(field, value);
 
         // Auto-save
         if (this.options.autoSave) {
@@ -1375,6 +1762,23 @@ export class FormBuilder extends BaseBuilder {
     }
 
     /**
+     * Notify about a field value change
+     * Calls both field-level and global onChange callbacks
+     * @param {Object} field - The field that changed
+     * @param {*} value - The new value
+     */
+    _notifyChange(field, value) {
+        // Call field-level onChange if defined
+        if (field?.onChange) {
+            field.onChange(value, this.values);
+        }
+        // Call global onChange if defined
+        if (this.options.onChange) {
+            this.options.onChange(this.values, field?.key);
+        }
+    }
+
+    /**
      * Trigger auto-save
      */
     triggerAutoSave() {
@@ -1400,6 +1804,32 @@ export class FormBuilder extends BaseBuilder {
         }
 
         this.render();
+    }
+
+    /**
+     * Destroy the form builder instance
+     * Cleans up all resources and clears the container
+     */
+    destroy() {
+        // Clear any pending auto-save
+        if (this.autoSaveTimeout) {
+            clearTimeout(this.autoSaveTimeout);
+            this.autoSaveTimeout = null;
+        }
+
+        // Destroy M3 components
+        this.destroyM3Components();
+
+        // Clear container
+        if (this.container) {
+            this.container.innerHTML = '';
+        }
+
+        // Clear internal state
+        this.values = {};
+        this.errors = {};
+        this.touched = {};
+        this.fields = [];
     }
 
     /**

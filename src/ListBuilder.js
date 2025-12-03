@@ -57,8 +57,8 @@ export class ListBuilder extends BaseBuilder {
         this.dataSource = config.dataSource;
         this.actions = config.actions || {};
 
-        // Internal state
-        this.data = [];
+        // Internal state - support both static data and dataSource
+        this.data = config.data || [];
         this.filteredData = [];
         this.selectedRows = new Set();
         this.currentPage = 1;
@@ -672,15 +672,18 @@ export class ListBuilder extends BaseBuilder {
                 }
             } else {
                 // Client-side mode: load all data
-                result = await this.dataSource();
-                
-                // Handle both formats
-                if (result && typeof result === 'object' && 'items' in result) {
-                    this.data = result.items || [];
-                } else {
-                    this.data = Array.isArray(result) ? result : [];
+                if (this.dataSource && typeof this.dataSource === 'function') {
+                    result = await this.dataSource();
+
+                    // Handle both formats
+                    if (result && typeof result === 'object' && 'items' in result) {
+                        this.data = result.items || [];
+                    } else {
+                        this.data = Array.isArray(result) ? result : [];
+                    }
                 }
-                
+                // else: this.data was already set in constructor
+
                 // Apply client-side filtering
                 this.applyFilters();
             }

@@ -255,7 +255,9 @@ export class ThemeBuilder {
         // This ensures persistence across page loads
         const domHasDarkMode = document.documentElement.classList.contains('dark-mode') ||
                                document.documentElement.classList.contains('m3-dark');
-        this.darkMode = config.darkMode || domHasDarkMode || false;
+        // IMPORTANT: Only use DOM state if config.darkMode is NOT explicitly provided
+        // Using `!== undefined` because `false` should be respected as an explicit value
+        this.darkMode = config.darkMode !== undefined ? config.darkMode : (domHasDarkMode || false);
         this.customColors = config.customColors || {};
         this.palette = {};
         this.callbacks = [];
