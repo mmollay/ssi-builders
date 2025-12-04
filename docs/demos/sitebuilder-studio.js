@@ -335,7 +335,10 @@ function updateSite() {
     });
 
     // Apply additional content settings directly to DOM
-    applyContentSettings();
+    // Use setTimeout to ensure DOM is fully updated
+    setTimeout(() => {
+        applyContentSettings();
+    }, 0);
 
     updatePreviewInfo();
 }
