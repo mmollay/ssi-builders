@@ -25,7 +25,12 @@ let config = {
         title: 'Benutzerverwaltung',
         showTitle: true,
         maxWidth: 'full',
-        align: 'left'
+        align: 'left',
+        headerGap: 0, // Gap between header and content (0-80)
+        marginTop: 0, // Additional top margin (0-80)
+        marginBottom: 0, // Additional bottom margin (0-80)
+        borderRadius: 0, // Border radius (0-24)
+        shadow: 'none' // Box shadow: none, sm, md, lg
     },
     theme: {
         color: '#1a73e8',
@@ -344,16 +349,41 @@ function applyContentSettings() {
     const contentInner = previewFrame.querySelector('.site-content-inner');
     const pageTitle = previewFrame.querySelector('.site-content h2');
 
-    // Apply background color to site-main
-    if (siteMain && config.content.bgColor) {
+    // Apply header gap (margin-top on site-main)
+    if (siteMain) {
+        siteMain.style.marginTop = `${64 + config.content.headerGap}px`;
+
+        // Apply additional top/bottom margins
+        siteMain.style.paddingTop = `${config.content.marginTop}px`;
+        siteMain.style.paddingBottom = `${config.content.marginBottom}px`;
+
+        // Apply background color
         siteMain.style.backgroundColor = config.content.bgColor === 'transparent' ? '' : config.content.bgColor;
     }
 
-    // Apply content max width
-    if (contentInner && config.content.maxWidth) {
+    // Apply content inner styles
+    if (contentInner) {
+        // Max width
         const maxWidth = config.content.maxWidth === 'full' ? 'none' : `${config.content.maxWidth}px`;
         contentInner.style.maxWidth = maxWidth;
         contentInner.style.margin = config.content.align === 'center' ? '0 auto' : '0';
+
+        // Border radius
+        contentInner.style.borderRadius = `${config.content.borderRadius}px`;
+
+        // Box shadow
+        const shadowMap = {
+            'none': 'none',
+            'sm': 'var(--ssi-shadow-sm, 0 1px 2px rgba(0,0,0,0.05))',
+            'md': 'var(--ssi-shadow-md, 0 4px 6px rgba(0,0,0,0.1))',
+            'lg': 'var(--ssi-shadow-lg, 0 10px 15px rgba(0,0,0,0.1))'
+        };
+        contentInner.style.boxShadow = shadowMap[config.content.shadow] || 'none';
+
+        // If we have shadow or border radius and background is transparent, apply a subtle background
+        if ((config.content.shadow !== 'none' || config.content.borderRadius > 0) && config.content.bgColor === 'transparent') {
+            contentInner.style.backgroundColor = 'var(--m3-surface, #ffffff)';
+        }
     }
 
     // Update page title
@@ -511,6 +541,11 @@ function handleFormChange(values, changedField) {
     if (values.showContentTitle !== undefined) config.content.showTitle = values.showContentTitle;
     if (values.contentMaxWidth !== undefined) config.content.maxWidth = values.contentMaxWidth;
     if (values.contentAlign !== undefined) config.content.align = values.contentAlign;
+    if (values.contentHeaderGap !== undefined) config.content.headerGap = values.contentHeaderGap;
+    if (values.contentMarginTop !== undefined) config.content.marginTop = values.contentMarginTop;
+    if (values.contentMarginBottom !== undefined) config.content.marginBottom = values.contentMarginBottom;
+    if (values.contentBorderRadius !== undefined) config.content.borderRadius = values.contentBorderRadius;
+    if (values.contentShadow !== undefined) config.content.shadow = values.contentShadow;
 
     // Handle navigation items
     if (values.navigation) {
@@ -751,12 +786,12 @@ const elementFields = {
             key: '_section_spacing',
             type: 'section-header',
             number: 1,
-            label: 'CONTENT SPACING'
+            label: 'SPACING'
         },
         {
             key: 'spacingValue',
             type: 'slider',
-            label: 'Content Padding',
+            label: 'Padding',
             min: 0,
             max: 80,
             step: 4,
@@ -764,23 +799,77 @@ const elementFields = {
             discrete: true,
             showTicks: false
         },
-        // Content Background
         {
-            key: '_section_content_bg',
+            key: 'contentHeaderGap',
+            type: 'slider',
+            label: 'Header Gap',
+            min: 0,
+            max: 80,
+            step: 4,
+            unit: 'px',
+            discrete: true,
+            showTicks: false
+        },
+        {
+            key: 'contentMarginTop',
+            type: 'slider',
+            label: 'Top Margin',
+            min: 0,
+            max: 80,
+            step: 4,
+            unit: 'px',
+            discrete: true,
+            showTicks: false
+        },
+        {
+            key: 'contentMarginBottom',
+            type: 'slider',
+            label: 'Bottom Margin',
+            min: 0,
+            max: 80,
+            step: 4,
+            unit: 'px',
+            discrete: true,
+            showTicks: false
+        },
+        // Content Style
+        {
+            key: '_section_content_style',
             type: 'section-header',
             number: 2,
-            label: 'BACKGROUND'
+            label: 'STYLE'
         },
         {
             key: 'contentBgColor',
             type: 'color-swatches',
-            label: 'Background Color',
+            label: 'Background',
             colors: [
                 { value: 'transparent', label: 'None' },
                 { value: '#ffffff', label: 'White' },
-                { value: '#f8f9fa', label: 'Light Gray' },
-                { value: '#f1f3f4', label: 'Gray' },
-                { value: '#e8f0fe', label: 'Light Blue' }
+                { value: '#f8f9fa', label: 'Gray' },
+                { value: '#e8f0fe', label: 'Blue' }
+            ]
+        },
+        {
+            key: 'contentBorderRadius',
+            type: 'slider',
+            label: 'Border Radius',
+            min: 0,
+            max: 24,
+            step: 4,
+            unit: 'px',
+            discrete: true,
+            showTicks: false
+        },
+        {
+            key: 'contentShadow',
+            type: 'button-group',
+            label: 'Shadow',
+            options: [
+                { value: 'none', label: 'None' },
+                { value: 'sm', label: 'Small' },
+                { value: 'md', label: 'Medium' },
+                { value: 'lg', label: 'Large' }
             ]
         },
         // Content Title
@@ -793,13 +882,13 @@ const elementFields = {
         {
             key: 'contentTitle',
             type: 'text',
-            label: 'Page Title',
+            label: 'Title Text',
             placeholder: 'Enter page title...'
         },
         {
             key: 'showContentTitle',
             type: 'inline-checkbox',
-            checkboxLabel: 'Show Page Title'
+            checkboxLabel: 'Show Title'
         },
         // Content Layout
         {
@@ -811,18 +900,18 @@ const elementFields = {
         {
             key: 'contentMaxWidth',
             type: 'button-group',
-            label: 'Content Max Width',
+            label: 'Max Width',
             options: [
-                { value: '800', label: '800px' },
-                { value: '1000', label: '1000px' },
-                { value: '1200', label: '1200px' },
+                { value: '800', label: '800' },
+                { value: '1000', label: '1000' },
+                { value: '1200', label: '1200' },
                 { value: 'full', label: 'Full' }
             ]
         },
         {
             key: 'contentAlign',
             type: 'button-group',
-            label: 'Content Alignment',
+            label: 'Align',
             options: [
                 { value: 'left', label: 'Left' },
                 { value: 'center', label: 'Center' }
@@ -886,7 +975,12 @@ function getInitialValuesForElement(element) {
         contentTitle: config.content.title,
         showContentTitle: config.content.showTitle,
         contentMaxWidth: config.content.maxWidth,
-        contentAlign: config.content.align
+        contentAlign: config.content.align,
+        contentHeaderGap: config.content.headerGap || 0,
+        contentMarginTop: config.content.marginTop || 0,
+        contentMarginBottom: config.content.marginBottom || 0,
+        contentBorderRadius: config.content.borderRadius || 0,
+        contentShadow: config.content.shadow || 'none'
     };
     return baseValues;
 }

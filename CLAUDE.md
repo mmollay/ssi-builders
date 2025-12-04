@@ -8,7 +8,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **SSI Builders** is the central UI component library for the entire SSI ecosystem. Like Google's Material Design across all products, SSI Builders provides a consistent UI framework for ALL SSI applications (HabDaWas App, Habbi Suchalgorithmus, Bazar Bold, and future projects).
 
-**Current Version:** 2.4.1
+**Current Version:** 2.7.1
+
+---
+
+## 📋 TODO & Issues
+
+**IMPORTANT:** Always check `/Users/martinmollay/Development/ssi-builders/SSI-BUILDER-TODO.md` for:
+- 🐛 Open Bugs (Priority: High)
+- 🚀 Feature Requests
+- 📝 Enhancements
+- Version Planning
+
+This file is the central hub for all SSI-Builder issues across all projects.
 
 ---
 
@@ -275,3 +287,4 @@ Test files in `/tests/` follow pattern: `test-[feature].spec.js`
 ---
 
 > **Last Updated:** 2025-11-25 | **Current Version:** 2.4.1
+- immer starten nach Änderungen wenn es nicht schon läuft SSI - Test app für Builder http://localhost:5188/
