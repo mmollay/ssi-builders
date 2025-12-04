@@ -205,6 +205,50 @@
     font-size: 14px;
 }
 
+/* Dense: M3 Slider overrides */
+.form-builder.form-density-dense .form-m3-slider-container {
+    margin-bottom: 0;
+}
+
+.form-builder.form-density-dense .m3-slider {
+    padding: 0;
+    margin: 0;
+    gap: 4px;
+}
+
+.form-builder.form-density-dense .m3-slider__label {
+    font-size: 10px;
+    margin-bottom: 4px;
+    gap: 6px;
+}
+
+.form-builder.form-density-dense .m3-slider__value {
+    font-size: 10px;
+    padding: 2px 8px;
+    min-width: 32px;
+    height: 20px;
+}
+
+.form-builder.form-density-dense .m3-slider__track-container {
+    height: 24px;
+    padding: 6px 0;
+    margin: 0;
+}
+
+.form-builder.form-density-dense .m3-slider__track {
+    height: 3px;
+}
+
+.form-builder.form-density-dense .m3-slider__thumb {
+    width: 14px;
+    height: 14px;
+}
+
+.form-builder.form-density-dense .m3-slider__indicator {
+    font-size: 9px;
+    padding: 2px 6px;
+}
+
 /* Dense: Float labels when focused or has value (filled variant) */
 .form-builder.form-density-dense .form-field-filled .form-input:focus ~ .form-label,
 .form-builder.form-density-dense .form-field-filled .form-input:not(:placeholder-shown) ~ .form-label,
