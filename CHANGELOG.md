@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.7.1] - 2025-12-04
+
+### Added
+- **MCP Server Integration**: AI-optimized documentation access for Claude Code now included in repository
+  - MCP Server moved from separate repo to `mcp-server/` folder
+  - Single repository for SSI Builders + MCP Server
+  - Updated demo page with simplified installation instructions
+  - 5 MCP tools: `ssi_list_components`, `ssi_get_component_info`, `ssi_generate_code`, `ssi_search_components`, `ssi_check_updates`
+  - 3 MCP resources: builders index, best practices, changelog
+  - Reduces token usage by 70-90% when using Claude Code with SSI Builders
+- **HeaderBuilder**: Added to MCP Server component index with full documentation
+
+### Changed
+- **MCP Server Demo Page**: Updated installation instructions to use integrated `mcp-server/` folder
+- **MCP Server**: Updated components-index.json to v2.7.0 with all new features
+
 ## [2.7.0] - 2025-12-03
 
 ### Added

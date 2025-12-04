@@ -204,9 +204,32 @@
                     <p>AI-optimierte Integration: Reduziere Token-Kosten um 70% und beschleunige die Entwicklung mit SSI Builders</p>
                 </div>
 
+                <!-- What's New -->
+                <div class="demo-section">
+                    <h2>🆕 Neu in v2.7.0</h2>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <h3>🏗️ SiteBuilder Studio</h3>
+                            <p>Visueller Layout-Editor für SiteBuilder Konfigurationen mit Edit-Frames, Click-to-Select und Echtzeit-Preview.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🎨 FormBuilder Studio-Style Fields</h3>
+                            <p>Neue Field-Types: button-group, card-select, color-swatches, inline-checkbox, section-header, item-list.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>📱 HeaderBuilder</h3>
+                            <p>Material Design 3 App Bar mit Navigation Tabs, Search, User Profile und Mobile Hamburger Menu.</p>
+                        </div>
+                        <div class="feature-card">
+                            <h3>🔧 SiteBuilder Erweiterungen</h3>
+                            <p>Right Sidebar Position, Footer Variants (simple, columns, centered), Spacing Presets.</p>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- What is MCP -->
                 <div class="demo-section">
-                    <h2>Was ist der MCP Server? <span class="badge new">NEU v1.0.0</span></h2>
+                    <h2>Was ist der MCP Server? <span class="badge">v1.0.0</span></h2>
                     <p>Der <strong>Model Context Protocol (MCP) Server</strong> stellt Claude Code strukturierte Informationen über SSI Builders zur Verfügung - ohne jedes Mal die gesamte Dokumentation durchsuchen zu müssen.</p>
 
                     <div class="feature-grid">
@@ -329,7 +352,7 @@
                     <ul style="line-height: 2;">
                         <li><code>ssi://builders/index</code> - Kompletter JSON Index aller Komponenten</li>
                         <li><code>ssi://builders/best-practices</code> - Best Practices für SSI Builders</li>
-                        <li><code>ssi://builders/changelog</code> - Latest Changes (v2.6.0)</li>
+                        <li><code>ssi://builders/changelog</code> - Latest Changes (v2.7.0)</li>
                     </ul>
                 </div>
 
@@ -347,8 +370,8 @@
                     <h2>🔗 Weitere Informationen</h2>
                     <p>Vollständige Dokumentation, Troubleshooting, und Examples:</p>
                     <ul style="line-height: 2;">
-                        <li><a href="https://github.com/mmollay/ssi-builders-mcp" target="_blank">GitHub Repository</a></li>
-                        <li><a href="https://github.com/mmollay/ssi-builders" target="_blank">SSI Builders</a></li>
+                        <li><a href="https://github.com/mmollay/ssi-builders" target="_blank">SSI Builders (inkl. MCP Server)</a></li>
+                        <li><a href="https://github.com/mmollay/ssi-builders/tree/main/mcp-server" target="_blank">MCP Server Dokumentation</a></li>
                         <li><a href="https://modelcontextprotocol.io" target="_blank">Model Context Protocol Docs</a></li>
                     </ul>
                 </div>
@@ -376,9 +399,11 @@
         new CodeSnippetBuilder({
             containerId: 'step1-code',
             language: 'bash',
-            code: `cd /Users/martinmollay/Development
-git clone https://github.com/mmollay/ssi-builders-mcp.git
-cd ssi-builders-mcp
+            code: `# SSI Builders klonen (enthält MCP Server)
+git clone https://github.com/mmollay/ssi-builders.git
+cd ssi-builders/mcp-server
+
+# MCP Server bauen
 npm install
 npm run build
 
@@ -396,7 +421,7 @@ ls -la build/index.js`,
   "mcpServers": {
     "ssi-builders": {
       "command": "node",
-      "args": ["/Users/martinmollay/Development/ssi-builders-mcp/build/index.js"]
+      "args": ["/path/to/ssi-builders/mcp-server/build/index.js"]
     }
   }
 }`,
@@ -427,7 +452,6 @@ ssi_list_components({ category: "analytics" })
   "category": "analytics",
   "components": [
     "AnalyticsCard",
-    "AnalyticsCardGrid",
     "FilterBar",
     "TimeRangePicker"
   ]
@@ -518,11 +542,11 @@ ssi_check_updates()
 
 // Output:
 {
-  "currentVersion": "2.6.0",
-  "latestVersion": "2.6.1",
+  "currentVersion": "2.7.0",
+  "latestVersion": "2.7.1",
   "updateAvailable": true,
-  "releaseUrl": "https://github.com/mmollay/ssi-builders/releases/tag/v2.6.1",
-  "changelog": "### Added\\n- MCP Server Integration\\n..."
+  "releaseUrl": "https://github.com/mmollay/ssi-builders/releases/tag/v2.7.1",
+  "changelog": "### Added\\n- SiteBuilder Studio\\n- FormBuilder Studio-Style Fields\\n..."
 }
 
 // Auto-Update:
@@ -534,10 +558,10 @@ ssi_check_updates({
 
 // Output:
 {
-  "currentVersion": "2.6.0",
-  "latestVersion": "2.6.1",
+  "currentVersion": "2.7.0",
+  "latestVersion": "2.7.1",
   "updateSuccess": true,
-  "updateMessage": "Successfully updated from v2.6.0 to v2.6.1"
+  "updateMessage": "Successfully updated from v2.7.0 to v2.7.1"
 }`,
             copyButton: true,
             theme: 'dark'

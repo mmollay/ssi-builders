@@ -1,0 +1,62 @@
+{
+  "ListBuilder": {
+    "basic": {
+      "description": "Basic list with columns",
+      "code": "import { ListBuilder } from '/vendor/ssi-builders/src/index.js';\n\nnew ListBuilder({\n    containerId: 'my-list',\n    columns: [\n        { key: 'name', label: 'Name', sortable: true },\n        { key: 'email', label: 'Email' },\n        { key: 'status', label: 'Status' }\n    ],\n    data: [\n        { id: 1, name: 'John Doe', email: 'john@example.com', status: 'Active' },\n        { id: 2, name: 'Jane Smith', email: 'jane@example.com', status: 'Inactive' }\n    ]\n});"
+    },
+    "with-search": {
+      "description": "List with search functionality",
+      "code": "import { ListBuilder } from '/vendor/ssi-builders/src/index.js';\n\nnew ListBuilder({\n    containerId: 'my-list',\n    searchable: true,\n    searchPlaceholder: 'Search users...',\n    columns: [\n        { key: 'name', label: 'Name', sortable: true, searchable: true },\n        { key: 'email', label: 'Email', searchable: true }\n    ],\n    dataSource: async (params) => {\n        const response = await fetch(`/api/users?search=${params.search}`);\n        return response.json();\n    }\n});"
+    },
+    "with-actions": {
+      "description": "List with row actions",
+      "code": "import { ListBuilder } from '/vendor/ssi-builders/src/index.js';\nimport { IconManager } from '/vendor/ssi-builders/src/index.js';\n\nIconManager.setPreset('lucide');\n\nnew ListBuilder({\n    containerId: 'my-list',\n    columns: [\n        { key: 'name', label: 'Name' },\n        { key: 'email', label: 'Email' }\n    ],\n    actions: [\n        {\n            label: 'Edit',\n            icon: IconManager.getIcon('edit'),\n            handler: (row) => console.log('Edit', row)\n        },\n        {\n            label: 'Delete',\n            icon: IconManager.getIcon('delete'),\n            handler: (row) => console.log('Delete', row),\n            variant: 'danger'\n        }\n    ],\n    dataSource: async () => {\n        const response = await fetch('/api/users');\n        return response.json();\n    }\n});"
+    }
+  },
+  "FormBuilder": {
+    "basic": {
+      "description": "Basic form with validation",
+      "code": "import { FormBuilder } from '/vendor/ssi-builders/src/index.js';\n\nconst form = new FormBuilder({\n    containerId: 'my-form',\n    fields: [\n        {\n            name: 'name',\n            label: 'Full Name',\n            type: 'text',\n            required: true,\n            placeholder: 'Enter your name'\n        },\n        {\n            name: 'email',\n            label: 'Email',\n            type: 'email',\n            required: true,\n            validation: {\n                pattern: /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/,\n                message: 'Please enter a valid email'\n            }\n        },\n        {\n            name: 'message',\n            label: 'Message',\n            type: 'textarea',\n            rows: 4\n        }\n    ],\n    onSubmit: async (data) => {\n        const response = await fetch('/api/contact', {\n            method: 'POST',\n            headers: { 'Content-Type': 'application/json' },\n            body: JSON.stringify(data)\n        });\n        return response.json();\n    }\n});\n\nform.render();"
+    },
+    "modal-form": {
+      "description": "Form inside modal with AJAX",
+      "code": "import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';\n\nconst userData = await ModalBuilder.form({\n    title: 'Edit User',\n    size: 'medium',\n    fields: [\n        { name: 'name', label: 'Name', type: 'text', required: true },\n        { name: 'email', label: 'Email', type: 'email', required: true },\n        { name: 'role', label: 'Role', type: 'select', options: [\n            { value: 'admin', label: 'Admin' },\n            { value: 'user', label: 'User' }\n        ]}\n    ],\n    values: { name: 'John', email: 'john@example.com', role: 'user' },\n    submitLabel: 'Save Changes'\n});\n\nif (userData) {\n    await fetch('/api/users/1', {\n        method: 'PUT',\n        body: JSON.stringify(userData)\n    });\n}"
+    }
+  },
+  "ModalBuilder": {
+    "basic": {
+      "description": "Basic modal dialog",
+      "code": "import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';\n\nconst modal = new ModalBuilder({\n    title: 'Welcome',\n    content: '<p>This is a basic modal dialog.</p>',\n    size: 'medium',\n    buttons: [\n        { label: 'Close', variant: 'text', handler: (m) => m.close() }\n    ]\n});\n\nmodal.open();"
+    },
+    "confirm": {
+      "description": "Confirmation dialog",
+      "code": "import { ModalBuilder } from '/vendor/ssi-builders/src/index.js';\n\nconst confirmed = await ModalBuilder.confirm({\n    title: 'Delete Item',\n    message: 'Are you sure you want to delete this item? This action cannot be undone.',\n    danger: true\n});\n\nif (confirmed) {\n    await fetch('/api/items/1', { method: 'DELETE' });\n}"
+    }
+  },
+  "AnalyticsCard": {
+    "basic": {
+      "description": "Basic KPI card",
+      "code": "import { AnalyticsCard } from '/vendor/ssi-builders/src/index.js';\nimport { IconManager } from '/vendor/ssi-builders/src/index.js';\n\nIconManager.setPreset('lucide');\n\nnew AnalyticsCard({\n    containerId: 'revenue-card',\n    label: 'Total Revenue',\n    value: 45890.50,\n    format: 'currency',\n    currencySymbol: '$',\n    icon: IconManager.getIcon('chart'),\n    trend: {\n        direction: 'up',\n        value: 12.5,\n        label: 'vs. last month'\n    },\n    color: 'success'\n});"
+    },
+    "grid": {
+      "description": "Grid of KPI cards",
+      "code": "import { AnalyticsCardGrid } from '/vendor/ssi-builders/src/index.js';\nimport { IconManager } from '/vendor/ssi-builders/src/index.js';\n\nIconManager.setPreset('lucide');\n\nconst grid = new AnalyticsCardGrid({\n    containerId: 'kpi-dashboard',\n    columns: 4,\n    cards: [\n        { label: 'Users', value: 12458, format: 'number', icon: IconManager.getIcon('user'), color: 'primary' },\n        { label: 'Revenue', value: 45890.50, format: 'currency', icon: IconManager.getIcon('chart'), color: 'success', trend: { direction: 'up', value: 15 } },\n        { label: 'Conversion', value: 3.24, format: 'percent', icon: IconManager.getIcon('check'), color: 'warning' },\n        { label: 'Page Views', value: 1250000, format: 'compact', icon: IconManager.getIcon('view'), color: 'primary' }\n    ]\n});"
+    }
+  },
+  "ThemeBuilder": {
+    "basic": {
+      "description": "Theme with custom seed color",
+      "code": "import { ThemeBuilder } from '/vendor/ssi-builders/src/index.js';\n\nconst theme = new ThemeBuilder({\n    seedColor: '#1a73e8',  // Google Blue\n    darkMode: false,\n    autoApply: true  // Automatically inject CSS variables\n});\n\n// Toggle dark mode\ntheme.setDarkMode(true);\n\n// Change theme color\ntheme.setSeedColor('#9c27b0');  // Purple"
+    }
+  },
+  "MessageBuilder": {
+    "basic": {
+      "description": "Static convenience methods",
+      "code": "import { MessageBuilder } from '/vendor/ssi-builders/src/index.js';\n\n// Info message\nMessageBuilder.info('#container', 'This is an informational message');\n\n// Success message\nMessageBuilder.success('#container', 'Operation completed successfully!');\n\n// Warning message\nMessageBuilder.warning('#container', 'Please review before continuing');\n\n// Error message\nMessageBuilder.error('#container', 'An error occurred. Please try again.');\n\n// Loading message\nconst loadingMsg = MessageBuilder.loading('#container', 'Loading data...');\n// Later: loadingMsg.dismiss();"
+    },
+    "with-actions": {
+      "description": "Message with action buttons",
+      "code": "import { MessageBuilder } from '/vendor/ssi-builders/src/index.js';\n\nnew MessageBuilder({\n    containerId: 'alerts',\n    type: 'warning',\n    title: 'Session Expiring',\n    message: 'Your session will expire in 5 minutes.',\n    dismissible: true,\n    actions: [\n        {\n            label: 'Extend Session',\n            handler: async (msg) => {\n                await fetch('/api/extend-session', { method: 'POST' });\n                msg.dismiss();\n            },\n            variant: 'filled'\n        },\n        {\n            label: 'Logout',\n            handler: () => window.location.href = '/logout'\n        }\n    ]\n});"
+    }
+  }
+}

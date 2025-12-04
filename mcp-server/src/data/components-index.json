@@ -1,0 +1,597 @@
+{
+  "version": "2.7.1",
+  "categories": {
+    "core": {
+      "name": "Core Builders",
+      "description": "Essential UI components for building interfaces",
+      "components": [
+        "CardBuilder",
+        "ChangelogBuilder",
+        "CodeSnippetBuilder",
+        "HeaderBuilder",
+        "ListBuilder",
+        "M3ColorPicker",
+        "M3DatePicker",
+        "M3Slider",
+        "ModalBuilder",
+        "TabBuilder"
+      ]
+    },
+    "analytics": {
+      "name": "Analytics Components",
+      "description": "Dashboard and analytics UI components",
+      "components": [
+        "AnalyticsCard",
+        "FilterBar",
+        "TimeRangePicker"
+      ]
+    },
+    "forms": {
+      "name": "Form Components",
+      "description": "Advanced form inputs and controls",
+      "components": [
+        "FormBuilder",
+        "M3DropdownMenu"
+      ]
+    },
+    "navigation": {
+      "name": "Navigation",
+      "description": "Navigation and menu components",
+      "components": [
+        "MenuBuilder",
+        "SidebarBuilder",
+        "SiteBuilder"
+      ]
+    },
+    "feedback": {
+      "name": "Feedback & Messaging",
+      "description": "User feedback and notification components",
+      "components": [
+        "MessageBuilder",
+        "ToastBuilder",
+        "TooltipBuilder"
+      ]
+    },
+    "visualization": {
+      "name": "Data Visualization",
+      "description": "Charts and data display components",
+      "components": [
+        "ChartBuilder"
+      ]
+    },
+    "system": {
+      "name": "System & Utilities",
+      "description": "Theming, icons, and utility components",
+      "components": [
+        "GlobalConfig",
+        "IconManager",
+        "ThemeBuilder",
+        "i18n"
+      ]
+    }
+  },
+  "components": {
+    "AnalyticsCard": {
+      "category": "analytics",
+      "description": "KPI card component with trend indicators, multiple value formats, and loading states",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [
+        "Dashboards",
+        "KPI displays",
+        "Metrics",
+        "Real-time data"
+      ],
+      "features": [
+        "Trend indicators",
+        "5 formats (number, currency, percent, time, compact)",
+        "5 color variants",
+        "3 sizes",
+        "Loading skeleton",
+        "Dark mode"
+      ],
+      "requiredImports": [
+        "AnalyticsCard"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/analytics-card.html"
+    },
+    "CardBuilder": {
+      "category": "core",
+      "description": "Material Design 3 card component with media, actions, and multiple variants",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [
+        "Product cards",
+        "Blog posts",
+        "User profiles",
+        "Dashboard widgets"
+      ],
+      "features": [
+        "Image support",
+        "Actions",
+        "Variants (elevated, outlined, filled)",
+        "Dark mode",
+        "Clickable"
+      ],
+      "requiredImports": [
+        "CardBuilder"
+      ],
+      "cssFiles": [
+        "CardBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/card-builder.html"
+    },
+    "ChangelogBuilder": {
+      "category": "core",
+      "description": "Changelog display component",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "ChangelogBuilder"
+      ],
+      "cssFiles": [
+        "ChangelogBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/changelog-builder.html"
+    },
+    "ChartBuilder": {
+      "category": "visualization",
+      "description": "Chart.js wrapper with M3 theming",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "ChartBuilder"
+      ],
+      "cssFiles": [
+        "ChartBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/chart-builder.html"
+    },
+    "CodeSnippetBuilder": {
+      "category": "core",
+      "description": "Code snippet display with syntax highlighting",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "CodeSnippetBuilder"
+      ],
+      "cssFiles": [
+        "CodeSnippetBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/code-snippet-builder.html"
+    },
+    "FilterBar": {
+      "category": "analytics",
+      "description": "Global filter component with multiple input types",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "FilterBar"
+      ],
+      "cssFiles": [
+        "AnalyticsBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/filter-bar.html"
+    },
+    "FormBuilder": {
+      "category": "forms",
+      "description": "Advanced form builder with validation, multi-step support, auto-save, and Material Design 3 styling",
+      "complexity": "complex",
+      "tokenCost": "high",
+      "useCases": [
+        "User registration",
+        "Data entry",
+        "Settings pages",
+        "Multi-step wizards",
+        "CRUD forms"
+      ],
+      "features": [
+        "12 field types",
+        "Validation",
+        "Multi-step",
+        "Auto-save",
+        "Password toggle",
+        "Number stepper",
+        "Dark mode",
+        "i18n"
+      ],
+      "requiredImports": [
+        "FormBuilder"
+      ],
+      "cssFiles": [
+        "FormBuilder.css",
+        "shared.css",
+        "m3-form-styles.css"
+      ],
+      "demoPage": "/docs/demos/form-builder.html"
+    },
+    "GlobalConfig": {
+      "category": "system",
+      "description": "Global configuration singleton",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "GlobalConfig"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "HeaderBuilder": {
+      "category": "core",
+      "description": "Material Design 3 app bar component with Google-style top navigation",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [
+        "App headers",
+        "Navigation bars",
+        "Top navigation",
+        "Admin dashboards"
+      ],
+      "features": [
+        "Logo/brand section",
+        "Navigation tabs",
+        "Action buttons",
+        "Search bar",
+        "User profile/avatar",
+        "Mobile hamburger menu",
+        "Fixed/Sticky/Static positioning",
+        "Elevation on scroll",
+        "Dark mode",
+        "Sidebar toggle"
+      ],
+      "requiredImports": [
+        "HeaderBuilder"
+      ],
+      "cssFiles": [
+        "HeaderBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/header-builder.html"
+    },
+    "IconManager": {
+      "category": "system",
+      "description": "Centralized icon management system",
+      "complexity": "complex",
+      "tokenCost": "high",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "IconManager"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "ListBuilder": {
+      "category": "core",
+      "description": "Material Design 3 list component with search, filters, sorting, pagination, and row actions",
+      "complexity": "complex",
+      "tokenCost": "high",
+      "useCases": [
+        "Data tables",
+        "User lists",
+        "Product catalogs",
+        "CRUD operations",
+        "Search results"
+      ],
+      "features": [
+        "Search",
+        "Filters",
+        "Sorting",
+        "Pagination",
+        "Row actions",
+        "Dark mode",
+        "i18n",
+        "Responsive"
+      ],
+      "requiredImports": [
+        "ListBuilder"
+      ],
+      "cssFiles": [
+        "ListBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/list-builder.html"
+    },
+    "M3ColorPicker": {
+      "category": "core",
+      "description": "M3ColorPicker component",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "M3ColorPicker"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "M3DatePicker": {
+      "category": "core",
+      "description": "M3DatePicker component",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "M3DatePicker"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "M3DropdownMenu": {
+      "category": "forms",
+      "description": "Material Design 3 dropdown menu component",
+      "complexity": "complex",
+      "tokenCost": "high",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "M3DropdownMenu"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "M3Slider": {
+      "category": "core",
+      "description": "M3Slider component",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "M3Slider"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    },
+    "MenuBuilder": {
+      "category": "navigation",
+      "description": "Dropdown menu component with keyboard navigation",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "MenuBuilder"
+      ],
+      "cssFiles": [
+        "MenuBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/menu-builder.html"
+    },
+    "MessageBuilder": {
+      "category": "feedback",
+      "description": "Inline message/alert component for persistent notifications",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [
+        "Form errors",
+        "Success messages",
+        "Warnings",
+        "Info banners",
+        "Loading states"
+      ],
+      "features": [
+        "5 types (info, success, warning, error, loading)",
+        "Actions",
+        "Dismissible",
+        "Dark mode",
+        "i18n"
+      ],
+      "requiredImports": [
+        "MessageBuilder"
+      ],
+      "cssFiles": [
+        "MessageBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/message-builder.html"
+    },
+    "ModalBuilder": {
+      "category": "core",
+      "description": "Flexible modal dialog system with 9 size variants, static methods for common use cases",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [
+        "Confirmations",
+        "Forms",
+        "Alerts",
+        "Image lightbox",
+        "Detail views",
+        "Delete confirmation"
+      ],
+      "features": [
+        "9 size variants",
+        "Static methods (alert, confirm, prompt, form, delete)",
+        "AJAX support",
+        "Animations",
+        "Dark mode"
+      ],
+      "requiredImports": [
+        "ModalBuilder"
+      ],
+      "cssFiles": [
+        "ModalBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/modal-builder.html"
+    },
+    "SidebarBuilder": {
+      "category": "navigation",
+      "description": "Collapsible sidebar navigation with nested items",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "SidebarBuilder"
+      ],
+      "cssFiles": [
+        "SidebarBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/sidebar-builder.html"
+    },
+    "SiteBuilder": {
+      "category": "navigation",
+      "description": "Complete site layout builder",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "SiteBuilder"
+      ],
+      "cssFiles": [
+        "SiteBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/site-builder.html"
+    },
+    "TabBuilder": {
+      "category": "core",
+      "description": "Material Design 3 tab navigation component",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "TabBuilder"
+      ],
+      "cssFiles": [
+        "TabBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/tab-builder.html"
+    },
+    "ThemeBuilder": {
+      "category": "system",
+      "description": "Dynamic Material Design 3 color scheme generator from seed colors",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [
+        "Theme customization",
+        "Brand colors",
+        "Dark mode toggle",
+        "User preferences"
+      ],
+      "features": [
+        "M3 color math",
+        "Dark mode",
+        "Preset themes",
+        "CSS variable injection",
+        "Real-time updates"
+      ],
+      "requiredImports": [
+        "ThemeBuilder"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/theme-builder.html"
+    },
+    "TimeRangePicker": {
+      "category": "analytics",
+      "description": "Time range selector with presets and comparison mode",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "TimeRangePicker"
+      ],
+      "cssFiles": [
+        "AnalyticsBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/time-range-picker.html"
+    },
+    "ToastBuilder": {
+      "category": "feedback",
+      "description": "Toast notification system for temporary messages",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "ToastBuilder"
+      ],
+      "cssFiles": [
+        "ToastBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/toast-builder.html"
+    },
+    "TooltipBuilder": {
+      "category": "feedback",
+      "description": "Tooltip component with positioning",
+      "complexity": "simple",
+      "tokenCost": "low",
+      "useCases": [],
+      "features": [],
+      "requiredImports": [
+        "TooltipBuilder"
+      ],
+      "cssFiles": [
+        "TooltipBuilder.css",
+        "shared.css"
+      ],
+      "demoPage": "/docs/demos/tooltip-builder.html"
+    },
+    "i18n": {
+      "category": "system",
+      "description": "Internationalization singleton with German, English, French support",
+      "complexity": "medium",
+      "tokenCost": "medium",
+      "useCases": [
+        "Multi-language apps",
+        "Localization",
+        "User language preferences"
+      ],
+      "features": [
+        "3 languages (de, en, fr)",
+        "Event-driven",
+        "Deep merge",
+        "localStorage persistence"
+      ],
+      "requiredImports": [
+        "i18n"
+      ],
+      "cssFiles": [
+        "shared.css"
+      ],
+      "demoPage": null
+    }
+  }
+}
