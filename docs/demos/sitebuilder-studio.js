@@ -22,6 +22,7 @@ let config = {
     // Content settings
     content: {
         bgColor: 'transparent',
+        bgColorCustom: '', // Custom color picker
         title: 'Benutzerverwaltung',
         showTitle: true,
         maxWidth: 'full',
@@ -357,8 +358,9 @@ function applyContentSettings() {
         siteMain.style.paddingTop = `${config.content.marginTop}px`;
         siteMain.style.paddingBottom = `${config.content.marginBottom}px`;
 
-        // Apply background color
-        siteMain.style.backgroundColor = config.content.bgColor === 'transparent' ? '' : config.content.bgColor;
+        // Apply background color (custom takes precedence over swatches)
+        const bgColor = config.content.bgColorCustom || config.content.bgColor;
+        siteMain.style.backgroundColor = bgColor === 'transparent' ? '' : bgColor;
     }
 
     // Apply content inner styles
@@ -537,6 +539,7 @@ function handleFormChange(values, changedField) {
 
     // Content settings
     if (values.contentBgColor !== undefined) config.content.bgColor = values.contentBgColor;
+    if (values.contentBgColorCustom !== undefined) config.content.bgColorCustom = values.contentBgColorCustom;
     if (values.contentTitle !== undefined) config.content.title = values.contentTitle;
     if (values.showContentTitle !== undefined) config.content.showTitle = values.showContentTitle;
     if (values.contentMaxWidth !== undefined) config.content.maxWidth = values.contentMaxWidth;
@@ -849,6 +852,12 @@ const elementFields = {
                 { value: '#f8f9fa', label: 'Gray' },
                 { value: '#e8f0fe', label: 'Blue' }
             ]
+        },
+        {
+            key: 'contentBgColorCustom',
+            type: 'color',
+            label: 'Custom Background',
+            width: 12
         },
         {
             key: 'contentBorderRadius',

@@ -1074,6 +1074,21 @@
         /* Studio Form - Compact Styling */
         /* Note: Main compact styling is handled by FormBuilder's density: 'dense' option */
         /* These are minimal studio-specific overrides */
+
+        /* Color Swatches - Add border for better visibility */
+        #studio-form-container .color-swatch {
+            border: 2px solid rgba(0, 0, 0, 0.12) !important;
+        }
+
+        #studio-form-container .color-swatch.active {
+            border-color: var(--m3-primary, #1a73e8) !important;
+            border-width: 3px !important;
+        }
+
+        /* Dark mode borders */
+        .dark-mode #studio-form-container .color-swatch {
+            border-color: rgba(255, 255, 255, 0.2) !important;
+        }
     </style>
 </head>
 <body>
