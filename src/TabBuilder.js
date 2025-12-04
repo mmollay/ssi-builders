@@ -8,12 +8,13 @@
  * - Badge/counter support
  * - Lazy loading content
  * - URL hash navigation
+ * - localStorage persistence (remembers active tab on reload)
  * - Keyboard navigation (Arrow keys)
  * - Responsive (mobile scroll)
  * - Event callbacks
  * - Disabled tabs
  *
- * @version 2.3.0
+ * @version 2.7.1
  */
 
 import { createVersionBadge } from './version.js';
@@ -36,6 +37,8 @@ export class TabBuilder {
             position: config.options?.position || 'top', // top, bottom, left, right
             defaultTab: config.options?.defaultTab || 0,
             urlHash: config.options?.urlHash || false,
+            persistState: config.options?.persistState || false, // Save active tab to localStorage
+            storageKey: config.options?.storageKey || `tab_state_${this.containerId}`, // Custom localStorage key
             onChange: config.options?.onChange || null,
             lazyLoad: config.options?.lazyLoad || false,
             fullWidth: config.options?.fullWidth || false,
@@ -57,11 +60,19 @@ export class TabBuilder {
             return this;
         }
 
-        // Check URL hash if enabled
+        // Priority: URL hash > localStorage > defaultTab
+        // Check URL hash if enabled (highest priority)
         if (this.options.urlHash && window.location.hash) {
             const hash = window.location.hash.substring(1);
             const index = this.tabs.findIndex(tab => tab.key === hash);
             if (index !== -1) this.activeTab = index;
+        }
+        // Check localStorage if enabled (medium priority)
+        else if (this.options.persistState) {
+            const savedTab = this.loadState();
+            if (savedTab !== null && savedTab >= 0 && savedTab < this.tabs.length) {
+                this.activeTab = savedTab;
+            }
         }
 
         const html = `
@@ -237,6 +248,11 @@ export class TabBuilder {
             window.history.pushState(null, '', `#${this.tabs[index].key}`);
         }
 
+        // Save to localStorage
+        if (this.options.persistState) {
+            this.saveState(index);
+        }
+
         // Call onChange callback
         this.options.onChange?.(index, previousTab);
     }
@@ -317,6 +333,42 @@ export class TabBuilder {
         this.tabs[tabIndex].disabled = disabled;
         button.classList.toggle('tab-disabled', disabled);
         button.disabled = disabled;
+    }
+
+    /**
+     * Save active tab index to localStorage
+     */
+    saveState(index) {
+        try {
+            localStorage.setItem(this.options.storageKey, index.toString());
+        } catch (e) {
+            console.warn('Failed to save tab state to localStorage:', e);
+        }
+    }
+
+    /**
+     * Load active tab index from localStorage
+     * @returns {number|null} - Tab index or null if not found
+     */
+    loadState() {
+        try {
+            const saved = localStorage.getItem(this.options.storageKey);
+            return saved !== null ? parseInt(saved, 10) : null;
+        } catch (e) {
+            console.warn('Failed to load tab state from localStorage:', e);
+            return null;
+        }
+    }
+
+    /**
+     * Clear saved state from localStorage
+     */
+    clearState() {
+        try {
+            localStorage.removeItem(this.options.storageKey);
+        } catch (e) {
+            console.warn('Failed to clear tab state from localStorage:', e);
+        }
     }
 
     /**

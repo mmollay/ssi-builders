@@ -157,6 +157,23 @@
             <div id="code-hash-tabs"></div>
         </div>
 
+        <!-- localStorage Persistence -->
+        <div class="demo-section">
+            <h2>💾 localStorage Persistence</h2>
+            <p class="subtitle">Remembers active tab on page reload - try switching tabs and refreshing!</p>
+
+            <div class="example-demo">
+                <div id="persistTabs"></div>
+            </div>
+
+            <p style="margin-top: 16px; color: #5f6368; font-size: 14px;">
+                ℹ️ <strong>Try it:</strong> Switch to a different tab, then reload the page (F5). The active tab will be restored!
+            </p>
+
+            <h3 style="margin-top: 24px;">Code Example:</h3>
+            <div id="code-persist-tabs"></div>
+        </div>
+
         <!-- Configuration Reference -->
         <div class="demo-section">
             <h2>⚙️ Configuration Options</h2>
@@ -207,6 +224,18 @@
                         <td>boolean</td>
                         <td>false</td>
                         <td>Sync with URL hash (deep linking)</td>
+                    </tr>
+                    <tr>
+                        <td><code>persistState</code></td>
+                        <td>boolean</td>
+                        <td>false</td>
+                        <td>Save active tab to localStorage</td>
+                    </tr>
+                    <tr>
+                        <td><code>storageKey</code></td>
+                        <td>string</td>
+                        <td>'tab_state_{containerId}'</td>
+                        <td>Custom localStorage key</td>
                     </tr>
                     <tr>
                         <td><code>onChange</code></td>
@@ -387,11 +416,25 @@
         new TabBuilder({
             containerId: 'hashTabs',
             tabs: [
-                { id: 'home', label: 'Home', content: '<div style="padding: 20px;"><h3>Home</h3><p>Welcome to our website!</p></div>' },
-                { id: 'about', label: 'About', content: '<div style="padding: 20px;"><h3>About</h3><p>Learn more about us.</p></div>' },
-                { id: 'contact', label: 'Contact', content: '<div style="padding: 20px;"><h3>Contact</h3><p>Get in touch with us.</p></div>' }
+                { key: 'home', label: 'Home', content: '<div style="padding: 20px;"><h3>Home</h3><p>Welcome to our website!</p></div>' },
+                { key: 'about', label: 'About', content: '<div style="padding: 20px;"><h3>About</h3><p>Learn more about us.</p></div>' },
+                { key: 'contact', label: 'Contact', content: '<div style="padding: 20px;"><h3>Contact</h3><p>Get in touch with us.</p></div>' }
             ],
-            useUrlHash: true
+            options: { urlHash: true }
+        }).render();
+
+        // Persist Tabs (localStorage)
+        new TabBuilder({
+            containerId: 'persistTabs',
+            tabs: [
+                { key: 'dashboard', label: 'Dashboard', icon: '📊', content: '<div style="padding: 20px;"><h3>Dashboard</h3><p>Your main dashboard with metrics and KPIs.</p></div>' },
+                { key: 'reports', label: 'Reports', icon: '📄', content: '<div style="padding: 20px;"><h3>Reports</h3><p>Generate and view your reports.</p></div>' },
+                { key: 'settings', label: 'Settings', icon: '⚙️', content: '<div style="padding: 20px;"><h3>Settings</h3><p>Configure your preferences.</p></div>' }
+            ],
+            options: {
+                persistState: true,
+                storageKey: 'demo_persist_tabs' // Custom key for this demo
+            }
         }).render();
 
         // Code Snippets with CodeSnippetBuilder
@@ -490,14 +533,36 @@ underlineTabs.render();`,
             code: `const hashTabs = new TabBuilder({
     containerId: 'hashTabs',
     tabs: [
-        { id: 'home', label: 'Home', content: 'Home content...' },
-        { id: 'about', label: 'About', content: 'About us...' },
-        { id: 'contact', label: 'Contact', content: 'Contact form...' }
+        { key: 'home', label: 'Home', content: 'Home content...' },
+        { key: 'about', label: 'About', content: 'About us...' },
+        { key: 'contact', label: 'Contact', content: 'Contact form...' }
     ],
-    useUrlHash: true  // Enable URL hash sync
+    options: {
+        urlHash: true  // Enable URL hash sync
+    }
 });
 
-// Navigate to: yoursite.com/page.html#tab-about`,
+// Navigate to: yoursite.com/page.html#about`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-persist-tabs',
+            code: `const persistTabs = new TabBuilder({
+    containerId: 'persistTabs',
+    tabs: [
+        { key: 'dashboard', label: 'Dashboard', icon: '📊', content: '...' },
+        { key: 'reports', label: 'Reports', icon: '📄', content: '...' },
+        { key: 'settings', label: 'Settings', icon: '⚙️', content: '...' }
+    ],
+    options: {
+        persistState: true,  // Enable localStorage persistence
+        storageKey: 'demo_persist_tabs'  // Optional: custom key (default: 'tab_state_{containerId}')
+    }
+});
+
+// Try it: Switch tabs and reload the page (F5) - the active tab is restored!
+// Clear saved state: persistTabs.clearState();`,
             language: 'javascript'
         });
 
