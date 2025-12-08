@@ -492,6 +492,7 @@
     background: var(--m3-surface, #ffffff);
     border-radius: var(--ssi-radius-lg);
     box-shadow: var(--ssi-shadow-lg);
+    display: none; /* Hidden by default - prevents scroll issues */
     opacity: 0;
     visibility: hidden;
     transform: translateY(-8px);
@@ -501,6 +502,7 @@
 }
 
 .header-user-dropdown-open {
+    display: block; /* Show when open */
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
@@ -593,11 +595,13 @@
     right: 0;
     bottom: 0;
     z-index: 1100;
+    display: none; /* Hidden by default - prevents scroll issues */
     pointer-events: none;
     visibility: hidden;
 }
 
 .header-mobile-open {
+    display: block; /* Show when open */
     pointer-events: auto;
     visibility: visible;
 }

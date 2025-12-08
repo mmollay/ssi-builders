@@ -348,22 +348,61 @@ function applyContentSettings() {
     const previewFrame = document.getElementById('preview-frame');
     if (!previewFrame) return;
 
+    const siteBuilder = previewFrame.querySelector('.site-builder');
     const siteMain = previewFrame.querySelector('.site-main');
     const siteContent = previewFrame.querySelector('.site-content');
     const contentInner = previewFrame.querySelector('.site-content-inner');
     const pageTitle = previewFrame.querySelector('.site-content h2');
 
-    // Apply header gap (margin-top on site-main)
+    // Apply header gap (margin-top on site-main) - DIRECT control, no offset
     if (siteMain) {
-        siteMain.style.marginTop = `${64 + config.content.headerGap}px`;
+        siteMain.style.setProperty('margin-top', `${config.content.headerGap}px`, 'important');
 
         // Apply additional top/bottom margins
-        siteMain.style.paddingTop = `${config.content.marginTop}px`;
-        siteMain.style.paddingBottom = `${config.content.marginBottom}px`;
+        siteMain.style.setProperty('padding-top', `${config.content.marginTop}px`, 'important');
+        siteMain.style.setProperty('padding-bottom', `${config.content.marginBottom}px`, 'important');
+    }
 
-        // Apply background color (custom takes precedence over swatches)
-        const bgColor = config.content.bgColorCustom || config.content.bgColor;
-        siteMain.style.backgroundColor = bgColor === 'transparent' ? '' : bgColor;
+    // Apply background color - Content wraps around content, no stretching!
+    const bgColor = config.content.bgColorCustom || config.content.bgColor;
+    const hasBackground = bgColor && bgColor !== 'transparent';
+
+    // ALWAYS use flex:none - content should NEVER stretch to fill empty space
+    // Background only wraps around the actual content
+    if (siteBuilder) {
+        siteBuilder.style.backgroundColor = 'transparent';
+        siteBuilder.style.setProperty('min-height', 'unset', 'important');
+        siteBuilder.style.setProperty('height', 'auto', 'important');
+    }
+    if (siteMain) {
+        siteMain.style.backgroundColor = 'transparent';
+        siteMain.style.setProperty('flex', 'none', 'important');
+        siteMain.style.setProperty('flex-grow', '0', 'important');
+        siteMain.style.setProperty('height', 'auto', 'important');
+    }
+    if (siteContent) {
+        siteContent.style.backgroundColor = 'transparent';
+        siteContent.style.setProperty('flex', 'none', 'important');
+        siteContent.style.setProperty('flex-grow', '0', 'important');
+        siteContent.style.setProperty('height', 'auto', 'important');
+    }
+
+    // Content-inner gets background and wraps around content (no stretching)
+    if (contentInner) {
+        contentInner.style.backgroundColor = hasBackground ? bgColor : '';
+        contentInner.style.setProperty('flex', 'none', 'important');
+        contentInner.style.setProperty('flex-grow', '0', 'important');
+        contentInner.style.setProperty('height', 'auto', 'important');
+    }
+
+    // Make content components (ListBuilder, etc.) transparent when content has background
+    const listBuilder = previewFrame.querySelector('.list-builder');
+    const listToolbar = previewFrame.querySelector('.list-toolbar');
+    if (listBuilder && bgColor && bgColor !== 'transparent') {
+        listBuilder.style.backgroundColor = 'transparent';
+    }
+    if (listToolbar && bgColor && bgColor !== 'transparent') {
+        listToolbar.style.backgroundColor = 'transparent';
     }
 
     // Apply content inner styles
@@ -541,8 +580,23 @@ function handleFormChange(values, changedField) {
     config.configName = values.configName;
 
     // Content settings
-    if (values.contentBgColor !== undefined) config.content.bgColor = values.contentBgColor;
-    if (values.contentBgColorCustom !== undefined) config.content.bgColorCustom = values.contentBgColorCustom;
+    // Check which field actually changed to handle preset vs custom color correctly
+    // NOTE: changedField is the KEY string (e.g., 'contentBgColor'), not the field object!
+    const bgPresetChanged = changedField === 'contentBgColor';
+    const bgCustomChanged = changedField === 'contentBgColorCustom';
+
+    if (bgPresetChanged) {
+        // Preset was clicked - use preset and clear custom
+        config.content.bgColor = values.contentBgColor;
+        config.content.bgColorCustom = ''; // Clear custom when preset is selected
+    } else if (bgCustomChanged) {
+        // Custom color was picked - keep custom value (it overrides preset via || operator)
+        config.content.bgColorCustom = values.contentBgColorCustom;
+    } else {
+        // Other field changed - just sync both values normally
+        if (values.contentBgColor !== undefined) config.content.bgColor = values.contentBgColor;
+        if (values.contentBgColorCustom !== undefined) config.content.bgColorCustom = values.contentBgColorCustom;
+    }
     if (values.contentTitle !== undefined) config.content.title = values.contentTitle;
     if (values.showContentTitle !== undefined) config.content.showTitle = values.showContentTitle;
     if (values.contentMaxWidth !== undefined) config.content.maxWidth = values.contentMaxWidth;
@@ -601,7 +655,19 @@ function handleFormChange(values, changedField) {
     }
     // Note: spacingValue toast removed - too many updates during slider drag
 
-    updateSite();
+    // Performance optimization: For content-only changes, skip full site update
+    const contentOnlyFields = ['contentHeaderGap', 'contentMarginTop', 'contentMarginBottom',
+                                'contentBorderRadius', 'contentBgColor', 'contentBgColorCustom',
+                                'contentShadow', 'contentTitle', 'showContentTitle',
+                                'contentMaxWidth', 'contentAlign'];
+
+    if (changedField && contentOnlyFields.includes(changedField)) {
+        // Only update content settings without full re-render (smooth!)
+        applyContentSettings();
+    } else {
+        // Full site update needed
+        updateSite();
+    }
 }
 
 // ========================================
@@ -984,6 +1050,7 @@ function getInitialValuesForElement(element) {
         configName: config.configName || '',
         // Content settings
         contentBgColor: config.content.bgColor,
+        contentBgColorCustom: config.content.bgColorCustom || '#1a73e8', // Default blue for color picker
         contentTitle: config.content.title,
         showContentTitle: config.content.showTitle,
         contentMaxWidth: config.content.maxWidth,
@@ -1440,8 +1507,8 @@ function renderSavedConfigs() {
     }
 
     container.innerHTML = configNames.map(name => `
-        <div class="saved-config-item" data-name="${name}">
-            <span class="saved-config-name">${name}</span>
+        <div class="saved-config-item" data-name="${escapeHtml(name)}">
+            <span class="saved-config-name">${escapeHtml(name)}</span>
             <div class="saved-config-actions">
                 <button class="load-config-btn" title="Load">📂</button>
                 <button class="delete-config-btn" title="Delete">🗑️</button>

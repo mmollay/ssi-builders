@@ -880,6 +880,7 @@
             position: absolute !important;  /* CRITICAL: Override fixed positioning */
             top: 0 !important;
             bottom: 0 !important;
+            height: auto !important;  /* CRITICAL: Override inline calc(100vh - x) to prevent scroll issues */
             background: var(--m3-surface, #ffffff) !important;
             transition: width 0.3s ease !important;
         }
@@ -957,7 +958,7 @@
 
         /* Main content must have proper spacing from header and sidebar */
         #preview-frame .site-main {
-            margin-top: 64px !important;
+            /* margin-top controlled by JavaScript (Header Gap slider) */
             padding-left: 0 !important; /* Fix: Remove default padding from SiteBuilder.css */
             padding-right: 0 !important;
             transition: margin-left 0.3s ease, margin-right 0.3s ease !important;
@@ -992,16 +993,21 @@
             margin-right: 0 !important;
         }
 
-        /* Ensure site-builder takes full height with flexbox layout */
+        /* Site-builder - flex container for layout */
         #preview-frame .site-builder {
-            min-height: 100vh;
             display: flex !important;
             flex-direction: column !important;
+            /* min-height and flex controlled by JavaScript based on background */
         }
 
-        /* Main content should grow to push footer down */
+        /* Main content - flex properties controlled by JavaScript */
         #preview-frame .site-main {
-            flex: 1 !important;
+            /* flex controlled by JavaScript based on background setting */
+        }
+
+        /* Site-content - flex properties controlled by JavaScript */
+        #preview-frame .site-content {
+            /* flex controlled by JavaScript based on background setting */
         }
 
         /* Footer stays at bottom naturally via flexbox - no absolute positioning */
