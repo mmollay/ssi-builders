@@ -704,9 +704,9 @@ const elementFields = {
         },
         {
             key: 'themeColor',
-            type: 'color-swatches',
+            type: 'button-group',
             label: 'Primary Color',
-            colors: [
+            options: [
                 { value: '#1a73e8', label: 'Blue' },
                 { value: '#9334e6', label: 'Purple' },
                 { value: '#009688', label: 'Teal' },

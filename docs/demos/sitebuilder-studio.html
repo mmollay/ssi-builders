@@ -1081,18 +1081,42 @@
         /* Note: Main compact styling is handled by FormBuilder's density: 'dense' option */
         /* These are minimal studio-specific overrides */
 
-        /* Color Swatches - Add border for better visibility */
-        #studio-form-container .color-swatch {
-            border: 2px solid rgba(0, 0, 0, 0.12) !important;
+        /* Button Groups - Allow wrapping for narrow panel */
+        #studio-form-container .form-button-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
         }
 
-        #studio-form-container .color-swatch.active {
+        #studio-form-container .form-button-group button {
+            flex: 0 1 auto;
+            min-width: auto;
+            padding: 6px 10px;
+            font-size: 12px;
+        }
+
+        /* Color Swatches - Better layout for narrow panel */
+        #studio-form-container .form-color-swatches {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: flex-start;
+        }
+
+        #studio-form-container .form-color-swatch {
+            border: 2px solid rgba(0, 0, 0, 0.12) !important;
+            flex-shrink: 0;
+            min-width: 32px;
+            min-height: 32px;
+        }
+
+        #studio-form-container .form-color-swatch.active {
             border-color: var(--m3-primary, #1a73e8) !important;
             border-width: 3px !important;
         }
 
         /* Dark mode borders */
-        .dark-mode #studio-form-container .color-swatch {
+        .dark-mode #studio-form-container .form-color-swatch {
             border-color: rgba(255, 255, 255, 0.2) !important;
         }
     </style>
