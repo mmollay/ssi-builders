@@ -913,9 +913,9 @@ const elementFields = {
         },
         {
             key: 'contentBgColor',
-            type: 'color-swatches',
+            type: 'button-group',
             label: 'Background',
-            colors: [
+            options: [
                 { value: 'transparent', label: 'None' },
                 { value: '#ffffff', label: 'White' },
                 { value: '#f8f9fa', label: 'Gray' },
