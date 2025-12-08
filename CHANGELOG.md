@@ -7,6 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.0] - 2025-12-08
+
+### Added
+- **TabBuilder**: localStorage persistence feature for active tab state
+  - New `persist` option: `{ enabled: true, key: 'unique-key' }`
+  - Tab state survives page reloads
+  - Each TabBuilder instance can have unique storage key
+- **SiteBuilder Studio**: Extended Content Tab settings
+  - Background color presets and custom color picker
+  - Margin top/bottom sliders for content spacing
+  - Page title and max width controls
+
+### Fixed
+- **SiteBuilder Studio**: SPACING sliders now correctly apply styles
+  - Content margin top/bottom sliders work as expected
+  - Background color picker improvements with preset vs custom priority
+- **FormBuilder**: M3Slider styles for `density: 'dense'` variant
+- **HeaderBuilder**: Dropdown menu display fix (default `display: none` with `.open` toggle)
+
+### Security
+- **SiteBuilder Studio**: XSS vulnerability fixed in saved configurations list
+  - Config names now properly escaped with `escapeHtml()`
+- **SiteBuilder Studio**: Removed debug `console.log` statements from production code
+
 ## [2.7.1] - 2025-12-04
 
 ### Added
