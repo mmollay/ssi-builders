@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.8.1] - 2025-12-10
+
+### Fixed
+- **SiteBuilder Studio**: Color picker layout for narrow control panels
+  - Changed Primary Color picker from color-swatches to button-group for better visibility
+  - Changed Background picker from color-swatches to button-group
+  - Added CSS flex-wrap support for button groups in narrow panels
+  - All color options now visible with proper wrapping
+
 ## [2.8.0] - 2025-12-08
 
 ### Added
