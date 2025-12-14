@@ -6,7 +6,7 @@
  */
 
 // Version wird aus package.json gelesen
-const VERSION = '2.8.1';
+const VERSION = '2.10.1';
 
 /**
  * Returns the current SSI Builders version

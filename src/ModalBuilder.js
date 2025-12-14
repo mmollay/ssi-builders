@@ -50,6 +50,7 @@ export class ModalBuilder {
         this.isOpen = false;
         this.isLoading = false;
         this.modalElement = null;
+        this.escHandler = null;  // Initialize for cleanup in close()
     }
 
     /**
@@ -86,6 +87,13 @@ export class ModalBuilder {
      */
     close() {
         if (!this.isOpen) return;
+
+        // FIX: Remove ESC key listener to prevent listener accumulation
+        // This was causing the "3 clicks to close" bug
+        if (this.escHandler) {
+            document.removeEventListener('keydown', this.escHandler);
+            this.escHandler = null;
+        }
 
         this.modalElement.classList.remove('modal-show');
 

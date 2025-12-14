@@ -7,6 +7,111 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.10.1] - 2025-12-14
+
+### Fixed
+- **ModalBuilder**: Fixed ESC key listener memory leak causing "multiple clicks to close" bug
+  - ESC key event listeners were being added to `document` on each modal open but never removed on close
+  - Now properly removes the `keydown` listener in `close()` method
+  - Prevents listener accumulation when opening/closing modals repeatedly
+
+## [2.10.0] - 2025-12-13
+
+### Added
+- **ListBuilder**: Real-time incremental updates with animations
+  - `setRealtimeMode(config)` - Configure real-time mode with sliding window support
+    - `maxRows`: Maximum rows before removing oldest (like ChartBuilder)
+    - `animationDuration`: Animation speed in ms (default: 300)
+    - `insertPosition`: 'top' or 'bottom' (default: 'top')
+    - `onInsert`, `onUpdate`, `onRemove`: Lifecycle callbacks
+  - `prependData(items, options)` - Add new rows at top with fade-in animation
+  - `appendData(items, options)` - Add new rows at bottom with fade-in animation
+  - `pushData(item)` - Simplified single-item push (uses insertPosition config)
+  - `updateRow(id, newData, options)` - Update specific row with highlight animation
+  - `removeRow(id, options)` - Remove row with fade-out animation
+  - `connectWebSocket(config)` - Native WebSocket integration with auto-reconnect
+    - Supports actions: 'insert', 'update', 'delete', 'refresh'
+    - Auto-reconnect on connection loss
+  - `connectSupabase(config)` - Supabase Realtime integration
+    - Subscribe to postgres_changes (INSERT, UPDATE, DELETE)
+    - Optional filter function for incoming data
+  - `disconnectRealtime()` - Clean up all real-time connections
+  - `getData()` - Get current data array (like ChartBuilder)
+- **ListBuilder CSS**: Real-time animation classes
+  - `.list-row-entering` / `.list-row-entered` - Fade-in animation
+  - `.list-row-new` - Green highlight pulse for new rows
+  - `.list-row-updated` - Blue highlight pulse for updated rows
+  - `.list-row-exiting` - Fade-out animation for removed rows
+  - `.list-realtime-indicator` - Optional status badge with pulse animation
+  - Full dark mode support for all animations
+
+### Changed
+- **ListBuilder**: Version bumped to 2.10.0
+
+### Example Usage
+```javascript
+// Real-time mode with sliding window (max 50 rows)
+const list = new ListBuilder({
+    containerId: 'live-logs',
+    columns: [...],
+    data: initialData
+});
+
+list.setRealtimeMode({
+    maxRows: 50,
+    animationDuration: 300,
+    insertPosition: 'top'
+});
+
+// Connect to WebSocket
+list.connectWebSocket({
+    url: 'wss://api.example.com/logs',
+    onMessage: (data) => ({
+        action: data.type,  // 'insert', 'update', 'delete'
+        data: data.payload,
+        id: data.id
+    })
+});
+
+// Or connect to Supabase Realtime
+list.connectSupabase({
+    supabase: supabaseClient,
+    table: 'logs',
+    event: '*'  // INSERT, UPDATE, DELETE
+});
+
+// Manual updates
+list.prependData({ id: 123, name: 'New Entry', status: 'active' });
+list.updateRow(123, { status: 'completed' });
+list.removeRow(123);
+```
+
+## [2.9.0] - 2025-12-13
+
+### Added
+- **ChartBuilder**: Animated data updates for real-time dashboards
+  - `updateData(newData, options)` - Update chart with smooth animations
+    - `animate`: Enable/disable animation (default: true)
+    - `duration`: Animation duration in ms (default: 500)
+    - `easing`: CSS easing function (default: 'ease-out')
+  - `addDataPoint(label, value, options)` - Add single data point with animation
+    - `maxPoints`: Maximum points before removing oldest (sliding window)
+    - `animate`: Enable smooth transition
+  - `setRealtimeMode(config)` - Configure for real-time streaming
+    - `maxPoints`: Sliding window size (default: 20)
+    - `animationDuration`: Default animation speed (default: 300ms)
+  - `pushData(label, value)` - Simplified real-time data push
+  - `getData()` - Retrieve current chart data
+  - Private `_animateBarUpdate()` and `_animateLineUpdate()` for smooth transitions
+  - CSS transitions for bar height/width changes
+  - SVG path morphing for line charts
+- **ChartBuilder**: Real-time mode with sliding window for live dashboards
+  - Automatic oldest data point removal when maxPoints exceeded
+  - Optimized for WebSocket/Supabase Realtime integrations
+
+### Changed
+- **ChartBuilder**: Version bumped to 2.9.0
+
 ## [2.8.1] - 2025-12-10
 
 ### Fixed
