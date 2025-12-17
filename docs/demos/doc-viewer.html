@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DocViewerBuilder - SSI Builders</title>
+
+    <!-- CRITICAL: Apply dark mode IMMEDIATELY to prevent flash -->
+    <script>
+        (function() {
+            if (localStorage.getItem('ssi-theme-dark-mode') === 'true') {
+                document.documentElement.classList.add('m3-dark', 'dark-mode');
+            }
+        })();
+    </script>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="../../src/shared.css">
+    <link rel="stylesheet" href="../../src/SidebarBuilder.css">
+    <link rel="stylesheet" href="../../src/DocViewerBuilder.css">
+    <link rel="stylesheet" href="../../src/CodeSnippetBuilder.css">
+    <link rel="stylesheet" href="./layout.css">
+
+    <!-- Dependencies for DocViewerBuilder -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+
+    <style>
+        .demo-section h2 { font-size: 28px; margin-bottom: 12px; color: var(--m3-on-surface, #202124); }
+        .demo-section .subtitle { color: var(--m3-on-surface-variant, #5f6368); font-size: 16px; margin-bottom: 24px; }
+
+        .example-demo {
+            background: var(--m3-surface-container, #f8f9fa);
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 24px;
+            margin-bottom: 48px;
+        }
+
+        .demo-card {
+            background: var(--m3-surface, #ffffff);
+            border: 1px solid var(--m3-outline-variant, #dadce0);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .demo-card h3 {
+            font-size: 18px;
+            margin-bottom: 16px;
+            color: var(--m3-on-surface, #202124);
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            padding: 10px 16px;
+            border: 1px solid var(--m3-outline, #dadce0);
+            background: var(--m3-surface, #ffffff);
+            color: var(--m3-on-surface, #202124);
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Roboto', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--m3-surface-container-highest, #e8eaed);
+        }
+
+        .btn-primary {
+            background: var(--m3-primary, #1a73e8);
+            color: white;
+            border-color: var(--m3-primary, #1a73e8);
+        }
+
+        .btn-primary:hover {
+            background: var(--m3-primary-hover, #1557b0);
+        }
+
+        /* Dark mode support */
+        [data-theme="dark"] .example-demo {
+            background: var(--m3-surface-container, #2d2d2d);
+        }
+
+        [data-theme="dark"] .demo-card {
+            background: var(--m3-surface, #1e1e1e);
+            border-color: var(--m3-outline-variant, #3d3d3d);
+        }
+
+        [data-theme="dark"] .demo-section h2,
+        [data-theme="dark"] .demo-card h3 {
+            color: var(--m3-on-surface, #e0e0e0);
+        }
+
+        [data-theme="dark"] .demo-section .subtitle {
+            color: var(--m3-on-surface-variant, #9e9e9e);
+        }
+
+        [data-theme="dark"] .btn {
+            background: var(--m3-surface-container, #2d2d2d);
+            color: var(--m3-on-surface, #e0e0e0);
+            border-color: var(--m3-outline-variant, #3d3d3d);
+        }
+
+        [data-theme="dark"] .btn:hover {
+            background: var(--m3-surface-container-high, #3d3d3d);
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background: var(--m3-primary, #8ab4f8);
+            color: #000;
+        }
+
+        [data-theme="dark"] .btn-primary:hover {
+            background: var(--m3-primary-hover, #aecbfa);
+        }
+
+        .placeholder-text {
+            color: var(--m3-on-surface-variant);
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page-layout">
+        <!-- Sidebar -->
+        <div id="sidebar-container"></div>
+
+        <!-- Main Content -->
+        <main class="demo-content">
+            <div class="demo-content-inner">
+                <!-- Page Header -->
+                <div class="page-header">
+                    <h1>Doc Viewer Builder</h1>
+                    <p>Markdown documentation viewer with XSS protection and modern styling</p>
+                </div>
+
+                <!-- Feature Overview -->
+                <div class="demo-section">
+                    <h2>Features</h2>
+                    <div class="example-demo">
+                        <ul style="line-height: 1.8; color: var(--m3-on-surface, #202124);">
+                            <li>✅ <strong>Markdown Rendering</strong> - Full markdown support via marked.js</li>
+                            <li>🔒 <strong>XSS Protection</strong> - DOMPurify sanitization (REQUIRED)</li>
+                            <li>📜 <strong>Scroll-to-Top</strong> - Appears after 300px scroll</li>
+                            <li>🔙 <strong>Back Navigation</strong> - Optional back button</li>
+                            <li>🔗 <strong>Auto-Link Headings</strong> - Click-to-copy heading URLs</li>
+                            <li>🎨 <strong>Material Design 3</strong> - Full M3 styling with dark mode</li>
+                            <li>📱 <strong>Responsive</strong> - Mobile-optimized layout</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Example 1: Basic Markdown from String -->
+                <div class="demo-section">
+                    <h2>Example 1: Markdown from String</h2>
+                    <p class="subtitle">Load markdown content directly from a string</p>
+
+                    <div class="demo-grid">
+                        <div class="demo-card">
+                            <h3>Interactive Demo</h3>
+                            <div id="doc-viewer-1"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>Code</h3>
+                            <div id="code-snippet-1"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 2: Markdown from URL -->
+                <div class="demo-section">
+                    <h2>Example 2: Markdown from URL</h2>
+                    <p class="subtitle">Fetch markdown from external URL with loading state</p>
+
+                    <div class="demo-grid">
+                        <div class="demo-card">
+                            <h3>Interactive Demo</h3>
+                            <div class="btn-group">
+                                <button class="btn btn-primary" onclick="loadChangelog()">Load CHANGELOG.md</button>
+                                <button class="btn" onclick="loadReadme()">Load README.md</button>
+                            </div>
+                            <div id="doc-viewer-2"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>Code</h3>
+                            <div id="code-snippet-2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Example 3: All Options -->
+                <div class="demo-section">
+                    <h2>Example 3: Configuration Options</h2>
+                    <p class="subtitle">Customize behavior with options</p>
+
+                    <div class="demo-grid">
+                        <div class="demo-card">
+                            <h3>Interactive Demo</h3>
+                            <div class="btn-group">
+                                <button class="btn" onclick="toggleBackButton()">Toggle Back Button</button>
+                                <button class="btn" onclick="toggleScrollTop()">Toggle Scroll-to-Top</button>
+                                <button class="btn" onclick="toggleAutoLink()">Toggle Auto-Link</button>
+                            </div>
+                            <div id="doc-viewer-3"></div>
+                        </div>
+                        <div class="demo-card">
+                            <h3>Code</h3>
+                            <div id="code-snippet-3"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="demo-section">
+                    <h2>Security</h2>
+                    <div class="example-demo">
+                        <h3 style="color: var(--m3-error, #d93025); margin-bottom: 12px;">⚠️ XSS Protection Required</h3>
+                        <p style="margin-bottom: 12px; line-height: 1.6;">DocViewerBuilder uses <code>innerHTML</code> to render markdown content. <strong>DOMPurify is REQUIRED</strong> for security.</p>
+                        <p style="margin-bottom: 12px; line-height: 1.6;">Include this in your HTML:</p>
+                        <div id="security-snippet"></div>
+                        <p style="margin-top: 12px; line-height: 1.6; color: var(--m3-on-surface-variant, #5f6368);">
+                            If DOMPurify is not loaded, the component will throw an error on initialization.
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- SSI Builders Library -->
+    <script type="module">
+        import { SidebarBuilder, DocViewerBuilder, CodeSnippetBuilder, GlobalConfig } from '../../src/index.js';
+
+        // Configure global settings
+        GlobalConfig.configure({
+            iconPreset: 'lucide',
+            iconWeight: 'regular'
+        });
+
+        // Initialize Sidebar
+        const sidebar = new SidebarBuilder({
+            containerId: 'sidebar-container',
+            logo: '📚',
+            projectName: 'SSI Builders',
+            showThemeToggle: true,
+            menuItems: [
+                { label: 'Doc Viewer', href: './doc-viewer.html', active: true },
+                { label: 'Overview', href: './index.html' }
+            ]
+        });
+        sidebar.render();
+
+        // Example 1: Basic Markdown
+        const markdown1 = `# Welcome to DocViewerBuilder
+
+This is a **markdown documentation viewer** with full M3 styling.
+
+## Features
+
+- Markdown rendering with \`marked.js\`
+- XSS protection via \`DOMPurify\`
+- Auto-linked headings (click to copy URL)
+- Scroll-to-top button
+- Dark mode support
+
+## Code Example
+
+\`\`\`javascript
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdown: '# Hello World'
+});
+viewer.render();
+\`\`\`
+
+## List Example
+
+1. First item
+2. Second item
+3. Third item
+
+> **Note:** This is a blockquote example.
+
+---
+
+**Ready to get started?** Check out the examples below!`;
+
+        const viewer1 = new DocViewerBuilder({
+            containerId: 'doc-viewer-1',
+            markdown: markdown1,
+            title: 'Getting Started',
+            options: {
+                showBackButton: false,
+                scrollToTop: true,
+                autoLinkHeadings: true
+            }
+        });
+        viewer1.render();
+
+        // Code snippet for Example 1
+        new CodeSnippetBuilder({
+            containerId: 'code-snippet-1',
+            code: `import { DocViewerBuilder } from '/vendor/ssi-builders/src/index.js';
+
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdown: \\\`# Welcome
+
+This is **markdown** content.\\\`,
+    title: 'Getting Started',
+    options: {
+        showBackButton: false,
+        scrollToTop: true,
+        autoLinkHeadings: true
+    }
+});
+
+viewer.render();`,
+            language: 'javascript',
+            showLineNumbers: true
+        }).render();
+
+        // Example 2: From URL
+        let viewer2 = null;
+        const placeholderEl = document.getElementById('doc-viewer-2');
+
+        function showPlaceholder() {
+            // SAFE: Static hardcoded HTML string, not user input
+            // DocViewerBuilder itself has DOMPurify protection for markdown content
+            const placeholder = document.createElement('p');
+            placeholder.className = 'placeholder-text';
+            placeholder.textContent = 'Click a button to load documentation';
+            placeholderEl.innerHTML = '';
+            placeholderEl.appendChild(placeholder);
+        }
+
+        showPlaceholder();
+
+        window.loadChangelog = async () => {
+            if (viewer2) viewer2.destroy();
+            viewer2 = new DocViewerBuilder({
+                containerId: 'doc-viewer-2',
+                markdownUrl: '../../CHANGELOG.md',
+                title: 'Changelog',
+                options: {
+                    showBackButton: true,
+                    scrollToTop: true
+                },
+                onBack: () => {
+                    viewer2.destroy();
+                    showPlaceholder();
+                }
+            });
+            await viewer2.render();
+        };
+
+        window.loadReadme = async () => {
+            if (viewer2) viewer2.destroy();
+            viewer2 = new DocViewerBuilder({
+                containerId: 'doc-viewer-2',
+                markdownUrl: '../../README.md',
+                title: 'README',
+                options: {
+                    showBackButton: true,
+                    scrollToTop: true
+                },
+                onBack: () => {
+                    viewer2.destroy();
+                    showPlaceholder();
+                }
+            });
+            await viewer2.render();
+        };
+
+        new CodeSnippetBuilder({
+            containerId: 'code-snippet-2',
+            code: `const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdownUrl: '/docs/guide.md',
+    title: 'User Guide',
+    options: {
+        showBackButton: true,
+        scrollToTop: true
+    },
+    onBack: () => history.back(),
+    onLoad: (content) => console.log('Loaded!'),
+    onError: (error) => console.error(error)
+});
+
+await viewer.render();`,
+            language: 'javascript',
+            showLineNumbers: true
+        }).render();
+
+        // Example 3: Options
+        let currentOptions = {
+            showBackButton: true,
+            scrollToTop: true,
+            autoLinkHeadings: true
+        };
+
+        function renderViewer3() {
+            const markdown3 = `# Configuration Options
+
+## Option: showBackButton
+
+${currentOptions.showBackButton ? '✅ Back button is enabled' : '❌ Back button is disabled'}
+
+## Option: scrollToTop
+
+${currentOptions.scrollToTop ? '✅ Scroll-to-top button is enabled' : '❌ Scroll-to-top button is disabled'}
+
+## Option: autoLinkHeadings
+
+${currentOptions.autoLinkHeadings ? '✅ Headings are auto-linked (click to copy URL)' : '❌ Auto-linking is disabled'}
+
+---
+
+Try clicking the buttons above to toggle these options!`;
+
+            const viewer3 = new DocViewerBuilder({
+                containerId: 'doc-viewer-3',
+                markdown: markdown3,
+                title: 'Options Demo',
+                options: currentOptions,
+                onBack: () => alert('Back button clicked!')
+            });
+            viewer3.render();
+        }
+
+        window.toggleBackButton = () => {
+            currentOptions.showBackButton = !currentOptions.showBackButton;
+            renderViewer3();
+        };
+
+        window.toggleScrollTop = () => {
+            currentOptions.scrollToTop = !currentOptions.scrollToTop;
+            renderViewer3();
+        };
+
+        window.toggleAutoLink = () => {
+            currentOptions.autoLinkHeadings = !currentOptions.autoLinkHeadings;
+            renderViewer3();
+        };
+
+        renderViewer3();
+
+        new CodeSnippetBuilder({
+            containerId: 'code-snippet-3',
+            code: `// All available options
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdown: '# Content...',
+
+    options: {
+        showBackButton: true,      // Show back button
+        scrollToTop: true,          // Show scroll-to-top
+        sanitize: true,             // XSS protection (REQUIRED)
+        syntaxHighlight: false,     // Syntax highlighting
+        autoLinkHeadings: true,     // Auto-link headings
+        generateToc: false,         // Generate TOC
+        scrollThreshold: 300        // Scroll threshold (px)
+    },
+
+    onBack: () => console.log('Back clicked'),
+    onLoad: (content) => console.log('Loaded'),
+    onError: (error) => console.error(error)
+});
+
+viewer.render();`,
+            language: 'javascript',
+            showLineNumbers: true
+        }).render();
+
+        // Security snippet
+        new CodeSnippetBuilder({
+            containerId: 'security-snippet',
+            code: '<!-- Include DOMPurify (REQUIRED) -->\n' +
+                  '<' + 'script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"><' + '/script>\n\n' +
+                  '<!-- Include marked.js for markdown parsing -->\n' +
+                  '<' + 'script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"><' + '/script>',
+            language: 'html',
+            showLineNumbers: false
+        }).render();
+
+    </script>
+</body>
+</html>

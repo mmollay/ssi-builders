@@ -7,6 +7,62 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.11.0] - 2025-12-17
+
+### Added
+- **DocViewerBuilder**: New markdown documentation viewer component with XSS protection
+  - Full markdown rendering via marked.js integration
+  - **Security**: DOMPurify sanitization (REQUIRED) - throws error if not loaded
+  - Scroll-to-top button (appears after 300px scroll, customizable threshold)
+  - Back navigation button with optional callback
+  - Auto-link headings with click-to-copy URL functionality
+  - Loading states and error handling
+  - Support for both markdown string and URL fetch
+  - Syntax highlighting support (optional integration with Prism.js/highlight.js)
+  - Table of contents generation (optional)
+  - Full Material Design 3 styling with dark mode support
+  - Responsive design (mobile breakpoint at 768px)
+  - Complete markdown element styling: headings, code blocks, tables, blockquotes, lists, images
+  - Options: `showBackButton`, `scrollToTop`, `sanitize`, `syntaxHighlight`, `autoLinkHeadings`, `generateToc`, `scrollThreshold`
+  - Callbacks: `onBack`, `onLoad`, `onError`
+- **CSS Utilities** in `shared.css` (v2.11.0+):
+  - `.ssi-gradient-text` - Dashboard-inspired gradient text effect (primary → success)
+  - `.ssi-flex-bottom` - Bottom-aligned flexbox helper (`margin-top: auto`)
+  - `html { scroll-behavior: smooth }` - Global smooth scrolling
+
+### Dependencies
+- **marked.js**: Required for markdown parsing (falls back to plain text if not loaded)
+- **DOMPurify**: REQUIRED for XSS protection (component throws error if missing)
+  - Include: `<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>`
+
+### Example Usage
+```javascript
+// From URL
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdownUrl: '/docs/guide.md',
+    title: 'User Guide',
+    options: {
+        showBackButton: true,
+        scrollToTop: true,
+        autoLinkHeadings: true
+    },
+    onBack: () => history.back()
+});
+await viewer.render();
+
+// From string
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdown: '# Hello World\n\nThis is **markdown** content.',
+    options: { scrollToTop: true }
+});
+viewer.render();
+```
+
+### Security Notice
+DocViewerBuilder uses `innerHTML` to render markdown content. **DOMPurify is REQUIRED** for XSS protection and must be loaded before initializing the component. The component will throw an error on construction if DOMPurify is not available.
+
 ## [2.10.1] - 2025-12-14
 
 ### Fixed

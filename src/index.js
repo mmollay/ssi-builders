@@ -41,6 +41,8 @@ import { MessageBuilder } from './MessageBuilder.js';
 import { CardBuilder } from './CardBuilder.js';
 // Header System (v2.7.0)
 import { HeaderBuilder } from './HeaderBuilder.js';
+// Documentation System (v2.11.0)
+import { DocViewerBuilder } from './DocViewerBuilder.js';
 
 export {
     ListBuilder,
@@ -82,7 +84,9 @@ export {
     // Card/Segment System (v2.6.0)
     CardBuilder,
     // Header System (v2.7.0)
-    HeaderBuilder
+    HeaderBuilder,
+    // Documentation System (v2.11.0)
+    DocViewerBuilder
 };
 
 // Default export for convenience
@@ -114,7 +118,8 @@ export default {
     ThemeBuilder,
     MessageBuilder,
     CardBuilder,
-    HeaderBuilder
+    HeaderBuilder,
+    DocViewerBuilder
 };
 
 // Version info

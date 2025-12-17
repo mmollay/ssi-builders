@@ -36,6 +36,7 @@ Alle Module nutzen dieselben Builder:
 - 📑 **TabBuilder** - Tabs
 - 📜 **MenuBuilder** - Menüs
 - 🗂️ **SidebarBuilder** - Navigation
+- 📚 **DocViewerBuilder** - Markdown Dokumentation
 
 ---
 
@@ -294,6 +295,39 @@ const sidebar = new SidebarBuilder({
     ]
 });
 sidebar.render();
+```
+
+### 📚 DocViewerBuilder
+Markdown Dokumentation mit XSS-Schutz
+
+```javascript
+// Markdown von URL laden
+const viewer = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdownUrl: '/docs/guide.md',
+    title: 'Benutzerhandbuch',
+    options: {
+        showBackButton: true,
+        scrollToTop: true,
+        autoLinkHeadings: true
+    },
+    onBack: () => history.back()
+});
+await viewer.render();
+
+// Oder Markdown direkt übergeben
+const viewer2 = new DocViewerBuilder({
+    containerId: 'doc-viewer',
+    markdown: '# Hello World\n\nDies ist **Markdown** Content.',
+    options: { scrollToTop: true }
+});
+viewer2.render();
+```
+
+**⚠️ Sicherheit:** DOMPurify ist REQUIRED für XSS-Schutz!
+```html
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 ```
 
 ---

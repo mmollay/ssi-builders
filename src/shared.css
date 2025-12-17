@@ -1862,3 +1862,27 @@ html.m3-dark body {
 .m3-dark .sidebar-version {
     color: var(--m3-on-surface-variant, #a1a1a1) !important;
 }
+
+/* ===================================
+   CSS Utilities (v2.11.0+)
+   Dashboard-inspired helpers
+   =================================== */
+
+/* Gradient Text */
+.ssi-gradient-text {
+    background: linear-gradient(135deg, var(--ssi-primary-light, #818cf8), var(--ssi-success, #10b981));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent; /* Fallback for non-webkit */
+}
+
+/* Bottom-aligned Flexbox Helper */
+.ssi-flex-bottom {
+    margin-top: auto;
+}
+
+/* Smooth Scroll Behavior (Global) */
+html {
+    scroll-behavior: smooth;
+}
