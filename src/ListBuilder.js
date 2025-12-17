@@ -12,8 +12,10 @@
  * - Responsive (card view on mobile, table on desktop)
  * - Loading/Empty/Error states
  * - Full accessibility
+ * - Real-time updates (WebSocket/Supabase Realtime)
+ * - Incremental data updates with animations
  *
- * @version 2.3.0
+ * @version 2.10.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
@@ -79,6 +81,11 @@ export class ListBuilder extends BaseBuilder {
         
         // Intersection Observer for infinite scroll
         this.scrollObserver = null;
+
+        // Real-time mode configuration
+        this.realtimeMode = null;
+        this.webSocketConnection = null;
+        this.supabaseSubscription = null;
 
         // Initialize
         this.init();
@@ -999,6 +1006,505 @@ export class ListBuilder extends BaseBuilder {
         return path.split('.').reduce((acc, part) => acc?.[part], obj);
     }
 
+    // ========================================
+    // REAL-TIME UPDATE METHODS (v2.10.0)
+    // ========================================
+
+    /**
+     * Configure real-time mode for live updates
+     * Similar to ChartBuilder's setRealtimeMode
+     * @param {Object} config - Real-time configuration
+     * @param {number} config.maxRows - Maximum rows before removing oldest (sliding window)
+     * @param {number} config.animationDuration - Animation duration in ms (default: 300)
+     * @param {string} config.insertPosition - 'top' or 'bottom' (default: 'top')
+     * @param {Function} config.onInsert - Callback when row is inserted
+     * @param {Function} config.onUpdate - Callback when row is updated
+     * @param {Function} config.onRemove - Callback when row is removed
+     * @since 2.10.0
+     */
+    setRealtimeMode(config = {}) {
+        this.realtimeMode = {
+            maxRows: config.maxRows || null,
+            animationDuration: config.animationDuration || 300,
+            insertPosition: config.insertPosition || 'top',
+            onInsert: config.onInsert || null,
+            onUpdate: config.onUpdate || null,
+            onRemove: config.onRemove || null
+        };
+        return this;
+    }
+
+    /**
+     * Prepend new data to the top of the list with fade-in animation
+     * Does NOT reload the entire table - only adds new rows
+     * @param {Array|Object} items - Single item or array of items to prepend
+     * @param {Object} options - Animation options
+     * @param {boolean} options.animate - Enable animation (default: true)
+     * @param {number} options.duration - Animation duration in ms (default: 300)
+     * @param {boolean} options.highlight - Highlight new rows briefly (default: true)
+     * @since 2.10.0
+     */
+    prependData(items, options = {}) {
+        const itemsArray = Array.isArray(items) ? items : [items];
+        const animate = options.animate !== false;
+        const duration = options.duration || this.realtimeMode?.animationDuration || 300;
+        const highlight = options.highlight !== false;
+
+        // Add to internal data at the beginning
+        this.data = [...itemsArray, ...this.data];
+
+        // Apply maxRows sliding window if configured
+        if (this.realtimeMode?.maxRows && this.data.length > this.realtimeMode.maxRows) {
+            const removeCount = this.data.length - this.realtimeMode.maxRows;
+            const removedItems = this.data.splice(-removeCount, removeCount);
+
+            // Animate removal of oldest rows
+            removedItems.forEach(item => {
+                this._animateRowRemoval(this.getRowId(item), duration);
+            });
+        }
+
+        // Re-apply filters to update filteredData
+        this.applyFilters();
+
+        // Insert rows into DOM without full re-render
+        this._insertRowsIntoDOM(itemsArray, 'top', animate, duration, highlight);
+
+        // Trigger callback
+        if (this.realtimeMode?.onInsert) {
+            this.realtimeMode.onInsert(itemsArray);
+        }
+
+        return this;
+    }
+
+    /**
+     * Append new data to the bottom of the list with fade-in animation
+     * @param {Array|Object} items - Single item or array of items to append
+     * @param {Object} options - Animation options
+     * @since 2.10.0
+     */
+    appendData(items, options = {}) {
+        const itemsArray = Array.isArray(items) ? items : [items];
+        const animate = options.animate !== false;
+        const duration = options.duration || this.realtimeMode?.animationDuration || 300;
+        const highlight = options.highlight !== false;
+
+        // Add to internal data at the end
+        this.data = [...this.data, ...itemsArray];
+
+        // Apply maxRows sliding window if configured
+        if (this.realtimeMode?.maxRows && this.data.length > this.realtimeMode.maxRows) {
+            const removeCount = this.data.length - this.realtimeMode.maxRows;
+            const removedItems = this.data.splice(0, removeCount);
+
+            // Animate removal of oldest rows (from top)
+            removedItems.forEach(item => {
+                this._animateRowRemoval(this.getRowId(item), duration);
+            });
+        }
+
+        // Re-apply filters
+        this.applyFilters();
+
+        // Insert rows into DOM
+        this._insertRowsIntoDOM(itemsArray, 'bottom', animate, duration, highlight);
+
+        // Trigger callback
+        if (this.realtimeMode?.onInsert) {
+            this.realtimeMode.onInsert(itemsArray);
+        }
+
+        return this;
+    }
+
+    /**
+     * Push a single data item (simplified real-time method)
+     * Uses insertPosition from realtimeMode config
+     * @param {Object} item - Single item to add
+     * @since 2.10.0
+     */
+    pushData(item) {
+        const position = this.realtimeMode?.insertPosition || 'top';
+        if (position === 'top') {
+            return this.prependData(item);
+        } else {
+            return this.appendData(item);
+        }
+    }
+
+    /**
+     * Update a specific row with new data (with highlight animation)
+     * @param {string|number} id - Row ID to update
+     * @param {Object} newData - New data for the row
+     * @param {Object} options - Animation options
+     * @since 2.10.0
+     */
+    updateRow(id, newData, options = {}) {
+        const duration = options.duration || this.realtimeMode?.animationDuration || 300;
+        const highlight = options.highlight !== false;
+
+        // Find and update in data array
+        const index = this.data.findIndex(row => String(this.getRowId(row)) === String(id));
+        if (index === -1) {
+            console.warn(`ListBuilder: Row with ID "${id}" not found`);
+            return this;
+        }
+
+        // Merge new data
+        this.data[index] = { ...this.data[index], ...newData };
+
+        // Re-apply filters
+        this.applyFilters();
+
+        // Update DOM element
+        const rowEl = this.container.querySelector(`tr[data-row-id="${id}"], .list-card[data-row-id="${id}"]`);
+        if (rowEl) {
+            // Re-render the row content
+            const visibleColumns = this.columns.filter(col => !this.hiddenColumns.has(col.key));
+            const isMobile = window.innerWidth < this.options.mobileBreakpoint;
+
+            if (isMobile) {
+                rowEl.outerHTML = this.renderCard(this.data[index]);
+            } else {
+                rowEl.outerHTML = this.renderTableRow(this.data[index], index, visibleColumns);
+            }
+
+            // Get the new element and animate
+            const newRowEl = this.container.querySelector(`tr[data-row-id="${id}"], .list-card[data-row-id="${id}"]`);
+            if (newRowEl && highlight) {
+                newRowEl.classList.add('list-row-updated');
+                setTimeout(() => {
+                    newRowEl.classList.remove('list-row-updated');
+                }, duration);
+            }
+
+            // Re-attach event listeners for this row
+            this.attachEventListeners();
+        }
+
+        // Trigger callback
+        if (this.realtimeMode?.onUpdate) {
+            this.realtimeMode.onUpdate(this.data[index], id);
+        }
+
+        return this;
+    }
+
+    /**
+     * Remove a row with fade-out animation
+     * @param {string|number} id - Row ID to remove
+     * @param {Object} options - Animation options
+     * @since 2.10.0
+     */
+    removeRow(id, options = {}) {
+        const duration = options.duration || this.realtimeMode?.animationDuration || 300;
+        const animate = options.animate !== false;
+
+        // Find in data array
+        const index = this.data.findIndex(row => String(this.getRowId(row)) === String(id));
+        if (index === -1) {
+            console.warn(`ListBuilder: Row with ID "${id}" not found`);
+            return this;
+        }
+
+        const removedItem = this.data[index];
+
+        // Animate removal
+        if (animate) {
+            this._animateRowRemoval(id, duration);
+        }
+
+        // Remove from data after animation
+        setTimeout(() => {
+            this.data = this.data.filter(row => String(this.getRowId(row)) !== String(id));
+            this.applyFilters();
+
+            // Remove from DOM if not already removed
+            const rowEl = this.container.querySelector(`tr[data-row-id="${id}"], .list-card[data-row-id="${id}"]`);
+            if (rowEl) {
+                rowEl.remove();
+            }
+
+            // Update pagination info
+            this._updatePaginationInfo();
+        }, animate ? duration : 0);
+
+        // Trigger callback
+        if (this.realtimeMode?.onRemove) {
+            this.realtimeMode.onRemove(removedItem, id);
+        }
+
+        return this;
+    }
+
+    /**
+     * Connect to WebSocket for real-time updates
+     * @param {Object} config - WebSocket configuration
+     * @param {string} config.url - WebSocket URL
+     * @param {Function} config.onMessage - Message handler that returns { action, data }
+     * @param {Function} config.onOpen - Connection opened callback
+     * @param {Function} config.onClose - Connection closed callback
+     * @param {Function} config.onError - Error callback
+     * @param {boolean} config.reconnect - Auto-reconnect on disconnect (default: true)
+     * @param {number} config.reconnectInterval - Reconnect interval in ms (default: 3000)
+     * @since 2.10.0
+     */
+    connectWebSocket(config) {
+        if (this.webSocketConnection) {
+            this.webSocketConnection.close();
+        }
+
+        const reconnect = config.reconnect !== false;
+        const reconnectInterval = config.reconnectInterval || 3000;
+
+        const connect = () => {
+            const ws = new WebSocket(config.url);
+
+            ws.onopen = (event) => {
+                console.log('ListBuilder: WebSocket connected');
+                if (config.onOpen) config.onOpen(event);
+            };
+
+            ws.onmessage = (event) => {
+                try {
+                    const rawData = JSON.parse(event.data);
+                    const result = config.onMessage ? config.onMessage(rawData) : rawData;
+
+                    if (result) {
+                        const { action, data, id } = result;
+
+                        switch (action) {
+                            case 'insert':
+                            case 'INSERT':
+                                this.prependData(data);
+                                break;
+                            case 'append':
+                                this.appendData(data);
+                                break;
+                            case 'update':
+                            case 'UPDATE':
+                                if (id) this.updateRow(id, data);
+                                break;
+                            case 'delete':
+                            case 'DELETE':
+                                if (id) this.removeRow(id);
+                                break;
+                            case 'refresh':
+                                this.refresh();
+                                break;
+                        }
+                    }
+                } catch (error) {
+                    console.error('ListBuilder: WebSocket message parse error', error);
+                }
+            };
+
+            ws.onclose = (event) => {
+                console.log('ListBuilder: WebSocket disconnected');
+                if (config.onClose) config.onClose(event);
+
+                if (reconnect && !event.wasClean) {
+                    setTimeout(connect, reconnectInterval);
+                }
+            };
+
+            ws.onerror = (error) => {
+                console.error('ListBuilder: WebSocket error', error);
+                if (config.onError) config.onError(error);
+            };
+
+            this.webSocketConnection = ws;
+        };
+
+        connect();
+        return this;
+    }
+
+    /**
+     * Connect to Supabase Realtime for live updates
+     * @param {Object} config - Supabase configuration
+     * @param {Object} config.supabase - Supabase client instance
+     * @param {string} config.table - Table name to subscribe to
+     * @param {string} config.event - Event type: 'INSERT' | 'UPDATE' | 'DELETE' | '*' (default: '*')
+     * @param {string} config.schema - Schema name (default: 'public')
+     * @param {Function} config.filter - Optional filter function for incoming data
+     * @since 2.10.0
+     */
+    connectSupabase(config) {
+        if (!config.supabase) {
+            console.error('ListBuilder: Supabase client required');
+            return this;
+        }
+
+        const event = config.event || '*';
+        const schema = config.schema || 'public';
+
+        // Unsubscribe from previous subscription
+        if (this.supabaseSubscription) {
+            config.supabase.removeChannel(this.supabaseSubscription);
+        }
+
+        const channel = config.supabase
+            .channel(`listbuilder-${this.containerId}-${config.table}`)
+            .on(
+                'postgres_changes',
+                { event, schema, table: config.table },
+                (payload) => {
+                    // Apply optional filter
+                    if (config.filter && !config.filter(payload.new || payload.old)) {
+                        return;
+                    }
+
+                    switch (payload.eventType) {
+                        case 'INSERT':
+                            this.prependData(payload.new);
+                            break;
+                        case 'UPDATE':
+                            const updateId = payload.new?.id || payload.new?.uuid;
+                            if (updateId) this.updateRow(updateId, payload.new);
+                            break;
+                        case 'DELETE':
+                            const deleteId = payload.old?.id || payload.old?.uuid;
+                            if (deleteId) this.removeRow(deleteId);
+                            break;
+                    }
+                }
+            )
+            .subscribe();
+
+        this.supabaseSubscription = channel;
+        console.log(`ListBuilder: Subscribed to Supabase Realtime (${config.table})`);
+
+        return this;
+    }
+
+    /**
+     * Disconnect all real-time connections
+     * @since 2.10.0
+     */
+    disconnectRealtime() {
+        if (this.webSocketConnection) {
+            this.webSocketConnection.close();
+            this.webSocketConnection = null;
+        }
+
+        if (this.supabaseSubscription) {
+            // Note: Caller must have reference to supabase client to properly remove channel
+            this.supabaseSubscription = null;
+        }
+
+        return this;
+    }
+
+    /**
+     * Get current data (similar to ChartBuilder.getData)
+     * @returns {Array} Current data array
+     * @since 2.10.0
+     */
+    getData() {
+        return [...this.data];
+    }
+
+    // ========================================
+    // PRIVATE ANIMATION HELPERS
+    // ========================================
+
+    /**
+     * Insert rows into DOM with animation
+     * @private
+     */
+    _insertRowsIntoDOM(items, position, animate, duration, highlight) {
+        const isMobile = window.innerWidth < this.options.mobileBreakpoint;
+        const visibleColumns = this.columns.filter(col => !this.hiddenColumns.has(col.key));
+
+        items.forEach((item, index) => {
+            let rowHtml;
+
+            if (isMobile) {
+                rowHtml = this.renderCard(item);
+            } else {
+                rowHtml = this.renderTableRow(item, index, visibleColumns);
+            }
+
+            // Find the container
+            const tbody = this.container.querySelector('tbody');
+            const cardsContainer = this.container.querySelector('.list-cards');
+            const container = tbody || cardsContainer;
+
+            if (!container) {
+                // If no container exists (empty state), do a full re-render
+                this.updateTableContent();
+                return;
+            }
+
+            // Create temporary element to parse HTML
+            const temp = document.createElement('div');
+            temp.innerHTML = rowHtml;
+            const newRow = temp.firstElementChild;
+
+            if (animate) {
+                newRow.classList.add('list-row-entering');
+            }
+            if (highlight) {
+                newRow.classList.add('list-row-new');
+            }
+
+            // Insert at correct position
+            if (position === 'top') {
+                container.insertBefore(newRow, container.firstChild);
+            } else {
+                container.appendChild(newRow);
+            }
+
+            // Trigger animation
+            if (animate) {
+                // Force reflow
+                newRow.offsetHeight;
+                newRow.classList.remove('list-row-entering');
+                newRow.classList.add('list-row-entered');
+            }
+
+            // Remove highlight after animation
+            if (highlight) {
+                setTimeout(() => {
+                    newRow.classList.remove('list-row-new');
+                }, duration * 2);
+            }
+        });
+
+        // Re-attach event listeners
+        this.attachEventListeners();
+
+        // Update pagination info
+        this._updatePaginationInfo();
+    }
+
+    /**
+     * Animate row removal
+     * @private
+     */
+    _animateRowRemoval(id, duration) {
+        const rowEl = this.container.querySelector(`tr[data-row-id="${id}"], .list-card[data-row-id="${id}"]`);
+        if (rowEl) {
+            rowEl.classList.add('list-row-exiting');
+            rowEl.style.transition = `all ${duration}ms ease-out`;
+        }
+    }
+
+    /**
+     * Update pagination info without full re-render
+     * @private
+     */
+    _updatePaginationInfo() {
+        const paginationInfo = this.container.querySelector('.list-pagination-info');
+        if (paginationInfo) {
+            const totalItems = this.options.serverSide ? this.totalCount : this.filteredData.length;
+            const start = (this.currentPage - 1) * this.options.pageSize + 1;
+            const end = Math.min(this.currentPage * this.options.pageSize, totalItems);
+            paginationInfo.textContent = `Zeige ${start} - ${end} von ${totalItems}`;
+        }
+    }
 
 }
 

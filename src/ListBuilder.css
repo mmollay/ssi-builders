@@ -1459,3 +1459,156 @@ html.dark-mode .list-builder-glass .list-pagination,
 html.m3-dark .list-builder-glass .list-pagination {
     border-top-color: rgba(255, 255, 255, 0.06) !important;
 }
+
+/* ========================================
+   REAL-TIME UPDATE ANIMATIONS (v2.10.0)
+   ======================================== */
+
+/* Row entering animation (fade-in from transparent) */
+.list-row-entering,
+.list-table tbody tr.list-row-entering,
+.list-card.list-row-entering {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.list-row-entered,
+.list-table tbody tr.list-row-entered,
+.list-card.list-row-entered {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* New row highlight (subtle green/blue pulse) */
+.list-row-new,
+.list-table tbody tr.list-row-new,
+.list-card.list-row-new {
+    animation: listRowHighlightNew 0.6s ease-out;
+}
+
+@keyframes listRowHighlightNew {
+    0% {
+        background-color: rgba(52, 168, 83, 0.25);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* Updated row highlight (subtle blue pulse) */
+.list-row-updated,
+.list-table tbody tr.list-row-updated,
+.list-card.list-row-updated {
+    animation: listRowHighlightUpdated 0.5s ease-out;
+}
+
+@keyframes listRowHighlightUpdated {
+    0% {
+        background-color: rgba(26, 115, 232, 0.25);
+    }
+    50% {
+        background-color: rgba(26, 115, 232, 0.15);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* Row exiting animation (fade-out) */
+.list-row-exiting,
+.list-table tbody tr.list-row-exiting,
+.list-card.list-row-exiting {
+    opacity: 0;
+    transform: translateX(-20px);
+    max-height: 0;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    overflow: hidden;
+}
+
+/* Dark mode adjustments for animations */
+html.dark-mode .list-row-new,
+html.dark-mode .list-table tbody tr.list-row-new,
+html.dark-mode .list-card.list-row-new,
+html.m3-dark .list-row-new,
+html.m3-dark .list-table tbody tr.list-row-new,
+html.m3-dark .list-card.list-row-new {
+    animation: listRowHighlightNewDark 0.6s ease-out;
+}
+
+@keyframes listRowHighlightNewDark {
+    0% {
+        background-color: rgba(129, 201, 149, 0.3);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+html.dark-mode .list-row-updated,
+html.dark-mode .list-table tbody tr.list-row-updated,
+html.dark-mode .list-card.list-row-updated,
+html.m3-dark .list-row-updated,
+html.m3-dark .list-table tbody tr.list-row-updated,
+html.m3-dark .list-card.list-row-updated {
+    animation: listRowHighlightUpdatedDark 0.5s ease-out;
+}
+
+@keyframes listRowHighlightUpdatedDark {
+    0% {
+        background-color: rgba(138, 180, 248, 0.3);
+    }
+    50% {
+        background-color: rgba(138, 180, 248, 0.15);
+    }
+    100% {
+        background-color: transparent;
+    }
+}
+
+/* Realtime indicator badge (optional) */
+.list-realtime-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    background: rgba(52, 168, 83, 0.1);
+    border: 1px solid rgba(52, 168, 83, 0.3);
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--m3-success, #34a853);
+}
+
+.list-realtime-indicator::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    background: var(--m3-success, #34a853);
+    border-radius: 50%;
+    animation: listRealtimePulse 2s infinite;
+}
+
+@keyframes listRealtimePulse {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.8);
+    }
+}
+
+html.dark-mode .list-realtime-indicator,
+html.m3-dark .list-realtime-indicator {
+    background: rgba(129, 201, 149, 0.15);
+    border-color: rgba(129, 201, 149, 0.3);
+    color: #81c995;
+}
+
+html.dark-mode .list-realtime-indicator::before,
+html.m3-dark .list-realtime-indicator::before {
+    background: #81c995;
+}

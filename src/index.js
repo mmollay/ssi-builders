@@ -43,6 +43,8 @@ import { CardBuilder } from './CardBuilder.js';
 import { HeaderBuilder } from './HeaderBuilder.js';
 // Documentation System (v2.11.0)
 import { DocViewerBuilder } from './DocViewerBuilder.js';
+// Timeline System (v2.12.0)
+import { TimelineBuilder } from './TimelineBuilder.js';
 
 export {
     ListBuilder,
@@ -86,7 +88,9 @@ export {
     // Header System (v2.7.0)
     HeaderBuilder,
     // Documentation System (v2.11.0)
-    DocViewerBuilder
+    DocViewerBuilder,
+    // Timeline System (v2.12.0)
+    TimelineBuilder
 };
 
 // Default export for convenience
@@ -119,7 +123,8 @@ export default {
     MessageBuilder,
     CardBuilder,
     HeaderBuilder,
-    DocViewerBuilder
+    DocViewerBuilder,
+    TimelineBuilder
 };
 
 // Version info

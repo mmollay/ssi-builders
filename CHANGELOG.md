@@ -7,6 +7,53 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.12.0] - 2025-12-17
+
+### Added
+- **TimelineBuilder**: New timeline component for activity feeds and change history
+  - Perfect for: Git history, activity logs, audit trails, change history, news feeds
+  - Support for both simple and date-grouped timelines
+  - Icon support via IconManager (circle, square, or avatar style)
+  - Color-coded icons: primary, success, warning, error
+  - Customizable timeline line style: solid, dashed, dotted
+  - Badge support for categorizing items (e.g., 'feat', 'fix', 'NEW')
+  - User/author attribution with avatar or icon
+  - Metadata and description fields
+  - Click handlers and href links for items
+  - Loading and empty states
+  - Compact mode for dense layouts
+  - Full Material Design 3 styling with dark mode support
+  - Responsive design (mobile breakpoints at 768px and 480px)
+  - Date grouping with smart headers (Today, Yesterday, formatted dates)
+  - Time formatting options (showTime: true/false)
+  - Options: `showTime`, `groupByDate`, `iconStyle`, `lineStyle`, `compact`, `loading`, `emptyMessage`
+  - Public API: `updateItems()`, `addItem()`, `setLoading()`, `destroy()`
+
+### Example Usage
+```javascript
+// Git Activity Timeline
+const timeline = new TimelineBuilder({
+    containerId: 'git-timeline',
+    items: [
+        {
+            date: '2025-12-17T10:30:00',
+            icon: 'git-commit',
+            iconColor: 'success',
+            title: 'feat(dashboard): complete migration',
+            description: 'Migrated all components to ssi-builders',
+            user: 'Martin Mollay',
+            badge: 'feat',
+            metadata: '3 files changed, +250 -1200'
+        }
+    ],
+    options: {
+        showTime: true,
+        groupByDate: true,
+        iconStyle: 'circle'
+    }
+});
+```
+
 ## [2.11.0] - 2025-12-17
 
 ### Added

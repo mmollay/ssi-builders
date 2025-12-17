@@ -10,8 +10,11 @@
  * - Legend support
  * - Color themes
  * - Export as PNG/SVG
+ * - Animated data updates (v2.8.0+)
+ * - Realtime mode with sliding window
+ * - addDataPoint() for live data
  *
- * @version 2.3.0
+ * @version 2.9.0
  */
 
 import { createVersionBadge } from './version.js';
@@ -586,11 +589,236 @@ export class ChartBuilder {
     }
 
     /**
-     * Update chart data
+     * Update chart data with optional animation
+     * @param {Object|Array} newData - New chart data
+     * @param {Object} options - Animation options
+     * @param {boolean} options.animate - Enable animation (default: true)
+     * @param {number} options.duration - Animation duration in ms (default: 500)
+     * @param {string} options.easing - CSS easing function (default: 'ease-out')
      */
-    updateData(newData) {
+    updateData(newData, options = {}) {
+        const { animate = true, duration = 500, easing = 'ease-out' } = options;
+
+        const oldData = this.data;
         this.data = newData;
-        this.render();
+
+        if (!animate || this.type === 'pie' || this.type === 'donut') {
+            // For pie/donut charts, just re-render (complex path animations)
+            this.render();
+            return;
+        }
+
+        // Try animated update for bar/line/progress charts
+        if (this.type === 'bar') {
+            this._animateBarUpdate(oldData, newData, duration, easing);
+        } else if (this.type === 'line') {
+            this._animateLineUpdate(oldData, newData, duration, easing);
+        } else if (this.type === 'progress') {
+            this._animateProgressUpdate(oldData, newData, duration, easing);
+        } else {
+            this.render();
+        }
+    }
+
+    /**
+     * Animate bar chart update
+     * @private
+     */
+    _animateBarUpdate(oldData, newData, duration, easing) {
+        // Normalize data to array format
+        const getDataArray = (data) => {
+            if (Array.isArray(data)) return data;
+            if (data.labels && data.datasets) {
+                return data.labels.map((label, i) => ({
+                    label,
+                    value: data.datasets[0].data[i]
+                }));
+            }
+            return [];
+        };
+
+        const oldArray = getDataArray(oldData);
+        const newArray = getDataArray(newData);
+
+        // If structure changed, re-render
+        if (oldArray.length !== newArray.length) {
+            this.render();
+            return;
+        }
+
+        const maxValue = Math.max(...newArray.map(d => d.value));
+        const bars = this.container.querySelectorAll('.chart-bar');
+        const values = this.container.querySelectorAll('.chart-bar-value');
+
+        bars.forEach((bar, index) => {
+            if (index < newArray.length) {
+                const newHeight = (newArray[index].value / maxValue) * 100;
+                bar.style.transition = `height ${duration}ms ${easing}`;
+                bar.style.height = `${newHeight}%`;
+                bar.dataset.value = newArray[index].value;
+
+                // Update value display
+                if (values[index]) {
+                    values[index].textContent = this.formatValue(newArray[index].value);
+                }
+            }
+        });
+    }
+
+    /**
+     * Animate line chart update
+     * @private
+     */
+    _animateLineUpdate(oldData, newData, duration, easing) {
+        // For line charts with SVG, animate circle positions
+        const getDataArray = (data) => {
+            if (Array.isArray(data)) return data.map(d => d.value);
+            if (data.labels && data.datasets) return data.datasets[0].data;
+            return [];
+        };
+
+        const oldValues = getDataArray(oldData);
+        const newValues = getDataArray(newData);
+
+        // If length changed, re-render
+        if (oldValues.length !== newValues.length) {
+            this.render();
+            return;
+        }
+
+        const circles = this.container.querySelectorAll('.chart-point');
+        const path = this.container.querySelector('path[stroke]:not([fill="none"])') ||
+                     this.container.querySelector('path[d*="M"][d*="L"]');
+
+        const height = this.options.height;
+        const padding = 40;
+        const chartHeight = height - padding * 2;
+        const maxValue = Math.max(...newValues);
+        const minValue = Math.min(...newValues);
+        const range = maxValue - minValue || 1;
+
+        // Animate circles
+        circles.forEach((circle, index) => {
+            if (index < newValues.length) {
+                const newY = padding + chartHeight - ((newValues[index] - minValue) / range) * chartHeight;
+                circle.style.transition = `cy ${duration}ms ${easing}`;
+                circle.setAttribute('cy', newY);
+                circle.dataset.value = newValues[index];
+            }
+        });
+
+        // Re-render the line path (CSS can't animate path d attribute easily)
+        // Use a slight delay for visual effect
+        setTimeout(() => {
+            this.render();
+        }, duration / 2);
+    }
+
+    /**
+     * Animate progress chart update
+     * @private
+     */
+    _animateProgressUpdate(oldData, newData, duration, easing) {
+        const fills = this.container.querySelectorAll('.chart-progress-fill');
+        const values = this.container.querySelectorAll('.chart-progress-value');
+
+        newData.forEach((item, index) => {
+            if (fills[index]) {
+                const percentage = Math.min(item.value, 100);
+                fills[index].style.transition = `width ${duration}ms ${easing}`;
+                fills[index].style.width = `${percentage}%`;
+            }
+            if (values[index]) {
+                values[index].textContent = this.formatValue(item.value);
+            }
+        });
+
+        this.data = newData;
+    }
+
+    /**
+     * Add a single data point (for realtime updates)
+     * @param {string} label - Label for the new data point
+     * @param {number} value - Value for the new data point
+     * @param {Object} options - Options
+     * @param {boolean} options.shift - Remove oldest point if max reached (default: true)
+     * @param {number} options.maxPoints - Maximum number of points (default: 30)
+     */
+    addDataPoint(label, value, options = {}) {
+        const { shift = true, maxPoints = 30 } = options;
+
+        // Normalize to new format
+        if (Array.isArray(this.data)) {
+            // Convert old format to new format
+            this.data = {
+                labels: this.data.map(d => d.label),
+                datasets: [{ data: this.data.map(d => d.value) }]
+            };
+        }
+
+        if (!this.data.labels) {
+            this.data = { labels: [], datasets: [{ data: [] }] };
+        }
+
+        // Add new point
+        this.data.labels.push(label);
+        this.data.datasets[0].data.push(value);
+
+        // Shift if needed
+        if (shift && this.data.labels.length > maxPoints) {
+            this.data.labels.shift();
+            this.data.datasets[0].data.shift();
+        }
+
+        // Update with animation
+        this.updateData(this.data, { animate: true, duration: 300 });
+    }
+
+    /**
+     * Configure realtime mode for live data streaming
+     * @param {Object} config - Realtime configuration
+     * @param {number} config.maxPoints - Maximum data points to keep (default: 30)
+     * @param {boolean} config.shiftOnAdd - Remove oldest when adding new (default: true)
+     * @param {number} config.animationDuration - Animation duration in ms (default: 300)
+     */
+    setRealtimeMode(config = {}) {
+        this.realtimeConfig = {
+            maxPoints: config.maxPoints || 30,
+            shiftOnAdd: config.shiftOnAdd !== false,
+            animationDuration: config.animationDuration || 300
+        };
+
+        console.log('[ChartBuilder] Realtime mode enabled:', this.realtimeConfig);
+    }
+
+    /**
+     * Push data in realtime mode
+     * @param {string} label - Label for the new point
+     * @param {number} value - Value for the new point
+     */
+    pushData(label, value) {
+        if (!this.realtimeConfig) {
+            this.setRealtimeMode();
+        }
+
+        this.addDataPoint(label, value, {
+            shift: this.realtimeConfig.shiftOnAdd,
+            maxPoints: this.realtimeConfig.maxPoints
+        });
+    }
+
+    /**
+     * Get current data in normalized format
+     * @returns {Object} { labels: [], datasets: [{ data: [] }] }
+     */
+    getData() {
+        if (Array.isArray(this.data)) {
+            return {
+                labels: this.data.map(d => d.label),
+                datasets: [{ data: this.data.map(d => d.value) }]
+            };
+        }
+        return this.data;
     }
 
     /**

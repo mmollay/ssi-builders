@@ -208,6 +208,39 @@
             <div id="code-pie-donut"></div>
         </div>
 
+        <!-- Real-time Updates Section (NEW in v2.9.0) -->
+        <div class="demo-section">
+            <h2>🔴 Real-time Updates <span style="background: #e8f5e9; color: #1b5e20; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: 600; margin-left: 8px;">NEW v2.9.0</span></h2>
+            <p class="subtitle">Animate chart data updates for live dashboards - perfect for WebSocket/Supabase Realtime</p>
+
+            <div class="example-demo">
+                <div style="display: flex; gap: 16px; margin-bottom: 16px; flex-wrap: wrap;">
+                    <button id="btn-add-data" class="ssi-btn ssi-btn-primary">
+                        Add Data Point
+                    </button>
+                    <button id="btn-update-all" class="ssi-btn ssi-btn-outlined">
+                        Update All Values
+                    </button>
+                    <button id="btn-toggle-realtime" class="ssi-btn ssi-btn-success">
+                        Start Realtime Mode
+                    </button>
+                </div>
+                <div id="realtimeChart" class="chart-container"></div>
+            </div>
+
+            <h3 style="margin-top: 24px;">updateData() - Animate all values</h3>
+            <div id="code-updateData"></div>
+
+            <h3 style="margin-top: 24px;">addDataPoint() - Add single point with sliding window</h3>
+            <div id="code-addDataPoint"></div>
+
+            <h3 style="margin-top: 24px;">pushData() - Simplified real-time streaming</h3>
+            <div id="code-pushData"></div>
+
+            <h3 style="margin-top: 24px;">Supabase Realtime Integration Example</h3>
+            <div id="code-supabase-realtime"></div>
+        </div>
+
         <!-- Configuration Reference -->
         <div class="demo-section">
             <h2>⚙️ Configuration Options</h2>
@@ -313,11 +346,31 @@
                     </tr>
                     <tr>
                         <td><code>update(data)</code></td>
-                        <td>Update chart with new data</td>
+                        <td>Update chart with new data (legacy)</td>
                     </tr>
                     <tr>
                         <td><code>destroy()</code></td>
                         <td>Remove chart and cleanup</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><code>updateData(newData, options)</code></td>
+                        <td><strong>NEW v2.9.0</strong> - Animate chart data update. Options: animate, duration, easing</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><code>addDataPoint(label, value, options)</code></td>
+                        <td><strong>NEW v2.9.0</strong> - Add single data point with sliding window. Options: maxPoints, animate</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><code>setRealtimeMode(config)</code></td>
+                        <td><strong>NEW v2.9.0</strong> - Configure for real-time streaming. Config: maxPoints, animationDuration</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><code>pushData(label, value)</code></td>
+                        <td><strong>NEW v2.9.0</strong> - Simplified push for real-time mode (auto-enables if not set)</td>
+                    </tr>
+                    <tr style="background: #e8f5e9;">
+                        <td><code>getData()</code></td>
+                        <td><strong>NEW v2.9.0</strong> - Retrieve current chart data</td>
                     </tr>
                 </tbody>
             </table>
@@ -549,6 +602,168 @@ const donutChart = new ChartBuilder({
         }
     ]
 }`,
+            language: 'javascript'
+        });
+
+        // ========================================
+        // Real-time Updates Demo (NEW v2.9.0)
+        // ========================================
+
+        // Create the realtime chart
+        const realtimeChart = new ChartBuilder({
+            containerId: 'realtimeChart',
+            type: 'bar',
+            data: {
+                labels: ['10:00', '10:05', '10:10', '10:15', '10:20'],
+                datasets: [{
+                    label: 'Requests/min',
+                    data: [45, 52, 48, 61, 55],
+                    backgroundColor: '#1a73e8'
+                }]
+            },
+            options: {
+                title: 'Live Server Requests',
+                showLegend: true,
+                animated: true
+            }
+        });
+        realtimeChart.render();
+
+        // Button handlers
+        let dataPointCounter = 25;
+        let realtimeInterval = null;
+
+        document.getElementById('btn-add-data').addEventListener('click', () => {
+            const now = new Date();
+            const timeLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+            const randomValue = Math.floor(Math.random() * 50) + 30;
+
+            realtimeChart.addDataPoint(timeLabel, randomValue, {
+                maxPoints: 8,
+                animate: true
+            });
+        });
+
+        document.getElementById('btn-update-all').addEventListener('click', () => {
+            const newData = {
+                labels: ['10:00', '10:05', '10:10', '10:15', '10:20'],
+                datasets: [{
+                    label: 'Requests/min',
+                    data: [
+                        Math.floor(Math.random() * 50) + 30,
+                        Math.floor(Math.random() * 50) + 30,
+                        Math.floor(Math.random() * 50) + 30,
+                        Math.floor(Math.random() * 50) + 30,
+                        Math.floor(Math.random() * 50) + 30
+                    ],
+                    backgroundColor: '#1a73e8'
+                }]
+            };
+
+            realtimeChart.updateData(newData, {
+                animate: true,
+                duration: 500,
+                easing: 'ease-out'
+            });
+        });
+
+        const toggleBtn = document.getElementById('btn-toggle-realtime');
+        toggleBtn.addEventListener('click', () => {
+            if (realtimeInterval) {
+                clearInterval(realtimeInterval);
+                realtimeInterval = null;
+                toggleBtn.textContent = 'Start Realtime Mode';
+                toggleBtn.classList.remove('ssi-btn-danger');
+                toggleBtn.classList.add('ssi-btn-success');
+            } else {
+                realtimeChart.setRealtimeMode({ maxPoints: 10, animationDuration: 300 });
+                realtimeInterval = setInterval(() => {
+                    const now = new Date();
+                    const timeLabel = `${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+                    const randomValue = Math.floor(Math.random() * 50) + 30;
+                    realtimeChart.pushData(timeLabel, randomValue);
+                }, 1500);
+                toggleBtn.textContent = 'Stop Realtime Mode';
+                toggleBtn.classList.remove('ssi-btn-success');
+                toggleBtn.classList.add('ssi-btn-danger');
+            }
+        });
+
+        // Code Snippets for Real-time features
+        new CodeSnippetBuilder({
+            containerId: 'code-updateData',
+            code: `// Update all chart values with smooth animation
+chart.updateData({
+    labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+    datasets: [{
+        label: 'Sales',
+        data: [120, 150, 180, 140, 200],
+        backgroundColor: '#1a73e8'
+    }]
+}, {
+    animate: true,      // Enable animation (default: true)
+    duration: 500,      // Animation duration in ms (default: 500)
+    easing: 'ease-out'  // CSS easing function (default: 'ease-out')
+});`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-addDataPoint',
+            code: `// Add a single data point (great for live updates)
+chart.addDataPoint('10:35', 78, {
+    maxPoints: 10,  // Keep only last 10 points (sliding window)
+    animate: true   // Animate the transition
+});
+
+// The oldest point is automatically removed when maxPoints is exceeded`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-pushData',
+            code: `// Simplified method for real-time streaming
+// Auto-enables realtime mode if not set
+
+chart.setRealtimeMode({
+    maxPoints: 20,          // Sliding window size
+    animationDuration: 300  // Animation speed
+});
+
+// Then just push data as it comes in
+chart.pushData('10:35:42', 85);
+chart.pushData('10:35:45', 92);
+chart.pushData('10:35:48', 78);`,
+            language: 'javascript'
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-supabase-realtime',
+            code: `import { ChartBuilder } from '/vendor/ssi-builders/src/ChartBuilder.js';
+
+// Create chart in realtime mode
+const liveChart = new ChartBuilder({
+    containerId: 'live-requests',
+    type: 'bar',
+    data: { labels: [], datasets: [{ label: 'Requests', data: [] }] },
+    options: { title: 'Live API Requests' }
+});
+liveChart.render();
+liveChart.setRealtimeMode({ maxPoints: 20 });
+
+// Subscribe to Supabase Realtime
+const channel = supabase
+    .channel('api_logs_realtime')
+    .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'api_logs'
+    }, (payload) => {
+        const time = new Date(payload.new.created_at);
+        const label = time.toLocaleTimeString();
+        liveChart.pushData(label, payload.new.response_time);
+    })
+    .subscribe();`,
             language: 'javascript'
         });
     </script>

@@ -125,9 +125,39 @@
                     </div>
                 </div>
 
+                <!-- NEW: Real-time Updates -->
+                <div class="demo-section">
+                    <h2>6. Real-time Live Updates <span class="badge new">NEU v2.10</span></h2>
+                    <p>Inkrementelle Updates mit Fade-In Animationen - keine vollstaendige Neu-Ladung!</p>
+
+                    <div style="display: flex; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
+                        <button class="ssi-btn ssi-btn-primary" id="btn-add-row">
+                            + Neue Zeile hinzufuegen
+                        </button>
+                        <button class="ssi-btn ssi-btn-outlined" id="btn-update-random">
+                            Zufaellige Zeile aktualisieren
+                        </button>
+                        <button class="ssi-btn ssi-btn-danger" id="btn-remove-first">
+                            Erste Zeile entfernen
+                        </button>
+                        <button class="ssi-btn ssi-btn-success" id="btn-auto-add">
+                            Auto-Add starten (alle 2s)
+                        </button>
+                        <span class="list-realtime-indicator" id="realtime-status" style="display: none;">
+                            LIVE
+                        </span>
+                    </div>
+
+                    <div class="demo-box">
+                        <div id="tableRealtime"></div>
+                    </div>
+
+                    <div id="code-realtime" style="margin-top: 16px;"></div>
+                </div>
+
                 <!-- NEW: Elegant Variants -->
                 <div class="demo-section">
-                    <h2>6. Elegante Varianten <span class="badge new">NEU v2.5</span></h2>
+                    <h2>7. Elegante Varianten <span class="badge new">NEU v2.5</span></h2>
                     <p>Verschiedene Display-Varianten für unterschiedliche Stilrichtungen</p>
 
                     <h3 style="margin: 24px 0 12px 0;">Frameless (Filter frei, nur Tabelle mit Rahmen)</h3>
@@ -588,7 +618,154 @@ actions: {
             language: 'javascript'
         });
 
-        // 7. Elegant Variants
+        // 7. Real-time Updates Demo
+        let realtimeCounter = 100;
+        let autoAddInterval = null;
+
+        const realtimeList = new ListBuilder({
+            containerId: 'tableRealtime',
+            columns: [
+                { key: 'id', label: 'ID', width: '60px' },
+                { key: 'timestamp', label: 'Zeit', render: (v) => new Date(v).toLocaleTimeString('de-DE') },
+                { key: 'event', label: 'Event' },
+                { key: 'status', label: 'Status', type: 'badge', badgeClass: (v) => ({
+                    'success': 'success',
+                    'pending': 'warning',
+                    'error': 'danger'
+                })[v] },
+                { key: 'user', label: 'User' }
+            ],
+            data: [
+                { id: 1, timestamp: Date.now() - 60000, event: 'Initiales Event', status: 'success', user: 'System' },
+                { id: 2, timestamp: Date.now() - 30000, event: 'Zweites Event', status: 'pending', user: 'Admin' },
+                { id: 3, timestamp: Date.now(), event: 'Aktuelles Event', status: 'success', user: 'User1' }
+            ],
+            options: {
+                paginated: false,
+                searchable: false,
+                selectable: false,
+                enableColumnToggle: false,
+                tableStyle: {
+                    hoverable: true
+                }
+            }
+        });
+
+        // Configure real-time mode with sliding window
+        realtimeList.setRealtimeMode({
+            maxRows: 10,  // Max 10 rows, oldest gets removed
+            animationDuration: 300,
+            insertPosition: 'top',
+            onInsert: (items) => console.log('Inserted:', items),
+            onRemove: (item) => console.log('Removed:', item)
+        });
+
+        // Button handlers
+        document.getElementById('btn-add-row').addEventListener('click', () => {
+            realtimeCounter++;
+            const events = ['Login', 'Logout', 'Purchase', 'API Call', 'Error', 'Notification'];
+            const statuses = ['success', 'pending', 'error'];
+            const users = ['Admin', 'User1', 'User2', 'System', 'Guest'];
+
+            realtimeList.prependData({
+                id: realtimeCounter,
+                timestamp: Date.now(),
+                event: events[Math.floor(Math.random() * events.length)],
+                status: statuses[Math.floor(Math.random() * statuses.length)],
+                user: users[Math.floor(Math.random() * users.length)]
+            });
+        });
+
+        document.getElementById('btn-update-random').addEventListener('click', () => {
+            const data = realtimeList.getData();
+            if (data.length > 0) {
+                const randomRow = data[Math.floor(Math.random() * data.length)];
+                realtimeList.updateRow(randomRow.id, {
+                    status: 'success',
+                    event: 'UPDATED: ' + randomRow.event
+                });
+            }
+        });
+
+        document.getElementById('btn-remove-first').addEventListener('click', () => {
+            const data = realtimeList.getData();
+            if (data.length > 0) {
+                realtimeList.removeRow(data[0].id);
+            }
+        });
+
+        document.getElementById('btn-auto-add').addEventListener('click', (e) => {
+            const statusIndicator = document.getElementById('realtime-status');
+            if (autoAddInterval) {
+                clearInterval(autoAddInterval);
+                autoAddInterval = null;
+                e.target.textContent = 'Auto-Add starten (alle 2s)';
+                e.target.classList.remove('ssi-btn-danger');
+                e.target.classList.add('ssi-btn-success');
+                statusIndicator.style.display = 'none';
+            } else {
+                autoAddInterval = setInterval(() => {
+                    realtimeCounter++;
+                    const events = ['WebSocket Message', 'Database Insert', 'API Response', 'User Action'];
+                    const statuses = ['success', 'pending'];
+
+                    realtimeList.prependData({
+                        id: realtimeCounter,
+                        timestamp: Date.now(),
+                        event: events[Math.floor(Math.random() * events.length)],
+                        status: statuses[Math.floor(Math.random() * statuses.length)],
+                        user: 'Auto-System'
+                    });
+                }, 2000);
+                e.target.textContent = 'Auto-Add stoppen';
+                e.target.classList.remove('ssi-btn-success');
+                e.target.classList.add('ssi-btn-danger');
+                statusIndicator.style.display = 'inline-flex';
+            }
+        });
+
+        new CodeSnippetBuilder({
+            containerId: 'code-realtime',
+            code: `// Real-time Mode konfigurieren (Sliding Window)
+list.setRealtimeMode({
+    maxRows: 50,           // Max 50 Zeilen, aelteste werden entfernt
+    animationDuration: 300, // Animation in ms
+    insertPosition: 'top',  // Neue Zeilen oben einfuegen
+    onInsert: (items) => console.log('Neu:', items),
+    onUpdate: (item, id) => console.log('Update:', id),
+    onRemove: (item, id) => console.log('Entfernt:', id)
+});
+
+// Neue Zeile hinzufuegen (Fade-In Animation)
+list.prependData({ id: 123, name: 'Neu', status: 'active' });
+
+// Zeile aktualisieren (Highlight Animation)
+list.updateRow(123, { status: 'completed' });
+
+// Zeile entfernen (Fade-Out Animation)
+list.removeRow(123);
+
+// WebSocket-Integration
+list.connectWebSocket({
+    url: 'wss://api.example.com/events',
+    onMessage: (data) => ({
+        action: data.type,  // 'insert', 'update', 'delete'
+        data: data.payload,
+        id: data.id
+    }),
+    reconnect: true
+});
+
+// Oder Supabase Realtime
+list.connectSupabase({
+    supabase: supabaseClient,
+    table: 'events',
+    event: '*'  // INSERT, UPDATE, DELETE
+});`,
+            language: 'javascript'
+        });
+
+        // 8. Elegant Variants
         const variantUsers = generateUsers(5);
         const variantColumns = [
             { key: 'id', label: 'ID', width: '60px' },

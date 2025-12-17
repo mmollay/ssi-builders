@@ -8,7 +8,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **SSI Builders** is the central UI component library for the entire SSI ecosystem. Like Google's Material Design across all products, SSI Builders provides a consistent UI framework for ALL SSI applications (HabDaWas App, Habbi Suchalgorithmus, Bazar Bold, and future projects).
 
-**Current Version:** 2.7.1
+**Current Version:** 2.9.0
 
 ---
 
@@ -286,5 +286,30 @@ Test files in `/tests/` follow pattern: `test-[feature].spec.js`
 
 ---
 
-> **Last Updated:** 2025-11-25 | **Current Version:** 2.4.1
-- immer starten nach Änderungen wenn es nicht schon läuft SSI - Test app für Builder http://localhost:5188/
+## Custom Agents
+
+### SSI Builder Extension Agent
+
+Für komplexe Erweiterungen der SSI-Builders Library steht ein spezialisierter Agent bereit:
+
+**Pfad:** `.claude/agents/ssi-builder-extend.md`
+
+**Verwendung mit Task Tool:**
+```
+subagent_type: "ssi-builder-extend"
+prompt: "Erweitere FormBuilder mit einer autosave Option..."
+```
+
+**Der Agent führt automatisch durch:**
+1. IST-Analyse der aktuellen Komponente
+2. Implementierung mit Code-Standards
+3. Version Bump (Semantic Versioning)
+4. CHANGELOG.md Update
+5. Demo-Seite mit interaktiven Beispielen
+6. Playwright Tests
+7. Sync zu Consumer-Projekten (habdawas-analytics, habdawas-app)
+
+---
+
+> **Last Updated:** 2025-12-13 | **Current Version:** 2.9.0
+- immer starten nach Änderungen wenn es nicht schon läuft SSI - Test app für Builder http://localhost:5177/
