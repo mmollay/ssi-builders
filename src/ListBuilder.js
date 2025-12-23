@@ -15,7 +15,7 @@
  * - Real-time updates (WebSocket/Supabase Realtime)
  * - Incremental data updates with animations
  *
- * @version 2.10.0
+ * @version 2.11.0
  */
 
 import { BaseBuilder } from './BaseBuilder.js';
@@ -52,7 +52,18 @@ export class ListBuilder extends BaseBuilder {
                 hoverable: true,
                 celled: false
             },
-            variant: 'default'           // 'default' | 'frameless' | 'lines-only' | 'elegant' | 'minimal' | 'glass'
+            variant: 'default',          // 'default' | 'frameless' | 'lines-only' | 'elegant' | 'minimal' | 'glass'
+            layout: 'table',             // 'table' | 'cards' - Display mode (NEW v2.11.0)
+            cardStyle: {                 // Card layout styling (NEW v2.11.0)
+                columns: 3,              // Number of columns (1-4)
+                gap: '16px',             // Gap between cards
+                minWidth: '280px',       // Minimum card width
+                statusField: null,       // Field name for status badge
+                statusColors: {},        // Status color mapping
+                showBorder: true,
+                showShadow: true,
+                hoverEffect: 'lift'      // 'lift' | 'glow' | 'none'
+            }
         });
 
         this.columns = config.columns || [];
@@ -238,9 +249,13 @@ export class ListBuilder extends BaseBuilder {
             `;
         }
 
-        // Check if mobile
-        const isMobile = window.innerWidth < this.options.mobileBreakpoint;
+        // Check layout mode
+        if (this.options.layout === 'cards') {
+            return this.renderDesktopCards();
+        }
 
+        // Check if mobile (original behavior for table layout)
+        const isMobile = window.innerWidth < this.options.mobileBreakpoint;
         return isMobile ? this.renderCards() : this.renderTableView();
     }
 
@@ -451,7 +466,7 @@ export class ListBuilder extends BaseBuilder {
     }
 
     /**
-     * Render single card
+     * Render single card (mobile version)
      */
     renderCard(row) {
         const rowId = this.getRowId(row);
@@ -481,6 +496,144 @@ export class ListBuilder extends BaseBuilder {
 
                 ${this.actions.row ? `
                     <div class="list-card-actions">
+                        ${this.renderRowActions(row)}
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    /**
+     * Render desktop card layout (NEW v2.11.0)
+     * Material Design 3 card grid with status badges, colors, hover effects
+     */
+    renderDesktopCards() {
+        const paginatedData = this.getPaginatedData();
+        const { columns, gap, minWidth, hoverEffect, showBorder, showShadow } = this.options.cardStyle;
+
+        const hoverClass = hoverEffect === 'lift' ? 'list-desktop-card-hover-lift' :
+                          hoverEffect === 'glow' ? 'list-desktop-card-hover-glow' : '';
+
+        return `
+            <div class="list-desktop-cards-responsive" style="
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(min(${minWidth}, 100%), 1fr));
+                gap: ${gap};
+                padding: 24px;
+            ">
+                ${paginatedData.map(row => this.renderDesktopCard(row, hoverClass, showBorder, showShadow)).join('')}
+            </div>
+        `;
+    }
+
+    /**
+     * Render single desktop card (NEW v2.11.0)
+     */
+    renderDesktopCard(row, hoverClass, showBorder, showShadow) {
+        const rowId = this.getRowId(row);
+        const isSelected = this.selectedRows.has(rowId);
+        const statusField = this.options.cardStyle.statusField;
+        const statusValue = statusField ? this.getNestedValue(row, statusField) : null;
+        const statusColor = statusValue && this.options.cardStyle.statusColors[statusValue]
+            ? this.options.cardStyle.statusColors[statusValue]
+            : 'default';
+
+        // Build card classes
+        const cardClasses = ['list-desktop-card', hoverClass];
+        if (isSelected) cardClasses.push('list-desktop-card-selected');
+        if (showBorder) cardClasses.push('list-desktop-card-bordered');
+        if (showShadow) cardClasses.push('list-desktop-card-shadow');
+
+        return `
+            <div class="${cardClasses.join(' ')}" data-row-id="${rowId}" style="
+                background: var(--ssi-surface);
+                border-radius: 16px;
+                padding: 20px;
+                position: relative;
+                transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                cursor: ${this.actions.row?.some(a => a.key === 'view') ? 'pointer' : 'default'};
+                ${showBorder ? 'border: 1px solid var(--ssi-outline-variant);' : ''}
+                ${showShadow ? 'box-shadow: 0 2px 8px rgba(0,0,0,0.08);' : ''}
+                min-height: 180px;
+                display: flex;
+                flex-direction: column;
+            ">
+                ${this.options.selectable ? `
+                    <div style="position: absolute; top: 12px; right: 12px;">
+                        <input
+                            type="checkbox"
+                            class="list-row-checkbox"
+                            data-row-id="${rowId}"
+                            ${isSelected ? 'checked' : ''}
+                            style="width: 18px; height: 18px; cursor: pointer;"
+                        />
+                    </div>
+                ` : ''}
+
+                ${statusValue ? `
+                    <div style="
+                        display: inline-flex;
+                        align-items: center;
+                        padding: 6px 14px;
+                        border-radius: 20px;
+                        font-size: 13px;
+                        font-weight: 600;
+                        letter-spacing: 0.2px;
+                        margin-bottom: 16px;
+                        background: var(--ssi-${statusColor}-container, var(--ssi-surface-variant));
+                        color: var(--ssi-on-${statusColor}-container, var(--ssi-on-surface-variant));
+                        text-transform: uppercase;
+                        width: fit-content;
+                    ">
+                        ${statusValue}
+                    </div>
+                ` : ''}
+
+                <div style="display: flex; flex-direction: column; gap: 16px; flex: 1;">
+                    ${this.columns.filter(col => !col.hideInCard).map((col, idx) => {
+                        const value = this.renderCell(row, col);
+                        const isFirst = idx === 0;
+
+                        return `
+                            <div>
+                                ${isFirst ? `
+                                    <div style="
+                                        font-size: 18px;
+                                        font-weight: 600;
+                                        color: var(--ssi-on-surface);
+                                        margin-bottom: 12px;
+                                        line-height: 1.3;
+                                        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+                                    ">${value}</div>
+                                ` : `
+                                    <div style="display: flex; flex-direction: column; gap: 4px;">
+                                        <span style="
+                                            font-size: 11px;
+                                            color: var(--ssi-on-surface-variant);
+                                            font-weight: 600;
+                                            text-transform: uppercase;
+                                            letter-spacing: 0.5px;
+                                        ">${col.label}</span>
+                                        <span style="
+                                            font-size: 14px;
+                                            color: var(--ssi-on-surface);
+                                            font-weight: 400;
+                                        ">${value}</span>
+                                    </div>
+                                `}
+                            </div>
+                        `;
+                    }).join('')}
+                </div>
+
+                ${this.actions.row ? `
+                    <div style="
+                        display: flex;
+                        gap: 10px;
+                        margin-top: auto;
+                        padding-top: 16px;
+                        border-top: 1px solid var(--ssi-outline-variant);
+                    ">
                         ${this.renderRowActions(row)}
                     </div>
                 ` : ''}

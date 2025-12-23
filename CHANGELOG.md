@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.13.0] - 2025-12-23
+
+### Added
+- 🎨 **"Warm Sophistication" Design System** - Complete visual overhaul
+  - New primary color: Warm Indigo (#5b4cdb)
+  - Dark mode accent: Warm Violet (#a78bfa)
+  - Dark mode background: #1f1f23 with subtle purple undertones
+  - Premium gradients and shadows throughout
+
+### Changed
+- ♻️ **shared.css**: Complete design token refresh
+  - New color palette with warm purple tones
+  - Enhanced shadow system with subtle color tints
+  - Updated spacing and border-radius tokens
+  - Improved dark mode variables
+- ♻️ **ModalBuilder.css**:
+  - Fixed backdrop not covering sidebar (z-index: 99999, isolation: isolate)
+  - Increased backdrop opacity to 75% with 8px blur
+  - Added border-radius to footer for consistent rounded corners
+- ♻️ **CardBuilder.css**: Dark mode with warm color palette
+- ♻️ **FormBuilder.css**: Enhanced M3 styling and dark mode support
+- ♻️ **HeaderBuilder.css**: Improved styling and responsiveness
+- ♻️ **ListBuilder.css**: Better dark mode contrast
+- ♻️ **SidebarBuilder.css**: Refined dark mode styling
+- ♻️ **TabBuilder.css**: Consistent dark mode colors
+- ♻️ **ToastBuilder.css**: Enhanced notification styling
+- ♻️ **TooltipBuilder.css**: Dark mode improvements
+- ♻️ **layout.css**: Removed transform that caused modal stacking issues
+
+### Fixed
+- 🐛 **ModalBuilder**: Backdrop now properly covers fixed sidebar elements
+- 🐛 **ModalBuilder**: Footer now has rounded corners matching container
+
 ## [2.12.0] - 2025-12-17
 
 ### Added

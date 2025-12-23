@@ -1,0 +1,4 @@
+# Lint only staged files (fast!)
+npx lint-staged
+
+# No TypeScript check (vanilla JS project)

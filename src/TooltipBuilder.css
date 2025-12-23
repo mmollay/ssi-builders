@@ -1,21 +1,22 @@
 /**
- * TooltipBuilder.css - Material Design 3 Tooltip Styles
- * @version 2.3.0
+ * TooltipBuilder.css - Premium Material Design 3 Styles
+ * "Warm Sophistication" Design System
+ * @version 2.0.0
  */
 
 /* === Base Tooltip === */
 .ssi-tooltip {
     position: absolute;
     z-index: 10000;
-    padding: 8px 12px;
-    background: #202124;
-    color: #fff;
-    font-family: var(--ssi-font-family, 'Roboto', sans-serif);
-    font-size: 12px;
+    padding: 10px 14px;
+    background: #1f1f23;
+    color: #f0f0f5;
+    font-family: var(--ssi-font-body, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+    font-size: 13px;
     line-height: 1.5;
     font-weight: 500;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    border-radius: var(--ssi-radius-md, 8px);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25), 0 2px 8px rgba(91, 76, 219, 0.1);
     pointer-events: none;
     user-select: none;
     transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1),
@@ -51,7 +52,7 @@
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px 6px 0 6px;
-    border-color: #202124 transparent transparent transparent;
+    border-color: #1f1f23 transparent transparent transparent;
 }
 
 /* Bottom Position */
@@ -60,7 +61,7 @@
     left: 50%;
     transform: translateX(-50%);
     border-width: 0 6px 6px 6px;
-    border-color: transparent transparent #202124 transparent;
+    border-color: transparent transparent #1f1f23 transparent;
 }
 
 /* Left Position */
@@ -69,7 +70,7 @@
     top: 50%;
     transform: translateY(-50%);
     border-width: 6px 0 6px 6px;
-    border-color: transparent transparent transparent #202124;
+    border-color: transparent transparent transparent #1f1f23;
 }
 
 /* Right Position */
@@ -78,7 +79,7 @@
     top: 50%;
     transform: translateY(-50%);
     border-width: 6px 6px 6px 0;
-    border-color: transparent #202124 transparent transparent;
+    border-color: transparent #1f1f23 transparent transparent;
 }
 
 /* === Animation Variants === */
@@ -116,86 +117,87 @@
 
 /* === Color Variants === */
 .ssi-tooltip-primary {
-    background: var(--ssi-primary-color, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
     color: #fff;
+    box-shadow: 0 4px 16px rgba(91, 76, 219, 0.3);
 }
 
 /* Primary arrows - position specific */
 .ssi-tooltip-primary.ssi-tooltip-top .ssi-tooltip-arrow {
-    border-top-color: var(--ssi-primary-color, #1a73e8);
+    border-top-color: var(--ssi-primary, #5b4cdb);
 }
 .ssi-tooltip-primary.ssi-tooltip-bottom .ssi-tooltip-arrow {
-    border-bottom-color: var(--ssi-primary-color, #1a73e8);
+    border-bottom-color: var(--ssi-primary, #5b4cdb);
 }
 .ssi-tooltip-primary.ssi-tooltip-left .ssi-tooltip-arrow {
-    border-left-color: var(--ssi-primary-color, #1a73e8);
+    border-left-color: var(--ssi-primary, #5b4cdb);
 }
 .ssi-tooltip-primary.ssi-tooltip-right .ssi-tooltip-arrow {
-    border-right-color: var(--ssi-primary-color, #1a73e8);
+    border-right-color: var(--ssi-primary, #5b4cdb);
 }
 
 .ssi-tooltip-success {
-    background: #34a853;
+    background: #10b981;
     color: #fff;
 }
 
 /* Success arrows - position specific */
 .ssi-tooltip-success.ssi-tooltip-top .ssi-tooltip-arrow {
-    border-top-color: #34a853;
+    border-top-color: #10b981;
 }
 .ssi-tooltip-success.ssi-tooltip-bottom .ssi-tooltip-arrow {
-    border-bottom-color: #34a853;
+    border-bottom-color: #10b981;
 }
 .ssi-tooltip-success.ssi-tooltip-left .ssi-tooltip-arrow {
-    border-left-color: #34a853;
+    border-left-color: #10b981;
 }
 .ssi-tooltip-success.ssi-tooltip-right .ssi-tooltip-arrow {
-    border-right-color: #34a853;
+    border-right-color: #10b981;
 }
 
 .ssi-tooltip-warning {
-    background: #fbbc04;
-    color: var(--m3-on-surface, #202124);
+    background: #f59e0b;
+    color: var(--ssi-text-primary, #1f1f23);
 }
 
 /* Warning arrows - position specific */
 .ssi-tooltip-warning.ssi-tooltip-top .ssi-tooltip-arrow {
-    border-top-color: #fbbc04;
+    border-top-color: #f59e0b;
 }
 .ssi-tooltip-warning.ssi-tooltip-bottom .ssi-tooltip-arrow {
-    border-bottom-color: #fbbc04;
+    border-bottom-color: #f59e0b;
 }
 .ssi-tooltip-warning.ssi-tooltip-left .ssi-tooltip-arrow {
-    border-left-color: #fbbc04;
+    border-left-color: #f59e0b;
 }
 .ssi-tooltip-warning.ssi-tooltip-right .ssi-tooltip-arrow {
-    border-right-color: #fbbc04;
+    border-right-color: #f59e0b;
 }
 
 .ssi-tooltip-danger {
-    background: #ea4335;
+    background: #ef4444;
     color: #fff;
 }
 
 /* Danger arrows - position specific */
 .ssi-tooltip-danger.ssi-tooltip-top .ssi-tooltip-arrow {
-    border-top-color: #ea4335;
+    border-top-color: #ef4444;
 }
 .ssi-tooltip-danger.ssi-tooltip-bottom .ssi-tooltip-arrow {
-    border-bottom-color: #ea4335;
+    border-bottom-color: #ef4444;
 }
 .ssi-tooltip-danger.ssi-tooltip-left .ssi-tooltip-arrow {
-    border-left-color: #ea4335;
+    border-left-color: #ef4444;
 }
 .ssi-tooltip-danger.ssi-tooltip-right .ssi-tooltip-arrow {
-    border-right-color: #ea4335;
+    border-right-color: #ef4444;
 }
 
 .ssi-tooltip-light {
-    background: var(--m3-surface, #ffffff);
-    color: var(--m3-on-surface, #202124);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e8eaed;
+    background: var(--ssi-bg-primary, #ffffff);
+    color: var(--ssi-text-primary, #1f1f23);
+    box-shadow: var(--ssi-shadow-md, 0 4px 16px rgba(91, 76, 219, 0.08));
+    border: 1px solid var(--ssi-border-subtle, #e8e6f2);
 }
 
 /* Light arrows - position specific */
@@ -224,10 +226,10 @@
 }
 
 .ssi-tooltip code {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 2px 4px;
-    border-radius: 3px;
-    font-family: 'Roboto Mono', monospace;
+    background: rgba(255, 255, 255, 0.15);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: var(--ssi-font-code, 'JetBrains Mono', 'Fira Code', monospace);
     font-size: 11px;
 }
 
@@ -240,52 +242,72 @@
     }
 }
 
-/* === Dark Mode Support === */
-@media (prefers-color-scheme: dark) {
-    .ssi-tooltip-light {
-        background: #2d2d2d;
-        color: #e8eaed;
-        border-color: var(--m3-on-surface-variant, #5f6368);
-    }
-}
-
-/* Explicit Dark Mode Classes */
+/* === Dark Mode - Warm Sophistication === */
 html.dark-mode .ssi-tooltip-light,
 html.m3-dark .ssi-tooltip-light {
-    background: #2d2d2d !important;
-    color: #e8eaed !important;
-    border-color: #4d4d4d !important;
+    background: #1f1f23 !important;
+    color: #f0f0f5 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(167, 139, 250, 0.1) !important;
 }
 
 html.dark-mode .ssi-tooltip-light.ssi-tooltip-top .ssi-tooltip-arrow,
 html.m3-dark .ssi-tooltip-light.ssi-tooltip-top .ssi-tooltip-arrow {
-    border-top-color: #2d2d2d !important;
+    border-top-color: #1f1f23 !important;
 }
 
 html.dark-mode .ssi-tooltip-light.ssi-tooltip-bottom .ssi-tooltip-arrow,
 html.m3-dark .ssi-tooltip-light.ssi-tooltip-bottom .ssi-tooltip-arrow {
-    border-bottom-color: #2d2d2d !important;
+    border-bottom-color: #1f1f23 !important;
 }
 
 html.dark-mode .ssi-tooltip-light.ssi-tooltip-left .ssi-tooltip-arrow,
 html.m3-dark .ssi-tooltip-light.ssi-tooltip-left .ssi-tooltip-arrow {
-    border-left-color: #2d2d2d !important;
+    border-left-color: #1f1f23 !important;
 }
 
 html.dark-mode .ssi-tooltip-light.ssi-tooltip-right .ssi-tooltip-arrow,
 html.m3-dark .ssi-tooltip-light.ssi-tooltip-right .ssi-tooltip-arrow {
-    border-right-color: #2d2d2d !important;
+    border-right-color: #1f1f23 !important;
+}
+
+/* Primary tooltip in dark mode */
+html.dark-mode .ssi-tooltip-primary,
+html.m3-dark .ssi-tooltip-primary {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
+    box-shadow: 0 4px 16px rgba(167, 139, 250, 0.3) !important;
+}
+
+html.dark-mode .ssi-tooltip-primary.ssi-tooltip-top .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-primary.ssi-tooltip-top .ssi-tooltip-arrow {
+    border-top-color: #a78bfa !important;
+}
+
+html.dark-mode .ssi-tooltip-primary.ssi-tooltip-bottom .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-primary.ssi-tooltip-bottom .ssi-tooltip-arrow {
+    border-bottom-color: #a78bfa !important;
+}
+
+html.dark-mode .ssi-tooltip-primary.ssi-tooltip-left .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-primary.ssi-tooltip-left .ssi-tooltip-arrow {
+    border-left-color: #a78bfa !important;
+}
+
+html.dark-mode .ssi-tooltip-primary.ssi-tooltip-right .ssi-tooltip-arrow,
+html.m3-dark .ssi-tooltip-primary.ssi-tooltip-right .ssi-tooltip-arrow {
+    border-right-color: #a78bfa !important;
 }
 
 /* Warning tooltip text color in dark mode */
 html.dark-mode .ssi-tooltip-warning,
 html.m3-dark .ssi-tooltip-warning {
-    color: #202124 !important;
+    color: #1f1f23 !important;
 }
 
 /* === Accessibility === */
 .ssi-tooltip:focus {
-    outline: 2px solid var(--ssi-primary-color, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: 2px;
 }
 

@@ -77,6 +77,90 @@
             }
         }
 
+        /* Enhanced Stats Card Styles */
+        .stat-card {
+            position: relative;
+            text-align: center;
+            padding: 24px 16px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--stat-accent, var(--m3-primary));
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .stat-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            color: white;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover .stat-icon {
+            transform: scale(1.1);
+        }
+
+        .stat-number {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--stat-accent, var(--m3-primary));
+            margin-bottom: 4px;
+            line-height: 1;
+        }
+
+        .stat-label {
+            color: var(--m3-on-surface-variant, #5f6368);
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Staggered Animation */
+        .stat-card {
+            opacity: 0;
+            animation: statFadeIn 0.5s ease forwards;
+        }
+
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes statFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         /* Section spacing */
         .section-container {
             display: flex;
@@ -215,30 +299,30 @@
         initializeDemoLayout('index');
 
         // ========================================
-        // Stats Cards
+        // Stats Cards - Enhanced with Icons & Animation
         // ========================================
         const stats = [
-            { number: '12+', label: 'Builders' },
-            { number: '30+', label: 'Icons' },
-            { number: '5', label: 'Icon Systems' },
-            { number: '100%', label: 'MD3 Compliant' }
+            { number: '12+', label: 'Builders', icon: 'grid', color: '#1a73e8' },
+            { number: '30+', label: 'Icons', icon: 'star', color: '#34a853' },
+            { number: '5', label: 'Icon Systems', icon: 'settings', color: '#9c27b0' },
+            { number: '100%', label: 'MD3 Compliant', icon: 'check', color: '#ea4335' }
         ];
 
         stats.forEach(stat => {
             new CardBuilder({
                 containerId: 'stats-container',
                 variant: 'elevated',
+                className: 'stat-card',
                 content: `
-                    <div style="text-align: center; padding: 8px 0;">
-                        <div style="font-size: 36px; font-weight: 700; color: var(--m3-primary, #1a73e8); margin-bottom: 8px;">
-                            ${stat.number}
+                    <div style="--stat-accent: ${stat.color};">
+                        <div class="stat-icon" style="background: ${stat.color};">
+                            ${IconManager.getIcon(stat.icon)}
                         </div>
-                        <div style="color: var(--m3-on-surface-variant, #5f6368); font-size: 14px;">
-                            ${stat.label}
-                        </div>
+                        <div class="stat-number">${stat.number}</div>
+                        <div class="stat-label">${stat.label}</div>
                     </div>
                 `,
-                padding: 'compact',
+                padding: 'none',
                 clickable: false
             });
         });

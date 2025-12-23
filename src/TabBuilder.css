@@ -1,19 +1,22 @@
 /**
- * TabBuilder.css - Material Design 3 Styles
+ * TabBuilder.css - Premium Material Design 3 Styles
+ * "Warm Sophistication" Design System
+ * @version 2.0.0
  */
 
 /* === Container === */
 .tab-builder {
-    background: var(--m3-surface, #ffffff);
-    border-radius: 8px;
+    background: var(--ssi-bg-primary, var(--m3-surface, #ffffff));
+    border-radius: var(--ssi-radius-xl, 16px);
     overflow: hidden;
+    font-family: var(--ssi-font-body, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
 }
 
 /* === Tab List === */
 .tab-list {
     display: flex;
-    background: var(--m3-surface-container, #f8f9fa);
-    border-bottom: 1px solid #e8eaed;
+    background: var(--ssi-bg-muted, var(--m3-surface-container, #f8f7fc));
+    border-bottom: 1px solid var(--ssi-border-subtle, #e8e6f2);
     overflow-x: auto;
     scrollbar-width: thin;
 }
@@ -23,7 +26,7 @@
 }
 
 .tab-list::-webkit-scrollbar-thumb {
-    background: #dadce0;
+    background: var(--ssi-border-default, #d8d5e8);
     border-radius: 2px;
 }
 
@@ -44,26 +47,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    padding: 12px 20px;
+    padding: 14px 22px;
     border: none;
     background: transparent;
-    color: var(--m3-on-surface-variant, #5f6368);
+    color: var(--ssi-text-secondary, var(--m3-on-surface-variant, #6b7280));
     font-size: 14px;
     font-weight: 500;
+    font-family: var(--ssi-font-body, 'Inter', sans-serif);
     cursor: pointer;
     position: relative;
-    transition: all 0.2s;
+    transition: all var(--ssi-transition-fast, 0.15s cubic-bezier(0.4, 0, 0.2, 1));
     white-space: nowrap;
 }
 
 .tab-button:hover:not(.tab-disabled) {
-    background: rgba(26, 115, 232, 0.04);
-    color: var(--m3-primary, #1a73e8);
+    background: rgba(91, 76, 219, 0.06);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 .tab-button:focus {
     outline: none;
-    background: rgba(26, 115, 232, 0.08);
+    background: rgba(91, 76, 219, 0.1);
 }
 
 /* === Underline Style === */
@@ -73,17 +77,19 @@
     bottom: 0;
     left: 0;
     right: 0;
-    height: 2px;
+    height: 3px;
     background: transparent;
-    transition: background 0.2s;
+    border-radius: 3px 3px 0 0;
+    transition: background var(--ssi-transition-fast, 0.15s cubic-bezier(0.4, 0, 0.2, 1));
 }
 
 .tab-style-underline .tab-active::after {
-    background: #1a73e8;
+    background: var(--ssi-gradient-primary, linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%));
 }
 
 .tab-style-underline .tab-active {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
+    font-weight: 600;
 }
 
 /* === Pill Style === */
@@ -95,42 +101,45 @@
 }
 
 .tab-style-pill .tab-button {
-    border-radius: 20px;
-    padding: 8px 16px;
+    border-radius: var(--ssi-radius-full, 9999px);
+    padding: 10px 20px;
 }
 
 .tab-style-pill .tab-active {
-    background: #1a73e8;
-    color: white;
+    background: var(--ssi-gradient-primary, linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%));
+    color: var(--ssi-on-primary, #ffffff);
+    box-shadow: 0 2px 8px rgba(91, 76, 219, 0.3);
 }
 
 .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: var(--m3-surface-container-high, #f1f3f4);
+    background: var(--ssi-bg-muted, var(--m3-surface-container-high, #f5f4f8));
 }
 
 /* === Contained Style === */
 .tab-style-contained .tab-list {
     background: transparent;
     border-bottom: none;
-    gap: 4px;
-    padding: 4px;
+    gap: 6px;
+    padding: 6px;
 }
 
 .tab-style-contained .tab-button {
-    border-radius: 4px;
-    border: 1px solid var(--m3-outline-variant, #dadce0);
-    background: var(--m3-surface, #ffffff);
+    border-radius: var(--ssi-radius-lg, 12px);
+    border: 1.5px solid var(--ssi-border-default, var(--m3-outline-variant, #d8d5e8));
+    background: var(--ssi-bg-primary, var(--m3-surface, #ffffff));
 }
 
 .tab-style-contained .tab-active {
-    background: #1a73e8;
-    color: white;
-    border-color: var(--m3-primary, #1a73e8);
+    background: var(--ssi-gradient-primary, linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%));
+    color: var(--ssi-on-primary, #ffffff);
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(91, 76, 219, 0.3);
 }
 
 .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: var(--m3-surface-container, #f8f9fa);
-    border-color: var(--m3-on-surface-variant, #5f6368);
+    background: var(--ssi-bg-subtle, #faf9fc);
+    border-color: var(--ssi-primary, #5b4cdb);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* === Tab Icon === */
@@ -146,9 +155,9 @@
     justify-content: center;
     min-width: 20px;
     height: 20px;
-    padding: 0 6px;
-    border-radius: 10px;
-    background: #ea4335;
+    padding: 0 7px;
+    border-radius: var(--ssi-radius-full, 9999px);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
     font-size: 11px;
     font-weight: 600;
@@ -160,7 +169,7 @@
 
 .tab-style-underline .tab-active .tab-badge,
 .tab-style-contained .tab-button:not(.tab-active) .tab-badge {
-    background: #ea4335;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
     color: white;
 }
 
@@ -306,89 +315,90 @@
 /* === Dark Mode === */
 html.dark-mode .tab-builder,
 html.m3-dark .tab-builder {
-    background: #1e1e1e !important;
+    background: #1f1f23 !important;
 }
 
 html.dark-mode .tab-list,
 html.m3-dark .tab-list {
-    background: #252525 !important;
-    border-bottom-color: #3d3d3d !important;
+    background: #16161a !important;
+    border-bottom-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 html.dark-mode .tab-list::-webkit-scrollbar-thumb,
 html.m3-dark .tab-list::-webkit-scrollbar-thumb {
-    background: #6c6c6c !important;
+    background: #3d3d45 !important;
 }
 
 html.dark-mode .tab-button,
 html.m3-dark .tab-button {
-    color: #a1a1a1 !important;
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .tab-button:hover:not(.tab-disabled),
 html.m3-dark .tab-button:hover:not(.tab-disabled) {
-    background: rgba(138, 180, 248, 0.08) !important;
-    color: #8ab4f8 !important;
+    background: rgba(167, 139, 250, 0.1) !important;
+    color: #a78bfa !important;
 }
 
 html.dark-mode .tab-button:focus,
 html.m3-dark .tab-button:focus {
-    background: rgba(138, 180, 248, 0.12) !important;
+    background: rgba(167, 139, 250, 0.15) !important;
 }
 
 html.dark-mode .tab-style-underline .tab-active,
 html.m3-dark .tab-style-underline .tab-active {
-    color: #8ab4f8 !important;
+    color: #a78bfa !important;
 }
 
 html.dark-mode .tab-style-underline .tab-active::after,
 html.m3-dark .tab-style-underline .tab-active::after {
-    background: #8ab4f8 !important;
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
 }
 
 html.dark-mode .tab-style-pill .tab-active,
 html.m3-dark .tab-style-pill .tab-active {
-    background: #8ab4f8 !important;
-    color: #003c8f !important;
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
 }
 
 html.dark-mode .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active),
 html.m3-dark .tab-style-pill .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: #2d2d2d !important;
+    background: rgba(255, 255, 255, 0.08) !important;
 }
 
 html.dark-mode .tab-style-contained .tab-button,
 html.m3-dark .tab-style-contained .tab-button {
-    background: #1e1e1e !important;
-    border-color: #3d3d3d !important;
+    background: #1f1f23 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 html.dark-mode .tab-style-contained .tab-active,
 html.m3-dark .tab-style-contained .tab-active {
-    background: #8ab4f8 !important;
-    color: #003c8f !important;
-    border-color: #8ab4f8 !important;
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
+    border-color: transparent !important;
 }
 
 html.dark-mode .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active),
 html.m3-dark .tab-style-contained .tab-button:hover:not(.tab-disabled):not(.tab-active) {
-    background: #252525 !important;
-    border-color: #a1a1a1 !important;
+    background: rgba(167, 139, 250, 0.1) !important;
+    border-color: #a78bfa !important;
+    color: #a78bfa !important;
 }
 
 html.dark-mode .tab-panels,
 html.m3-dark .tab-panels {
-    color: #e1e1e1 !important;
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .tab-panel h3,
 html.m3-dark .tab-panel h3 {
-    color: #e1e1e1 !important;
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .tab-panel p,
 html.m3-dark .tab-panel p {
-    color: #a1a1a1 !important;
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .tab-position-bottom .tab-list,

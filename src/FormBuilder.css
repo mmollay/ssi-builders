@@ -1,22 +1,25 @@
 /**
- * FormBuilder.css - Material Design 3 Styles
+ * FormBuilder.css - Premium Material Design 3 Styles
+ * "Warm Sophistication" Design System
+ * @version 2.0.0
  */
 
 /* === Form Container === */
 .form-builder {
     position: relative; /* For version badge positioning */
-    background: var(--m3-surface, #ffffff);
-    color: var(--m3-on-surface, #1c1b1f);
-    border-radius: 12px;
-    padding: 24px;
+    background: var(--ssi-bg-primary, var(--m3-surface, #ffffff));
+    color: var(--ssi-text-primary, var(--m3-on-surface, #1f1f23));
+    border-radius: var(--ssi-radius-xl, 16px);
+    padding: var(--ssi-spacing-xl, 24px);
+    font-family: var(--ssi-font-body, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
     /* Border and shadow removed by default - forms are typically used in modals or cards */
     /* Use .form-builder-card class to add border and shadow for standalone forms */
 }
 
 /* Optional card style for standalone forms */
 .form-builder-card {
-    box-shadow: var(--m3-elevation-1, 0 1px 3px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05));
-    border: 1px solid var(--m3-outline-variant, #dadce0);
+    box-shadow: var(--ssi-shadow-md, 0 4px 20px rgba(91, 76, 219, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04));
+    border: 1px solid var(--ssi-border-subtle, var(--m3-outline-variant, #e8e6f2));
 }
 
 .form-builder-form {
@@ -586,32 +589,35 @@
 .form-input,
 .form-textarea,
 .form-select {
-    padding: 10px 12px;
-    border: 1px solid var(--m3-outline-variant, #dadce0); /* M3 Outlined spec */
-    border-radius: 4px;
+    padding: 12px 16px;
+    border: 1.5px solid var(--ssi-border-default, var(--m3-outline-variant, #d8d5e8));
+    border-radius: var(--ssi-radius-lg, 12px);
     font-size: 14px;
-    font-family: inherit;
-    transition: all 0.2s;
-    background: var(--m3-surface, #ffffff);
+    font-family: var(--ssi-font-body, 'Inter', -apple-system, BlinkMacSystemFont, sans-serif);
+    transition: all var(--ssi-transition-fast, 0.15s cubic-bezier(0.4, 0, 0.2, 1));
+    background: var(--ssi-bg-primary, var(--m3-surface, #ffffff));
+    color: var(--ssi-text-primary, var(--m3-on-surface, #1f1f23));
 }
 
 /* Ensure number inputs don't have different borders */
 input[type="number"] {
-    border-color: var(--m3-outline-variant, #dadce0);
+    border-color: var(--ssi-border-default, var(--m3-outline-variant, #d8d5e8));
 }
 
 .form-input:hover,
 .form-textarea:hover,
 .form-select:hover {
-    border-color: var(--m3-on-surface, #1C1B1F); /* Darker on hover */
+    border-color: var(--ssi-border-hover, #c0bcd4);
+    background: var(--ssi-bg-subtle, #faf9fc);
 }
 
 .form-input:focus,
 .form-textarea:focus,
 .form-select:focus {
     outline: none;
-    border-color: var(--m3-primary, #1a73e8);
-    box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.08);
+    border-color: var(--ssi-primary, #5b4cdb);
+    box-shadow: 0 0 0 3px rgba(91, 76, 219, 0.12), 0 2px 8px rgba(91, 76, 219, 0.08);
+    background: var(--ssi-bg-primary, #ffffff);
 }
 
 .form-input:disabled,
@@ -686,8 +692,9 @@ input[type="number"] {
 }
 
 .form-number-wrapper:focus-within {
-    outline: 2px solid #1a73e8;
-    border-color: var(--m3-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
+    outline-offset: 1px;
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .form-number-input {
@@ -785,22 +792,28 @@ input[type="number"] {
 }
 
 .form-btn-primary {
-    background: #1a73e8;
-    color: white;
+    background: var(--ssi-gradient-primary, linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%));
+    color: var(--ssi-on-primary, #ffffff);
+    box-shadow: 0 2px 8px rgba(91, 76, 219, 0.3);
+    border-radius: var(--ssi-radius-lg, 12px);
 }
 
 .form-btn-primary:hover {
-    background: #1557b0;
-    box-shadow: 0 2px 4px rgba(26, 115, 232, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(91, 76, 219, 0.4);
 }
 
 .form-btn-secondary {
-    background: var(--m3-surface-container-high, #f1f3f4);
-    color: var(--m3-on-surface, #202124);
+    background: var(--ssi-bg-primary, var(--m3-surface-container-high, #ffffff));
+    color: var(--ssi-text-secondary, var(--m3-on-surface, #4a4a50));
+    border: 1.5px solid var(--ssi-border-default, #d8d5e8);
+    border-radius: var(--ssi-radius-lg, 12px);
 }
 
 .form-btn-secondary:hover {
-    background: #e8eaed;
+    background: var(--ssi-bg-subtle, #f8f7fc);
+    border-color: var(--ssi-primary, #5b4cdb);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 .form-btn:disabled {
@@ -840,58 +853,66 @@ input[type="number"] {
 .form-step-number {
     width: 40px;
     height: 40px;
-    border-radius: 50%;
-    background: var(--m3-surface-container-high, #f1f3f4);
-    color: var(--m3-on-surface-variant, #5f6368);
+    border-radius: var(--ssi-radius-full, 9999px);
+    background: var(--ssi-bg-muted, var(--m3-surface-container-high, #f5f4f8));
+    color: var(--ssi-text-tertiary, var(--m3-on-surface-variant, #6b7280));
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 600;
     font-size: 16px;
-    transition: all 0.3s;
+    font-family: var(--ssi-font-display, 'Plus Jakarta Sans', sans-serif);
+    transition: all var(--ssi-transition-normal, 0.25s cubic-bezier(0.4, 0, 0.2, 1));
+    border: 2px solid transparent;
 }
 
 .form-step.active .form-step-number {
-    background: #1a73e8;
-    color: white;
+    background: var(--ssi-gradient-primary, linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%));
+    color: var(--ssi-on-primary, #ffffff);
+    box-shadow: 0 2px 8px rgba(91, 76, 219, 0.3);
 }
 
 .form-step.completed .form-step-number {
-    background: #34a853;
-    color: white;
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: var(--ssi-on-success, #ffffff);
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.3);
 }
 
 .form-step-label {
     font-size: 12px;
-    color: var(--m3-on-surface-variant, #5f6368);
+    color: var(--ssi-text-tertiary, var(--m3-on-surface-variant, #6b7280));
     text-align: center;
+    font-family: var(--ssi-font-body, 'Inter', sans-serif);
 }
 
 .form-step.active .form-step-label {
-    color: var(--m3-primary, #1a73e8);
-    font-weight: 500;
+    color: var(--ssi-primary, #5b4cdb);
+    font-weight: 600;
 }
 
 /* === Messages === */
 .form-success-message,
 .form-error-message {
-    padding: 12px 16px;
-    border-radius: 4px;
+    padding: 14px 18px;
+    border-radius: var(--ssi-radius-lg, 12px);
     margin-bottom: 16px;
     font-size: 14px;
+    font-family: var(--ssi-font-body, 'Inter', sans-serif);
     animation: slideDown 0.3s ease;
 }
 
 .form-success-message {
-    background: #e6f4ea;
-    color: #137333;
-    border-left: 4px solid #34a853;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.12) 100%);
+    color: #059669;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+    border-left: 4px solid #10b981;
 }
 
 .form-error-message {
-    background: #fce8e6;
-    color: #c5221f;
-    border-left: 4px solid #ea4335;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.1) 100%);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+    border-left: 4px solid #ef4444;
 }
 
 @keyframes slideDown {
@@ -933,37 +954,41 @@ input[type="number"] {
     appearance: none;
     width: 20px;
     height: 20px;
-    background: #1a73e8;
+    background: var(--ssi-primary, #5b4cdb);
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(91, 76, 219, 0.3);
 }
 
 .form-range::-webkit-slider-thumb:hover {
-    background: #1557b0;
+    background: #4a3dc7;
     transform: scale(1.1);
+    box-shadow: 0 3px 10px rgba(91, 76, 219, 0.4);
 }
 
 .form-range::-moz-range-thumb {
     width: 20px;
     height: 20px;
-    background: #1a73e8;
+    background: var(--ssi-primary, #5b4cdb);
     border-radius: 50%;
     cursor: pointer;
     border: none;
     transition: all 0.2s;
+    box-shadow: 0 2px 6px rgba(91, 76, 219, 0.3);
 }
 
 .form-range::-moz-range-thumb:hover {
-    background: #1557b0;
+    background: #4a3dc7;
     transform: scale(1.1);
+    box-shadow: 0 3px 10px rgba(91, 76, 219, 0.4);
 }
 
 .form-range-value {
     min-width: 60px;
     font-size: 14px;
     font-weight: 600;
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
     text-align: right;
 }
 
@@ -1047,7 +1072,7 @@ input[type="color"].form-input {
     top: -8px;
     left: 8px;
     font-size: 11px;
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
     background: var(--m3-surface, #ffffff);
     font-weight: 500;
 }
@@ -1072,7 +1097,7 @@ input[type="color"].form-input {
 }
 
 .form-input-group:focus-within {
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
@@ -1246,7 +1271,7 @@ input[type="color"].form-input {
     line-height: 16px;
     font-weight: 400;
     letter-spacing: 0.4px;
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* Adjust input padding when label is floating */
@@ -1267,9 +1292,9 @@ input[type="color"].form-input {
 .form-field-filled .form-input:focus,
 .form-field-filled .form-select:focus,
 .form-field-filled .form-textarea:focus {
-    background: #EEEEEE;
-    border-bottom: 2px solid #1a73e8 !important;
-    box-shadow: none !important;
+    background: var(--ssi-bg-subtle, #f8f7fc);
+    border-bottom: 2px solid var(--ssi-primary, #5b4cdb) !important;
+    box-shadow: 0 2px 8px rgba(91, 76, 219, 0.1) !important;
     padding-bottom: 7px !important;  /* Adjust for 2px border */
 }
 
@@ -1305,7 +1330,7 @@ input[type="color"].form-input {
 }
 
 .form-field-filled .form-select:focus ~ .form-label {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* === M3 Number Stepper - Filled Variant === */
@@ -1327,8 +1352,8 @@ input[type="color"].form-input {
 }
 
 .form-field-filled .form-number-wrapper:focus-within {
-    background: #EEEEEE;
-    border-bottom: 2px solid #1a73e8;
+    background: var(--ssi-bg-subtle, #f8f7fc);
+    border-bottom: 2px solid var(--ssi-primary, #5b4cdb);
     outline: none;
 }
 
@@ -1397,7 +1422,7 @@ input[type="color"].form-input {
 
 .form-field-filled .form-number-wrapper:focus-within ~ .form-label,
 .form-field-filled .form-number-wrapper:focus-within + .form-label {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* === M3 Number Stepper - Outlined Variant === */
@@ -1579,15 +1604,15 @@ input[type="color"].form-input {
 /* Focus State */
 .form-field-outlined .form-input:focus,
 .form-field-outlined .form-textarea:focus {
-    border: 2px solid #1a73e8;
+    border: 2px solid var(--ssi-primary, #5b4cdb);
     padding: 23px 15px 7px 15px !important; /* -1px to compensate for 2px border */
 }
 
 /* Focus State for Select - M3 Filled Style (only bottom border) */
 .form-field-outlined .form-select:focus {
     border: none !important;
-    border-bottom: 2px solid #1a73e8 !important;
-    background-color: #EBEBEB !important;
+    border-bottom: 2px solid var(--ssi-primary, #5b4cdb) !important;
+    background-color: var(--ssi-bg-subtle, #f8f7fc) !important;
     outline: none;
 }
 
@@ -1634,7 +1659,7 @@ input[type="color"].form-input {
 }
 
 .form-field-outlined .form-select:focus ~ .form-label {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* Supporting text (descriptions) for M3 */
@@ -1684,7 +1709,7 @@ input[type="color"].form-input {
 .form-field-standard .form-input:focus,
 .form-field-standard .form-select:focus,
 .form-field-standard .form-textarea:focus {
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.08);
 }
 
@@ -1929,10 +1954,10 @@ input[type="color"].form-input {
 
 /* === M3 Color Variables === */
 :root {
-    --m3-primary: #1a73e8;
+    --m3-primary: #5b4cdb;
     --m3-on-primary: #ffffff;
-    --m3-on-surface: #1c1b1f;
-    --m3-on-surface-variant: #49454f;
+    --m3-on-surface: #1f1f23;
+    --m3-on-surface-variant: #6b7280;
     --m3-outline: #79747e;
     --m3-outline-variant: #cac4d0;
     --m3-surface-container-highest: #e6e0e9;
@@ -2526,7 +2551,7 @@ input[type="color"].form-input {
 
 .m3-date-picker--outlined.m3-date-picker--open .m3-date-picker__trigger,
 .m3-date-picker--outlined .m3-date-picker__trigger:focus {
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     border-width: 2px;
     padding: 7px 15px;
     outline: none;
@@ -2556,7 +2581,7 @@ input[type="color"].form-input {
 .m3-date-picker--filled.m3-date-picker--open .m3-date-picker__active-indicator,
 .m3-date-picker--filled .m3-date-picker__trigger:focus ~ .m3-date-picker__active-indicator {
     height: 2px;
-    background: var(--m3-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
 }
 
 /* Content Area */
@@ -2588,7 +2613,7 @@ input[type="color"].form-input {
 
 .m3-date-picker--open .m3-date-picker__label,
 .m3-date-picker__trigger:focus .m3-date-picker__label {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* Outlined floating label with background */
@@ -2763,13 +2788,13 @@ input[type="color"].form-input {
 }
 
 .m3-calendar__day--today {
-    border: 1px solid var(--m3-primary, #1a73e8);
+    border: 1px solid var(--ssi-primary, #5b4cdb);
     font-weight: 500;
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 .m3-calendar__day--selected {
-    background: var(--m3-primary, #1a73e8) !important;
+    background: var(--ssi-primary, #5b4cdb) !important;
     color: var(--m3-on-primary, white) !important;
     font-weight: 500;
 }
@@ -2811,13 +2836,13 @@ input[type="color"].form-input {
 
 .m3-calendar__month-btn--current,
 .m3-calendar__year-btn--current {
-    border: 1px solid var(--m3-primary, #1a73e8);
-    color: var(--m3-primary, #1a73e8);
+    border: 1px solid var(--ssi-primary, #5b4cdb);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 .m3-calendar__month-btn--selected,
 .m3-calendar__year-btn--selected {
-    background: var(--m3-primary, #1a73e8) !important;
+    background: var(--ssi-primary, #5b4cdb) !important;
     color: var(--m3-on-primary, white) !important;
 }
 
@@ -2838,21 +2863,21 @@ input[type="color"].form-input {
     cursor: pointer;
     font-size: 14px;
     font-weight: 500;
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
     transition: background 150ms ease;
 }
 
 .m3-calendar__btn:hover {
-    background: color-mix(in srgb, var(--m3-primary, #1a73e8) 8%, transparent);
+    background: color-mix(in srgb, var(--ssi-primary, #5b4cdb) 8%, transparent);
 }
 
 .m3-calendar__btn--primary {
-    background: var(--m3-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
     color: var(--m3-on-primary, white);
 }
 
 .m3-calendar__btn--primary:hover {
-    background: color-mix(in srgb, var(--m3-on-primary, white) 8%, var(--m3-primary, #1a73e8));
+    background: color-mix(in srgb, var(--m3-on-primary, white) 8%, var(--ssi-primary, #5b4cdb));
 }
 
 /* === Date Picker Container for FormBuilder === */
@@ -2922,7 +2947,7 @@ input[type="color"].form-input {
 }
 
 .md-textfield--filled .md-textfield__input:focus {
-    border-bottom: 2px solid var(--md-sys-color-primary, #1a73e8);
+    border-bottom: 2px solid var(--ssi-primary, #5b4cdb);
 }
 
 /* Outlined variant */
@@ -2937,7 +2962,7 @@ input[type="color"].form-input {
 }
 
 .md-textfield--outlined .md-textfield__input:focus {
-    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: -2px;
 }
 
@@ -3020,7 +3045,7 @@ input[type="color"].form-input {
 
 /* Focus states */
 .md-textfield__input:focus + .md-textfield__label {
-    color: var(--md-sys-color-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* =========================================
@@ -3109,7 +3134,7 @@ input[type="color"].form-input {
 }
 
 .md-select--outlined .md-select__input:focus {
-    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: -2px;
 }
 
@@ -3171,7 +3196,7 @@ input[type="color"].form-input {
 .md3-checkbox .background {
     position: absolute;
     inset: 0;
-    background: var(--md-sys-color-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
     border-radius: 3px;
     opacity: 0;
     transition: opacity 200ms ease;
@@ -3203,7 +3228,7 @@ input[type="color"].form-input {
 
 /* Checked state */
 .md3-checkbox .input:checked ~ .container .outline {
-    border-color: var(--md-sys-color-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .md3-checkbox .input:checked ~ .container .background {
@@ -3234,7 +3259,7 @@ input[type="color"].form-input {
 }
 
 .md3-checkbox .input:focus-visible ~ .container {
-    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: 2px;
 }
 
@@ -3305,8 +3330,8 @@ input[type="color"].form-input {
 
 /* Checked state */
 .md-switch__input:checked + .md-switch__track {
-    background: var(--md-sys-color-primary, #1a73e8);
-    border-color: var(--md-sys-color-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .md-switch__input:checked + .md-switch__track .md-switch__handle {
@@ -3316,7 +3341,7 @@ input[type="color"].form-input {
 
 /* Focus state */
 .md-switch__input:focus + .md-switch__track {
-    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: 2px;
 }
 
@@ -3391,7 +3416,7 @@ input[type="color"].form-input {
     position: absolute;
     inset: 5px;
     border-radius: 50%;
-    background: var(--md-sys-color-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
     transform: scale(0);
     transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
@@ -3406,7 +3431,7 @@ input[type="color"].form-input {
 
 /* States */
 .md-radio__input:checked + .md-radio__background .md-radio__outer-circle {
-    border-color: var(--md-sys-color-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .md-radio__input:checked + .md-radio__background .md-radio__inner-circle {
@@ -3414,7 +3439,7 @@ input[type="color"].form-input {
 }
 
 .md-radio__input:focus + .md-radio__background {
-    outline: 2px solid var(--md-sys-color-primary, #1a73e8);
+    outline: 2px solid var(--ssi-primary, #5b4cdb);
     outline-offset: 2px;
 }
 
@@ -3478,8 +3503,8 @@ input[type="color"].form-input {
 .dark .form-input:focus,
 .dark .form-textarea:focus,
 .dark .form-select:focus {
-    border-color: var(--m3-primary, #8ab4f8);
-    box-shadow: 0 0 0 2px rgba(138, 180, 248, 0.2);
+    border-color: #a78bfa !important;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2) !important;
 }
 
 [data-theme="dark"] .form-input:disabled,
@@ -3563,7 +3588,7 @@ input[type="color"].form-input {
 .dark .form-field-outlined .form-input:focus,
 .dark .form-field-outlined .form-textarea:focus,
 .dark .form-field-outlined .form-select:focus {
-    border-color: var(--m3-primary, #8ab4f8);
+    border-color: #a78bfa !important;
 }
 
 /* Helper text */
@@ -3643,14 +3668,21 @@ input[type="color"].form-input {
 /* Form buttons */
 [data-theme="dark"] .form-btn-secondary,
 .dark .form-btn-secondary {
-    background: transparent;
-    color: var(--m3-primary, #8ab4f8);
-    border-color: var(--m3-outline-variant, #444);
+    background: transparent !important;
+    color: #a78bfa !important;
+    border-color: rgba(167, 139, 250, 0.4) !important;
 }
 
 [data-theme="dark"] .form-btn-secondary:hover,
 .dark .form-btn-secondary:hover {
-    background: rgba(138, 180, 248, 0.08);
+    background: rgba(167, 139, 250, 0.15) !important;
+    border-color: #a78bfa !important;
+}
+
+[data-theme="dark"] .form-btn-primary,
+.dark .form-btn-primary {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
 }
 
 /* Select dropdown options */
@@ -3676,12 +3708,13 @@ input[type="color"].form-input {
 }
 
 /* ===================================
-   Dark Mode Overrides (html.dark-mode / html.m3-dark)
+   Dark Mode Overrides - "Warm Sophistication"
    For ThemeBuilder integration
    =================================== */
 html.dark-mode .form-builder,
 html.m3-dark .form-builder {
-    background: var(--m3-surface, #1e1e1e);
+    background: #1f1f23 !important;
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .form-input,
@@ -3690,9 +3723,9 @@ html.dark-mode .form-select,
 html.m3-dark .form-input,
 html.m3-dark .form-textarea,
 html.m3-dark .form-select {
-    background: var(--m3-surface-container, #252525);
-    color: var(--m3-on-surface, #e1e1e1);
-    border-color: var(--m3-outline, #6c6c6c);
+    background: #2a2a2e !important;
+    color: #f0f0f5 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 html.dark-mode .form-input:focus,
@@ -3701,13 +3734,13 @@ html.dark-mode .form-select:focus,
 html.m3-dark .form-input:focus,
 html.m3-dark .form-textarea:focus,
 html.m3-dark .form-select:focus {
-    border-color: var(--m3-primary, #8ab4f8);
-    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.15);
+    border-color: #a78bfa !important;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2), 0 2px 8px rgba(167, 139, 250, 0.15) !important;
 }
 
 html.dark-mode .form-label,
 html.m3-dark .form-label {
-    color: var(--m3-on-surface-variant, #a1a1a1);
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .form-field-filled .form-input,
@@ -3722,22 +3755,22 @@ html.m3-dark .form-field-filled .form-select,
 html.m3-dark .form-field-filled .form-input.ssi-input-md,
 html.m3-dark .form-field-filled .form-textarea.ssi-input-md,
 html.m3-dark .form-field-filled .form-select.ssi-input-md {
-    background: var(--m3-surface-container-high, #2d2d2d) !important;
-    color: var(--m3-on-surface, #e1e1e1) !important;
+    background: #2a2a2e !important;
+    color: #f0f0f5 !important;
     border-color: transparent !important;
-    border-bottom-color: var(--m3-outline, #6c6c6c) !important;
+    border-bottom-color: rgba(255, 255, 255, 0.15) !important;
 }
 
-/* Outlined variant in Dark Mode */
+/* Outlined variant in Dark Mode - Warm Sophistication */
 html.dark-mode .form-field-outlined .form-input,
 html.dark-mode .form-field-outlined .form-textarea,
 html.dark-mode .form-field-outlined .form-select,
 html.m3-dark .form-field-outlined .form-input,
 html.m3-dark .form-field-outlined .form-textarea,
 html.m3-dark .form-field-outlined .form-select {
-    background: #1e1e1e !important;
-    color: #e1e1e1 !important;
-    border-color: #6c6c6c !important;
+    background: #1f1f23 !important;
+    color: #f0f0f5 !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
 }
 
 html.dark-mode .form-field-outlined .form-input:focus,
@@ -3746,68 +3779,90 @@ html.dark-mode .form-field-outlined .form-select:focus,
 html.m3-dark .form-field-outlined .form-input:focus,
 html.m3-dark .form-field-outlined .form-textarea:focus,
 html.m3-dark .form-field-outlined .form-select:focus {
-    border-color: #8ab4f8 !important;
-    box-shadow: 0 0 0 3px rgba(138, 180, 248, 0.15) !important;
+    border-color: #a78bfa !important;
+    box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2) !important;
 }
 
 html.dark-mode .form-field-outlined .form-label,
 html.m3-dark .form-field-outlined .form-label {
-    background: #1e1e1e !important;
-    color: #a1a1a1 !important;
+    background: #1f1f23 !important;
+    color: #a0a0b0 !important;
 }
 
 /* Dark mode label background for textarea */
 html.dark-mode .form-field-filled .form-textarea ~ .form-label,
 html.m3-dark .form-field-filled .form-textarea ~ .form-label {
-    background: var(--m3-surface-container-high, #2d2d2d) !important;
-    color: var(--m3-on-surface-variant, #a1a1a1) !important;
+    background: #2a2a2e !important;
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .form-helper-text,
 html.m3-dark .form-helper-text {
-    color: var(--m3-on-surface-variant, #a1a1a1);
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .form-section-title,
 html.m3-dark .form-section-title {
-    color: var(--m3-on-surface, #e1e1e1);
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .form-section-description,
 html.m3-dark .form-section-description {
-    color: var(--m3-on-surface-variant, #a1a1a1);
+    color: #a0a0b0 !important;
+}
+
+html.dark-mode .form-btn-primary,
+html.m3-dark .form-btn-primary {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
+    box-shadow: 0 2px 8px rgba(167, 139, 250, 0.3) !important;
+}
+
+html.dark-mode .form-btn-primary:hover,
+html.m3-dark .form-btn-primary:hover {
+    box-shadow: 0 4px 16px rgba(167, 139, 250, 0.4) !important;
 }
 
 html.dark-mode .form-btn-secondary,
 html.m3-dark .form-btn-secondary {
-    background: transparent;
-    color: var(--m3-primary, #8ab4f8);
-    border-color: var(--m3-outline-variant, #444);
+    background: transparent !important;
+    color: #a78bfa !important;
+    border-color: rgba(167, 139, 250, 0.4) !important;
 }
 
 html.dark-mode .form-btn-secondary:hover,
 html.m3-dark .form-btn-secondary:hover {
-    background: rgba(138, 180, 248, 0.08);
+    background: rgba(167, 139, 250, 0.15) !important;
+    border-color: #a78bfa !important;
 }
 
 html.dark-mode .form-select option,
 html.m3-dark .form-select option {
-    background: var(--m3-surface-container, #2d2d2d);
-    color: var(--m3-on-surface, #e0e0e0);
+    background: #2a2a2e !important;
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .md-radio__label,
 html.dark-mode .md-checkbox__label,
 html.m3-dark .md-radio__label,
 html.m3-dark .md-checkbox__label {
-    color: var(--m3-on-surface, #e0e0e0);
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .md-radio__outer-circle,
 html.dark-mode .md-checkbox__background,
 html.m3-dark .md-radio__outer-circle,
 html.m3-dark .md-checkbox__background {
-    border-color: var(--m3-outline, #666);
+    border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Checked state in dark mode */
+html.dark-mode .md-radio input:checked + .md-radio__outer-circle,
+html.dark-mode .md-checkbox input:checked + .md-checkbox__background,
+html.m3-dark .md-radio input:checked + .md-radio__outer-circle,
+html.m3-dark .md-checkbox input:checked + .md-checkbox__background {
+    border-color: #a78bfa !important;
+    background: #a78bfa !important;
 }
 
 /* ============================================
@@ -3834,7 +3889,7 @@ html.m3-dark .md-checkbox__background {
 }
 
 .form-section-header__number {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* === Button Group === */
@@ -3862,13 +3917,13 @@ html.m3-dark .md-checkbox__background {
 
 .form-button-group__btn:hover {
     background: var(--m3-surface-container-low, #f8f9fa);
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .form-button-group__btn.active {
-    background: var(--m3-primary, #1a73e8);
+    background: var(--ssi-primary, #5b4cdb);
     color: white;
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
 }
 
 .form-button-group__btn:disabled {
@@ -3899,12 +3954,12 @@ html.m3-dark .md-checkbox__background {
 }
 
 .form-card-select__card:hover {
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     background: var(--m3-surface-container-low, #f8f9fa);
 }
 
 .form-card-select__card.active {
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     background: var(--m3-primary-container, #e8f0fe);
 }
 
@@ -3925,7 +3980,7 @@ html.m3-dark .md-checkbox__background {
 }
 
 .form-card-select__card.active .form-card-select__label {
-    color: var(--m3-primary, #1a73e8);
+    color: var(--ssi-primary, #5b4cdb);
 }
 
 /* === Color Swatches === */
@@ -3990,7 +4045,7 @@ html.m3-dark .md-checkbox__background {
     width: 18px;
     height: 18px;
     cursor: pointer;
-    accent-color: var(--m3-primary, #1a73e8);
+    accent-color: var(--ssi-primary, #5b4cdb);
 }
 
 .form-inline-checkbox label {
@@ -4038,7 +4093,7 @@ html.m3-dark .md-checkbox__background {
 
 .form-item-list__input:focus {
     outline: none;
-    border-color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
     box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.1);
 }
 
@@ -4092,86 +4147,127 @@ select.form-item-list__input {
 }
 
 .form-item-list__add:hover {
-    border-color: var(--m3-primary, #1a73e8);
-    color: var(--m3-primary, #1a73e8);
+    border-color: var(--ssi-primary, #5b4cdb);
+    color: var(--ssi-primary, #5b4cdb);
     background: var(--m3-primary-container, #e8f0fe);
 }
 
-/* === Dark Mode for Studio-Style Fields === */
+/* === Dark Mode for Studio-Style Fields - Warm Sophistication === */
 html.dark-mode .form-section-header,
 html.m3-dark .form-section-header {
-    color: var(--m3-on-surface-variant, #a0a0a0);
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .form-button-group__btn,
 html.m3-dark .form-button-group__btn {
-    background: var(--m3-surface-container, #2d2d2d);
-    border-color: var(--m3-outline, #666);
-    color: var(--m3-on-surface, #e0e0e0);
+    background: #2a2a2e !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .form-button-group__btn:hover,
 html.m3-dark .form-button-group__btn:hover {
-    background: var(--m3-surface-container-high, #3d3d3d);
+    background: rgba(167, 139, 250, 0.1) !important;
+    border-color: #a78bfa !important;
+}
+
+html.dark-mode .form-button-group__btn.active,
+html.m3-dark .form-button-group__btn.active {
+    background: linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%) !important;
+    color: #1f1f23 !important;
+    border-color: transparent !important;
 }
 
 html.dark-mode .form-card-select__card,
 html.m3-dark .form-card-select__card {
-    background: var(--m3-surface-container, #2d2d2d);
-    border-color: var(--m3-outline, #666);
+    background: #2a2a2e !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
 }
 
 html.dark-mode .form-card-select__card:hover,
 html.m3-dark .form-card-select__card:hover {
-    background: var(--m3-surface-container-high, #3d3d3d);
+    background: rgba(167, 139, 250, 0.08) !important;
+    border-color: #a78bfa !important;
 }
 
 html.dark-mode .form-card-select__card.active,
 html.m3-dark .form-card-select__card.active {
-    background: rgba(138, 180, 248, 0.15);
-    border-color: var(--m3-primary, #8ab4f8);
+    background: rgba(167, 139, 250, 0.15) !important;
+    border-color: #a78bfa !important;
+}
+
+html.dark-mode .form-card-select__label,
+html.m3-dark .form-card-select__label {
+    color: #a0a0b0 !important;
+}
+
+html.dark-mode .form-card-select__card.active .form-card-select__label,
+html.m3-dark .form-card-select__card.active .form-card-select__label {
+    color: #a78bfa !important;
 }
 
 html.dark-mode .form-inline-checkbox,
 html.m3-dark .form-inline-checkbox {
-    background: var(--m3-surface-container, #2d2d2d);
+    background: #2a2a2e !important;
+}
+
+html.dark-mode .form-inline-checkbox:hover,
+html.m3-dark .form-inline-checkbox:hover {
+    background: rgba(167, 139, 250, 0.08) !important;
 }
 
 html.dark-mode .form-inline-checkbox.checked,
 html.m3-dark .form-inline-checkbox.checked {
-    background: rgba(138, 180, 248, 0.15);
+    background: rgba(167, 139, 250, 0.15) !important;
+}
+
+html.dark-mode .form-inline-checkbox label,
+html.m3-dark .form-inline-checkbox label {
+    color: #f0f0f5 !important;
 }
 
 html.dark-mode .form-item-list__row,
 html.m3-dark .form-item-list__row {
-    background: var(--m3-surface-container, #2d2d2d);
-    border-color: var(--m3-outline, #666);
+    background: #2a2a2e !important;
+    border-color: rgba(255, 255, 255, 0.08) !important;
 }
 
 html.dark-mode .form-item-list__input,
 html.m3-dark .form-item-list__input {
-    background: var(--m3-surface, #1c1b1f);
-    border-color: var(--m3-outline, #666);
-    color: var(--m3-on-surface, #e0e0e0);
+    background: #1f1f23 !important;
+    border-color: rgba(255, 255, 255, 0.12) !important;
+    color: #f0f0f5 !important;
+}
+
+html.dark-mode .form-item-list__input:focus,
+html.m3-dark .form-item-list__input:focus {
+    border-color: #a78bfa !important;
+    box-shadow: 0 0 0 2px rgba(167, 139, 250, 0.2) !important;
 }
 
 html.dark-mode .form-item-list__delete,
 html.m3-dark .form-item-list__delete {
-    background: rgba(207, 102, 121, 0.2);
-    color: #cf6679;
+    background: rgba(239, 68, 68, 0.15) !important;
+    color: #f87171 !important;
+}
+
+html.dark-mode .form-item-list__delete:hover,
+html.m3-dark .form-item-list__delete:hover {
+    background: #ef4444 !important;
+    color: white !important;
 }
 
 html.dark-mode .form-item-list__add,
 html.m3-dark .form-item-list__add {
-    border-color: var(--m3-outline, #666);
-    color: var(--m3-on-surface-variant, #a0a0a0);
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #a0a0b0 !important;
 }
 
 html.dark-mode .form-item-list__add:hover,
 html.m3-dark .form-item-list__add:hover {
-    background: rgba(138, 180, 248, 0.1);
-    border-color: var(--m3-primary, #8ab4f8);
-    color: var(--m3-primary, #8ab4f8);
+    background: rgba(167, 139, 250, 0.1) !important;
+    border-color: #a78bfa !important;
+    color: #a78bfa !important;
 }
 
 /* === Density Overrides for Studio-Style Fields === */

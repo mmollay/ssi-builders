@@ -33,6 +33,7 @@ body {
   height: 100vh;
   z-index: 100;
   transition: all 0.3s ease;
+  /* Ensure modal can overlay sidebar - remove transform stacking context on desktop */
 }
 
 /* Content Area */
@@ -223,7 +224,8 @@ body {
 /* Desktop (1024px+) */
 @media (min-width: 1024px) {
   #sidebar-container {
-    transform: translateX(0);
+    /* Removed transform: translateX(0) - it creates stacking context that interferes with modals */
+    /* Sidebar is visible by default on desktop */
   }
 
   .demo-content {

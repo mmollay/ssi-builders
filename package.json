@@ -70,10 +70,6 @@
   },
   "homepage": "https://github.com/ssi-solutions/ssi-builders#readme",
   "lint-staged": {
-    "*": {
-      "js": [
-        "eslint --fix"
-      ]
-    }
+    "*.js": "eslint --fix"
   }
 }

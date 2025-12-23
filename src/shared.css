@@ -1,7 +1,16 @@
 /**
- * Shared CSS - Habbi Search
- * Zentrale Styles für einheitliches Design über alle Seiten
+ * SSI Builders - Premium Design System v3.0
+ * "Warm Sophistication" - Elegant, distinctive, production-ready
+ *
+ * Typography: Plus Jakarta Sans (Display) + Inter (Body)
+ * Colors: Warm Indigo primary with Teal accents
+ * Shadows: Layered, warm-tinted for depth
  */
+
+/* ===================================
+   Google Fonts Import
+   =================================== */
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
 
 /* ===================================
    Global Reset & Base Styles
@@ -14,129 +23,206 @@
 
 :root {
     /* ===================================
-       SSI Design Tokens v2.0
-       Google Material Design 3 inspired
+       SSI Design Tokens v3.0
+       "Warm Sophistication" Design System
        =================================== */
 
     /* ===================================
-       Official Material Design 3 System Tokens
-       From MD3 MCP Server
+       Premium Color Palette
+       Warm Indigo + Teal Accents
        =================================== */
-    --md-sys-color-primary: #1a73e8;
+
+    /* Primary - Warm Indigo */
+    --md-sys-color-primary: #5b4cdb;
     --md-sys-color-on-primary: #ffffff;
-    --md-sys-color-primary-container: #d3e3fd;
-    --md-sys-color-on-primary-container: #041e49;
+    --md-sys-color-primary-container: #e8e5ff;
+    --md-sys-color-on-primary-container: #1a0f5c;
 
-    --md-sys-color-secondary: #5f6368;
+    /* Secondary - Warm Teal */
+    --md-sys-color-secondary: #0d9488;
     --md-sys-color-on-secondary: #ffffff;
-    --md-sys-color-secondary-container: #e8eaed;
-    --md-sys-color-on-secondary-container: #1c1b1f;
+    --md-sys-color-secondary-container: #ccfbf1;
+    --md-sys-color-on-secondary-container: #134e4a;
 
+    /* Tertiary - Warm Rose */
+    --md-sys-color-tertiary: #e11d48;
+    --md-sys-color-on-tertiary: #ffffff;
+    --md-sys-color-tertiary-container: #ffe4e6;
+    --md-sys-color-on-tertiary-container: #881337;
+
+    /* Surface Colors - Warm Neutrals */
     --md-sys-color-surface: #ffffff;
-    --md-sys-color-on-surface: #1c1b1f;
-    --md-sys-color-surface-variant: #e7e0ec;
-    --md-sys-color-on-surface-variant: #49454f;
-    --md-sys-color-surface-container: #f3edf7;
-    --md-sys-color-surface-container-high: #ece6f0;
-    --md-sys-color-surface-container-highest: #e6e1e5;
+    --md-sys-color-on-surface: #1e1b4b;
+    --md-sys-color-surface-variant: #f1f0fb;
+    --md-sys-color-on-surface-variant: #4c4669;
+    --md-sys-color-surface-container: #faf9fe;
+    --md-sys-color-surface-container-low: #fcfbff;
+    --md-sys-color-surface-container-high: #f4f3fa;
+    --md-sys-color-surface-container-highest: #efeef6;
 
-    --md-sys-color-outline: #79747e;
-    --md-sys-color-outline-variant: #cac4d0;
+    /* Outline Colors */
+    --md-sys-color-outline: #7c7891;
+    --md-sys-color-outline-variant: #ddd9eb;
 
-    --md-sys-color-error: #b3261e;
+    /* Error Colors */
+    --md-sys-color-error: #dc2626;
     --md-sys-color-on-error: #ffffff;
-    --md-sys-color-error-container: #f9dedc;
-    --md-sys-color-on-error-container: #410e0b;
+    --md-sys-color-error-container: #fef2f2;
+    --md-sys-color-on-error-container: #7f1d1d;
 
-    /* === Colors - Dynamic M3 Theme System === */
-    /* These use M3 variables set by ThemeBuilder (falls back to defaults) */
-    --ssi-primary: var(--m3-primary, #1a73e8);
-    --ssi-primary-hover: var(--m3-primary-dark, #1557b0);
-    --ssi-primary-active: var(--m3-primary-darker, #103f75);
+    /* === SSI Design Tokens === */
+    /* Primary Colors */
+    --ssi-primary: var(--m3-primary, #5b4cdb);
+    --ssi-primary-hover: var(--m3-primary-dark, #4338ca);
+    --ssi-primary-active: var(--m3-primary-darker, #3730a3);
+    --ssi-primary-light: #a5b4fc;
+    --ssi-primary-container: var(--m3-primary-container, #e8e5ff);
 
-    --ssi-success: var(--m3-success, #34a853);
-    --ssi-error: var(--m3-error, #ea4335);
-    --ssi-warning: var(--m3-warning, #fbbc04);
-    --ssi-info: var(--m3-info, #4285f4);
+    /* Secondary - Teal */
+    --ssi-secondary: var(--m3-secondary, #0d9488);
+    --ssi-secondary-hover: #0f766e;
+    --ssi-secondary-container: #ccfbf1;
 
-    /* Text Colors - Dynamic from M3 */
-    --ssi-text-primary: var(--m3-on-background, #202124);
-    --ssi-text-secondary: var(--m3-on-surface-variant, #5f6368);
-    --ssi-text-muted: var(--m3-outline, #9aa0a6);
+    /* Semantic Colors */
+    --ssi-success: var(--m3-success, #10b981);
+    --ssi-success-container: #d1fae5;
+    --ssi-error: var(--m3-error, #dc2626);
+    --ssi-error-container: #fef2f2;
+    --ssi-warning: var(--m3-warning, #f59e0b);
+    --ssi-warning-container: #fef3c7;
+    --ssi-info: var(--m3-info, #3b82f6);
+    --ssi-info-container: #dbeafe;
+
+    /* Text Colors */
+    --ssi-text-primary: var(--m3-on-background, #1e1b4b);
+    --ssi-text-secondary: var(--m3-on-surface-variant, #4c4669);
+    --ssi-text-muted: var(--m3-outline, #7c7891);
     --ssi-text-inverse: var(--m3-on-primary, #ffffff);
+    --ssi-text-link: #5b4cdb;
 
-    /* Background Colors - Dynamic from M3 */
-    --ssi-bg-page: var(--m3-background, #f8f9fa);
+    /* Background Colors */
+    --ssi-bg-page: var(--m3-background, #faf9fe);
     --ssi-bg-card: var(--m3-surface, #ffffff);
-    --ssi-bg-hover: var(--m3-surface-variant, #f1f3f4);
-    --ssi-bg-selected: var(--m3-primary-container, #e8f0fe);
+    --ssi-bg-hover: var(--m3-surface-variant, #f1f0fb);
+    --ssi-bg-selected: var(--m3-primary-container, #e8e5ff);
+    --ssi-bg-subtle: #f8f7fc;
 
-    /* Border & Divider - Dynamic from M3 */
-    --ssi-border: var(--m3-outline-variant, #dadce0);
-    --ssi-border-dark: var(--m3-outline, #e8eaed);
-    --ssi-divider: var(--m3-outline-variant, #e0e0e0);
+    /* Border & Divider */
+    --ssi-border: var(--m3-outline-variant, #ddd9eb);
+    --ssi-border-strong: var(--m3-outline, #a8a3bc);
+    --ssi-divider: var(--m3-outline-variant, #e5e3f0);
 
-    /* === Shadows - M3 Elevations === */
-    --ssi-shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
-    --ssi-shadow-md: 0 1px 2px rgba(0,0,0,0.3), 0 1px 3px 1px rgba(0,0,0,0.15);
-    --ssi-shadow-lg: 0 1px 3px rgba(0,0,0,0.3), 0 4px 8px 3px rgba(0,0,0,0.15);
-    --ssi-shadow-hover: 0 4px 12px rgba(0,0,0,0.1);
+    /* === Premium Shadows - Warm Tinted === */
+    --ssi-shadow-color: 99, 76, 219;
+    --ssi-shadow-xs: 0 1px 2px rgba(var(--ssi-shadow-color), 0.04);
+    --ssi-shadow-sm: 0 1px 3px rgba(var(--ssi-shadow-color), 0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --ssi-shadow-md: 0 4px 6px -1px rgba(var(--ssi-shadow-color), 0.08), 0 2px 4px -2px rgba(0,0,0,0.06);
+    --ssi-shadow-lg: 0 10px 15px -3px rgba(var(--ssi-shadow-color), 0.10), 0 4px 6px -4px rgba(0,0,0,0.08);
+    --ssi-shadow-xl: 0 20px 25px -5px rgba(var(--ssi-shadow-color), 0.12), 0 8px 10px -6px rgba(0,0,0,0.08);
+    --ssi-shadow-2xl: 0 25px 50px -12px rgba(var(--ssi-shadow-color), 0.25);
+    --ssi-shadow-hover: 0 8px 20px -4px rgba(var(--ssi-shadow-color), 0.15), 0 4px 8px -4px rgba(0,0,0,0.08);
+    --ssi-shadow-inner: inset 0 2px 4px 0 rgba(var(--ssi-shadow-color), 0.05);
 
-    /* === Spacing - 4px Grid System === */
-    --ssi-spacing-xs: 4px;          /* Extra small */
-    --ssi-spacing-sm: 8px;          /* Small */
-    --ssi-spacing-md: 12px;         /* Medium */
-    --ssi-spacing-lg: 16px;         /* Large */
-    --ssi-spacing-xl: 24px;         /* Extra large */
-    --ssi-spacing-2xl: 32px;        /* 2X large */
-    --ssi-spacing-3xl: 48px;        /* 3X large */
+    /* Glow Effects */
+    --ssi-glow-primary: 0 0 20px rgba(91, 76, 219, 0.3);
+    --ssi-glow-success: 0 0 20px rgba(16, 185, 129, 0.3);
+    --ssi-glow-error: 0 0 20px rgba(220, 38, 38, 0.3);
 
-    /* === Border Radius === */
-    --ssi-radius-sm: 4px;           /* Small corners */
-    --ssi-radius-md: 8px;           /* Medium corners */
-    --ssi-radius-lg: 12px;          /* Large corners */
-    --ssi-radius-xl: 16px;          /* Extra large */
-    --ssi-radius-full: 9999px;      /* Fully rounded (pills, circles) */
+    /* === Generous Spacing - 4px Grid === */
+    --ssi-spacing-xs: 4px;
+    --ssi-spacing-sm: 8px;
+    --ssi-spacing-md: 12px;
+    --ssi-spacing-lg: 16px;
+    --ssi-spacing-xl: 24px;
+    --ssi-spacing-2xl: 32px;
+    --ssi-spacing-3xl: 48px;
+    --ssi-spacing-4xl: 64px;
+    --ssi-spacing-5xl: 80px;
 
-    /* === Typography === */
-    --ssi-font-family: 'Roboto', system-ui, -apple-system, sans-serif;
-    --ssi-font-mono: 'Roboto Mono', 'Courier New', monospace;
+    /* === Modern Border Radius === */
+    --ssi-radius-xs: 4px;
+    --ssi-radius-sm: 8px;
+    --ssi-radius-md: 12px;
+    --ssi-radius-lg: 16px;
+    --ssi-radius-xl: 20px;
+    --ssi-radius-2xl: 24px;
+    --ssi-radius-3xl: 32px;
+    --ssi-radius-full: 9999px;
 
-    --ssi-font-size-xs: 11px;
-    --ssi-font-size-sm: 13px;
-    --ssi-font-size-base: 14px;
-    --ssi-font-size-md: 16px;
-    --ssi-font-size-lg: 18px;
-    --ssi-font-size-xl: 24px;
-    --ssi-font-size-2xl: 32px;
+    /* === Premium Typography === */
+    --ssi-font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --ssi-font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    --ssi-font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    --ssi-font-family: var(--ssi-font-body);
 
+    /* Font Sizes - Fluid Scale */
+    --ssi-font-size-xs: 0.6875rem;    /* 11px */
+    --ssi-font-size-sm: 0.8125rem;    /* 13px */
+    --ssi-font-size-base: 0.875rem;   /* 14px */
+    --ssi-font-size-md: 1rem;         /* 16px */
+    --ssi-font-size-lg: 1.125rem;     /* 18px */
+    --ssi-font-size-xl: 1.5rem;       /* 24px */
+    --ssi-font-size-2xl: 2rem;        /* 32px */
+    --ssi-font-size-3xl: 2.5rem;      /* 40px */
+    --ssi-font-size-4xl: 3rem;        /* 48px */
+
+    /* Font Weights */
     --ssi-font-weight-normal: 400;
     --ssi-font-weight-medium: 500;
     --ssi-font-weight-semibold: 600;
     --ssi-font-weight-bold: 700;
+    --ssi-font-weight-extrabold: 800;
 
+    /* Line Heights */
+    --ssi-line-height-none: 1;
     --ssi-line-height-tight: 1.25;
+    --ssi-line-height-snug: 1.375;
     --ssi-line-height-base: 1.5;
-    --ssi-line-height-relaxed: 1.75;
+    --ssi-line-height-relaxed: 1.625;
+    --ssi-line-height-loose: 2;
+
+    /* Letter Spacing */
+    --ssi-tracking-tighter: -0.05em;
+    --ssi-tracking-tight: -0.025em;
+    --ssi-tracking-normal: 0;
+    --ssi-tracking-wide: 0.025em;
+    --ssi-tracking-wider: 0.05em;
+    --ssi-tracking-widest: 0.1em;
 
     /* === Layout === */
     --ssi-max-width-content: 1400px;
     --ssi-max-width-narrow: 800px;
     --ssi-max-width-wide: 1920px;
 
-    /* === Transitions === */
-    --ssi-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
-    --ssi-transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    --ssi-transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    /* === Premium Transitions === */
+    --ssi-ease-default: cubic-bezier(0.4, 0, 0.2, 1);
+    --ssi-ease-in: cubic-bezier(0.4, 0, 1, 1);
+    --ssi-ease-out: cubic-bezier(0, 0, 0.2, 1);
+    --ssi-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ssi-ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --ssi-ease-elastic: cubic-bezier(0.68, -0.6, 0.32, 1.6);
+
+    --ssi-transition-fast: 0.15s var(--ssi-ease-default);
+    --ssi-transition-base: 0.2s var(--ssi-ease-default);
+    --ssi-transition-slow: 0.3s var(--ssi-ease-default);
+    --ssi-transition-slower: 0.5s var(--ssi-ease-default);
+
+    /* === Premium Gradients === */
+    --ssi-gradient-primary: linear-gradient(135deg, #667eea 0%, #5b4cdb 50%, #764ba2 100%);
+    --ssi-gradient-secondary: linear-gradient(135deg, #0d9488 0%, #14b8a6 100%);
+    --ssi-gradient-warm: linear-gradient(135deg, #f97316 0%, #ec4899 100%);
+    --ssi-gradient-cool: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+    --ssi-gradient-hero: linear-gradient(135deg, #5b4cdb 0%, #7c3aed 50%, #a855f7 100%);
+    --ssi-gradient-subtle: linear-gradient(135deg, #f8f7fc 0%, #f1f0fb 100%);
+    --ssi-gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(255,255,255,0.7) 100%);
 
     /* ===================================
-       Legacy Variables (DEPRECATED v2.0)
-       Keep for backwards compatibility
+       Legacy Variables (Backwards Compatible)
        =================================== */
     --primary-color: var(--ssi-primary);
     --primary-dark: var(--ssi-primary-hover);
-    --secondary-color: #24292e;
-    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-color: #1e1b4b;
+    --primary-gradient: var(--ssi-gradient-primary);
 
     --text-primary: var(--ssi-text-primary);
     --text-secondary: var(--ssi-text-secondary);
@@ -168,60 +254,111 @@
 }
 
 body {
-    font-family: var(--font-family);
-    background: var(--bg-page);
-    color: var(--text-primary);
-    line-height: 1.6;
+    font-family: var(--ssi-font-body);
+    background: var(--ssi-bg-page);
+    color: var(--ssi-text-primary);
+    line-height: var(--ssi-line-height-relaxed);
+    font-size: var(--ssi-font-size-base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+    text-rendering: optimizeLegibility;
+}
+
+/* === Premium Selection Style === */
+::selection {
+    background: var(--ssi-primary-container);
+    color: var(--ssi-primary-hover);
+}
+
+/* === Smooth Scroll === */
+html {
+    scroll-behavior: smooth;
+}
+
+/* === Focus Visible - Accessibility === */
+:focus-visible {
+    outline: 2px solid var(--ssi-primary);
+    outline-offset: 2px;
+    border-radius: var(--ssi-radius-sm);
+}
+
+/* === Premium Scrollbar === */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--ssi-bg-subtle);
+    border-radius: var(--ssi-radius-full);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ssi-border-strong);
+    border-radius: var(--ssi-radius-full);
+    border: 2px solid var(--ssi-bg-subtle);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--ssi-text-muted);
 }
 
 /* ===================================
-   Top Navigation - Google M3 Professional Dropdown
+   Top Navigation - Premium Glassmorphism Style
    =================================== */
 .top-nav {
-    background: var(--m3-surface, #ffffff);
-    border-bottom: 1px solid #dadce0;
-    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--ssi-border);
+    box-shadow: var(--ssi-shadow-sm);
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: all var(--ssi-transition-base);
+}
+
+.top-nav:hover {
+    background: rgba(255, 255, 255, 0.95);
 }
 
 .nav-container {
-    max-width: var(--max-width-content);
+    max-width: var(--ssi-max-width-content);
     margin: 0 auto;
     display: flex;
     align-items: center;
-    padding: 0 20px;
-    height: 64px;
+    padding: 0 var(--ssi-spacing-xl);
+    height: 68px;
 }
 
 /* Brand */
 .nav-brand {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ssi-spacing-md);
     text-decoration: none;
-    margin-right: 32px;
-    padding: 8px 12px;
-    border-radius: 24px;
-    transition: background 0.2s ease;
+    margin-right: var(--ssi-spacing-2xl);
+    padding: var(--ssi-spacing-sm) var(--ssi-spacing-lg);
+    border-radius: var(--ssi-radius-xl);
+    transition: all var(--ssi-transition-base);
 }
 
 .nav-brand:hover {
-    background: rgba(95,99,104,0.08);
+    background: var(--ssi-bg-hover);
+    transform: translateY(-1px);
 }
 
 .brand-icon {
-    font-size: 24px;
+    font-size: 26px;
 }
 
 .brand-text {
-    font-size: 18px;
-    font-weight: 500;
-    color: #202124;
-    letter-spacing: -0.2px;
+    font-family: var(--ssi-font-display);
+    font-size: var(--ssi-font-size-lg);
+    font-weight: var(--ssi-font-weight-bold);
+    color: var(--ssi-text-primary);
+    letter-spacing: var(--ssi-tracking-tight);
 }
 
 /* Dropdown Menu Container */
@@ -617,171 +754,225 @@ body {
 }
 
 /* ===================================
-   Cards (Wiederverwendbar)
+   Premium Cards
    =================================== */
 .card {
-    background: var(--bg-card);
-    border-radius: 8px;
-    border: 1px solid #e8eaed;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    background: var(--ssi-bg-card);
+    border-radius: var(--ssi-radius-lg);
+    border: 1px solid var(--ssi-border);
+    box-shadow: var(--ssi-shadow-sm);
     overflow: hidden;
-    transition: all 0.2s ease;
-    margin-bottom: 12px;
+    transition: all var(--ssi-transition-base);
+    margin-bottom: var(--ssi-spacing-lg);
+    position: relative;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--ssi-gradient-primary);
+    opacity: 0;
+    transition: opacity var(--ssi-transition-base);
 }
 
 .card:hover {
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: var(--ssi-shadow-lg);
+    transform: translateY(-2px);
+    border-color: var(--ssi-primary-container);
+}
+
+.card:hover::before {
+    opacity: 1;
 }
 
 .card-header {
-    padding: 12px 16px;
-    background: #f8f9fa;
-    border-bottom: 1px solid #e8eaed;
+    padding: var(--ssi-spacing-lg) var(--ssi-spacing-xl);
+    background: var(--ssi-bg-subtle);
+    border-bottom: 1px solid var(--ssi-border);
 }
 
 .card-title {
-    font-size: 14px;
-    font-weight: 600;
-    color: #202124;
+    font-family: var(--ssi-font-display);
+    font-size: var(--ssi-font-size-md);
+    font-weight: var(--ssi-font-weight-semibold);
+    color: var(--ssi-text-primary);
     margin: 0;
-    letter-spacing: -0.2px;
+    letter-spacing: var(--ssi-tracking-tight);
 }
 
 .card-subtitle {
-    font-size: 14px;
-    color: var(--text-secondary);
+    font-size: var(--ssi-font-size-sm);
+    color: var(--ssi-text-secondary);
+    margin-top: var(--ssi-spacing-xs);
 }
 
 /* ===================================
-   SSI Button System - Material Design 3
-   Unified button system for all SSI Builders
+   Premium Button System v3.0
+   Elegant, distinctive button styles
    =================================== */
 
-/* Base button - DO NOT use directly, always combine with variant class */
+/* Base button */
 .ssi-btn {
     /* Layout */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--ssi-spacing-sm);
 
-    /* Typography - M3 Label Large */
-    font-family: 'Roboto', system-ui, -apple-system, sans-serif;
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 20px;
-    letter-spacing: 0.1px;
+    /* Typography */
+    font-family: var(--ssi-font-body);
+    font-size: var(--ssi-font-size-base);
+    font-weight: var(--ssi-font-weight-semibold);
+    line-height: 1.4;
+    letter-spacing: var(--ssi-tracking-wide);
     text-decoration: none;
     white-space: nowrap;
 
-    /* Spacing - M3 specifications */
-    padding: 10px 24px;
-    min-height: 40px;
+    /* Spacing */
+    padding: var(--ssi-spacing-md) var(--ssi-spacing-xl);
+    min-height: 44px;
 
     /* Borders & Corners */
     border: none;
-    border-radius: 20px; /* M3 Full Rounded */
+    border-radius: var(--ssi-radius-lg);
 
     /* Interaction */
     cursor: pointer;
     user-select: none;
     outline: none;
+    position: relative;
+    overflow: hidden;
 
-    /* Transitions - M3 Motion */
-    transition: all 0.2s cubic-bezier(0.2, 0, 0, 1);
-
-    /* Prevent text selection */
+    /* Transitions */
+    transition: all var(--ssi-transition-base);
     -webkit-tap-highlight-color: transparent;
 }
 
-/* === Button Variants (M3 Styles) === */
+/* Ripple effect */
+.ssi-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.5s var(--ssi-ease-out);
+}
 
-/* Filled Button - Primary (M3 Filled) */
+.ssi-btn:active::after {
+    opacity: 1;
+    transform: scale(2.5);
+    transition: 0s;
+}
+
+/* === Button Variants === */
+
+/* Filled Button - Primary */
 .ssi-btn-filled,
 .ssi-btn-primary {
-    background: #1a73e8; /* M3 Primary */
-    color: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    background: var(--ssi-gradient-primary);
+    color: var(--ssi-text-inverse);
+    box-shadow: var(--ssi-shadow-md);
 }
 
 .ssi-btn-filled:hover,
 .ssi-btn-primary:hover {
-    background: #1557b0; /* Darker on hover */
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--ssi-shadow-lg), var(--ssi-glow-primary);
+    transform: translateY(-2px);
 }
 
 .ssi-btn-filled:active,
 .ssi-btn-primary:active {
-    background: #103f75;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+    box-shadow: var(--ssi-shadow-sm);
 }
 
-/* Outlined Button - Secondary (M3 Outlined) */
+/* Outlined Button - Secondary */
 .ssi-btn-outlined,
 .ssi-btn-secondary {
     background: transparent;
-    color: #1a73e8;
-    border: 1px solid #dadce0;
+    color: var(--ssi-primary);
+    border: 2px solid var(--ssi-border);
     box-shadow: none;
 }
 
 .ssi-btn-outlined:hover,
 .ssi-btn-secondary:hover {
-    background: #f8f9fa;
-    border-color: #1a73e8;
+    background: var(--ssi-primary-container);
+    border-color: var(--ssi-primary);
+    transform: translateY(-1px);
 }
 
 .ssi-btn-outlined:active,
 .ssi-btn-secondary:active {
-    background: #e8f0fe;
+    background: var(--ssi-bg-selected);
+    transform: translateY(0);
 }
 
-/* Text Button (M3 Text) */
+/* Text Button */
 .ssi-btn-text {
     background: transparent;
-    color: #1a73e8;
+    color: var(--ssi-primary);
     box-shadow: none;
-    padding: 10px 12px;
+    padding: var(--ssi-spacing-md) var(--ssi-spacing-lg);
 }
 
 .ssi-btn-text:hover {
-    background: #e8f0fe;
+    background: var(--ssi-primary-container);
 }
 
 .ssi-btn-text:active {
-    background: #d2e3fc;
+    background: var(--ssi-bg-selected);
 }
 
-/* Danger/Destructive (M3 Error) */
+/* Danger/Destructive */
 .ssi-btn-danger {
-    background: #ea4335;
-    color: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    color: var(--ssi-text-inverse);
+    box-shadow: var(--ssi-shadow-md);
 }
 
 .ssi-btn-danger:hover {
-    background: #d33b2c;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--ssi-shadow-lg), var(--ssi-glow-error);
+    transform: translateY(-2px);
 }
 
 .ssi-btn-danger:active {
-    background: #b31412;
+    transform: translateY(0);
+    box-shadow: var(--ssi-shadow-sm);
 }
 
-/* Success (M3 Success) */
+/* Success */
 .ssi-btn-success {
-    background: #34a853;
-    color: #ffffff;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 1px 3px 1px rgba(0, 0, 0, 0.15);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: var(--ssi-text-inverse);
+    box-shadow: var(--ssi-shadow-md);
 }
 
 .ssi-btn-success:hover {
-    background: #2d8e47;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 4px 8px 3px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--ssi-shadow-lg), var(--ssi-glow-success);
+    transform: translateY(-2px);
 }
 
 .ssi-btn-success:active {
-    background: #1e7b34;
+    transform: translateY(0);
+    box-shadow: var(--ssi-shadow-sm);
+}
+
+/* Teal/Secondary Action */
+.ssi-btn-teal {
+    background: var(--ssi-gradient-secondary);
+    color: var(--ssi-text-inverse);
+    box-shadow: var(--ssi-shadow-md);
+}
+
+.ssi-btn-teal:hover {
+    box-shadow: var(--ssi-shadow-lg), 0 0 20px rgba(13, 148, 136, 0.3);
+    transform: translateY(-2px);
 }
 
 /* === Button Sizes === */
@@ -1885,4 +2076,56 @@ html.m3-dark body {
 /* Smooth Scroll Behavior (Global) */
 html {
     scroll-behavior: smooth;
+}
+
+/* ===================================
+   ListBuilder Desktop Cards (v2.11.0)
+   MD3 Card Layout with Hover Effects
+   =================================== */
+.list-desktop-card-hover-lift:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+}
+
+.list-desktop-card-hover-glow:hover {
+    box-shadow: 0 0 0 3px var(--ssi-primary-container) !important;
+    border-color: var(--ssi-primary) !important;
+}
+
+.list-desktop-card-selected {
+    border-color: var(--ssi-primary) !important;
+    background: var(--ssi-primary-container) !important;
+}
+
+.list-desktop-card-bordered:hover {
+    border-color: var(--ssi-primary) !important;
+}
+
+/* Responsive Card Grid */
+.list-desktop-cards-responsive {
+    /* Base: auto-fit grid with responsive min-width */
+}
+
+/* Mobile: 1 column */
+@media (max-width: 640px) {
+    .list-desktop-cards-responsive {
+        grid-template-columns: 1fr !important;
+        padding: 16px !important;
+        gap: 16px !important;
+    }
+}
+
+/* Tablet: 2 columns */
+@media (min-width: 641px) and (max-width: 1024px) {
+    .list-desktop-cards-responsive {
+        grid-template-columns: repeat(2, 1fr) !important;
+        padding: 20px !important;
+    }
+}
+
+/* Desktop: 3 columns (default from inline style) */
+@media (min-width: 1025px) {
+    .list-desktop-cards-responsive {
+        /* Uses auto-fit from inline style */
+    }
 }
