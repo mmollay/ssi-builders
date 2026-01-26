@@ -24,6 +24,7 @@ SSI Builders ist **die zentrale UI-Bibliothek** für das gesamte SSI-Ökosystem:
 | **HabDaWas App** | ✅ Production | v2.0.0 |
 | **Habbi Suchalgorithmus** | ✅ Production | v2.0.0 |
 | **Bazar Bold** | 🚧 In Development | v2.0.0 |
+| **EasyForm** | 🚧 In Development | v2.0.0 |
 | **[Neue Module]** | 📋 Planned | v2.0.0 |
 
 ### Zentrale Komponenten
@@ -511,6 +512,7 @@ MIT © SSI Solutions
 - HabDaWas App
 - Habbi Suchalgorithmus
 - Bazar Bold
+- EasyForm
 - [Weitere SSI-Projekte]
 
 ---
