@@ -1,0 +1,373 @@
+/*----------------------------------------------------------------------
+ * SSI Builders - Main Stylesheet
+ * Import this file to get the complete design system
+ *----------------------------------------------------------------------*/
+
+/* Core Tailwind 4 + Design Tokens */
+@import "./tailwind.css";
+
+/* Theme Variants */
+@import "./themes.css";
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * UTILITY CLASSES
+ * Common patterns as reusable utilities
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+@layer utilities {
+  /* Text utilities matching M3 type scale */
+  .text-display-lg {
+    font-size: var(--text-display-lg);
+    line-height: var(--text-display-lg--line-height);
+    font-weight: var(--text-display-lg--font-weight);
+  }
+
+  .text-display-md {
+    font-size: var(--text-display-md);
+    line-height: var(--text-display-md--line-height);
+    font-weight: var(--text-display-md--font-weight);
+  }
+
+  .text-display-sm {
+    font-size: var(--text-display-sm);
+    line-height: var(--text-display-sm--line-height);
+    font-weight: var(--text-display-sm--font-weight);
+  }
+
+  .text-headline-lg {
+    font-size: var(--text-headline-lg);
+    line-height: var(--text-headline-lg--line-height);
+    font-weight: var(--text-headline-lg--font-weight);
+  }
+
+  .text-headline-md {
+    font-size: var(--text-headline-md);
+    line-height: var(--text-headline-md--line-height);
+    font-weight: var(--text-headline-md--font-weight);
+  }
+
+  .text-headline-sm {
+    font-size: var(--text-headline-sm);
+    line-height: var(--text-headline-sm--line-height);
+    font-weight: var(--text-headline-sm--font-weight);
+  }
+
+  .text-title-lg {
+    font-size: var(--text-title-lg);
+    line-height: var(--text-title-lg--line-height);
+    font-weight: var(--text-title-lg--font-weight);
+  }
+
+  .text-title-md {
+    font-size: var(--text-title-md);
+    line-height: var(--text-title-md--line-height);
+    letter-spacing: var(--text-title-md--letter-spacing);
+    font-weight: var(--text-title-md--font-weight);
+  }
+
+  .text-title-sm {
+    font-size: var(--text-title-sm);
+    line-height: var(--text-title-sm--line-height);
+    letter-spacing: var(--text-title-sm--letter-spacing);
+    font-weight: var(--text-title-sm--font-weight);
+  }
+
+  .text-label-lg {
+    font-size: var(--text-label-lg);
+    line-height: var(--text-label-lg--line-height);
+    letter-spacing: var(--text-label-lg--letter-spacing);
+    font-weight: var(--text-label-lg--font-weight);
+  }
+
+  .text-label-md {
+    font-size: var(--text-label-md);
+    line-height: var(--text-label-md--line-height);
+    letter-spacing: var(--text-label-md--letter-spacing);
+    font-weight: var(--text-label-md--font-weight);
+  }
+
+  .text-label-sm {
+    font-size: var(--text-label-sm);
+    line-height: var(--text-label-sm--line-height);
+    letter-spacing: var(--text-label-sm--letter-spacing);
+    font-weight: var(--text-label-sm--font-weight);
+  }
+
+  .text-body-lg {
+    font-size: var(--text-body-lg);
+    line-height: var(--text-body-lg--line-height);
+    letter-spacing: var(--text-body-lg--letter-spacing);
+    font-weight: var(--text-body-lg--font-weight);
+  }
+
+  .text-body-md {
+    font-size: var(--text-body-md);
+    line-height: var(--text-body-md--line-height);
+    letter-spacing: var(--text-body-md--letter-spacing);
+    font-weight: var(--text-body-md--font-weight);
+  }
+
+  .text-body-sm {
+    font-size: var(--text-body-sm);
+    line-height: var(--text-body-sm--line-height);
+    letter-spacing: var(--text-body-sm--letter-spacing);
+    font-weight: var(--text-body-sm--font-weight);
+  }
+
+  /* Elevation utilities */
+  .elevation-1 {
+    box-shadow: var(--elevation-1);
+  }
+
+  .elevation-2 {
+    box-shadow: var(--elevation-2);
+  }
+
+  .elevation-3 {
+    box-shadow: var(--elevation-3);
+  }
+
+  .elevation-4 {
+    box-shadow: var(--elevation-4);
+  }
+
+  .elevation-5 {
+    box-shadow: var(--elevation-5);
+  }
+
+  /* Transition utilities with M3 easing */
+  .transition-standard {
+    transition-timing-function: var(--ease-standard);
+    transition-duration: var(--duration-medium);
+  }
+
+  .transition-emphasized {
+    transition-timing-function: var(--ease-emphasized);
+    transition-duration: var(--duration-long);
+  }
+
+  .transition-quick {
+    transition-timing-function: var(--ease-standard);
+    transition-duration: var(--duration-short);
+  }
+
+  /* Surface utilities */
+  .surface {
+    background-color: var(--color-surface-100);
+  }
+
+  .surface-dim {
+    background-color: var(--color-surface-200);
+  }
+
+  .surface-bright {
+    background-color: var(--color-surface-50, white);
+  }
+
+  .surface-container {
+    background-color: var(--color-surface-300);
+  }
+
+  .surface-container-high {
+    background-color: var(--color-surface-400);
+  }
+
+  .surface-container-highest {
+    background-color: var(--color-surface-500);
+  }
+
+  /* Dark mode surface utilities */
+  .dark .surface {
+    background-color: var(--color-surfacedark-100);
+  }
+
+  .dark .surface-dim {
+    background-color: var(--color-surfacedark-50);
+  }
+
+  .dark .surface-bright {
+    background-color: var(--color-surfacedark-200);
+  }
+
+  .dark .surface-container {
+    background-color: var(--color-surfacedark-300);
+  }
+
+  .dark .surface-container-high {
+    background-color: var(--color-surfacedark-400);
+  }
+
+  .dark .surface-container-highest {
+    background-color: var(--color-surfacedark-500);
+  }
+
+  /* Interactive state layers (M3 pattern) */
+  .state-hover {
+    position: relative;
+  }
+
+  .state-hover::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-color: currentColor;
+    opacity: 0;
+    transition: opacity var(--duration-short) var(--ease-standard);
+    pointer-events: none;
+    border-radius: inherit;
+  }
+
+  .state-hover:hover::before {
+    opacity: 0.08;
+  }
+
+  .state-hover:focus::before {
+    opacity: 0.12;
+  }
+
+  .state-hover:active::before {
+    opacity: 0.12;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * COMPONENT STYLES
+ * Pre-built component patterns
+ * ═══════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  /* M3 Filled Button */
+  .btn-filled {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    font-size: var(--text-label-lg);
+    font-weight: var(--text-label-lg--font-weight);
+    letter-spacing: var(--text-label-lg--letter-spacing);
+    line-height: var(--text-label-lg--line-height);
+    color: white;
+    background-color: var(--color-primary-500);
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-short) var(--ease-standard);
+  }
+
+  .btn-filled:hover {
+    background-color: var(--color-primary-600);
+    box-shadow: var(--elevation-1);
+  }
+
+  .btn-filled:active {
+    background-color: var(--color-primary-700);
+  }
+
+  .btn-filled:disabled {
+    background-color: var(--color-neutral-200);
+    color: var(--color-neutral-400);
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+
+  /* M3 Outlined Button */
+  .btn-outlined {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.5625rem 1.5rem;
+    font-size: var(--text-label-lg);
+    font-weight: var(--text-label-lg--font-weight);
+    letter-spacing: var(--text-label-lg--letter-spacing);
+    line-height: var(--text-label-lg--line-height);
+    color: var(--color-primary-500);
+    background-color: transparent;
+    border: 1px solid var(--color-neutral-300);
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-short) var(--ease-standard);
+  }
+
+  .btn-outlined:hover {
+    background-color: var(--color-primary-50);
+    border-color: var(--color-primary-200);
+  }
+
+  .btn-outlined:active {
+    background-color: var(--color-primary-100);
+  }
+
+  /* M3 Text Button */
+  .btn-text {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    font-size: var(--text-label-lg);
+    font-weight: var(--text-label-lg--font-weight);
+    letter-spacing: var(--text-label-lg--letter-spacing);
+    line-height: var(--text-label-lg--line-height);
+    color: var(--color-primary-500);
+    background-color: transparent;
+    border: none;
+    border-radius: var(--radius-full);
+    cursor: pointer;
+    transition: all var(--duration-short) var(--ease-standard);
+  }
+
+  .btn-text:hover {
+    background-color: var(--color-primary-50);
+  }
+
+  .btn-text:active {
+    background-color: var(--color-primary-100);
+  }
+
+  /* M3 Card */
+  .card {
+    background-color: var(--color-surface-100);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+  }
+
+  .card-elevated {
+    background-color: var(--color-surface-200);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    box-shadow: var(--elevation-1);
+  }
+
+  .card-filled {
+    background-color: var(--color-surface-500);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+  }
+
+  .card-outlined {
+    background-color: var(--color-surface-100);
+    border: 1px solid var(--color-neutral-200);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+  }
+
+  /* Dark mode cards */
+  .dark .card {
+    background-color: var(--color-surfacedark-100);
+  }
+
+  .dark .card-elevated {
+    background-color: var(--color-surfacedark-200);
+  }
+
+  .dark .card-filled {
+    background-color: var(--color-surfacedark-400);
+  }
+
+  .dark .card-outlined {
+    background-color: var(--color-surfacedark-100);
+    border-color: var(--color-neutral-700);
+  }
+}

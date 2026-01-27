@@ -1,0 +1,360 @@
+/*----------------------------------------------------------------------
+ * SSI Builders - Tailwind 4 + Material Design 3
+ * Based on Goodash Design System (Licensed)
+ * License Key: A5BB316E-F6CD4C32-AD2B7B83-1A332ED2
+ *----------------------------------------------------------------------*/
+@import "tailwindcss";
+
+@theme {
+  /* Typography */
+  --font-sans: "Roboto", "Inter", system-ui, sans-serif;
+  --font-serif: "Roboto Serif", Georgia, serif;
+  --font-mono: "Roboto Mono", "Fira Code", monospace;
+
+  /* Base Colors */
+  --color-white: oklch(1 0 0);
+  --color-black: oklch(0 0 0);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * PRIMARY COLORS - Main brand color (Default: Blue/Indigo)
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-primary-950: oklch(17.86% 0.0561 253.63);
+  --color-primary-900: oklch(22.44% 0.0722 254.34);
+  --color-primary-800: oklch(31.16% 0.0992 254.02);
+  --color-primary-700: oklch(39.78% 0.1273 254.18);
+  --color-primary-600: oklch(48.53% 0.1292 255.17);
+  --color-primary-500: oklch(57.05% 0.1272 256.52);
+  --color-primary-400: oklch(65.65% 0.1257 257.56);
+  --color-primary-300: oklch(74.34% 0.1247 258.4);
+  --color-primary-200: oklch(82.82% 0.0856 260.5);
+  --color-primary-100: oklch(91.4% 0.0412 264.35);
+  --color-primary-50: oklch(95.85% 0.0195 270.21);
+  --color-primary-10: oklch(99.07% 0.0057 308.4);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * SECONDARY COLORS - Supporting color
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-secondary-950: oklch(17.69% 0.0348 257.72);
+  --color-secondary-900: oklch(22.48% 0.0329 258.29);
+  --color-secondary-800: oklch(31.11% 0.032 259.68);
+  --color-secondary-700: oklch(39.59% 0.0317 260.99);
+  --color-secondary-600: oklch(48.37% 0.0316 262.2);
+  --color-secondary-500: oklch(56.85% 0.0313 265.28);
+  --color-secondary-400: oklch(65.53% 0.032 264.33);
+  --color-secondary-300: oklch(74.09% 0.0319 267.12);
+  --color-secondary-200: oklch(82.85% 0.0314 265.3);
+  --color-secondary-100: oklch(91.46% 0.0306 265.33);
+  --color-secondary-50: oklch(95.85% 0.0195 270.21);
+  --color-secondary-10: oklch(99.07% 0.0057 308.4);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * TERTIARY COLORS - Accent color (Default: Purple/Magenta)
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-tertiary-950: oklch(18.36% 0.0596 315.17);
+  --color-tertiary-900: oklch(23.08% 0.0588 317.18);
+  --color-tertiary-800: oklch(31.63% 0.0579 317.77);
+  --color-tertiary-700: oklch(40.27% 0.0591 318.46);
+  --color-tertiary-600: oklch(48.95% 0.0579 317.56);
+  --color-tertiary-500: oklch(57.49% 0.0583 319.02);
+  --color-tertiary-400: oklch(66.1% 0.0601 319.46);
+  --color-tertiary-300: oklch(74.91% 0.0589 320.48);
+  --color-tertiary-200: oklch(83.32% 0.0609 320.8);
+  --color-tertiary-100: oklch(92.02% 0.0612 320.93);
+  --color-tertiary-50: oklch(96.1% 0.0332 324.33);
+  --color-tertiary-10: oklch(99.23% 0.0067 325.63);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * ERROR COLORS - For validation, errors, destructive actions
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-error-950: oklch(25.8% 0.092 26.04);
+  --color-error-900: oklch(39.6% 0.141 25.72);
+  --color-error-800: oklch(44.4% 0.177 26.9);
+  --color-error-700: oklch(50.5% 0.213 27.52);
+  --color-error-600: oklch(57.7% 0.245 27.33);
+  --color-error-500: oklch(63.7% 0.237 25.33);
+  --color-error-400: oklch(70.4% 0.191 22.22);
+  --color-error-300: oklch(80.8% 0.114 19.57);
+  --color-error-200: oklch(88.5% 0.062 18.33);
+  --color-error-100: oklch(93.6% 0.032 17.72);
+  --color-error-50: oklch(97.1% 0.013 17.38);
+  --color-error-10: oklch(99.23% 0.0067 325.63);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * SUCCESS COLORS - For confirmations, success states
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-success-950: oklch(26% 0.065 145);
+  --color-success-900: oklch(32% 0.085 145);
+  --color-success-800: oklch(40% 0.1 148);
+  --color-success-700: oklch(48% 0.115 150);
+  --color-success-600: oklch(55% 0.13 152);
+  --color-success-500: oklch(62% 0.14 155);
+  --color-success-400: oklch(70% 0.12 155);
+  --color-success-300: oklch(78% 0.09 155);
+  --color-success-200: oklch(86% 0.06 155);
+  --color-success-100: oklch(92% 0.035 155);
+  --color-success-50: oklch(96% 0.018 155);
+  --color-success-10: oklch(99% 0.006 155);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * WARNING COLORS - For alerts, cautions
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-warning-950: oklch(28% 0.07 70);
+  --color-warning-900: oklch(35% 0.09 65);
+  --color-warning-800: oklch(45% 0.12 60);
+  --color-warning-700: oklch(55% 0.145 55);
+  --color-warning-600: oklch(65% 0.16 50);
+  --color-warning-500: oklch(75% 0.17 50);
+  --color-warning-400: oklch(82% 0.14 52);
+  --color-warning-300: oklch(88% 0.1 55);
+  --color-warning-200: oklch(92% 0.065 58);
+  --color-warning-100: oklch(95% 0.04 60);
+  --color-warning-50: oklch(97.5% 0.02 60);
+  --color-warning-10: oklch(99% 0.008 60);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * NEUTRAL COLORS - For text, borders, backgrounds
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-neutral-950: oklch(18% 0.006 260);
+  --color-neutral-900: oklch(23% 0.006 260);
+  --color-neutral-800: oklch(32% 0.006 260);
+  --color-neutral-700: oklch(42% 0.006 260);
+  --color-neutral-600: oklch(52% 0.006 260);
+  --color-neutral-500: oklch(62% 0.006 260);
+  --color-neutral-400: oklch(72% 0.006 260);
+  --color-neutral-300: oklch(82% 0.006 260);
+  --color-neutral-200: oklch(90% 0.006 260);
+  --color-neutral-100: oklch(95% 0.006 260);
+  --color-neutral-50: oklch(97.5% 0.004 260);
+  --color-neutral-10: oklch(99% 0.003 260);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * SURFACE COLORS - For cards, backgrounds, elevation
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-surface-100: oklch(98.44% 0.0045 258.32);
+  --color-surface-200: oklch(97.26% 0.0086 264.52);
+  --color-surface-300: oklch(96.31% 0.0103 261.79);
+  --color-surface-400: oklch(95.97% 0.012 259.82);
+  --color-surface-500: oklch(95.32% 0.0137 258.35);
+
+  /* Surface Dark - For dark mode */
+  --color-surfacedark-100: oklch(28.03% 0.0023 247.91);
+  --color-surfacedark-200: oklch(30.4% 0.0046 247.98);
+  --color-surfacedark-300: oklch(32.56% 0.0072 274.76);
+  --color-surfacedark-400: oklch(33.25% 0.0075 264.47);
+  --color-surfacedark-500: oklch(34.8% 0.0075 264.47);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * TYPOGRAPHY - Material Design 3 Type Scale
+   * ═══════════════════════════════════════════════════════════════════ */
+  
+  /* Display */
+  --text-display-lg: 3.5625rem;
+  --text-display-lg--line-height: 1.2;
+  --text-display-lg--font-weight: 400;
+
+  --text-display-md: 2.8125rem;
+  --text-display-md--line-height: 1.2;
+  --text-display-md--font-weight: 400;
+
+  --text-display-sm: 2.25rem;
+  --text-display-sm--line-height: 1.2;
+  --text-display-sm--font-weight: 400;
+
+  /* Headline */
+  --text-headline-lg: 2rem;
+  --text-headline-lg--line-height: 1.25;
+  --text-headline-lg--font-weight: 400;
+
+  --text-headline-md: 1.75rem;
+  --text-headline-md--line-height: 1.3;
+  --text-headline-md--font-weight: 400;
+
+  --text-headline-sm: 1.5rem;
+  --text-headline-sm--line-height: 1.35;
+  --text-headline-sm--font-weight: 400;
+
+  /* Title */
+  --text-title-lg: 1.375rem;
+  --text-title-lg--line-height: 1.4;
+  --text-title-lg--font-weight: 500;
+
+  --text-title-md: 1rem;
+  --text-title-md--line-height: 1.5;
+  --text-title-md--letter-spacing: 0.15px;
+  --text-title-md--font-weight: 500;
+
+  --text-title-sm: 0.875rem;
+  --text-title-sm--line-height: 1.45;
+  --text-title-sm--letter-spacing: 0.1px;
+  --text-title-sm--font-weight: 500;
+
+  /* Label */
+  --text-label-lg: 0.875rem;
+  --text-label-lg--line-height: 1.15;
+  --text-label-lg--letter-spacing: 0.1px;
+  --text-label-lg--font-weight: 500;
+
+  --text-label-md: 0.75rem;
+  --text-label-md--line-height: 1.35;
+  --text-label-md--letter-spacing: 0.5px;
+  --text-label-md--font-weight: 500;
+
+  --text-label-sm: 0.6875rem;
+  --text-label-sm--line-height: 1.45;
+  --text-label-sm--letter-spacing: 0.5px;
+  --text-label-sm--font-weight: 500;
+
+  /* Body */
+  --text-body-lg: 1rem;
+  --text-body-lg--line-height: 1.75;
+  --text-body-lg--letter-spacing: 0.5px;
+  --text-body-lg--font-weight: 400;
+
+  --text-body-md: 0.875rem;
+  --text-body-md--line-height: 1.65;
+  --text-body-md--letter-spacing: 0.25px;
+  --text-body-md--font-weight: 400;
+
+  --text-body-sm: 0.75rem;
+  --text-body-sm--line-height: 1.5;
+  --text-body-sm--letter-spacing: 0.4px;
+  --text-body-sm--font-weight: 400;
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * SPACING - Consistent spacing scale
+   * ═══════════════════════════════════════════════════════════════════ */
+  --spacing-0: 0px;
+  --spacing-1: 0.25rem;
+  --spacing-2: 0.5rem;
+  --spacing-3: 0.75rem;
+  --spacing-4: 1rem;
+  --spacing-5: 1.25rem;
+  --spacing-6: 1.5rem;
+  --spacing-8: 2rem;
+  --spacing-10: 2.5rem;
+  --spacing-12: 3rem;
+  --spacing-16: 4rem;
+  --spacing-20: 5rem;
+  --spacing-24: 6rem;
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * BORDER RADIUS - M3 Shape System
+   * ═══════════════════════════════════════════════════════════════════ */
+  --radius-none: 0;
+  --radius-xs: 0.25rem;
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+  --radius-2xl: 1.75rem;
+  --radius-3xl: 2rem;
+  --radius-full: 9999px;
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * SHADOWS - M3 Elevation System
+   * ═══════════════════════════════════════════════════════════════════ */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+
+  /* M3 Elevation Levels */
+  --elevation-1: 0 1px 3px 1px rgb(0 0 0 / 0.15), 0 1px 2px rgb(0 0 0 / 0.3);
+  --elevation-2: 0 2px 6px 2px rgb(0 0 0 / 0.15), 0 1px 2px rgb(0 0 0 / 0.3);
+  --elevation-3: 0 4px 8px 3px rgb(0 0 0 / 0.15), 0 1px 3px rgb(0 0 0 / 0.3);
+  --elevation-4: 0 6px 10px 4px rgb(0 0 0 / 0.15), 0 2px 3px rgb(0 0 0 / 0.3);
+  --elevation-5: 0 8px 12px 6px rgb(0 0 0 / 0.15), 0 4px 4px rgb(0 0 0 / 0.3);
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * TRANSITIONS - Smooth animations
+   * ═══════════════════════════════════════════════════════════════════ */
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decelerate: cubic-bezier(0, 0, 0, 1);
+  --ease-accelerate: cubic-bezier(0.3, 0, 1, 1);
+
+  --duration-short: 150ms;
+  --duration-medium: 250ms;
+  --duration-long: 400ms;
+
+  /* ═══════════════════════════════════════════════════════════════════
+   * DISABLE UNUSED TAILWIND DEFAULTS
+   * ═══════════════════════════════════════════════════════════════════ */
+  --color-amber-*: initial;
+  --color-emerald-*: initial;
+  --color-cyan-*: initial;
+  --color-violet-*: initial;
+  --color-fuchsia-*: initial;
+  --color-rose-*: initial;
+  --color-zinc-*: initial;
+  --color-teal-*: initial;
+  --color-stone-*: initial;
+  --color-lime-*: initial;
+  --color-sky-*: initial;
+  --color-indigo-*: initial;
+  --color-pink-*: initial;
+  --color-orange-*: initial;
+  --color-yellow-*: initial;
+  --color-green-*: initial;
+  --color-blue-*: initial;
+  --color-purple-*: initial;
+  --color-red-*: initial;
+  --color-slate-*: initial;
+  --color-gray-*: initial;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * BASE STYLES
+ * ═══════════════════════════════════════════════════════════════════════ */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-neutral-200, currentColor);
+  }
+
+  html {
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: var(--color-surface-100);
+    color: var(--color-neutral-900);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-neutral-400);
+  }
+
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+ * DARK MODE
+ * ═══════════════════════════════════════════════════════════════════════ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+.dark {
+  color-scheme: dark;
+}
+
+.dark body,
+body.dark {
+  background-color: var(--color-surfacedark-100);
+  color: var(--color-neutral-100);
+}
